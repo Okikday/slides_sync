@@ -1,0 +1,87 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/app/states/app_ui_state.dart';
+
+class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
+  final Color? scaffoldBgColor;
+  final EdgeInsets? padding;
+  final Widget child;
+  final double? deviceWidth;
+  final double? appBarHeight;
+  final double? deviceHeight;
+  final double? topPadding;
+
+  const AppBarContainer({
+    super.key,
+    this.scaffoldBgColor,
+    this.deviceHeight,
+    this.deviceWidth,
+    this.topPadding,
+    this.padding,
+    required this.child,
+    this.appBarHeight,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final AppUiModel appUiModel = ref.watch(appUiStateProvider);
+    return AppBarContainerWidget(
+      deviceWidth: appUiModel.deviceWidth,
+      deviceHeight: appUiModel.deviceHeight,
+      appBarHeight: appBarHeight,
+      scaffoldBgColor: scaffoldBgColor,
+      padding: padding,
+      topPadding: topPadding,
+      child: child,
+    );
+  }
+
+  @override
+  Size get preferredSize {
+    if (deviceWidth != null) return Size(deviceWidth!, appBarHeight ?? kToolbarHeight);
+    return Size.fromHeight(appBarHeight ?? kToolbarHeight);
+  }
+}
+
+class AppBarContainerWidget extends StatelessWidget {
+  final double deviceWidth;
+  final double deviceHeight;
+  final double? appBarHeight;
+  final Widget child;
+  final EdgeInsets? padding;
+  final Color? scaffoldBgColor;
+  final double? topPadding;
+
+  const AppBarContainerWidget({
+    super.key,
+    required this.deviceWidth,
+    required this.deviceHeight,
+    this.appBarHeight,
+    required this.child,
+    this.padding,
+    this.scaffoldBgColor,
+    this.topPadding,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final double topPadding = MediaQuery.paddingOf(context).top;
+    return ColoredBox(
+      color: scaffoldBgColor ?? Theme.of(context).scaffoldBackgroundColor,
+      child: Padding(
+        padding: EdgeInsets.only(top: this.topPadding ?? topPadding),
+        child: SizedBox(
+          width: deviceWidth,
+          height: appBarHeight ?? kToolbarHeight + topPadding,
+          child: Padding(
+            padding: padding ?? EdgeInsets.only(left: deviceWidth > deviceHeight ? 24 : 16, right: deviceWidth > deviceHeight ? 24 : 16),
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+}
