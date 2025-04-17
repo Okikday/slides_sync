@@ -37,58 +37,70 @@ dependencies:
   flutter_riverpod: ^2.6.1
   custom_widgets_toolkit: ^0.0.44
   iconsax_flutter: ^1.0.0
-  google_fonts: ^6.2.1
   page_transition: ^2.2.1
+  flutter_animate: ^4.5.2
+  heroine: ^0.4.0
+  marquee: ^2.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
+
   flutter_lints: ^5.0.0
 
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter packages.
 flutter:
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
+#-FONTS
+fonts:
+  - family: Nunito
+    fonts:
+      - asset: assets/fonts/Nunito-Light.ttf
+        weight: 300
+      - asset: assets/fonts/Nunito-LightItalic.ttf
+        weight: 300
+        style: italic
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
+      - asset: assets/fonts/Nunito-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/Nunito-Italic.ttf
+        weight: 400
+        style: italic
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+      - asset: assets/fonts/Nunito-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Nunito-MediumItalic.ttf
+        weight: 500
+        style: italic
+
+      - asset: assets/fonts/Nunito-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/Nunito-SemiBoldItalic.ttf
+        weight: 600
+        style: italic
+
+      - asset: assets/fonts/Nunito-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Nunito-BoldItalic.ttf
+        weight: 700
+        style: italic
+
+      - asset: assets/fonts/Nunito-ExtraBold.ttf
+        weight: 800
+      - asset: assets/fonts/Nunito-ExtraBoldItalic.ttf
+        weight: 800
+        style: italic
+
+      - asset: assets/fonts/Nunito-Black.ttf
+        weight: 900
+      - asset: assets/fonts/Nunito-BlackItalic.ttf
+        weight: 900
+        style: italic
+

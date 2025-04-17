@@ -21,9 +21,9 @@ class AppUiState extends Notifier<AppUiModel> with WidgetsBindingObserver {
 
   @override
   void didChangeMetrics() {
-    try{
+    try {
       updateMetrics();
-    }catch (e) {
+    } catch (e) {
       log("Error initializing app UI state: $e");
     }
   }
@@ -38,10 +38,17 @@ class AppUiState extends Notifier<AppUiModel> with WidgetsBindingObserver {
     updatePlatformBrightness();
     isInitialized = true;
     log("Initialized app Ui State");
+
+    final appUiModel = state;
+    print(
+      "deviceWidth: ${appUiModel.deviceWidth}\n"
+      "deviceHeight: ${appUiModel.deviceHeight}\n"
+      "isDarkMode: ${appUiModel.isDarkMode}\n"
+      "viewInsets: ${appUiModel.viewInsets}\n",
+    );
   }
 
   void updateMetrics() {
-
     final FlutterView? instanceImplicitView = WidgetsBinding.instance.platformDispatcher.implicitView;
     final Size? size = instanceImplicitView?.physicalSize;
     final ViewPadding? systemViewInsets = instanceImplicitView?.viewInsets;
@@ -60,7 +67,6 @@ class AppUiState extends Notifier<AppUiModel> with WidgetsBindingObserver {
   }
 
   void updatePlatformBrightness() {
-
     final bool isDarkModeTemp = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
 
     if (isDarkModeTemp != state.isDarkMode) {

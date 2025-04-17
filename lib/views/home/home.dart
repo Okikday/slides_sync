@@ -62,37 +62,40 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
     final bool isScrolled = ref.watch(isScrolledProvider);
     final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
 
-    return AnnotatedRegion(
-      value: SystemUiOverlayStyle(
-        statusBarColor: isScrolled ? Colors.lightBlueAccent.withAlpha(100) : scaffoldBgColor,
-        statusBarBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        systemNavigationBarColor: (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
-      ),
-      child: Scaffold(
-        extendBody: true,
-        bottomNavigationBar: HomeBottomNavBar(
-          appUiModel: appUiModel,
-          currentIndex: homeNavBarIndex,
-          isScrolled: isScrolled,
-          onTap: (index) {
-            if (index != homeNavBarIndex) {
-              ref.read(homeNavBarIndexProvider.notifier).update(index);
-              pageController.animateToPage(index, duration: Duration(milliseconds: 800), curve: CustomCurves.defaultIosSpring);
-            }
-          },
+    return PopScope(
+      canPop: false,
+      child: AnnotatedRegion(
+        value: SystemUiOverlayStyle(
+          statusBarColor: isScrolled ? Colors.lightBlueAccent.withAlpha(100) : scaffoldBgColor,
+          statusBarBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+          statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
         ),
-        body: PageView(
-          controller: pageController,
-          onPageChanged: (index) {
-            ref.read(homeNavBarIndexProvider.notifier).update(index);
-          },
-          children: [
-            HomeBody(appUiModel: appUiModel, isScrolledProvider: isScrolledProvider, isScrolled: isScrolled),
-            LibraryView(appUiModel: appUiModel,),
-            ProfileView(),
-          ],
+        child: Scaffold(
+          extendBody: true,
+          bottomNavigationBar: HomeBottomNavBar(
+            appUiModel: appUiModel,
+            currentIndex: homeNavBarIndex,
+            isScrolled: isScrolled,
+            onTap: (index) {
+              if (index != homeNavBarIndex) {
+                ref.read(homeNavBarIndexProvider.notifier).update(index);
+                pageController.animateToPage(index, duration: Duration(milliseconds: 800), curve: CustomCurves.defaultIosSpring);
+              }
+            },
+          ),
+          body: PageView(
+            controller: pageController,
+            onPageChanged: (index) {
+              ref.read(homeNavBarIndexProvider.notifier).update(index);
+            },
+            children: [
+              HomeBody(appUiModel: appUiModel, isScrolledProvider: isScrolledProvider, isScrolled: isScrolled),
+              LibraryView(appUiModel: appUiModel,),
+              ProfileView(),
+            ],
+          ),
         ),
       ),
     );
@@ -124,7 +127,7 @@ class HomeBottomNavBar extends ConsumerWidget {
           items: [
             BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
             BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library"),
-            BottomNavigationBarItem(icon: Icon(Iconsax.profile_2user), label: "Profile", tooltip: "Profile"),
+            BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore"),
           ],
         ),
       ),

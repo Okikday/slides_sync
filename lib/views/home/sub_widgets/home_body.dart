@@ -10,7 +10,7 @@ import 'package:slides_sync/app/states/app_ui_state.dart';
 import 'package:slides_sync/components/colors.dart';
 import 'package:slides_sync/views/home/home.dart';
 import 'package:slides_sync/views/home/sub_widgets/home_app_bar.dart';
-import 'package:slides_sync/views/home/sub_widgets/recents_section.dart';
+import 'package:slides_sync/views/home/sub_widgets/recents_section/recents_section.dart';
 
 import 'home_dash_board.dart';
 
@@ -30,20 +30,16 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
     super.build(context);
     final topPadding = MediaQuery.paddingOf(context).top;
 
-    return NotificationListener(
-      onNotification: (notification) {
-        if (notification is ScrollMetricsNotification) {
-          if (notification.metrics.pixels > 0.0) {
-            ref.read(widget.isScrolledProvider.notifier).update(true);
-          } else {
-            ref.read(widget.isScrolledProvider.notifier).update(false);
-          }
-        }
-        return true;
+    return NestedScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      headerSliverBuilder: (context, isInnerBoxScrolled) {
+        WidgetsBinding.instance.addPostFrameCallback((_){ref.read(widget.isScrolledProvider.notifier).update(isInnerBoxScrolled);});
+        return [
+        HomeAppBar(appUiModel: widget.appUiModel, isScrolled: widget.isScrolled, topPadding: topPadding),
+      ];
       },
-      child: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
-          HomeAppBar(appUiModel: widget.appUiModel, isScrolled: widget.isScrolled, topPadding: topPadding),
 
           SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
           SliverToBoxAdapter(
@@ -51,23 +47,26 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
               height: 200,
               child: NotificationListener(
                 onNotification: (notification) => true,
-                child: CarouselView(
-                  padding: EdgeInsets.zero,
-                  backgroundColor: Colors.transparent,
-                    enableSplash: false,
-                    itemSnapping: true,
-                    shrinkExtent: widget.appUiModel.deviceWidth * 0.75,
-                    itemExtent: widget.appUiModel.deviceWidth, children: [
-                  HomeDashBoard(widget: widget, courseName: 'Foundation of Sequential Programming(CSC 213)', detail: '200-Level First Semester', progressValue: 0.45,),
-                  HomeDashBoard(widget: widget, courseName: 'Foundation of Sequential Programming(CSC 213)', detail: '200-Level First Semester', progressValue: 0.45,),
-                  HomeDashBoard(widget: widget, courseName: 'Foundation of Sequential Programming(CSC 213)', detail: '200-Level First Semester', progressValue: 0.45,)
+                child: AnimatedSize(
+                  duration: Durations.medium4,
+                  child: CarouselView(
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.transparent,
+                      enableSplash: false,
+                      itemSnapping: true,
+                      shrinkExtent: widget.appUiModel.deviceWidth * 0.75,
+                      itemExtent: widget.appUiModel.deviceWidth, children: [
+                    HomeDashBoard(widget: widget, courseName: 'Foundation of Sequential Programming(CSC 213)', detail: '200-Level First Semester', progressValue: 0.45,),
+                    HomeDashBoard(widget: widget, courseName: 'Foundation of Sequential Programming(CSC 213)', detail: '200-Level First Semester', progressValue: 0.45,),
+                    HomeDashBoard(widget: widget, courseName: 'Foundation of Sequential Programming(CSC 213)', detail: '200-Level First Semester', progressValue: 0.45,)
 
-                ]),
+                  ]),
+                ),
               ),
             ),
           ),
 
-          SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
+          PinnedHeaderSliver(child: ConstantSizing.columnSpacingLarge),
 
           ...recentSection(context, widget),
 

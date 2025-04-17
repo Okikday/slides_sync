@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class SlidesRepoColors {
   // Primary Colors
-  static const Color primaryDark = Color(0xFF1DAB61); // WhatsApp Green
-  static const Color primary= Color(0xFF1DAB61);
-  static const Color secondary = Color(0xFF21C063); // Lighter Green
-  static const Color accent = Color(0xFF15603F); // Darker Green
+  static const Color primaryDark = Colors.deepPurple; // WhatsApp Green
+  static const Color primary= Colors.deepPurple;
+  static const Color secondary = Colors.lightBlueAccent; // Lighter Green
+  static Color accent = Colors.lightBlueAccent.withAlpha(40); // Darker Green
 
   // Text Colors
   static const Color textPrimary = Colors.black; // Main text
