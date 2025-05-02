@@ -86,13 +86,14 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
             },
           ),
           body: PageView(
+            physics: NeverScrollableScrollPhysics(),
             controller: pageController,
             onPageChanged: (index) {
               ref.read(homeNavBarIndexProvider.notifier).update(index);
             },
             children: [
-              HomeBody(appUiModel: appUiModel, isScrolledProvider: isScrolledProvider, isScrolled: isScrolled),
-              LibraryView(appUiModel: appUiModel,),
+              HomeBody(appUiStateProvider, isScrolledProvider: isScrolledProvider, isScrolled: isScrolled),
+              LibraryView(appUiStateProvider),
               ProfileView(),
             ],
           ),

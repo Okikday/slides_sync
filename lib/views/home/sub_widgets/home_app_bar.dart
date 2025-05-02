@@ -23,7 +23,6 @@ class HomeAppBar extends StatelessWidget {
       expandedHeight: kToolbarHeight + (topPadding / 2),
       collapsedHeight: kToolbarHeight + (topPadding / 2),
       forceMaterialTransparency: true,
-      backgroundColor: Colors.lightBlueAccent.withAlpha(40),
       surfaceTintColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor:
@@ -38,17 +37,17 @@ class HomeAppBar extends StatelessWidget {
           onTap: () {
             PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
           },
-          child:
-              Material(
-                type: MaterialType.transparency,
-                shape: isScrolled ? LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: Colors.blueAccent.withAlpha(40))) : null,
-                child: isScrolled
+          child: Material(
+            type: MaterialType.transparency,
+            shape: isScrolled ? LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: Colors.blueAccent.withAlpha(40))) : null,
+            child:
+                isScrolled
                     ? AnimatedContainer(duration: Durations.medium3, color: appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9))
                     : ColoredBox(color: Theme.of(context).scaffoldBackgroundColor),
-              ),
+          ),
         ),
         collapseMode: CollapseMode.pin,
-        titlePadding: EdgeInsets.only(top: topPadding + 8),
+        titlePadding: EdgeInsets.only(top: topPadding),
         title: GestureDetector(
           onTap: () {
             PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
@@ -73,6 +72,16 @@ class HomeAppBar extends StatelessWidget {
                   Expanded(child: CustomText("Hello, user", fontSize: 16, fontWeight: FontWeight.bold)),
 
                   CustomElevatedButton(
+                    shape: CircleBorder(),
+                    backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                    overlayColor: Colors.deepPurple.withAlpha(20),
+                    onClick: (){
+                      CustomSnackBar.showSnackBar(context, content: "This toggles Focus Mode(FullScreen)", textStyle: TextStyle(color: Colors.white), icon: Icon(Iconsax.info_circle_copy, color: Colors.white,), usePrimaryColor: true);
+                    },
+                    child: Icon(Iconsax.crop, color: appUiModel.isDarkMode ? Colors.white : Colors.deepPurple),
+                  ),
+
+                  CustomElevatedButton(
                     onClick: () {},
                     overlayColor: Colors.lightBlueAccent.withAlpha(60),
                     shape: CircleBorder(),
@@ -89,7 +98,7 @@ class HomeAppBar extends StatelessWidget {
                       //     child: CustomText("5", color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                       //   ),
                       // ),
-                      child: Icon(Iconsax.notification, color: appUiModel.isDarkMode && isScrolled ? Colors.white : Colors.black, size: 26),
+                      child: Icon(Iconsax.notification, color: appUiModel.isDarkMode && isScrolled ? Colors.white : Colors.black, size: 24),
                     ),
                   ),
                 ],

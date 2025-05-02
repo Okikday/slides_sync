@@ -1,13 +1,15 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/components/colors.dart';
 import 'package:slides_sync/views/home/sub_widgets/home_body.dart';
 
-class HomeDashBoard extends StatelessWidget {
+class HomeDashBoard extends ConsumerWidget {
   const HomeDashBoard({
     super.key,
-    required this.widget,
+    required this.appUiModel,
     required this.courseName,
     required this.detail,
     required this.progressValue,
@@ -16,7 +18,7 @@ class HomeDashBoard extends StatelessWidget {
     this.onSettingTapped,
   });
 
-  final HomeBody widget;
+  final AppUiModel appUiModel;
   final String courseName;
   final String detail;
   final double progressValue;
@@ -25,20 +27,22 @@ class HomeDashBoard extends StatelessWidget {
   final void Function()? onSettingTapped;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
       child: Container(
         height: 200,
-        width: widget.appUiModel.deviceWidth,
+        constraints: BoxConstraints(maxHeight: 200),
+        width: appUiModel.deviceWidth,
         padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
         decoration: BoxDecoration(
-          color: (widget.appUiModel.isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
+          color: (appUiModel.isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
           borderRadius: BorderRadius.circular(12),
             border: Border.all(width: 2, color: Colors.lightBlueAccent.withAlpha(25))
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 8),
@@ -51,7 +55,7 @@ class HomeDashBoard extends StatelessWidget {
                   child: CustomText(
                     detail,
                     fontSize: 13,
-                    color: widget.appUiModel.isDarkMode ? SlidesRepoColors.darkTextSecondary : SlidesRepoColors.textSecondary,
+                    color: appUiModel.isDarkMode ? SlidesRepoColors.darkTextSecondary : SlidesRepoColors.textSecondary,
                   ),
                 ),
                 ConstantSizing.rowSpacingHuge,
@@ -87,9 +91,9 @@ class HomeDashBoard extends StatelessWidget {
                       pixelHeight: 48,
                       elevation: 100,
                       overlayColor: Colors.lightBlueAccent.withAlpha(50),
-                      backgroundColor: widget.appUiModel.isDarkMode ? Colors.black.withAlpha(40) : Colors.lightBlueAccent.withAlpha(40),
+                      backgroundColor: appUiModel.isDarkMode ? Colors.black.withAlpha(40) : Colors.lightBlueAccent.withAlpha(40),
                       label: completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
-                      textColor: widget.appUiModel.isDarkMode ? Colors.white : SlidesRepoColors.darkBlue,
+                      textColor: appUiModel.isDarkMode ? Colors.white : SlidesRepoColors.darkBlue,
                       textSize: 15,
                       onClick: () {
                         if (onReadingBtnTapped != null) onReadingBtnTapped!();

@@ -34,7 +34,7 @@ class RecentListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 8, left: 8, right: 8),
+      padding: EdgeInsets.only(top: 12, left: 8, right: 8),
       child: CustomElevatedButton(
         backgroundColor: (isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
         overlayColor: Colors.lightBlueAccent.withAlpha(50),

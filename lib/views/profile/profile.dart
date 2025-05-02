@@ -7,6 +7,6 @@ class ProfileView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Center(child: CustomText("Profile"),);
+    return Center(child: CustomText("Explore"),);
   }
 }

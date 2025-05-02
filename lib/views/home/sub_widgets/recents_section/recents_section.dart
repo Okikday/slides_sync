@@ -8,43 +8,33 @@ import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/components/colors.dart';
+import 'package:slides_sync/dummy/dummy_slides.dart';
 import 'package:slides_sync/views/home/sub_widgets/home_body.dart';
 import 'package:slides_sync/views/home/sub_widgets/recents_section/recent_dialog.dart';
 import 'package:slides_sync/views/home/sub_widgets/recents_section/recent_list_tile.dart';
 
-List<Widget> recentSection(BuildContext context, HomeBody widget) {
-  final scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
-  return [
-    SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
-        child: Row(
-          children: [
-            Expanded(child: CustomText("Recents", fontSize: 20, fontWeight: FontWeight.bold)),
 
-            CustomTextButton(
-              label: "See all",
-              textColor: widget.appUiModel.isDarkMode ? SlidesRepoColors.darkTextSecondary : SlidesRepoColors.textSecondary,
-              textSize: 16,
-              onClick: () {},
-            ),
-          ],
-        ),
-      ),
-    ),
 
-    SliverList.builder(
-      itemCount: 20,
+
+class RecentsSectionBody extends ConsumerWidget {
+  final AppUiModel appUiModel;
+  const RecentsSectionBody({super.key, required this.appUiModel});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    return SliverList.builder(
+      itemCount: DummySlides.dummySlides.length,
       itemBuilder: (context, index) {
         return Heroine(
           tag: "recents_list_tile$index",
-          spring: Spring.snappy,
+          spring: Spring.snappy.copyWith(durationSeconds: 0.3),
           placeholderBuilder: (context, size, child) => child,
           child: RecentListTile(
-            isDarkMode: widget.appUiModel.isDarkMode,
-            title: "Context Free Grammar",
-            subtitle: "Slide 4(23 pages)",
-            extraContent: "This is an additional content",
+            isDarkMode: appUiModel.isDarkMode,
+            title: DummySlides.dummySlides[index]['title'] ?? "No title",
+            subtitle: DummySlides.dummySlides[index]['subtitle'] ?? "No subtitle",
+            extraContent: DummySlides.dummySlides[index]['extraContent'] ?? "",
             level: 2,
             onTapTile: () {},
             onLongTapTile: () {
@@ -55,7 +45,7 @@ List<Widget> recentSection(BuildContext context, HomeBody widget) {
                 reverseTransitionDuration: Duration(milliseconds: 550),
                 loadingInfoWidget: RecentDialog(
                   scaffoldBgColor: scaffoldBgColor,
-                  appUiModel: widget.appUiModel,
+                  appUiModel: appUiModel,
                   heroTag: "recents_list_tile$index",
                   recentDialogModel: RecentDialogModel(isStarred: false, hasNote: false, title: "Figure it out", fileType: "pdf", tags: ["none", "lol"], canShare: true, canDelete: false),
                 ),
@@ -64,8 +54,8 @@ List<Widget> recentSection(BuildContext context, HomeBody widget) {
           ),
         );
       },
-    ),
-  ];
+    );
+  }
 }
 
 
