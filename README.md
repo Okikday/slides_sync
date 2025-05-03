@@ -1,4 +1,4 @@
 # slides_sync
 
-A slides management app. Damn neat UI.
+A slides management app.
 #Exploring #Never miss a slide again
