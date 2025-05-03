@@ -7,6 +7,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
+import 'package:slides_sync/views/library/sub_pages/manage_courses_page.dart';
 
 class LibraryViewHeader extends ConsumerWidget {
   final AppUiModel appUiModel;
@@ -21,25 +22,24 @@ class LibraryViewHeader extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: 16),
         decoration: LibraryUiFuncs.getBoxDecorationStyle(appUiModel.isDarkMode),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Expanded(
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                      alignment: Alignment.topCenter,
-                      type: PageTransitionType.scale,
-                      duration: Durations.extralong3,
-                      reverseDuration: Durations.medium1,
-                      curve: CustomCurves.snappySpring,
-                      child: Scaffold(body: Center(child: CustomText("Add/Customize Course"))),
-                    ),
-                  );
-                },
-                style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.lightBlueAccent.withAlpha(20))),
-                icon: Icon(Icons.add, size: 28),
-              ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    alignment: Alignment.topLeft,
+                    type: PageTransitionType.scale,
+                    duration: Durations.extralong3,
+                    reverseDuration: Durations.medium1,
+                    curve: CustomCurves.snappySpring,
+                    child: ManageCoursesPage(),
+                  ),
+                );
+              },
+              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.lightBlueAccent.withAlpha(20))),
+              icon: Icon(Icons.add, size: 28),
             ),
 
             IconButton(
@@ -47,7 +47,8 @@ class LibraryViewHeader extends ConsumerWidget {
                 Navigator.push(
                   context,
                   PageTransition(
-                    type: PageTransitionType.fade,
+                    alignment: Alignment.topCenter,
+                    type: PageTransitionType.scale,
                     duration: Durations.extralong3,
                     reverseDuration: Durations.medium1,
                     curve: CustomCurves.snappySpring,
@@ -65,16 +66,17 @@ class LibraryViewHeader extends ConsumerWidget {
                 Navigator.push(
                   context,
                   PageTransition(
-                    type: PageTransitionType.topToBottom,
+                    alignment: Alignment.topRight,
+                    type: PageTransitionType.scale,
                     duration: Durations.extralong3,
                     reverseDuration: Durations.medium1,
                     curve: CustomCurves.snappySpring,
-                    child: Scaffold(body: Center(child: CustomText("Course Management"))),
+                    child: Scaffold(body: Center(child: CustomText("Archive"))),
                   ),
                 );
               },
               style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.lightBlueAccent.withAlpha(20))),
-              icon: Icon(Icons.keyboard_arrow_down, size: 28),
+              icon: Icon(Iconsax.archive_copy, size: 28),
             ),
           ],
         ),

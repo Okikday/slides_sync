@@ -27,7 +27,7 @@ class LibraryView extends ConsumerWidget {
         value: SystemUiOverlayStyle(statusBarColor: scaffoldBgColor),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kToolbarHeight + topPadding)),
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kToolbarHeight)),
 
             LibraryViewHeader(appUiModel: appUiModel),
             

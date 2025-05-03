@@ -38,7 +38,7 @@ class RecentListTile extends StatelessWidget {
       child: CustomElevatedButton(
         backgroundColor: (isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
         overlayColor: Colors.lightBlueAccent.withAlpha(50),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         borderRadius: 12,
         onClick: () {
           if (onTapTile != null) onTapTile!();

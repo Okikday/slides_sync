@@ -11,7 +11,8 @@ import 'package:slides_sync/app/states/app_ui_state.dart';
 import 'package:slides_sync/components/colors.dart';
 import 'package:slides_sync/views/home/sub_widgets/home_app_bar.dart';
 import 'package:slides_sync/views/home/sub_widgets/home_body.dart';
-import 'package:slides_sync/views/home/widgets/app_bar_container.dart';
+import 'package:slides_sync/components/widgets/app_bar_container.dart';
+import 'package:slides_sync/views/home/sub_widgets/home_drawer.dart';
 import 'package:slides_sync/views/library/library.dart';
 import 'package:slides_sync/views/profile/profile.dart';
 
@@ -81,12 +82,12 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
             onTap: (index) {
               if (index != homeNavBarIndex) {
                 ref.read(homeNavBarIndexProvider.notifier).update(index);
-                pageController.animateToPage(index, duration: Duration(milliseconds: 800), curve: CustomCurves.defaultIosSpring);
+                pageController.animateToPage(index, duration: Duration(milliseconds: 400), curve: CustomCurves.decelerate);
               }
             },
           ),
+          drawer: HomeDrawer(appUiModel: appUiModel, scaffoldBgColor: scaffoldBgColor),
           body: PageView(
-            physics: NeverScrollableScrollPhysics(),
             controller: pageController,
             onPageChanged: (index) {
               ref.read(homeNavBarIndexProvider.notifier).update(index);

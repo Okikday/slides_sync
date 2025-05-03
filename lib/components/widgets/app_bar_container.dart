@@ -28,7 +28,8 @@ class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppUiModel appUiModel = ref.watch(appUiStateProvider);
-    return AppBarContainerWidget(
+    return _AppBarContainerWidget(
+      key: key,
       deviceWidth: appUiModel.deviceWidth,
       deviceHeight: appUiModel.deviceHeight,
       appBarHeight: appBarHeight,
@@ -46,7 +47,7 @@ class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
   }
 }
 
-class AppBarContainerWidget extends StatelessWidget {
+class _AppBarContainerWidget extends ConsumerWidget {
   final double deviceWidth;
   final double deviceHeight;
   final double? appBarHeight;
@@ -55,7 +56,7 @@ class AppBarContainerWidget extends StatelessWidget {
   final Color? scaffoldBgColor;
   final double? topPadding;
 
-  const AppBarContainerWidget({
+  const _AppBarContainerWidget({
     super.key,
     required this.deviceWidth,
     required this.deviceHeight,
@@ -67,7 +68,7 @@ class AppBarContainerWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double topPadding = MediaQuery.paddingOf(context).top;
     return ColoredBox(
       color: scaffoldBgColor ?? Theme.of(context).scaffoldBackgroundColor,

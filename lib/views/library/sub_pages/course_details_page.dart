@@ -1,17 +1,21 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/components/widgets/app_bar_container.dart';
+import 'package:slides_sync/components/widgets/component_widgets.dart';
 import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
 import 'package:slides_sync/views/library/sub_pages/course_details/course_categories_card.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-import 'course_details/course_materials_view.dart';
+import 'course_details/sub_pages/course_materials_view.dart';
 
 class CourseDetailsPage extends ConsumerWidget {
   final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
@@ -27,7 +31,15 @@ class CourseDetailsPage extends ConsumerWidget {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         extendBody: true,
-        appBar: AppBar(leading: BackButton(), title: CustomText("Course Info", fontSize: 20), automaticallyImplyLeading: false),
+        appBar: AppBarContainer(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+          children: [
+            ComponentWidgets.backButton(context),
+            ConstantSizing.rowSpacingMedium,
+            Expanded(child: CustomText("Course info", fontSize: 18, fontWeight: FontWeight.bold,))
+          ],
+        )),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -113,7 +125,7 @@ class CourseDetailsPage extends ConsumerWidget {
                             );
                           }
                         },
-                      ),
+                      ).animate().slideY(begin: 0.5 * (index + (categoriesList.length/2)/categoriesList.length), end: 0, curve: CustomCurves.bouncySpring, duration: Durations.extralong4),
                     );
                   },
                 ),

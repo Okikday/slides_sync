@@ -9,17 +9,23 @@ import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/components/colors.dart';
 
 class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({super.key, required this.appUiModel, required this.isScrolled, required this.topPadding});
+  const HomeAppBar({super.key, required this.appUiModel, required this.isScrolled, required this.topPadding, required this.onClickUserIcon, required this.title, required this.onToggleFullScreen, required this.onClickNotification});
 
   final AppUiModel appUiModel;
   final bool isScrolled;
   final double topPadding;
 
+  final void Function() onClickUserIcon;
+
+  final String title;
+  final void Function() onToggleFullScreen;
+  final void Function() onClickNotification;
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       elevation: 64,
       pinned: true,
+      leading: SizedBox(),
       expandedHeight: kToolbarHeight + (topPadding / 2),
       collapsedHeight: kToolbarHeight + (topPadding / 2),
       forceMaterialTransparency: true,
@@ -60,29 +66,27 @@ class HomeAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CustomElevatedButton(
-                    onClick: () {},
-                    overlayColor: Colors.lightBlueAccent.withAlpha(0),
+                    onClick: onClickUserIcon,
+                    overlayColor: Colors.lightBlueAccent.withAlpha(40),
                     backgroundColor: isScrolled ? SlidesRepoColors.lightGray.withAlpha(100) : SlidesRepoColors.lightGray,
                     shape: CircleBorder(),
                     contentPadding: EdgeInsets.all(12),
-                    child: Icon(Iconsax.profile_add_copy, color: isScrolled ? Colors.deepPurple : Colors.black, size: 26),
+                    child: Icon(Iconsax.profile_circle, color: isScrolled ? Colors.deepPurple : Colors.black, size: 26),
                   ),
 
                   ConstantSizing.rowSpacingMedium,
-                  Expanded(child: CustomText("Hello, user", fontSize: 16, fontWeight: FontWeight.bold)),
+                  Expanded(child: CustomText(title, fontSize: 16, fontWeight: FontWeight.bold)),
 
                   CustomElevatedButton(
                     shape: CircleBorder(),
                     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                     overlayColor: Colors.deepPurple.withAlpha(20),
-                    onClick: (){
-                      CustomSnackBar.showSnackBar(context, content: "This toggles Focus Mode(FullScreen)", textStyle: TextStyle(color: Colors.white), icon: Icon(Iconsax.info_circle_copy, color: Colors.white,), usePrimaryColor: true);
-                    },
+                    onClick: onToggleFullScreen,
                     child: Icon(Iconsax.crop, color: appUiModel.isDarkMode ? Colors.white : Colors.deepPurple),
                   ),
 
                   CustomElevatedButton(
-                    onClick: () {},
+                    onClick: onClickNotification,
                     overlayColor: Colors.lightBlueAccent.withAlpha(60),
                     shape: CircleBorder(),
                     backgroundColor: isScrolled ? SlidesRepoColors.altLightGray.withAlpha(100) : SlidesRepoColors.lightGray,

@@ -71,11 +71,10 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                   child: ScrollbarTheme(
                     data: ScrollbarThemeData(
                       mainAxisMargin: 10,
-                      thumbVisibility: WidgetStatePropertyAll(true),
                       thumbColor: WidgetStatePropertyAll(Colors.grey.withAlpha(60)),
                     ),
                     child: Scrollbar(
-                      thumbVisibility: true,
+                      // thumbVisibility: true,
                       radius: Radius.circular(12),
                       controller: _scrollController,
                       thickness: 8,

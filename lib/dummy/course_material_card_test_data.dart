@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/views/library/sub_pages/course_details/sub_pages/course_materials/course_material_card.dart';
 
-import 'package:slides_sync/views/library/sub_pages/course_details/course_materials/course_material_card.dart';
 
 class CourseMaterialCardTestData{
   static final List<CourseMaterialCardModel> dummyCourseMaterials = [
     CourseMaterialCardModel(
       title: 'Introduction to Algebra',
       progress: 0.2,
-      isMenuExpanded: true,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Algebra')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Algebra')),
@@ -20,7 +19,6 @@ class CourseMaterialCardTestData{
     CourseMaterialCardModel(
       title: 'Calculus 101',
       progress: 0.6,
-      isMenuExpanded: false,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Calculus')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Calculus')),
@@ -33,7 +31,6 @@ class CourseMaterialCardTestData{
       title: 'Linear Algebra',
       progress: 0.9,
 
-      isMenuExpanded: false,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Linear Algebra')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Linear Algebra')),
@@ -46,7 +43,6 @@ class CourseMaterialCardTestData{
       title: 'Discrete Mathematics',
       progress: 0.1,
 
-      isMenuExpanded: false,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Discrete Mathematics')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Discrete Mathematics')),
@@ -59,7 +55,6 @@ class CourseMaterialCardTestData{
       title: 'Software Engineering',
       progress: 0.45,
 
-      isMenuExpanded: false,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Software Engineering')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Software Engineering')),
@@ -72,7 +67,6 @@ class CourseMaterialCardTestData{
       title: 'Computer Networks',
       progress: 0.3,
 
-      isMenuExpanded: false,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Computer Networks')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Computer Networks')),
@@ -85,7 +79,6 @@ class CourseMaterialCardTestData{
       title: 'Artificial Intelligence',
       progress: 0.75,
 
-      isMenuExpanded: false,
       courseMaterialCardFunctionsModels: [
         CourseMaterialCardFunctionsModel(label: 'Open', icon: Iconsax.document, onTap: () => print('Open Artificial Intelligence')),
         CourseMaterialCardFunctionsModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () => print('Bookmark Artificial Intelligence')),

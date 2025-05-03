@@ -29,7 +29,7 @@ class RecentsSectionBody extends ConsumerWidget {
         return Heroine(
           tag: "recents_list_tile$index",
           spring: Spring.snappy.copyWith(durationSeconds: 0.3),
-          placeholderBuilder: (context, size, child) => child,
+
           child: RecentListTile(
             isDarkMode: appUiModel.isDarkMode,
             title: DummySlides.dummySlides[index]['title'] ?? "No title",
