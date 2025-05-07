@@ -7,7 +7,9 @@ import 'package:slides_sync/app/models/app_ui_model.dart';
 class AllCoursesHeader extends ConsumerWidget {
   final AppUiModel appUiModel;
   final void Function() onTap;
-  const AllCoursesHeader({super.key, required this.appUiModel, required this.onTap});
+  final void Function() onTapGridButton;
+  final bool isListView;
+  const AllCoursesHeader({super.key, required this.appUiModel, required this.onTap, required this.isListView, required this.onTapGridButton});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,13 +26,14 @@ class AllCoursesHeader extends ConsumerWidget {
                 children: [
                   Expanded(child: CustomText("All Courses", fontSize: 20, fontWeight: FontWeight.bold)),
 
-                  CustomElevatedButton(backgroundColor: Colors.transparent, shape: CircleBorder(), child: Icon(Iconsax.crop_copy)),
+                  // CustomElevatedButton(backgroundColor: Colors.transparent, shape: CircleBorder(), child: Icon(Iconsax.crop_copy)),
 
                   CustomElevatedButton(
                     contentPadding: EdgeInsets.all(8),
                     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                     shape: CircleBorder(),
-                    child: Icon(Iconsax.menu, size: 20, color: appUiModel.isDarkMode ? Colors.white : Colors.black),
+                    onClick: onTapGridButton,
+                    child: Icon(isListView ? Iconsax.menu : Icons.list_rounded, size: 20, color: appUiModel.isDarkMode ? Colors.white : Colors.black),
                   ),
                 ],
               ),

@@ -32,14 +32,22 @@ class CourseDetailsPage extends ConsumerWidget {
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBarContainer(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-          children: [
-            ComponentWidgets.backButton(context),
-            ConstantSizing.rowSpacingMedium,
-            Expanded(child: CustomText("Course info", fontSize: 18, fontWeight: FontWeight.bold,))
-          ],
-        )),
+          appBarHeight: kToolbarHeight + 12,
+            padding: EdgeInsets.zero,
+            child: Material(
+              type: MaterialType.transparency,
+              shape: LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40))),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                          children: [
+                ComponentWidgets.backButton(context),
+                ConstantSizing.rowSpacingMedium,
+                Expanded(child: CustomText("Course info", fontSize: 18, fontWeight: FontWeight.bold,))
+                          ],
+                        ),
+              ),
+            )),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -112,7 +120,7 @@ class CourseDetailsPage extends ConsumerWidget {
                       child: CourseCategoriesCard(
                         isDarkMode: appUiModel.isDarkMode,
                         title: categoriesList[index],
-                        onTap: () async {
+                        onTap: () {
                           if (context.mounted) {
                             Navigator.of(context).push(
                               PageTransition(

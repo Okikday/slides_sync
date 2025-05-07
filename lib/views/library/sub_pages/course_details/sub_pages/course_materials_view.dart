@@ -45,16 +45,25 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
 
     return Scaffold(
       appBar: AppBarContainer(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          children: [
-            ComponentWidgets.backButton(context),
-            ConstantSizing.rowSpacingMedium,
-            Expanded(child: CustomText("Textbooks", fontSize: 18, fontWeight: FontWeight.bold)),
-          ],
+        appBarHeight: kToolbarHeight + 12,
+        padding: EdgeInsets.zero,
+        child: Material(
+          type: MaterialType.transparency,
+          shape: LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40))),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              children: [
+                ComponentWidgets.backButton(context),
+                ConstantSizing.rowSpacingMedium,
+                Expanded(child: CustomText("Textbooks", fontSize: 18, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
         ),
       ),
       body: ListView.builder(
+        padding: EdgeInsets.only(top: 8),
         physics: BouncingScrollPhysics(),
         itemCount: CourseMaterialCardTestData.dummyCourseMaterials.length,
         itemBuilder: (context, index) {

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -5,40 +6,92 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/components/shared/loading_view.dart';
+import 'package:slides_sync/data/hive_data/hive_data.dart';
+import 'package:slides_sync/data/hive_data_paths.dart';
 import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
 import 'package:slides_sync/views/library/sub_widgets/all_courses_header.dart';
 import 'package:slides_sync/views/library/sub_widgets/all_courses_section.dart';
 import 'package:slides_sync/views/library/sub_widgets/library_view_header.dart';
 
-class LibraryView extends ConsumerWidget {
+class IsListViewNotifier extends AsyncNotifier<bool> {
+  final String _key = "${HiveDataPaths.views}/library/all_courses_section/var/isListView";
+
+  @override
+  Future<bool> build() async {
+    final value = await HiveData.instance.getData(key: _key);
+    return value is bool ? value : true;
+  }
+
+  Future<void> toggle() async {
+    final current = state.value ?? true;
+    final updated = !current;
+    state = AsyncData(updated);
+    await HiveData.instance.setData(key: _key, value: updated);
+  }
+}
+
+class LibraryView extends ConsumerStatefulWidget {
   final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
   const LibraryView(this.appUiStateProvider, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _LibraryViewState();
+}
+
+class _LibraryViewState extends ConsumerState<LibraryView> {
+  final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewProvider = AsyncNotifierProvider<IsListViewNotifier, bool>(
+    IsListViewNotifier.new,
+  );
+
+  @override
+  Widget build(BuildContext context) {
     final appUiModel = ref.watch(appUiStateProvider);
     final double topPadding = MediaQuery.paddingOf(context).top;
     final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
-    return NotificationListener(
-      onNotification: (notification) => true,
-      child: AnnotatedRegion(
-        value: SystemUiOverlayStyle(statusBarColor: scaffoldBgColor),
+    final AsyncValue<bool> asyncIsListView = ref.watch(isListViewProvider);
+
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+        statusBarColor: scaffoldBgColor,
+        statusBarBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
+      ),
+      child: NotificationListener(
+        onNotification: (notification) => true,
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kToolbarHeight)),
 
             LibraryViewHeader(appUiModel: appUiModel),
-            
+
             PinnedHeaderSliver(child: ConstantSizing.columnSpacing(topPadding)),
 
             // All Courses Header
-            AllCoursesHeader(appUiModel: appUiModel, onTap: (){PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);},),
+            AllCoursesHeader(
+              appUiModel: appUiModel,
+              isListView: asyncIsListView.value ?? false,
+              onTapGridButton: (){
+                ref.read(isListViewProvider.notifier).toggle();
+              },
+              onTap: () {
+                PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
+              },
+            ),
 
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-
-            AllCoursesSection(appUiStateProvider),
+            
+            asyncIsListView.when(data: (data){
+              return AllCoursesSection(appUiStateProvider, isListView: data);
+            }, error: (_, __){
+              return RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle));
+            }, loading: (){
+              return SliverToBoxAdapter(child: LoadingView(msg: "Loading Courses",));
+            }),
+            
 
             SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kBottomNavigationBarHeight + topPadding + 24)),
 
@@ -48,42 +101,4 @@ class LibraryView extends ConsumerWidget {
       ),
     );
   }
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Widget buildGridItem({required String title, required Widget icon}) {
-//   return InkWell(
-//     borderRadius: BorderRadius.circular(8),
-//     onTap: () {},
-//     child: Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Column(
-//         children: [
-//           Container(
-//             padding: const EdgeInsets.all(12),
-//             width: 60,
-//             height: 60,
-//             decoration: LibraryUiFuncs.getBoxDecorationStyle(appUiModel.isDarkMode),
-//             child: icon,
-//           ),
-//           ConstantSizing.columnSpacingMedium,
-//           CustomText(title, textAlign: TextAlign.center, fontSize: 12),
-//         ],
-//       ),
-//     ),
-//   );
-// }

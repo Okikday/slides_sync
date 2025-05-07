@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/app/states/app_ui_state.dart';
 import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
 import 'package:slides_sync/views/library/sub_pages/manage_courses_page.dart';
 
@@ -34,7 +35,7 @@ class LibraryViewHeader extends ConsumerWidget {
                     duration: Durations.extralong3,
                     reverseDuration: Durations.medium1,
                     curve: CustomCurves.snappySpring,
-                    child: ManageCoursesPage(),
+                    child: ManageCoursesPage(appUiStateProvider),
                   ),
                 );
               },
