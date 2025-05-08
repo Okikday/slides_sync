@@ -41,9 +41,15 @@ class LibraryView extends ConsumerStatefulWidget {
 }
 
 class _LibraryViewState extends ConsumerState<LibraryView> {
-  final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewProvider = AsyncNotifierProvider<IsListViewNotifier, bool>(
-    IsListViewNotifier.new,
-  );
+  late final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewProvider;
+
+  @override
+  void initState(){
+    super.initState();
+    isListViewProvider = AsyncNotifierProvider<IsListViewNotifier, bool>(
+      IsListViewNotifier.new,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

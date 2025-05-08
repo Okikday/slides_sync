@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 
-class ModifyCreateCourseHeader extends ConsumerWidget {
+class ModifyCourseHeader extends ConsumerWidget {
   final String title;
   final String description;
 
-  const ModifyCreateCourseHeader({super.key, required this.title, required this.description});
+  final VoidCallback onClickAddDescription;
+
+  const ModifyCourseHeader({super.key, required this.title, required this.description, required this.onClickAddDescription});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,9 +26,9 @@ class ModifyCreateCourseHeader extends ConsumerWidget {
                 CustomText(title, fontSize: 24, fontWeight: FontWeight.bold),
                 CustomTextButton(
                   contentPadding: EdgeInsets.zero,
-                  onClick: () {},
+                  onClick: onClickAddDescription,
                   borderRadius: 4,
-                  child: CustomText("Add description", color: Colors.deepPurple),
+                  child: CustomText(description.isEmpty ? "Add description" : description, color: Colors.deepPurple),
                 ),
               ],
             ),

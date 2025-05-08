@@ -13,7 +13,7 @@ import 'package:slides_sync/components/strings/icon_strings.dart';
 import 'package:slides_sync/components/widgets/app_bar_container.dart';
 import 'package:slides_sync/components/widgets/component_widgets.dart';
 import 'package:slides_sync/use_cases/library/models/course_model.dart';
-import 'package:slides_sync/views/library/sub_pages/manage_courses/create_course/modify_create_course.dart';
+import 'package:slides_sync/views/library/sub_pages/manage_courses/create_course/modify_course.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateCourseView extends ConsumerStatefulWidget {
@@ -72,7 +72,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
           height: appUiModel.deviceHeight,
           width: appUiModel.deviceWidth,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
             child: Stack(
               children: [
                 Align(
@@ -80,22 +80,27 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        ConstantSizing.columnSpacingMedium,
                         ClipOval(
-                              child: CircleAvatar(
-                                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                                radius:
-                                    appUiModel.deviceHeight > appUiModel.deviceWidth
-                                        ? appUiModel.deviceWidth * 0.4 / 2
-                                        : appUiModel.deviceHeight * 0.4 / 2,
-                                child: Icon(Iconsax.folder_add, size: 72)
-                                    .animate()
-                                    .scale(
-                                      begin: Offset(0.4, 0.4),
-                                      duration: Durations.extralong4,
-                                      delay: Durations.medium1,
-                                      curve: CustomCurves.bouncySpring,
-                                    )
-                                    .moveY(begin: -20, duration: Durations.extralong4, delay: Durations.medium1),
+                              child: InkWell(
+                                customBorder: CircleBorder(),
+                                onTap: (){},
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                                  radius:
+                                      appUiModel.deviceHeight > appUiModel.deviceWidth
+                                          ? appUiModel.deviceWidth * 0.4 / 2
+                                          : appUiModel.deviceHeight * 0.4 / 2,
+                                  child: Icon(Iconsax.folder_add, size: 72)
+                                      .animate()
+                                      .scale(
+                                        begin: Offset(0.4, 0.4),
+                                        duration: Durations.extralong4,
+                                        delay: Durations.medium1,
+                                        curve: CustomCurves.bouncySpring,
+                                      )
+                                      .moveY(begin: -20, duration: Durations.extralong4, delay: Durations.medium1),
+                                ),
                               ),
                             )
                             .animate()
@@ -113,16 +118,21 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide(
                               color: appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
-                              
+
                             ),
                           ),
                           pixelWidth: appUiModel.deviceWidth,
                           pixelHeight: 60,
                           inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                          hint: "Enter a new Course Name",
+                          hint: "Enter a new Course title",
                           inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
                           onTapOutside: () {},
                         ),
+
+                        ConstantSizing.columnSpacingMedium,
+
+                        CustomTextButton(label: "Add alternative course code", textColor: Colors.blue,onClick: (){}, ),
+
 
                         ConstantSizing.columnSpacing(72),
                       ],
@@ -188,11 +198,11 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                       if (context.mounted) {
                         Navigator.of(context).push(
                           PageTransition(
-                            type: PageTransitionType.rightToLeftWithFade,
+                            type: PageTransitionType.bottomToTop,
                             duration: Durations.extralong3,
                             reverseDuration: Durations.medium1,
                             curve: CustomCurves.snappySpring,
-                            child: ModifyCreateCourse(appUiStateProvider, courseModel: courseModel),
+                            child: ModifyCourse(appUiStateProvider, courseModel: courseModel),
                           ),
                         );
                       }

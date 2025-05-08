@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 class CourseModel{
   final String courseId;
   final String courseTitle;
@@ -28,6 +30,27 @@ class CourseModel{
       courseMetadata: courseMetadata ?? this.courseMetadata,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CourseModel && runtimeType == other.runtimeType && courseId == other.courseId && courseTitle == other.courseTitle &&
+              courseCode == other.courseCode && description == other.description && imagePath == other.imagePath &&
+              const ListEquality().equals(collectionIds, other.collectionIds) &&
+              const DeepCollectionEquality().equals(courseMetadata, other.courseMetadata);
+
+  @override
+  int get hashCode =>
+      Object.hash(
+          courseId,
+          courseTitle,
+          courseCode,
+          description,
+          imagePath,
+          const ListEquality().hash(collectionIds),
+          const DeepCollectionEquality().hash(courseMetadata));
+
+        
 
 }
 
