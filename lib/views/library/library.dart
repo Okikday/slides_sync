@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
 import 'package:slides_sync/components/shared/loading_view.dart';
-import 'package:slides_sync/data/hive_data/hive_data.dart';
+import 'package:slides_sync/data/hive_data/app_hive_data.dart';
 import 'package:slides_sync/data/hive_data_paths.dart';
 import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
 import 'package:slides_sync/views/library/sub_widgets/all_courses_header.dart';
@@ -20,7 +20,7 @@ class IsListViewNotifier extends AsyncNotifier<bool> {
 
   @override
   Future<bool> build() async {
-    final value = await HiveData.instance.getData(key: _key);
+    final value = await AppHiveData.instance.getData(key: _key);
     return value is bool ? value : true;
   }
 
@@ -28,7 +28,7 @@ class IsListViewNotifier extends AsyncNotifier<bool> {
     final current = state.value ?? true;
     final updated = !current;
     state = AsyncData(updated);
-    await HiveData.instance.setData(key: _key, value: updated);
+    await AppHiveData.instance.setData(key: _key, value: updated);
   }
 }
 

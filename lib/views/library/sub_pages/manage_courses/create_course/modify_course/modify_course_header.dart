@@ -14,28 +14,31 @@ class ModifyCourseHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return  SliverToBoxAdapter(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstantSizing.columnSpacingMedium,
-                CustomText(title, fontSize: 24, fontWeight: FontWeight.bold),
-                CustomTextButton(
-                  contentPadding: EdgeInsets.zero,
-                  onClick: onClickAddDescription,
-                  borderRadius: 4,
-                  child: CustomText(description.isEmpty ? "Add description" : description, color: Colors.deepPurple),
-                ),
-              ],
+    return  SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      sliver: SliverToBoxAdapter(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstantSizing.columnSpacingMedium,
+                  CustomText(title, fontSize: 24, fontWeight: FontWeight.bold),
+                  CustomTextButton(
+                    contentPadding: EdgeInsets.zero,
+                    onClick: onClickAddDescription,
+                    borderRadius: 4,
+                    child: CustomText(description.isEmpty ? "Add description" : description, color: Colors.deepPurple),
+                  ),
+                ],
+              ),
             ),
-          ),
-          ConstantSizing.rowSpacingLarge,
-          CircleAvatar(radius: 35, child: Icon(Iconsax.book)),
-        ],
+            ConstantSizing.rowSpacingLarge,
+            CircleAvatar(radius: 35, child: Icon(Iconsax.book)),
+          ],
+        ),
       ),
     );
   }

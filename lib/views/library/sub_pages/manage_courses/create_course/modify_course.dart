@@ -6,16 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/components/shared/loading_view.dart';
 import 'package:slides_sync/components/widgets/app_bar_container.dart';
 import 'package:slides_sync/components/widgets/component_widgets.dart';
+import 'package:slides_sync/data/hive_data/app_hive_data.dart';
 import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
 import 'package:slides_sync/use_cases/library/models/course_model.dart';
+import 'package:slides_sync/views/library/library.dart';
 import 'package:slides_sync/views/library/sub_pages/manage_courses/create_course/modify_course/modify_course_header.dart';
 
+import '../../../../../data/hive_data_paths.dart';
 import 'modify_course/build_add_description_dialog.dart';
 import 'modify_course/collections_section.dart';
 import 'modify_course/contents_section.dart';
 
+/// NOTIFIERS
 class ModifyCourseModelNotifier extends Notifier<CourseModel> {
   @override
   CourseModel build() {
@@ -38,6 +43,24 @@ class IsSectionExpandedNotifier extends Notifier<bool> {
   }
 }
 
+class IsPlainViewNotifier extends AsyncNotifier<bool> {
+  final String _key = "${HiveDataPaths.views}/library/manage_courses/modify_course/var/isListView";
+
+  @override
+  Future<bool> build() async {
+    final value = await AppHiveData.instance.getData(key: _key);
+    return value is bool ? value : true;
+  }
+
+  Future<void> toggle() async {
+    final current = state.value ?? true;
+    final updated = !current;
+    state = AsyncData(updated);
+    await AppHiveData.instance.setData(key: _key, value: updated);
+  }
+}
+
+/// VIEW
 class ModifyCourse extends ConsumerStatefulWidget {
   final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
   final CourseModel courseModel;
@@ -47,7 +70,7 @@ class ModifyCourse extends ConsumerStatefulWidget {
   ConsumerState createState() => _ModifyCourseState();
 }
 
-class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProviderStateMixin{
+class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProviderStateMixin {
   final ScrollController mainPageScrollController = ScrollController();
   late final NotifierProvider<ModifyCourseModelNotifier, CourseModel> modifyCourseProvider;
   late final NotifierProvider<IsSectionExpandedNotifier, bool> isCollectionSectionExpandedProvider;
@@ -58,6 +81,8 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
 
   late final PageController collectionPageController;
   late final PageController contentPageController;
+
+  late final AsyncNotifierProvider<IsPlainViewNotifier, bool> isPlainViewProvider;
 
   @override
   void initState() {
@@ -70,6 +95,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
     WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(modifyCourseProvider.notifier).update(widget.courseModel));
     collectionPageController = PageController(initialPage: 4);
     contentPageController = PageController(initialPage: 4);
+    isPlainViewProvider = AsyncNotifierProvider<IsPlainViewNotifier, bool>(IsPlainViewNotifier.new);
   }
 
   @override
@@ -87,6 +113,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
     final AppUiModel appUiModel = ref.watch(appUiStateProvider);
     final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
     final CourseModel courseModel = ref.watch(modifyCourseProvider);
+    final AsyncValue<bool> asyncIsPlainView = ref.watch(isPlainViewProvider);
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
@@ -118,83 +145,87 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
           ),
         ),
 
-        floatingActionButton:
-            ref.watch(isCollectionSectionExpandedProvider)
-                ? FloatingActionButton.small(onPressed: () {
-              if(ref.watch(isCollectionSectionExpandedProvider)){
-                ref.read(isCollectionSectionExpandedProvider.notifier).update(false);
-                collectionPageController.animateToPage(2, duration: Duration(seconds: 2), curve: CustomCurves.defaultIosSpring);
-                collectionAnimController.reverse();
-              }
-            }, shape: CircleBorder(), child: Icon(Iconsax.arrow_up_1))
-                : null,
+        // floatingActionButton:
+        //     ref.watch(isCollectionSectionExpandedProvider)
+        //         ? FloatingActionButton.small(
+        //           onPressed: () {
+        //             if (ref.watch(isCollectionSectionExpandedProvider)) {
+        //               ref.read(isCollectionSectionExpandedProvider.notifier).update(false);
+        //               collectionPageController.animateToPage(2, duration: Duration(seconds: 2), curve: CustomCurves.defaultIosSpring);
+        //               PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong4, curve: CustomCurves.defaultIosSpring);
+        //               collectionAnimController.reverse();
+        //             }
+        //           },
+        //           shape: CircleBorder(),
+        //           child: Icon(Iconsax.arrow_up_1),
+        //         )
+        //         : null,
 
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: CustomScrollView(
-            controller: mainPageScrollController,
-            slivers: [
-              ModifyCourseHeader(
-                title: courseModel.courseTitle,
-                description: courseModel.description,
-                onClickAddDescription: () {
-                  LoadingDialog.showLoadingDialog(
-                    context,
-                    canPop: true,
-                    loadingInfoWidget: BuildAddDescriptionDialog(
-                      appUiModel: appUiModel,
-                      title: courseModel.courseTitle,
-                      courseProvider: modifyCourseProvider,
-                    ),
+        body: CustomScrollView(
+          slivers: [
+            ModifyCourseHeader(
+              title: courseModel.courseTitle,
+              description: courseModel.description,
+              onClickAddDescription: () {
+                LoadingDialog.showLoadingDialog(
+                  context,
+                  canPop: true,
+                  loadingInfoWidget: BuildAddDescriptionDialog(
+                    appUiModel: appUiModel,
+                    title: courseModel.courseTitle,
+                    courseProvider: modifyCourseProvider,
+                  ),
+                );
+              },
+            ),
+
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
+
+            //Collections Section
+            CollectionsSectionHeader(scaffoldBgColor: scaffoldBgColor, appUiModel: appUiModel, isPlainView: asyncIsPlainView.value ?? true, onTapGridToggle: (){
+              ref.read(isPlainViewProvider.notifier).toggle();
+            },),
+
+            asyncIsPlainView.when(
+              data: (data) {
+                if (data) {
+                  return PlainCollectionsSection(appUiModel);
+                } else {
+                  return CollectionsSection(
+                    appUiModel,
+                    collectionIds: [],
+                    isCollectionSectionExpandedProvider: isCollectionSectionExpandedProvider,
+                    animationController: collectionAnimController,
+                    scrollController: PrimaryScrollController.of(context),
+                    pageController: collectionPageController,
+                    // onTapCollapsed: () {
+                    //   if (!ref.watch(isCollectionSectionExpandedProvider)) {
+                    //     ref.read(isCollectionSectionExpandedProvider.notifier).update(true);
+                    //     collectionPageController.animateToPage(0, duration: Duration(seconds: 2), curve: CustomCurves.defaultIosSpring);
+                    //     PrimaryScrollController.of(context).animateTo(120, duration: Durations.extralong4, curve: CustomCurves.decelerate);
+                    //     collectionAnimController.forward();
+                    //   }
+                    // },
                   );
-                },
-              ),
+                }
+              },
+              error: (_, __) {
+                return RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle));
+              },
+              loading: () {
+                return SliverToBoxAdapter(child: LoadingView(msg: "Loading Collections"));
+              },
+            ),
 
-              SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
-              //Collections Section
-              CollectionsSectionHeader(scaffoldBgColor: scaffoldBgColor, appUiModel: appUiModel),
+            ContentsSectionHeader(scaffoldBgColor: scaffoldBgColor, appUiModel: appUiModel),
+            ContentsSection(appUiModel),
 
-              CollectionsSection1(
-                appUiModel,
-                scrollController: mainPageScrollController,
-                isCollectionSectionExpandedProvider: isCollectionSectionExpandedProvider,
-                pageController: collectionPageController,
-                animationController: collectionAnimController,
-                onTapCollapsed: () async {
-                  log("Tapped collapsed card");
-                  if (!ref.watch(isCollectionSectionExpandedProvider)) {
-                    ref.read(isCollectionSectionExpandedProvider.notifier).update(true);
-                    collectionPageController.animateToPage(0, duration: Durations.extralong4, curve: CustomCurves.defaultIosSpring);
-                    collectionAnimController.forward();
-                  }
-                },
-                collectionIds: [],
-              ),
-              CollectionsSection2(
-                appUiModel,
-                scrollController: mainPageScrollController,
-                isCollectionSectionExpandedProvider: isCollectionSectionExpandedProvider,
-                pageController: collectionPageController,
-                animationController: collectionAnimController,
-                onTapCollapsed: () async {
-                  log("Tapped collapsed card");
-                  if (!ref.watch(isCollectionSectionExpandedProvider)) {
-                    ref.read(isCollectionSectionExpandedProvider.notifier).update(true);
-                    collectionPageController.animateToPage(0, duration: Durations.extralong4, curve: CustomCurves.defaultIosSpring);
-                    collectionAnimController.forward();
-                  }
-                },
-                collectionIds: [],
-              ),
-
-              SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-
-              // CustomText("Contents", fontWeight: FontWeight.bold, fontSize: 18,),
-              // ConstantSizing.columnSpacingMedium,
-              // _buildListButton("New Content", appUiModel.isDarkMode, onTap: (){}),
-            ],
-          ),
+            // CustomText("Contents", fontWeight: FontWeight.bold, fontSize: 18,),
+            // ConstantSizing.columnSpacingMedium,
+            // _buildListButton("New Content", appUiModel.isDarkMode, onTap: (){}),
+          ],
         ),
       ),
     );

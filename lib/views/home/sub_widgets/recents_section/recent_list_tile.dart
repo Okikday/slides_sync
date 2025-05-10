@@ -1,6 +1,7 @@
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/components/colors.dart';
 
@@ -72,19 +73,22 @@ class RecentListTile extends StatelessWidget {
               ConstantSizing.rowSpacingMedium,
 
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 4.0,
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 30),
-                      child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, height: 1.0),
-                    ),
-                    FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: SlidesRepoColors.textSecondary)),
-                    if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13,),
-                  ],
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: 120),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 4.0,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 30),
+                        child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, height: 1.0),
+                      ),
+                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: SlidesRepoColors.textSecondary)),
+                      if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13,),
+                    ],
+                  ),
                 ),
               ),
 
