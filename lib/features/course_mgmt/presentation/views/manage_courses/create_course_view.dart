@@ -6,16 +6,16 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/core/usecases/app_navigator.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course_view.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateCourseView extends ConsumerStatefulWidget {
-  final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
-  const CreateCourseView(this.appUiStateProvider, {super.key});
+  const CreateCourseView({super.key});
 
   @override
   ConsumerState createState() => _CreateCourseViewState();
@@ -183,7 +183,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                         }
                         return;
                       }
-
+                      FocusScope.of(context).unfocus();
 
                       final String courseId = Uuid().v4();
                       final CourseModel courseModel = CourseModel(
@@ -192,17 +192,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                         courseMetadata: {'creationTime': DateTime.now().toIso8601String()},
                       );
 
-                      if (context.mounted) {
-                        Navigator.of(context).push(
-                          PageTransition(
-                            type: PageTransitionType.bottomToTop,
-                            duration: Durations.extralong3,
-                            reverseDuration: Durations.medium1,
-                            curve: CustomCurves.snappySpring,
-                            child: ModifyCourse(appUiStateProvider, courseModel: courseModel),
-                          ),
-                        );
-                      }
+                      AppNavigator.of(context).modifyCourseViewRoute(courseModel);
                     },
                   ),
                 ),

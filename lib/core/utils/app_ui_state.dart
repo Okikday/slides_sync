@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
 
-export 'package:slides_sync/app/models/app_ui_model.dart' show AppUiModel;
+export 'package:slides_sync/core/models/app_ui_model.dart' show AppUiModel;
 
 final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider = NotifierProvider<AppUiState, AppUiModel>(AppUiState.new);
 

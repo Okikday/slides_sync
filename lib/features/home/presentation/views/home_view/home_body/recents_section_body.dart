@@ -3,12 +3,12 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
-import 'package:slides_sync/app/test/dummy_slides.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
-import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_list_tile_model';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recent_dialog.dart';
 
+import '../../../../../../test/dummy_slides.dart';
+import '../../../viewmodels/home_vm/models/recent_list_tile_model.dart';
 import 'recent_list_tile.dart';
 
 class RecentsSectionBody extends ConsumerWidget {

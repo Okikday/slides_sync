@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 
 class ManageCourseButton extends ConsumerWidget {
   final String title;
@@ -10,6 +11,8 @@ class ManageCourseButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 16,
       children: [
         CustomElevatedButton(
         onClick: onTap,
@@ -22,7 +25,6 @@ class ManageCourseButton extends ConsumerWidget {
         borderRadius: 24,
         child: Icon(iconData, size: 64),
       ),
-      ConstantSizing.columnSpacingSmall,
       CustomText(title),
       ],
     );

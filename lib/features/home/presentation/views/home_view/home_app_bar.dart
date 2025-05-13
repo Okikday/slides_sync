@@ -3,7 +3,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeAppBar extends StatelessWidget {

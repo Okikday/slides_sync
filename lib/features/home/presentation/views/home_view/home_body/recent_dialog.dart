@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {

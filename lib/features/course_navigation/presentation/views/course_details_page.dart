@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/star_clipper.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
@@ -15,8 +15,7 @@ import 'package:wave/wave.dart';
 import 'course_details/course_materials_view.dart';
 
 class CourseDetailsPage extends ConsumerWidget {
-  final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
-  const CourseDetailsPage(this.appUiStateProvider, {super.key});
+  const CourseDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

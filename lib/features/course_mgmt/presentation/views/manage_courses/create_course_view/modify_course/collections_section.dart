@@ -1,4 +1,5 @@
 
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -6,13 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/can_scroll_notifier.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/scroll_offset_notifier.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
-
-
-
 
 
 
@@ -34,18 +33,20 @@ class CollectionsSection extends ConsumerStatefulWidget {
 
 class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   late final NotifierProvider<ScrollOffsetNotifier, double> scrollOffsetNotifier;
+  late final NotifierProvider<CanScrollNotifier, bool> canScrollNotifier;
+
 
   @override
   void initState() {
     super.initState();
     scrollOffsetNotifier = NotifierProvider<ScrollOffsetNotifier, double>(ScrollOffsetNotifier.new);
+    canScrollNotifier = NotifierProvider<CanScrollNotifier, bool>(CanScrollNotifier.new);
     widget.pageController.addListener(updateScrollOffset);
   }
 
   void updateScrollOffset() {
     ref.read(scrollOffsetNotifier.notifier).update(widget.pageController.position.maxScrollExtent - widget.pageController.offset);
-
-    // widget.pageController.page!/((widget.collectionIds.length.clamp(0, 3) - 1))
+    if(widget.pageController.page == 0) ref.read(canScrollNotifier.notifier).update(true);
   }
 
   @override
@@ -71,65 +72,65 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AnimatedSize(
-            duration: Durations.short2,
-            curve: CustomCurves.decelerate,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child:
-                  ClipRRect(
-                    child: AnimatedSize(
-                      duration: Durations.extralong4,
-                      curve: CustomCurves.bouncySpring,
-                      reverseDuration: Durations.extralong1,
-                      child: SizedBox(
-                        height:
-                            88 +
-                            88 / (5 - widget.collectionIds.length.clamp(0, 3)) +
-                            (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collectionIds.length.clamp(0, 3) - 1)),
-                        //
-                        child: RotatedBox(
-                          quarterTurns: 2,
-                          child: StackedCardCarousel(
-                            initialOffset: 0,
-                            spaceBetweenItems: 80,
-                            pageController: pageController,
-                            // onPageChanged: (int currIndex) {
-                            //   pageController.previousPage(duration: Durations.extralong1, curve: CustomCurves.bouncySpring);
-                            // },
-                            items: List.generate(widget.collectionIds.length.clamp(0, 3), (index) {
-                              return RotatedBox(
-                                quarterTurns: 2,
-                                child: _buildCollectionListTile(
-                                  appUiModel,
-                                  collectionTitle: "Textbooks",
-                                  iconData: Iconsax.book,
-                                  subCollectionCount: 3,
-                                  contentCount: 10,
-                                ),
-                              );
-                            }),
+          NotificationListener(
+            onNotification: (notification){
+              log("notification");
+              if(notification is ScrollStartNotification){
+                log("At the start: ${notification.metrics.pixels}");
+              }else if(notification is ScrollEndNotification){
+                log("At the end: ${notification.metrics.pixels}");
+              }else if(notification is ScrollUpdateNotification){
+                log("At an update: ${notification.metrics.pixels}");
+              }
+
+              return true;
+            },
+            child: AnimatedSize(
+              duration: Durations.short2,
+              curve: CustomCurves.decelerate,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child:
+                    ClipRRect(
+                      child: AnimatedSize(
+                        duration: Durations.extralong4,
+                        curve: CustomCurves.bouncySpring,
+                        reverseDuration: Durations.extralong1,
+                        child: SizedBox(
+                          height:
+                              88 +
+                              88 / (5 - widget.collectionIds.length.clamp(0, 3)) +
+                              (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collectionIds.length.clamp(0, 3) - 1)),
+                          //
+                          child: RotatedBox(
+                            quarterTurns: 2,
+                            child: StackedCardCarousel(
+                              initialOffset: 0,
+                              spaceBetweenItems: 80,
+                              pageController: pageController,
+                              // onPageChanged: (int currIndex) {
+                              //   pageController.previousPage(duration: Durations.extralong1, curve: CustomCurves.bouncySpring);
+                              // },
+                              items: List.generate(widget.collectionIds.length.clamp(0, 3), (index) {
+                                return RotatedBox(
+                                  quarterTurns: 2,
+                                  child: _buildCollectionListTile(
+                                    appUiModel,
+                                    collectionTitle: "Textbooks",
+                                    iconData: Iconsax.book,
+                                    subCollectionCount: 3,
+                                    contentCount: 10,
+                                  ),
+                                );
+                              }),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ).animate().fadeIn(),
+                    ).animate().fadeIn(),
+              ),
             ),
           ),
-
-          if (widget.collectionIds.length > 3)
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16.0, top: 8),
-              child:
-                  CustomElevatedButton(
-                    label: "See all Collections",
-                    textColor: Colors.deepPurple,
-                    textSize: 14,
-                    backgroundColor: Colors.deepPurple.withAlpha(50),
-                    pixelHeight: 48,
-                    borderRadius: 48,
-                  ).animate().fadeIn().scale(),
-            ),
         ],
       ),
     );

@@ -4,7 +4,7 @@ import 'package:slides_sync/app.dart';
 import 'package:slides_sync/data/hive_data/app_hive_data.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'app/states/app_ui_state.dart';
+import 'core/utils/app_ui_state.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

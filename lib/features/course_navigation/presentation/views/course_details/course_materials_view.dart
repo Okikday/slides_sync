@@ -2,11 +2,11 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
-import 'package:slides_sync/app/test/course_material_card_test_data.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 
+import '../../../../../test/course_material_card_test_data.dart';
 import 'course_materials_view/course_material_card.dart';
 
 class IsCourseMaterialCardExpanded extends FamilyNotifier<bool, int> {

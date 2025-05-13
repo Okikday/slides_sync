@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
 
 class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
   final Color? scaffoldBgColor;

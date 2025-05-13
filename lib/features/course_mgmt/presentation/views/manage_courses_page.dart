@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/manage_course_button';
+import 'package:slides_sync/core/usecases/app_navigator.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/manage_course_button.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 
@@ -52,42 +53,27 @@ class ManageCoursesPage extends ConsumerWidget {
             alignment: Alignment.center,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ConstantSizing.columnSpacing(64),
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 36,
+              children:
+                  [
+                    ConstantSizing.columnSpacingExtraLarge,
+                    ManageCourseButton(
+                      iconData: Iconsax.add_copy,
+                      title: "Create Course",
+                      onTap: () {
+                        AppNavigator.of(context).createCoursePageRoute();
+                      },
+                    ),
 
-                ManageCourseButton(iconData: Icons.explore_outlined, title: "Explore Online Library", onTap: () {}),
+                    ManageCourseButton(iconData: Iconsax.edit_2_copy, title: "Modify existing Course", onTap: () {}),
 
-                ConstantSizing.columnSpacingExtraLarge,
-
-                ManageCourseButton(
-                  iconData: Iconsax.add_copy,
-                  title: "Create Course",
-                  onTap: () {
-                    // Navigator.of(context).push(
-                    //   PageTransition(
-                    //     type: PageTransitionType.rightToLeftWithFade,
-                    //     duration: Durations.extralong3,
-                    //     reverseDuration: Durations.medium1,
-                    //     curve: CustomCurves.snappySpring,
-                    //     child: CreateCourseView(appUiStateProvider),
-                    //   ),
-                    // );
-                  },
-                ),
-
-                ConstantSizing.columnSpacingExtraLarge,
-
-
-                ManageCourseButton(iconData: Iconsax.document_download_copy, title: "Get file(s) from link", onTap: () {}),
-
-                ConstantSizing.columnSpacingExtraLarge,
-              ],
+                    ManageCourseButton(iconData: Icons.explore_outlined, title: "Explore Online Library", onTap: () {}),
+                  ],
             ),
           ),
         ),
       ),
     );
   }
-
 }
-

@@ -2,7 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/notifiers/home_nav_bar_index_notifier.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/notifiers/is_home_scrolled_notifer.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_drawer.dart';

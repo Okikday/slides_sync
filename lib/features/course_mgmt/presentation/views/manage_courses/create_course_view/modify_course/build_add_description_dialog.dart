@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/shared/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course_view.dart';
+
+import '../../../../viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
 
 class AddCourseDescriptionDialog extends ConsumerStatefulWidget {
   final AppUiModel appUiModel;
@@ -66,7 +68,7 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
                       ),
                     ),
                     pixelWidth: widget.appUiModel.deviceWidth,
-                    constraints: BoxConstraints(minHeight: 60, maxHeight: 120),
+                    constraints: BoxConstraints(minHeight: 60, maxHeight: 200),
                     maxLines: 8,
                     inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                     hint: "Enter description",

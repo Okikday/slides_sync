@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
+import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/data/hive_data/app_hive_data.dart';
@@ -13,62 +13,29 @@ import 'package:slides_sync/shared/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course/modify_course_header.dart';
 
 import '../../../../../../data/hive_data_paths.dart';
+import '../../../viewmodels/notifiers/modify_course/is_plain_view_notifier.dart';
+import '../../../viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
 import 'modify_course/build_add_description_dialog.dart';
 import 'modify_course/collections_section.dart';
-import 'modify_course/contents_section.dart';
 import 'modify_course/course_description_dialog.dart';
 
-/// NOTIFIERS
-class ModifyCourseModelNotifier extends Notifier<CourseModel> {
-  @override
-  CourseModel build() {
-    return CourseModel(courseId: "courseId", courseTitle: "courseTitle");
-  }
 
-  void update(CourseModel courseModel) {
-    if (state == courseModel) return;
-    state = courseModel;
-  }
-}
 
-class IsSectionExpandedNotifier extends Notifier<bool> {
-  @override
-  bool build() => false;
 
-  void update(bool value) {
-    if (state == value) return;
-    state = value;
-  }
-}
 
-class IsPlainViewNotifier extends AsyncNotifier<bool> {
-  final String _key = "${HiveDataPaths.views}/library/manage_courses/modify_course/var/isListView";
 
-  @override
-  Future<bool> build() async {
-    final value = await AppHiveData.instance.getData(key: _key);
-    return value is bool ? value : true;
-  }
 
-  Future<void> toggle() async {
-    final current = state.value ?? true;
-    final updated = !current;
-    state = AsyncData(updated);
-    await AppHiveData.instance.setData(key: _key, value: updated);
-  }
-}
 
 /// VIEW
-class ModifyCourse extends ConsumerStatefulWidget {
-  final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
+class ModifyCourseView extends ConsumerStatefulWidget {
   final CourseModel courseModel;
-  const ModifyCourse(this.appUiStateProvider, {super.key, required this.courseModel});
+  const ModifyCourseView({super.key, required this.courseModel});
 
   @override
   ConsumerState createState() => _ModifyCourseState();
 }
 
-class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProviderStateMixin {
+class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProviderStateMixin {
   late final NotifierProvider<ModifyCourseModelNotifier, CourseModel> modifyCourseProvider;
 
   late final PageController collectionPageController;
@@ -138,22 +105,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
             ),
           ),
         ),
-
-        // floatingActionButton:
-        //     ref.watch(isCollectionSectionExpandedProvider)
-        //         ? FloatingActionButton.small(
-        //           onPressed: () {
-        //             if (ref.watch(isCollectionSectionExpandedProvider)) {
-        //               ref.read(isCollectionSectionExpandedProvider.notifier).update(false);
-        //               collectionPageController.animateToPage(2, duration: Duration(seconds: 2), curve: CustomCurves.defaultIosSpring);
-        //               PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong4, curve: CustomCurves.defaultIosSpring);
-        //               collectionAnimController.reverse();
-        //             }
-        //           },
-        //           shape: CircleBorder(),
-        //           child: Icon(Iconsax.arrow_up_1),
-        //         )
-        //         : null,
         body: CustomScrollView(
           slivers: [
             ModifyCourseHeader(
@@ -190,24 +141,13 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
               },
             ),
 
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
 
-            //Collections Section
-            // CollectionsSectionHeader(
-            //   scaffoldBgColor: scaffoldBgColor,
-            //   appUiModel: appUiModel,
-            //   onClickAddIcon:
-            //       (courseModel.collectionIds == null || courseModel.collectionIds!.isEmpty)
-            //           ? null
-            //           : () {
-            //             // Add Collection Function
-            //           },
-            //
-            // ),
+
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
 
             CollectionsSection(
               appUiModel,
-              collectionIds: courseModel.collectionIds == null ? ["This", "is", "this", ""] : courseModel.collectionIds!,
+              collectionIds: courseModel.collectionIds == null ? ["", "", ""] : courseModel.collectionIds!,
               pageController: collectionPageController,
               // onTapCollapsed: () {
               //   if (!ref.watch(isCollectionSectionExpandedProvider)) {
@@ -219,31 +159,26 @@ class _ModifyCourseState extends ConsumerState<ModifyCourse> with TickerProvider
               // },
             ),
 
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
 
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              sliver: SliverToBoxAdapter(
+                child: CustomElevatedButton(
+                  borderRadius: 48,
+                  pixelHeight: 56,
+                  backgroundColor: Colors.deepPurple.withAlpha(80),
+                  label: "See all materials",
+                  textSize: 15,
+                  textColor: Colors.deepPurple,
+                ),
+              ),
+            ),
 
-            ContentsSection(appUiModel, pageController: contentPageController, contentIds: courseModel.rootContentIds == null ? ["This", "is", "this", ""] : courseModel.rootContentIds!),
-
-            // CustomText("Contents", fontWeight: FontWeight.bold, fontSize: 18,),
-            // ConstantSizing.columnSpacingMedium,
-            // _buildListButton("New Content", appUiModel.isDarkMode, onTap: (){}),
           ],
         ),
       ),
     );
   }
 
-  // Widget _buildListButton(String title, bool isDarkMode, {required void Function() onTap}) {
-  //   return InkWell(
-  //     borderRadius: BorderRadius.circular(12),
-  //     overlayColor: WidgetStatePropertyAll(Colors.deepPurple.withAlpha(40)),
-  //     onTap: onTap,
-  //     child: Container(
-  //       decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
-  //       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-
-  //       child: Row(children: [Icon(Iconsax.add_circle, size: 30), ConstantSizing.rowSpacingMedium, Expanded(child: CustomText(title))]),
-  //     ),
-  //   );
-  // }
 }
