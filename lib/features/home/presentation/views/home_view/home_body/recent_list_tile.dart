@@ -1,17 +1,18 @@
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/components/colors.dart';
 
-class RecentListTile extends StatelessWidget {
+class RecentListTile extends ConsumerWidget {
   final bool isDarkMode;
   final String title;
   final String subtitle;
   final String extraContent;
   final double? progress;
   final int? level;
+  final bool isStarred;
   final void Function()? onTapTile;
   final void Function()? onLongTapTile;
   final void Function()? onTapPlay;
@@ -23,6 +24,7 @@ class RecentListTile extends StatelessWidget {
     this.onTapTile,
     this.onTapPlay,
     required this.isDarkMode,
+    this.isStarred = false,
     this.progress,
     this.level,
     this.onLongTapTile,
@@ -33,7 +35,7 @@ class RecentListTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.only(top: 12, left: 8, right: 8),
       child: DecoratedBox(
@@ -53,6 +55,7 @@ class RecentListTile extends StatelessWidget {
             children: [
               Badge(
                 backgroundColor: Colors.transparent,
+                isLabelVisible: isStarred,
                 label: CircleAvatar(
                   radius: 10.5,
                     backgroundColor: isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray,
@@ -81,12 +84,14 @@ class RecentListTile extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     spacing: 4.0,
                     children: [
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 30),
-                        child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, height: 1.0),
+                      Flexible(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(maxHeight: 30),
+                          child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, height: 1.0),
+                        ),
                       ),
-                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: SlidesRepoColors.textSecondary)),
-                      if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13,),
+                      Flexible(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: SlidesRepoColors.textSecondary)),
+                      if(extraContent.isNotEmpty) Flexible(child: CustomText(extraContent, fontSize: 13,)),
                     ],
                   ),
                 ),

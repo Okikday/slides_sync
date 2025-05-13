@@ -32,17 +32,18 @@ class RecentsSectionBody extends ConsumerWidget {
 
           child: RecentListTile(
             isDarkMode: appUiModel.isDarkMode,
-            title: DummySlides.dummySlides[index]['title'] ?? "No title",
-            subtitle: DummySlides.dummySlides[index]['subtitle'] ?? "No subtitle",
-            extraContent: DummySlides.dummySlides[index]['extraContent'] ?? "",
+            title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+            subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
+            extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
             level: 2,
+            progress: DummySlides.dummySlides[index]['progress'] as double?,
             onTapTile: () {},
             onLongTapTile: () {
               LoadingDialog.showLoadingDialog(
                 context,
                 canPop: true,
                 blurSigma: 2,
-                reverseTransitionDuration: Duration(milliseconds: 550),
+                transitionDuration: Duration(milliseconds: 550),
                 loadingInfoWidget: RecentDialog(
                   scaffoldBgColor: scaffoldBgColor,
                   appUiModel: appUiModel,
