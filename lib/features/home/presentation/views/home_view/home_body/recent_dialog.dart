@@ -1,13 +1,11 @@
-import 'dart:developer';
-import 'dart:ui';
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
 
+import 'package:slides_sync/app/models/app_ui_model.dart';
+import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {
   final Color scaffoldBgColor;
@@ -15,8 +13,13 @@ class RecentDialog extends ConsumerStatefulWidget {
   final String heroTag;
   final RecentDialogModel recentDialogModel;
 
-
-  const RecentDialog({super.key, required this.scaffoldBgColor, required this.appUiModel, required this.heroTag, required this.recentDialogModel});
+  const RecentDialog({
+    super.key,
+    required this.scaffoldBgColor,
+    required this.appUiModel,
+    required this.heroTag,
+    required this.recentDialogModel,
+  });
 
   @override
   ConsumerState createState() => _RecentDialogState();
@@ -69,10 +72,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                     border: Border.all(color: Colors.blueAccent.withAlpha(50)),
                   ),
                   child: ScrollbarTheme(
-                    data: ScrollbarThemeData(
-                      mainAxisMargin: 10,
-                      thumbColor: WidgetStatePropertyAll(Colors.grey.withAlpha(60)),
-                    ),
+                    data: ScrollbarThemeData(mainAxisMargin: 10, thumbColor: WidgetStatePropertyAll(Colors.grey.withAlpha(60))),
                     child: Scrollbar(
                       // thumbVisibility: true,
                       radius: Radius.circular(12),
@@ -247,63 +247,3 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
   }
 }
 
-class RecentDialogModel {
-  final Widget? imagePreview;
-  final bool isStarred;
-  final bool hasNote;
-  final String title;
-  final String fileType;
-  final List<String> tags;
-  final bool canShare;
-  final bool canDelete;
-  final void Function()? onLike;
-  final void Function()? onNote;
-  final void Function()? onShare;
-  final void Function()? onDelete;
-
-  RecentDialogModel({
-    this.imagePreview,
-    required this.isStarred,
-    required this.hasNote,
-    required this.title,
-    required this.fileType,
-    required this.tags,
-    required this.canShare,
-    required this.canDelete,
-    this.onShare,
-    this.onDelete,
-    this.onLike,
-    this.onNote,
-  });
-
-
-  RecentDialogModel copyWith({
-    Widget? imagePreview,
-    bool? isStarred,
-    bool? hasNote,
-    String? title,
-    String? fileType,
-    List<String>? tags,
-    bool? canShare,
-    bool? canDelete,
-    void Function()? onLike,
-    void Function()? onNote,
-    void Function()? onShare,
-    void Function()? onDelete,
-  }) {
-    return RecentDialogModel(
-      imagePreview: imagePreview ?? this.imagePreview,
-      isStarred: isStarred ?? this.isStarred,
-      hasNote: hasNote ?? this.hasNote,
-      title: title ?? this.title,
-      fileType: fileType ?? this.fileType,
-      tags: tags ?? List.from(this.tags),
-      canShare: canShare ?? this.canShare,
-      canDelete: canDelete ?? this.canDelete,
-      onLike: onLike ?? this.onLike,
-      onNote: onNote ?? this.onNote,
-      onShare: onShare ?? this.onShare,
-      onDelete: onDelete ?? this.onDelete,
-    );
-  }
-}

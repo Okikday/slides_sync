@@ -19,7 +19,7 @@ class HomeDrawer extends ConsumerWidget {
             ConstantSizing.columnSpacing(kToolbarHeight + 24),
             CircleAvatar(radius: 40,),
             ConstantSizing.columnSpacingSmall,
-            CustomText("Okikiola"),
+            CustomText("Username"),
             ConstantSizing.columnSpacingSmall,
             CustomText("200 Level - 2nd Semester", color: Colors.grey,),
         

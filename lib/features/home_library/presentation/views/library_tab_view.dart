@@ -1,19 +1,15 @@
-import 'dart:developer';
-import 'dart:ui';
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
-import 'package:slides_sync/components/shared/loading_view.dart';
+import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_section.dart';
+import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/library_view_header.dart';
+import 'package:slides_sync/shared/components/loading_view.dart';
 import 'package:slides_sync/data/hive_data/app_hive_data.dart';
 import 'package:slides_sync/data/hive_data_paths.dart';
-import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
-import 'package:slides_sync/views/library/sub_widgets/all_courses_header.dart';
-import 'package:slides_sync/views/library/sub_widgets/all_courses_section.dart';
-import 'package:slides_sync/views/library/sub_widgets/library_view_header.dart';
+import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_header.dart';
 
 class IsListViewNotifier extends AsyncNotifier<bool> {
   final String _key = "${HiveDataPaths.views}/library/all_courses_section/var/isListView";
@@ -40,7 +36,7 @@ class LibraryView extends ConsumerStatefulWidget {
   ConsumerState createState() => _LibraryViewState();
 }
 
-class _LibraryViewState extends ConsumerState<LibraryView> {
+class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAliveClientMixin{
   late final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewProvider;
 
   @override
@@ -53,6 +49,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final appUiModel = ref.watch(appUiStateProvider);
     final double topPadding = MediaQuery.paddingOf(context).top;
     final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
@@ -107,4 +104,9 @@ class _LibraryViewState extends ConsumerState<LibraryView> {
       ),
     );
   }
+  
+  @override
+  bool get wantKeepAlive => true;
+
+  
 }

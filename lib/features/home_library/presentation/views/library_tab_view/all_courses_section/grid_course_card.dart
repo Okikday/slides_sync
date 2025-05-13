@@ -1,7 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
+import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class GridCourseCard extends ConsumerWidget {
   const GridCourseCard({
@@ -29,7 +29,7 @@ class GridCourseCard extends ConsumerWidget {
       offset: Offset(-12, 12),
       child: Container(
         padding: EdgeInsets.all(12),
-        decoration: LibraryUiFuncs.getBoxDecorationStyle(isDarkMode),
+        decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

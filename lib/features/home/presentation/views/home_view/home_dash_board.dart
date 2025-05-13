@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app/models/app_ui_model.dart';
-import 'package:slides_sync/components/colors.dart';
-import 'package:slides_sync/views/home/sub_widgets/home_body.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeDashBoard extends ConsumerWidget {
   const HomeDashBoard({

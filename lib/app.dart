@@ -1,12 +1,11 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:heroine/heroine.dart';
-import 'package:slides_sync/app/states/app_ui_state.dart';
-import 'package:slides_sync/components/themes.dart';
-import 'package:slides_sync/views/home/home.dart';
+
+import 'routes.dart';
+import 'shared/styles/themes.dart';
+
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -14,12 +13,11 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: Routes.mainRouter,
       debugShowCheckedModeBanner: false,
-      navigatorObservers: [HeroineController()],
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
-      home: HomeView(),
     );
   }
 }

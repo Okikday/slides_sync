@@ -2,8 +2,8 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/components/colors.dart';
-import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
+import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class ListCourseCard extends ConsumerWidget {
   const ListCourseCard({
@@ -34,7 +34,7 @@ class ListCourseCard extends ConsumerWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         height: 132,
-        decoration: LibraryUiFuncs.getBoxDecorationStyle(isDarkMode),
+        decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Row(
           children: [
             Badge(

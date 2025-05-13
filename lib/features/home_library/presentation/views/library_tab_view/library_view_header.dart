@@ -1,14 +1,12 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/app/models/app_ui_model.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
-import 'package:slides_sync/use_cases/library/library_ui_funcs.dart';
-import 'package:slides_sync/views/library/sub_pages/manage_courses_page.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses_page.dart';
+import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class LibraryViewHeader extends ConsumerWidget {
   final AppUiModel appUiModel;
@@ -21,7 +19,7 @@ class LibraryViewHeader extends ConsumerWidget {
         height: 100,
         margin: EdgeInsets.symmetric(horizontal: 12),
         padding: EdgeInsets.symmetric(horizontal: 16),
-        decoration: LibraryUiFuncs.getBoxDecorationStyle(appUiModel.isDarkMode),
+        decoration: UiStyles.getBlueThemedBoxDecoration(appUiModel.isDarkMode),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

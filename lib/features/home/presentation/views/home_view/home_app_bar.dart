@@ -1,12 +1,10 @@
-import 'dart:developer';
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app/models/app_ui_model.dart';
-import 'package:slides_sync/components/colors.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({super.key, required this.appUiModel, required this.isScrolled, required this.topPadding, required this.onClickUserIcon, required this.title, required this.onToggleFullScreen, required this.onClickNotification});

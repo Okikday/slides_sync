@@ -1,52 +1,39 @@
-import 'dart:developer';
-import 'dart:ui';
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app.dart';
 import 'package:slides_sync/app/states/app_ui_state.dart';
-import 'package:slides_sync/components/colors.dart';
-import 'package:slides_sync/views/home/sub_widgets/home_app_bar.dart';
-import 'package:slides_sync/views/home/sub_widgets/home_body.dart';
-import 'package:slides_sync/components/widgets/app_bar_container.dart';
-import 'package:slides_sync/views/home/sub_widgets/home_drawer.dart';
-import 'package:slides_sync/views/library/library.dart';
-import 'package:slides_sync/views/profile/profile.dart';
+import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/notifiers/home_nav_bar_index_notifier.dart';
+import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/notifiers/is_home_scrolled_notifer.dart';
+import 'package:slides_sync/features/home/presentation/views/home_view/home_drawer.dart';
+import 'package:slides_sync/features/home_library/presentation/views/library_tab_view.dart';
+import 'package:slides_sync/features/home_explore/presentation/views/explore_tab_view.dart';
 
-class HomeNavBarIndex extends Notifier<int> {
-  @override
-  int build() => 0;
-  void update(int newIndex) => state = newIndex;
-}
-
-class IsScrolled extends Notifier<bool> {
-  @override
-  bool build() => false;
-  void update(bool newValue) {
-    if (state == newValue) return;
-    state = newValue;
-  }
-}
+import 'home_view/home_body.dart';
+import 'home_view/home_bottom_nav_bar.dart';
 
 class HomeView extends ConsumerStatefulWidget {
-  const HomeView({super.key});
+  final int tabIndex;
+  const HomeView({super.key, required this.tabIndex});
 
   @override
   ConsumerState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClientMixin {
-  final NotifierProvider<HomeNavBarIndex, int> homeNavBarIndexProvider = NotifierProvider<HomeNavBarIndex, int>(HomeNavBarIndex.new);
-  final NotifierProvider<IsScrolled, bool> isScrolledProvider = NotifierProvider<IsScrolled, bool>(IsScrolled.new);
+  late final NotifierProvider<HomeNavBarIndexNotifier, int> homeNavBarIndexProvider;
+  late final NotifierProvider<IsHomeScrolledNotifier, bool> isScrolledProvider;
   late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
+    homeNavBarIndexProvider = NotifierProvider<HomeNavBarIndexNotifier, int>(HomeNavBarIndexNotifier.new);
+    isScrolledProvider = NotifierProvider<IsHomeScrolledNotifier, bool>(IsHomeScrolledNotifier.new);
+    pageController = PageController(initialPage: widget.tabIndex);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(homeNavBarIndexProvider.notifier).update(widget.tabIndex);
+    });
   }
 
   @override
@@ -73,8 +60,10 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
           systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
           systemNavigationBarColor: (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
         ),
+
         child: Scaffold(
           extendBody: true,
+
           bottomNavigationBar: HomeBottomNavBar(
             appUiModel: appUiModel,
             currentIndex: homeNavBarIndex,
@@ -86,16 +75,18 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
               }
             },
           ),
+
           drawer: HomeDrawer(appUiModel: appUiModel, scaffoldBgColor: scaffoldBgColor),
+
           body: PageView(
             controller: pageController,
             onPageChanged: (index) {
               ref.read(homeNavBarIndexProvider.notifier).update(index);
             },
             children: [
-              HomeBody(appUiStateProvider, isScrolledProvider: isScrolledProvider, isScrolled: isScrolled),
+              HomeBody(appUiStateProvider, isScrolledProvider: isScrolledProvider),
               LibraryView(appUiStateProvider),
-              ProfileView(),
+              ExploreTabView(),
             ],
           ),
         ),
@@ -105,34 +96,4 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class HomeBottomNavBar extends ConsumerWidget {
-  final AppUiModel appUiModel;
-  final int currentIndex;
-  final bool isScrolled;
-  final void Function(int index) onTap;
-  const HomeBottomNavBar({super.key, required this.appUiModel, required this.currentIndex, required this.onTap, required this.isScrolled});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ClipRRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: isScrolled ? 8 : 0, sigmaY: isScrolled ? 8 : 0),
-        child: BottomNavigationBar(
-          currentIndex: currentIndex,
-          selectedItemColor: Colors.deepPurple,
-          onTap: (index) => onTap(index),
-          backgroundColor:
-              isScrolled ? Colors.lightBlueAccent.withAlpha(20) : (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
-          elevation: 48,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
-            BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library"),
-            BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore"),
-          ],
-        ),
-      ),
-    );
-  }
 }
