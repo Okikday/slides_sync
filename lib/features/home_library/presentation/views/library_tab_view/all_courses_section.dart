@@ -80,7 +80,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
 
                     await Future.delayed(Durations.short4);
                     if (context.mounted) {
-                      AppNavigator.of(context).courseDetailsPageRoute(CourseModel(courseId: "Example", courseTitle: "Course title"));
+                      AppNavigator.of(context).courseDetailsViewRoute(CourseModel(courseId: "Example", courseTitle: "Course title"));
                     }
                     ref.read(isCourseClickedProvider.notifier).update(false);
                   },
@@ -135,7 +135,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
 
                   await Future.delayed(Durations.short4);
                   if (context.mounted) {
-                    AppNavigator.of(context).courseDetailsPageRoute(CourseModel(courseId: "Example", courseTitle: "Course title"));
+                    AppNavigator.of(context).courseDetailsViewRoute(CourseModel(courseId: "Example", courseTitle: "Course title"));
                   }
                   ref.read(isCourseClickedProvider.notifier).update(false);
                 },

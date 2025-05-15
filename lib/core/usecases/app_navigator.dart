@@ -15,21 +15,20 @@ class AppNavigator {
 
   void _pushAsReplacement(String location, {Object? extra}) => context.go(location, extra: extra);
 
-  void courseDetailsPageRoute(CourseModel courseModel) =>
+  void courseDetailsViewRoute(CourseModel courseModel) =>
       _isPushedAsReplacement
           ? _pushAsReplacement(RoutesStrings.courseDetailsView, extra: courseModel)
           : _push(RoutesStrings.courseDetailsView, extra: courseModel);
 
-  // void manageCoursesPageRoute(){}
+  void createCoursePageRoute() {
+    final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.createCoursePage}";
+    _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
+  }
 
-  void createCoursePageRoute() =>
-      _isPushedAsReplacement ? _pushAsReplacement(RoutesStrings.createCoursePage) : _push(RoutesStrings.createCoursePage);
-
-  void modifyCourseViewRoute(CourseModel courseModel) =>
-      _isPushedAsReplacement
-          ? _pushAsReplacement(RoutesStrings.modifyCoursePage, extra: courseModel)
-          : _push(RoutesStrings.modifyCoursePage, extra: courseModel);
-
+  void modifyCoursePageRoute(CourseModel courseModel) {
+    final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.modifyCoursePage}";
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
+  }
 
 
 }

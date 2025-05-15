@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 
-import 'sub/course_content_type.dart';
 export 'sub/course_content_type.dart' show CourseContentType;
 
 class CourseModel{

@@ -121,7 +121,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                           pixelWidth: appUiModel.deviceWidth,
                           pixelHeight: 60,
                           inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                          hint: "Enter a new Course title",
+                          hint: "Enter course title",
                           inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
                           onTapOutside: () {},
                         ),
@@ -192,7 +192,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                         courseMetadata: {'creationTime': DateTime.now().toIso8601String()},
                       );
 
-                      AppNavigator.of(context).modifyCourseViewRoute(courseModel);
+                      AppNavigator.of(context).modifyCoursePageRoute(courseModel);
                     },
                   ),
                 ),

@@ -51,7 +51,7 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: CustomText(widget.title, fontWeight: FontWeight.bold, fontSize: 15, textAlign: TextAlign.center),
                   ),
                   ConstantSizing.columnSpacingMedium,
@@ -95,12 +95,12 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
             ).animate().moveY(begin: -48, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong3).fadeIn(),
 
             Positioned(
-              top: 8,
-              right: 8,
+              top: 0,
+              right: 0,
               child: CustomElevatedButton(
                 shape: CircleBorder(),
                 onClick: () {
-                  Navigator.of(context).pop();
+                  LoadingDialog.hideLoadingDialog(context);
                 },
                 backgroundColor: Colors.transparent,
                 child: Icon(Iconsax.close_circle, size: 30),

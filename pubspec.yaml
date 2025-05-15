@@ -49,6 +49,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   stacked_card_carousel: ^0.0.4
   go_router: ^15.1.2
+  markdown_widget: ^2.3.2+8
 
 
 dev_dependencies:

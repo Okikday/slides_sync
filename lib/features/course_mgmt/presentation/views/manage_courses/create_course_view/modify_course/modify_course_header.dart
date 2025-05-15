@@ -35,17 +35,17 @@ class ModifyCourseHeader extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 150, maxWidth: appUiModel.deviceWidth * 0.8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 8.0,
-                      children: [
-                        ConstantSizing.columnSpacingMedium,
-                        CustomText(title, fontSize: 24, fontWeight: FontWeight.bold),
-                        Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 8.0,
+                    children: [
+                      ConstantSizing.columnSpacingMedium,
+                      Flexible(child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold)),
+                      Flexible(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(maxHeight: 80),
                           child: SingleChildScrollView(
                             child: CustomTextButton(
                               borderRadius: 4.0,
@@ -55,8 +55,8 @@ class ModifyCourseHeader extends ConsumerWidget {
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 ConstantSizing.rowSpacingLarge,

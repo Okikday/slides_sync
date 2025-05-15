@@ -28,7 +28,7 @@ class CourseDescriptionDialog extends ConsumerWidget {
           alignment: Alignment.center,
           child: SingleChildScrollView(
             child: Container(
-              decoration: BoxDecoration(color: scaffoldBgColor, borderRadius: BorderRadius.circular(12)),
+              decoration: BoxDecoration(color: scaffoldBgColor.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(12)),
               width:
               appUiModel.deviceWidth > appUiModel.deviceHeight
                   ? appUiModel.deviceHeight * 0.85

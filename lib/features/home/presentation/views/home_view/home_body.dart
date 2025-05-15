@@ -30,9 +30,7 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
     return NestedScrollView(
       physics: NeverScrollableScrollPhysics(),
       headerSliverBuilder: (context, isInnerBoxScrolled) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(widget.isScrolledProvider.notifier).update(isInnerBoxScrolled);
-        });
+        WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(widget.isScrolledProvider.notifier).update(isInnerBoxScrolled));
         return [
           HomeAppBar(
             title: 'Happy Reading',
