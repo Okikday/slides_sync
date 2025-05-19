@@ -6,11 +6,11 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses_page.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class LibraryViewHeader extends ConsumerWidget {
-  final AppUiModel appUiModel;
-  const LibraryViewHeader({super.key, required this.appUiModel});
+  const LibraryViewHeader({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +19,7 @@ class LibraryViewHeader extends ConsumerWidget {
         height: 100,
         margin: EdgeInsets.symmetric(horizontal: 12),
         padding: EdgeInsets.symmetric(horizontal: 16),
-        decoration: UiStyles.getBlueThemedBoxDecoration(appUiModel.isDarkMode),
+        decoration: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -33,7 +33,7 @@ class LibraryViewHeader extends ConsumerWidget {
                     duration: Durations.extralong3,
                     reverseDuration: Durations.medium1,
                     curve: CustomCurves.snappySpring,
-                    child: ManageCoursesPage(appUiStateProvider),
+                    child: ManageCoursesPage(),
                   ),
                 );
               },

@@ -5,7 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
-  final AppUiModel appUiModel;
+  
   final String title;
   final String description;
 
@@ -14,7 +14,7 @@ class ModifyCourseHeader extends ConsumerWidget {
   final void Function() onClickFilter;
 
   const ModifyCourseHeader(
-    this.appUiModel, {
+    {
     super.key,
     required this.title,
     required this.description,

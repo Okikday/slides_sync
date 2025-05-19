@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 /// COLLECTION SECTION HEADER
 class CollectionsSectionHeader extends ConsumerWidget {
   const CollectionsSectionHeader({
     super.key,
     required this.scaffoldBgColor,
-    required this.appUiModel,
+    
     this.onClickAddIcon
   });
 
   final Color scaffoldBgColor;
-  final AppUiModel appUiModel;
+  
 
   final void Function()? onClickAddIcon;
 
@@ -22,7 +23,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SliverToBoxAdapter(
       child: ColoredBox(
-        color: scaffoldBgColor,
+        color: context.scaffoldBackgroundColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
           child: Row(
@@ -33,7 +34,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
                 contentPadding: EdgeInsets.all(12),
                 backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                 shape: CircleBorder(),
-                child: Icon(Iconsax.add_circle_copy, size: 20, color: appUiModel.isDarkMode ? Colors.white : Colors.black),
+                child: Icon(Iconsax.add_circle_copy, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
               ),
               ConstantSizing.rowSpacingMedium,
 
@@ -45,7 +46,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
               //   child: Icon(
               //     isPlainView ? Iconsax.menu : Icons.list_outlined,
               //     size: 20,
-              //     color: appUiModel.isDarkMode ? Colors.white : Colors.black,
+              //     color: context.isDarkMode ? Colors.white : Colors.black,
               //   ),
               // ),
             ],

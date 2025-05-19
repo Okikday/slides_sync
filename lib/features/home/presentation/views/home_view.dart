@@ -8,6 +8,7 @@ import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/notifi
 import 'package:slides_sync/features/home/presentation/views/home_view/home_drawer.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view.dart';
 import 'package:slides_sync/features/home_explore/presentation/views/explore_tab_view.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 import 'home_view/home_body.dart';
 import 'home_view/home_bottom_nav_bar.dart';
@@ -45,38 +46,36 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final AppUiModel appUiModel = ref.watch(appUiStateProvider);
     final int homeNavBarIndex = ref.watch(homeNavBarIndexProvider);
     final bool isScrolled = ref.watch(isScrolledProvider);
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
 
     return PopScope(
       canPop: false,
       child: AnnotatedRegion(
         value: SystemUiOverlayStyle(
-          statusBarColor: isScrolled ? Colors.lightBlueAccent.withAlpha(100) : scaffoldBgColor,
-          statusBarBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-          statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-          systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-          systemNavigationBarColor: (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
+          statusBarColor: isScrolled ? Colors.lightBlueAccent.withAlpha(100) : context.scaffoldBackgroundColor,
+          statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+          statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: (context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
         ),
 
         child: Scaffold(
           extendBody: true,
 
           bottomNavigationBar: HomeBottomNavBar(
-            appUiModel: appUiModel,
             currentIndex: homeNavBarIndex,
             isScrolled: isScrolled,
             onTap: (index) {
               if (index != homeNavBarIndex) {
                 ref.read(homeNavBarIndexProvider.notifier).update(index);
-                pageController.animateToPage(index, duration: Duration(milliseconds: 400), curve: CustomCurves.decelerate);
+                pageController.animateToPage(index, duration: Duration(milliseconds: 600), curve: CustomCurves.defaultIosSpring);
               }
             },
           ),
 
-          drawer: HomeDrawer(appUiModel: appUiModel, scaffoldBgColor: scaffoldBgColor),
+          drawer: HomeDrawer(),
 
           body: PageView(
             controller: pageController,
@@ -84,8 +83,8 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
               ref.read(homeNavBarIndexProvider.notifier).update(index);
             },
             children: [
-              HomeBody(appUiStateProvider, isScrolledProvider: isScrolledProvider),
-              LibraryView(appUiStateProvider),
+              HomeBody(isScrolledProvider: isScrolledProvider),
+              LibraryView(),
               ExploreTabView(),
             ],
           ),

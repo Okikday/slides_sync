@@ -8,22 +8,21 @@ import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/manage_course_button.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class ManageCoursesPage extends ConsumerWidget {
-  final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
-  const ManageCoursesPage(this.appUiStateProvider, {super.key});
+  const ManageCoursesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AppUiModel appUiModel = ref.watch(appUiStateProvider);
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        systemNavigationBarColor: scaffoldBgColor,
-        systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarColor: scaffoldBgColor,
-        statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: context.scaffoldBackgroundColor,
+        systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarColor: context.scaffoldBackgroundColor,
+        statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
       child: Scaffold(
         appBar: AppBarContainer(
@@ -33,7 +32,7 @@ class ManageCoursesPage extends ConsumerWidget {
             type: MaterialType.transparency,
             shape: LinearBorder(
               bottom: LinearBorderEdge(),
-              side: BorderSide(color: appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40)),
+              side: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40)),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),

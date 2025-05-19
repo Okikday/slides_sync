@@ -6,14 +6,14 @@ import 'package:heroine/heroine.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recent_dialog.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 import '../../../../../../test/dummy_slides.dart';
 import '../../../viewmodels/home_vm/models/recent_list_tile_model.dart';
 import 'recent_list_tile.dart';
 
 class RecentsSectionBody extends ConsumerWidget {
-  final AppUiModel appUiModel;
-  const RecentsSectionBody({super.key, required this.appUiModel});
+  const RecentsSectionBody({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +26,7 @@ class RecentsSectionBody extends ConsumerWidget {
           spring: Spring.snappy.copyWith(durationSeconds: 0.3),
 
           child: RecentListTile(
-            isDarkMode: appUiModel.isDarkMode,
+            isDarkMode: context.isDarkMode,
             dataModel: RecentListTileModel(
               title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
             subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
@@ -41,8 +41,7 @@ class RecentsSectionBody extends ConsumerWidget {
                 blurSigma: 2,
                 transitionDuration: Duration(milliseconds: 550),
                 loadingInfoWidget: RecentDialog(
-                  scaffoldBgColor: scaffoldBgColor,
-                  appUiModel: appUiModel,
+                  scaffoldBgColor: context.scaffoldBackgroundColor,
                   heroTag: "recents_list_tile$index",
                   recentDialogModel: RecentDialogModel(
                     isStarred: false,

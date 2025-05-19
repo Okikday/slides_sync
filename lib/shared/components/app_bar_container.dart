@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
   final Color? scaffoldBgColor;
@@ -27,13 +28,13 @@ class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AppUiModel appUiModel = ref.watch(appUiStateProvider);
+    final screenSize = context.screenSize;
     return _AppBarContainerWidget(
       key: key,
-      deviceWidth: appUiModel.deviceWidth,
-      deviceHeight: appUiModel.deviceHeight,
+      deviceWidth: screenSize.width,
+      deviceHeight: screenSize.height,
       appBarHeight: appBarHeight,
-      scaffoldBgColor: scaffoldBgColor,
+      scaffoldBgColor: context.scaffoldBackgroundColor,
       padding: padding,
       topPadding: topPadding,
       child: child,
@@ -71,7 +72,7 @@ class _AppBarContainerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double topPadding = MediaQuery.paddingOf(context).top;
     return ColoredBox(
-      color: scaffoldBgColor ?? Theme.of(context).scaffoldBackgroundColor,
+      color: context.scaffoldBackgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       child: Padding(
         padding: EdgeInsets.only(top: this.topPadding ?? topPadding),
         child: SizedBox(

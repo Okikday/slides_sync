@@ -2,17 +2,15 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class HomeDrawer extends ConsumerWidget {
-  final AppUiModel appUiModel;
-  final Color scaffoldBgColor;
-  const HomeDrawer({super.key, required this.appUiModel, required this.scaffoldBgColor});
+  const HomeDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
-      backgroundColor: scaffoldBgColor,
+      backgroundColor: context.scaffoldBackgroundColor,
       child: SingleChildScrollView(
         child: Column(
           children: [

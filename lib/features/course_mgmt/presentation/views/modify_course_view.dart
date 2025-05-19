@@ -4,21 +4,20 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course/edit_course_bottom_sheet.dart';
+import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/is_plain_view_notifier.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/add_course_description_dialog.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/collections_section.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/course_description_dialog.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/edit_course_bottom_sheet.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/modify_course_header.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_navigation_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course/modify_course_header.dart';
-
-import '../../../../../../shared/components/app_bar_container_child.dart';
-import '../../../viewmodels/notifiers/modify_course/is_plain_view_notifier.dart';
-import '../../../viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
-import 'modify_course/add_course_description_dialog.dart';
-import 'modify_course/collections_section.dart';
-import 'modify_course/course_description_dialog.dart';
+import 'package:slides_sync/shared/components/app_bar_container_child.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 /// VIEW
 class ModifyCourseView extends ConsumerStatefulWidget {
@@ -56,34 +55,32 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    final AppUiModel appUiModel = ref.watch(appUiStateProvider);
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
+    
     final CourseModel courseModel = ref.watch(modifyCourseProvider);
 
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(scaffoldBgColor, appUiModel.isDarkMode),
+      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
       child: Scaffold(
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
           padding: EdgeInsets.zero,
-          child: AppBarContainerChild(appUiModel.isDarkMode, title: 'Modify Course'),
+          child: AppBarContainerChild(context.isDarkMode, title: 'Modify Course'),
         ),
         body: CustomScrollView(
           slivers: [
             ModifyCourseHeader(
-              appUiModel,
               title: courseModel.courseTitle,
               description: courseModel.description.trim(),
-              onClickEditCourse: () async{
-
+              onClickEditCourse: () async {
                 await showModalBottomSheet(
                   context: context,
                   enableDrag: false,
                   showDragHandle: false,
-                  backgroundColor: scaffoldBgColor,
+                  backgroundColor: context.scaffoldBackgroundColor,
                   isScrollControlled: true,
-                  builder: (context) => EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider,),
-                ).then((_){
+                  builder: (context) => EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider),
+                ).then((_) {
                   log("Closed Bottom sheet");
                 });
               },
@@ -97,9 +94,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                     curve: CustomCurves.defaultIosSpring,
                     scaffoldBgColor: Colors.black.withAlpha(100),
                     loadingInfoWidget: CourseDescriptionDialog(
-                      scaffoldBgColor: scaffoldBgColor,
-                      appUiModel: appUiModel,
-                      courseModel: courseModel,
+                      description: courseModel.description,
                     ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
                   );
                 } else {
@@ -107,7 +102,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                     context,
                     canPop: true,
                     loadingInfoWidget: AddCourseDescriptionDialog(
-                      appUiModel: appUiModel,
                       title: courseModel.courseTitle,
                       courseProvider: modifyCourseProvider,
                     ),
@@ -118,11 +112,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
 
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
 
-            CollectionsSection(
-              appUiModel,
-              collectionIds: courseModel.collectionIds == null ? [] : courseModel.collectionIds!,
-              pageController: collectionPageController,
-            ),
+            CollectionsSection(collectionIds: [], pageController: collectionPageController),
 
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
 
@@ -132,8 +122,15 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               sliver: SliverToBoxAdapter(
                 child: CustomElevatedButton(
-                  onClick: (){
-                    Navigator.of(context).push(PageAnimation.pageRouteBuilder(CourseNavigationView()));
+                  onClick: () {
+                    Navigator.of(context).push(
+                      PageAnimation.pageRouteBuilder(
+                        CourseNavigationView(courseModel: courseModel),
+                        type: TransitionType.uptown,
+                        duration: Durations.extralong1,
+                        curve: CustomCurves.defaultIosSpring,
+                      ),
+                    );
                   },
                   borderRadius: 48,
                   pixelHeight: 56,

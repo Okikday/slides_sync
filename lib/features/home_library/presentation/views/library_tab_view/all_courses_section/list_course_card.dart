@@ -61,9 +61,9 @@ class ListCourseCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(padding: const EdgeInsets.only(top: 4), child: CustomText(courseCode, fontSize: 13, fontWeight: FontWeight.bold)),
-
-                  ConstantSizing.columnSpacingSmall,
+                  // Padding(padding: const EdgeInsets.only(top: 4), child: CustomText(courseCode, fontSize: 13, fontWeight: FontWeight.bold)),
+                  //
+                  // ConstantSizing.columnSpacingSmall,
 
                   CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold),
 

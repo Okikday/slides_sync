@@ -4,17 +4,16 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
-import 'package:slides_sync/shared/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course_view.dart';
-
-import '../../../../viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
+import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AddCourseDescriptionDialog extends ConsumerStatefulWidget {
-  final AppUiModel appUiModel;
+  
   final String title;
   final NotifierProvider<ModifyCourseModelNotifier, CourseModel> courseProvider;
 
-  const AddCourseDescriptionDialog({super.key, required this.appUiModel, required this.title, required this.courseProvider});
+  const AddCourseDescriptionDialog({super.key,  required this.title, required this.courseProvider});
 
   @override
   ConsumerState<AddCourseDescriptionDialog> createState() => _AddCourseDescriptionDialogState();
@@ -31,7 +30,7 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
 
   @override
   Widget build(BuildContext context) {
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
 
     return Align(
       alignment: Alignment.center,
@@ -39,12 +38,12 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
         child: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(color: scaffoldBgColor, borderRadius: BorderRadius.circular(12)),
-              // height: appUiModel.deviceWidth > appUiModel.deviceHeight ? appUiModel.deviceHeight * 0.75 : appUiModel.deviceWidth * 0.75,
+              decoration: BoxDecoration(color: context.scaffoldBackgroundColor, borderRadius: BorderRadius.circular(12)),
+              // height: context.deviceWidth > context.deviceHeight ? context.deviceHeight * 0.75 : context.deviceWidth * 0.75,
               width:
-                  widget.appUiModel.deviceWidth > widget.appUiModel.deviceHeight
-                      ? widget.appUiModel.deviceHeight * 0.85
-                      : widget.appUiModel.deviceWidth * 0.85,
+                  context.deviceWidth > context.deviceHeight
+                      ? context.deviceHeight * 0.85
+                      : context.deviceWidth * 0.85,
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -55,7 +54,7 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
                     child: CustomText(widget.title, fontWeight: FontWeight.bold, fontSize: 15, textAlign: TextAlign.center),
                   ),
                   ConstantSizing.columnSpacingMedium,
-                  Divider(color: widget.appUiModel.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
+                  Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
                   ConstantSizing.columnSpacingMedium,
                   CustomTextfield(
                     backgroundColor: Colors.grey.withAlpha(40),
@@ -64,10 +63,10 @@ class _AddCourseDescriptionDialogState extends ConsumerState<AddCourseDescriptio
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                       borderSide: BorderSide(
-                        color: widget.appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
+                        color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
                       ),
                     ),
-                    pixelWidth: widget.appUiModel.deviceWidth,
+                    pixelWidth: context.deviceWidth,
                     constraints: BoxConstraints(minHeight: 60, maxHeight: 200),
                     maxLines: 8,
                     inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),

@@ -6,17 +6,16 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {
   final Color scaffoldBgColor;
-  final AppUiModel appUiModel;
   final String heroTag;
   final RecentDialogModel recentDialogModel;
 
   const RecentDialog({
     super.key,
     required this.scaffoldBgColor,
-    required this.appUiModel,
     required this.heroTag,
     required this.recentDialogModel,
   });
@@ -56,16 +55,16 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                   padding: EdgeInsets.only(right: 4),
                   margin: EdgeInsets.symmetric(
                     horizontal: 32,
-                    vertical: widget.appUiModel.deviceHeight > widget.appUiModel.deviceWidth ? 0 : 32,
+                    vertical: context.deviceHeight > context.deviceWidth ? 0 : 32,
                   ),
                   width:
-                      widget.appUiModel.deviceHeight > widget.appUiModel.deviceWidth
-                          ? widget.appUiModel.deviceWidth
-                          : widget.appUiModel.deviceWidth * 0.5,
+                      context.deviceHeight > context.deviceWidth
+                          ? context.deviceWidth
+                          : context.deviceWidth * 0.5,
                   height:
-                      widget.appUiModel.deviceHeight > widget.appUiModel.deviceWidth
-                          ? (widget.appUiModel.deviceWidth * 1.25) - 64
-                          : widget.appUiModel.deviceHeight * 0.9,
+                      context.deviceHeight > context.deviceWidth
+                          ? (context.deviceWidth * 1.25) - 64
+                          : context.deviceHeight * 0.9,
                   decoration: BoxDecoration(
                     color: widget.scaffoldBgColor,
                     borderRadius: BorderRadius.circular(24),

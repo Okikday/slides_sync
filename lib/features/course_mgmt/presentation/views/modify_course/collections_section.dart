@@ -10,6 +10,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/can_scroll_notifier.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/scroll_offset_notifier.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
@@ -17,11 +18,11 @@ import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
 /// COLLECTION SECTION
 class CollectionsSection extends ConsumerStatefulWidget {
-  final AppUiModel appUiModel;
+  
   final List<String> collectionIds;
   final PageController pageController;
   const CollectionsSection(
-    this.appUiModel, {
+    {
     super.key,
     required this.collectionIds,
     required this.pageController,
@@ -57,14 +58,13 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
 
   @override
   Widget build(BuildContext context) {
-    final AppUiModel appUiModel = widget.appUiModel;
     final PageController pageController = widget.pageController;
     // final int count = 10;
 
     if (widget.collectionIds.isEmpty) {
       return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        sliver: _buildNewCollectionTile(appUiModel.isDarkMode, onTap: () {}),
+        sliver: _buildNewCollectionTile(context.isDarkMode, onTap: () {}),
       );
     }
 
@@ -114,8 +114,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                               items: List.generate(widget.collectionIds.length.clamp(0, 3), (index) {
                                 return RotatedBox(
                                   quarterTurns: 2,
-                                  child: _buildCollectionListTile(
-                                    appUiModel,
+                                  child: _buildCollectionListTile(context,
                                     collectionTitle: "Textbooks",
                                     iconData: Iconsax.book,
                                     subCollectionCount: 3,
@@ -160,8 +159,7 @@ Widget _buildNewCollectionTile(bool isDarkMode, {required void Function() onTap}
   );
 }
 
-Widget _buildCollectionListTile(
-  AppUiModel appUiModel, {
+Widget _buildCollectionListTile(BuildContext context, {
   required String collectionTitle,
   required IconData iconData,
   int subCollectionCount = 0,
@@ -171,7 +169,7 @@ Widget _buildCollectionListTile(
   return ClipRRect(
     borderRadius: BorderRadius.circular(16),
     child: ColoredBox(
-      color: appUiModel.isDarkMode ? Color(0xFF143850) : Color(0xFFDBF3FF),
+      color: context.isDarkMode ? Color(0xFF143850) : Color(0xFFDBF3FF),
       child: Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
@@ -180,7 +178,7 @@ Widget _buildCollectionListTile(
           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           //Color(0xFF485BAD)
           decoration: BoxDecoration(
-            color: appUiModel.isDarkMode ? Color(0xFF163343).withValues(alpha: 0.89) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
+            color: context.isDarkMode ? Color(0xFF163343).withValues(alpha: 0.89) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
 
             borderRadius: BorderRadius.circular(12),
             border: Border.fromBorderSide(BorderSide.none),
@@ -189,7 +187,7 @@ Widget _buildCollectionListTile(
             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
             child: Row(
               children: [
-                CircleAvatar(backgroundColor: Colors.lightBlueAccent.withAlpha(25), child: Icon(iconData, color: appUiModel.isDarkMode ? Colors.white : Colors.black,)),
+                CircleAvatar(backgroundColor: Colors.lightBlueAccent.withAlpha(25), child: Icon(iconData, color: context.isDarkMode ? Colors.white : Colors.black,)),
                 ConstantSizing.rowSpacingMedium,
                 Expanded(
                   child: Column(
@@ -208,7 +206,7 @@ Widget _buildCollectionListTile(
                   ),
                 ),
                 ConstantSizing.rowSpacingMedium,
-                Icon(Iconsax.arrow_right, color: appUiModel.isDarkMode ? Colors.white : Colors.black,),
+                Icon(Iconsax.arrow_right, color: context.isDarkMode ? Colors.white : Colors.black,),
               ],
             ),
           ),

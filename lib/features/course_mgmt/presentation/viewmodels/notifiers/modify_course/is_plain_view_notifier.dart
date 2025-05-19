@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/data/hive_data/app_hive_data.dart';
 
-import '../../../../../../data/hive_data_paths.dart';
+import '../../../../../../data/hive_data/hive_data_paths.dart';
 
 class IsPlainViewNotifier extends AsyncNotifier<bool> {
   final String _key = "${HiveDataPaths.views}/library/manage_courses/modify_course/var/isListView";

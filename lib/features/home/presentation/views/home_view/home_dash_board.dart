@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeDashBoard extends ConsumerWidget {
   const HomeDashBoard({
     super.key,
-    required this.appUiModel,
     required this.courseName,
     required this.detail,
     required this.progressValue,
@@ -17,7 +17,6 @@ class HomeDashBoard extends ConsumerWidget {
     this.onSettingTapped,
   });
 
-  final AppUiModel appUiModel;
   final String courseName;
   final String detail;
   final double progressValue;
@@ -32,12 +31,12 @@ class HomeDashBoard extends ConsumerWidget {
       child: Container(
         height: 200,
         constraints: BoxConstraints(maxHeight: 200),
-        width: appUiModel.deviceWidth,
+        width: context.deviceWidth,
         padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
         decoration: BoxDecoration(
-          color: (appUiModel.isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
+          color: (context.isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
           borderRadius: BorderRadius.circular(12),
-            border: Border.all(width: 2, color: Colors.lightBlueAccent.withAlpha(25))
+          border: Border.all(width: 2, color: Colors.lightBlueAccent.withAlpha(25)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +53,7 @@ class HomeDashBoard extends ConsumerWidget {
                   child: CustomText(
                     detail,
                     fontSize: 13,
-                    color: appUiModel.isDarkMode ? SlidesRepoColors.darkTextSecondary : SlidesRepoColors.textSecondary,
+                    color: context.isDarkMode ? SlidesRepoColors.darkTextSecondary : SlidesRepoColors.textSecondary,
                   ),
                 ),
                 ConstantSizing.rowSpacingHuge,
@@ -90,9 +89,9 @@ class HomeDashBoard extends ConsumerWidget {
                       pixelHeight: 48,
                       elevation: 100,
                       overlayColor: Colors.lightBlueAccent.withAlpha(50),
-                      backgroundColor: appUiModel.isDarkMode ? Colors.black.withAlpha(40) : Colors.lightBlueAccent.withAlpha(40),
+                      backgroundColor: context.isDarkMode ? Colors.black.withAlpha(40) : Colors.lightBlueAccent.withAlpha(40),
                       label: completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
-                      textColor: appUiModel.isDarkMode ? Colors.white : SlidesRepoColors.darkBlue,
+                      textColor: context.isDarkMode ? Colors.white : SlidesRepoColors.darkBlue,
                       textSize: 15,
                       onClick: () {
                         if (onReadingBtnTapped != null) onReadingBtnTapped!();

@@ -27,13 +27,17 @@ class AppBarContainerChild extends ConsumerWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          children: [
-            ComponentWidgets.backButton(context, onPressed: onBackButtonClicked),
-            ConstantSizing.rowSpacingMedium,
-            Expanded(child: CustomText(title, fontSize: 18, fontWeight: FontWeight.bold)),
-            if(trailing != null) trailing!
-          ],
+        child: Tooltip(
+          triggerMode: TooltipTriggerMode.tap,
+          message: title,
+          child: Row(
+            children: [
+              ComponentWidgets.backButton(context, onPressed: onBackButtonClicked),
+              ConstantSizing.rowSpacingMedium,
+              Flexible(child: CustomText(title, fontSize: 18, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis,)),
+              if(trailing != null) trailing!
+            ],
+          ),
         ),
       ),
     );

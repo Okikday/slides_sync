@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/shared/models/course_model/course_model.dart';
+import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
 class AppNavigator {

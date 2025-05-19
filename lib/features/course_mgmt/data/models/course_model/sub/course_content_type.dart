@@ -1,7 +1,7 @@
 enum CourseContentType{
   unknown,
   docFile,
-  link,
   image,
+  link,
   video
 }

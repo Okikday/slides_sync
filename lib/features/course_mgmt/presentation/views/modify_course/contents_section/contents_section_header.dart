@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class ContentsSectionHeader extends ConsumerWidget {
   const ContentsSectionHeader({
     super.key,
     required this.scaffoldBgColor,
-    required this.appUiModel,
+    
     required this.onTapHeader,
   });
 
   final Color scaffoldBgColor;
-  final AppUiModel appUiModel;
+  
   final void Function() onTapHeader;
 
   @override
@@ -22,7 +23,7 @@ class ContentsSectionHeader extends ConsumerWidget {
       child: GestureDetector(
         onTap: onTapHeader,
         child: ColoredBox(
-          color: scaffoldBgColor,
+          color: context.scaffoldBackgroundColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Row(

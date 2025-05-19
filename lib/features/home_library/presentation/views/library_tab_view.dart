@@ -8,8 +8,9 @@ import 'package:slides_sync/features/home_library/presentation/views/library_tab
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/library_view_header.dart';
 import 'package:slides_sync/shared/components/loading_view.dart';
 import 'package:slides_sync/data/hive_data/app_hive_data.dart';
-import 'package:slides_sync/data/hive_data_paths.dart';
+import 'package:slides_sync/data/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_header.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class IsListViewNotifier extends AsyncNotifier<bool> {
   final String _key = "${HiveDataPaths.views}/library/all_courses_section/var/isListView";
@@ -29,8 +30,7 @@ class IsListViewNotifier extends AsyncNotifier<bool> {
 }
 
 class LibraryView extends ConsumerStatefulWidget {
-  final NotifierProvider<AppUiState, AppUiModel> appUiStateProvider;
-  const LibraryView(this.appUiStateProvider, {super.key});
+  const LibraryView({super.key});
 
   @override
   ConsumerState createState() => _LibraryViewState();
@@ -50,18 +50,17 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final appUiModel = ref.watch(appUiStateProvider);
     final double topPadding = MediaQuery.paddingOf(context).top;
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
     final AsyncValue<bool> asyncIsListView = ref.watch(isListViewProvider);
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        statusBarColor: scaffoldBgColor,
-        statusBarBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        systemNavigationBarColor: (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
+        statusBarColor: context.scaffoldBackgroundColor,
+        statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: (context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
       ),
       child: NotificationListener(
         onNotification: (notification) => true,
@@ -69,13 +68,12 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
           slivers: [
             SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kToolbarHeight)),
 
-            LibraryViewHeader(appUiModel: appUiModel),
+            LibraryViewHeader(),
 
             PinnedHeaderSliver(child: ConstantSizing.columnSpacing(topPadding)),
 
             // All Courses Header
             AllCoursesHeader(
-              appUiModel: appUiModel,
               isListView: asyncIsListView.value ?? false,
               onTapGridButton: (){
                 ref.read(isListViewProvider.notifier).toggle();
@@ -88,7 +86,7 @@ class _LibraryViewState extends ConsumerState<LibraryView> with AutomaticKeepAli
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
             
             asyncIsListView.when(data: (data){
-              return AllCoursesSection(appUiStateProvider, isListView: data);
+              return AllCoursesSection(isListView: data);
             }, error: (_, __){
               return RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle));
             }, loading: (){

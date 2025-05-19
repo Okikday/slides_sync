@@ -1,15 +1,15 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 class HiveData {
-  late final String _boxName;
+  final String boxName;
   late Box _box;
   bool _isInitialized = false;
 
-  HiveData(this._boxName);
+  HiveData({this.boxName = "customBox"});
 
   Future<void> _initialize() async {
     if (!_isInitialized) {
-      _box = await Hive.openBox(_boxName);
+      _box = await Hive.openBox(boxName);
       _isInitialized = true;
     }
   }

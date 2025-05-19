@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AllCoursesHeader extends ConsumerWidget {
-  final AppUiModel appUiModel;
   final void Function() onTap;
   final void Function() onTapGridButton;
   final bool isListView;
-  const AllCoursesHeader({super.key, required this.appUiModel, required this.onTap, required this.isListView, required this.onTapGridButton});
+  const AllCoursesHeader({super.key, required this.onTap, required this.isListView, required this.onTapGridButton});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
     return PinnedHeaderSliver(
       child: ColoredBox(
         // color: Colors.lightBlueAccent.withAlpha(100),
-        color: scaffoldBgColor,
+        color: context.scaffoldBackgroundColor,
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
             child: GestureDetector(
@@ -33,7 +33,7 @@ class AllCoursesHeader extends ConsumerWidget {
                     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                     shape: CircleBorder(),
                     onClick: onTapGridButton,
-                    child: Icon(isListView ? Iconsax.menu : Icons.list_rounded, size: 20, color: appUiModel.isDarkMode ? Colors.white : Colors.black),
+                    child: Icon(isListView ? Iconsax.menu : Icons.list_rounded, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
                   ),
                 ],
               ),

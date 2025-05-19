@@ -5,13 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
+import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
-import 'package:slides_sync/shared/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses/create_course_view/modify_course_view.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateCourseView extends ConsumerStatefulWidget {
@@ -32,15 +31,15 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
 
   @override
   Widget build(BuildContext context) {
-    final AppUiModel appUiModel = ref.watch(appUiStateProvider);
-    final Color scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+    
+    
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        systemNavigationBarColor: scaffoldBgColor,
-        systemNavigationBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarColor: scaffoldBgColor,
-        statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor: context.scaffoldBackgroundColor,
+        systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarColor: context.scaffoldBackgroundColor,
+        statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
       child: Scaffold(
         appBar: AppBarContainer(
@@ -50,7 +49,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
             type: MaterialType.transparency,
             shape: LinearBorder(
               bottom: LinearBorderEdge(),
-              side: BorderSide(color: appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40)),
+              side: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40)),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
@@ -66,8 +65,8 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
         ),
 
         body: SizedBox(
-          height: appUiModel.deviceHeight,
-          width: appUiModel.deviceWidth,
+          height: context.deviceHeight,
+          width: context.deviceWidth,
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
             child: Stack(
@@ -85,9 +84,9 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                                 child: CircleAvatar(
                                   backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                                   radius:
-                                      appUiModel.deviceHeight > appUiModel.deviceWidth
-                                          ? appUiModel.deviceWidth * 0.4 / 2
-                                          : appUiModel.deviceHeight * 0.4 / 2,
+                                      context.deviceHeight > context.deviceWidth
+                                          ? context.deviceWidth * 0.4 / 2
+                                          : context.deviceHeight * 0.4 / 2,
                                   child: Icon(Iconsax.folder_add, size: 72)
                                       .animate()
                                       .scale(
@@ -114,21 +113,17 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             borderSide: BorderSide(
-                              color: appUiModel.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
+                              color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
 
                             ),
                           ),
-                          pixelWidth: appUiModel.deviceWidth,
+                          pixelWidth: context.deviceWidth,
                           pixelHeight: 60,
                           inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                           hint: "Enter course title",
                           inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
                           onTapOutside: () {},
                         ),
-
-                        ConstantSizing.columnSpacingMedium,
-
-                        CustomTextButton(label: "Add alternative course code", textColor: Colors.blue,onClick: (){}, ),
 
 
                         ConstantSizing.columnSpacing(72),
@@ -146,7 +141,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                     label: "Create Course",
                     textColor: Colors.white,
                     textSize: 14,
-                    pixelWidth: appUiModel.deviceWidth,
+                    pixelWidth: context.deviceWidth,
                     pixelHeight: 48,
                     borderRadius: 24,
                     onClick: () {
@@ -185,12 +180,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                       }
                       FocusScope.of(context).unfocus();
 
-                      final String courseId = Uuid().v4();
-                      final CourseModel courseModel = CourseModel(
-                        courseId: courseId,
-                        courseTitle: text,
-                        courseMetadata: {'creationTime': DateTime.now().toIso8601String()},
-                      );
+                      final CourseModel courseModel = CourseModel.create(courseTitle: text);
 
                       AppNavigator.of(context).modifyCoursePageRoute(courseModel);
                     },

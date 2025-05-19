@@ -24,7 +24,7 @@ class CourseCategoriesCard extends ConsumerWidget {
             CircleAvatar(child: Icon(icon)),
             ConstantSizing.rowSpacingMedium,
             Expanded(child: CustomText(title, fontSize: 14)),
-            CustomText("15", fontSize: 10, color: Colors.grey,),
+            CustomText("15 items", fontSize: 10, color: Colors.grey,),
           ],
         ),
       ),

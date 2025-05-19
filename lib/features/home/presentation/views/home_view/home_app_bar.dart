@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({
     super.key,
-    required this.appUiModel,
     required this.isScrolled,
     required this.topPadding,
     required this.onClickUserIcon,
@@ -17,7 +17,6 @@ class HomeAppBar extends StatelessWidget {
     required this.onClickNotification,
   });
 
-  final AppUiModel appUiModel;
   final bool isScrolled;
   final double topPadding;
 
@@ -38,9 +37,9 @@ class HomeAppBar extends StatelessWidget {
       surfaceTintColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor:
-            isScrolled ? (appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)) : Theme.of(context).scaffoldBackgroundColor,
-        statusBarBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarIconBrightness: appUiModel.isDarkMode ? Brightness.light : Brightness.dark,
+            isScrolled ? (context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)) : Theme.of(context).scaffoldBackgroundColor,
+        statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
       flexibleSpace: FlexibleSpaceBar(
         expandedTitleScale: 1.0,
@@ -54,7 +53,7 @@ class HomeAppBar extends StatelessWidget {
             shape: isScrolled ? LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: Colors.blueAccent.withAlpha(40))) : null,
             child:
                 isScrolled
-                    ? AnimatedContainer(duration: Durations.medium3, color: appUiModel.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9))
+                    ? AnimatedContainer(duration: Durations.medium3, color: context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9))
                     : ColoredBox(color: Theme.of(context).scaffoldBackgroundColor),
           ),
         ),
@@ -88,7 +87,7 @@ class HomeAppBar extends StatelessWidget {
                     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                     overlayColor: Colors.deepPurple.withAlpha(20),
                     onClick: onToggleFullScreen,
-                    child: Icon(Iconsax.crop, color: appUiModel.isDarkMode ? Colors.white : Colors.deepPurple),
+                    child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : Colors.deepPurple),
                   ),
 
                   CustomElevatedButton(
@@ -108,7 +107,7 @@ class HomeAppBar extends StatelessWidget {
                       //     child: CustomText("5", color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                       //   ),
                       // ),
-                      child: Icon(Iconsax.notification, color: appUiModel.isDarkMode && isScrolled ? Colors.white : Colors.black, size: 24),
+                      child: Icon(Iconsax.notification, color: context.isDarkMode && isScrolled ? Colors.white : Colors.black, size: 24),
                     ),
                   ),
                 ],

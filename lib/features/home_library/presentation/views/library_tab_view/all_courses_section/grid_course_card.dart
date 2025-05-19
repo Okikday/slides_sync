@@ -34,11 +34,11 @@ class GridCourseCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(padding: const EdgeInsets.only(top: 4), child: CustomText(courseCode, fontSize: 15, fontWeight: FontWeight.bold)),
+            // Padding(padding: const EdgeInsets.only(top: 4), child: CustomText(courseCode, fontSize: 15, fontWeight: FontWeight.bold)),
+            //
+            // ConstantSizing.columnSpacing(8),
 
-            ConstantSizing.columnSpacing(8),
-
-            CustomText(courseName, fontSize: 11, fontWeight: FontWeight.bold),
+            CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold),
 
             Expanded(
               child: Column(
