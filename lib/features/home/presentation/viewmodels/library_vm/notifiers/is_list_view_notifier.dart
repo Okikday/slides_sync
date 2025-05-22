@@ -1,10 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/data/hive_data/app_hive_data.dart';
 
-import '../../../../../data/hive_data/hive_data_paths.dart';
 
 class IsListViewNotifier extends AsyncNotifier<bool> {
-  final String _key = "${HiveDataPaths.views}/library/all_courses_section/var/isListView";
+  final String _key = "views/library/all_courses_section/var/isListView";
 
   @override
   Future<bool> build() async {

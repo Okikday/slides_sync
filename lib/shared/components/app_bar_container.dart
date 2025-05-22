@@ -23,7 +23,7 @@ class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
     this.topPadding,
     this.padding,
     required this.child,
-    this.appBarHeight,
+    this.appBarHeight = kToolbarHeight + 12,
   });
 
   @override
@@ -72,7 +72,7 @@ class _AppBarContainerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double topPadding = MediaQuery.paddingOf(context).top;
     return ColoredBox(
-      color: context.scaffoldBackgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      color: context.scaffoldBackgroundColor,
       child: Padding(
         padding: EdgeInsets.only(top: this.topPadding ?? topPadding),
         child: SizedBox(

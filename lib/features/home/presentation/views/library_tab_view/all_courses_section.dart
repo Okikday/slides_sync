@@ -9,11 +9,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_section/grid_course_card.dart';
-import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_section/list_course_card.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 import '../../../../../test/dummy_courses.dart';
+import 'all_courses_section/grid_course_card.dart';
+import 'all_courses_section/list_course_card.dart';
 
 class AllCoursesSection extends ConsumerStatefulWidget {
   final bool isListView;
@@ -26,13 +26,13 @@ class AllCoursesSection extends ConsumerStatefulWidget {
 
 class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
   late final AutoDisposeStateProviderFamily<bool, int> scaleClickProviderFamily;
-  late final AutoDisposeStateProvider<bool> isCourseClickedProvider;
+  late final StateProvider<bool> isCourseClickedProvider;
 
   @override
   void initState() {
     super.initState();
     scaleClickProviderFamily = AutoDisposeStateProviderFamily((ref, index) => false);
-    isCourseClickedProvider = AutoDisposeStateProvider((ref) => false);
+    isCourseClickedProvider = StateProvider((ref) => false);
   }
 
   @override
@@ -74,7 +74,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
                     if (context.mounted) {
                       AppNavigator.of(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
                     }
-                    isCourseClickedNotifier.update((cb) => false);
+                   if(context.mounted) isCourseClickedNotifier.update((cb) => false);
                   },
                   child: ListCourseCard(
                     isDarkMode: context.isDarkMode,

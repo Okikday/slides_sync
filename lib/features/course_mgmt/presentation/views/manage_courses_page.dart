@@ -65,7 +65,9 @@ class ManageCoursesPage extends ConsumerWidget {
                       },
                     ),
 
-                    ManageCourseButton(iconData: Iconsax.edit_2_copy, title: "Modify existing Course", onTap: () {}),
+                    ManageCourseButton(iconData: Iconsax.edit_2_copy, title: "Modify existing Course", onTap: () {
+                      // Select course to modify view
+                    }),
 
                     ManageCourseButton(iconData: Icons.explore_outlined, title: "Explore Online Library", onTap: () {}),
                   ],

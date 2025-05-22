@@ -1,18 +1,22 @@
+import 'dart:developer';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
-import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/notifiers/is_home_scrolled_notifer.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_app_bar.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recents_section_body.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
+import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 import 'home_body/recents_section_header.dart';
 import 'home_dash_board.dart';
 
 class HomeBody extends ConsumerStatefulWidget {
-  final NotifierProvider<IsHomeScrolledNotifier, bool> isScrolledProvider;
+  final AutoDisposeStateProvider<bool> isScrolledProvider;
   const HomeBody({super.key, required this.isScrolledProvider});
 
   @override
@@ -24,12 +28,14 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
     final bool isScrolled = ref.watch(widget.isScrolledProvider);
-    final topPadding = MediaQuery.paddingOf(context).top;
+    final topPadding = context.padding.top;
 
     return NestedScrollView(
       physics: NeverScrollableScrollPhysics(),
       headerSliverBuilder: (context, isInnerBoxScrolled) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(widget.isScrolledProvider.notifier).update(isInnerBoxScrolled));
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => ref.read(widget.isScrolledProvider.notifier).update((cb) => isInnerBoxScrolled),
+        );
         return [
           HomeAppBar(
             title: 'Happy Reading',
@@ -39,7 +45,9 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
               Scaffold.of(context).openDrawer();
               // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Theme.of(context).scaffoldBackgroundColor));
             },
-            onToggleFullScreen: () {},
+            onToggleFullScreen: () {
+              UiUtils.showFlushBar(context, msg: "Toggles full screen");
+            },
             onClickNotification: () {},
           ),
         ];
@@ -48,7 +56,6 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
-
           SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
           // Dashboard Section
@@ -67,11 +74,7 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
                     shrinkExtent: context.deviceWidth * 0.95,
                     itemExtent: context.deviceWidth,
                     children: [
-                      HomeDashBoard(
-                        courseName: 'Foundation of Sequential Programming',
-                        detail: 'CSC 213',
-                        progressValue: 0.45,
-                      ),
+                      HomeDashBoard(courseName: 'Foundation of Sequential Programming', detail: 'CSC 213', progressValue: 0.45, completed: false,),
                       HomeDashBoard(courseName: 'Software Workshop II', detail: 'CSC 211', progressValue: 0.45),
                       HomeDashBoard(courseName: 'Mathematical Methods I', detail: 'MAT 233', progressValue: 0.45),
                     ],
@@ -89,9 +92,7 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
           // Recents Section Body
           RecentsSectionBody(),
 
-          SliverToBoxAdapter(
-            child: ConstantSizing.columnSpacing(isScrolled ? kBottomNavigationBarHeight + topPadding : 0),
-          ),
+          SliverToBoxAdapter(child: ConstantSizing.columnSpacing(isScrolled ? kBottomNavigationBarHeight + topPadding : 0)),
         ],
       ),
     );

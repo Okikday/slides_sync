@@ -19,7 +19,7 @@ class HomeDrawer extends ConsumerWidget {
             ConstantSizing.columnSpacingSmall,
             CustomText("Username"),
             ConstantSizing.columnSpacingSmall,
-            CustomText("200 Level - 2nd Semester", color: Colors.grey,),
+            CustomText("Add description", color: Colors.grey,),
         
             ConstantSizing.columnSpacingExtraLarge,
         

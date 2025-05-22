@@ -107,7 +107,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                           backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                                           shape: CircleBorder(),
                                           contentPadding: EdgeInsets.all(12),
-                                          child: Icon(Iconsax.heart_copy, size: 32, color: CustomText("").effectiveStyle(context).color),
+                                          child: Icon(Iconsax.star_copy, size: 32, color: CustomText("").effectiveStyle(context).color),
                                         ),
                                         CustomElevatedButton(
                                           backgroundColor: Colors.lightBlueAccent.withAlpha(40),
@@ -121,72 +121,38 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                 ],
                               ),
 
-                              ConstantSizing.columnSpacingMedium,
 
-                              Divider(color: Colors.blueGrey.withAlpha(40)),
-
-                              ConstantSizing.columnSpacingSmall,
+                              ConstantSizing.columnSpacingLarge,
 
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 12),
-                                  child: Row(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(child: CustomText("Title", fontSize: 15, fontWeight: FontWeight.bold)),
-                                      CustomTextButton(
-                                        pixelHeight: 28,
-                                        borderRadius: 16.0,
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                                        backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                                        child: CustomText("pdf", fontWeight: FontWeight.bold, fontSize: 15),
-                                      ),
+                                      CustomText(widget.recentDialogModel.title, fontSize: 18, fontWeight: FontWeight.bold,),
+                                      ConstantSizing.columnSpacingSmall,
+                                      CustomText("Slide 10 - 20 pages", color: Colors.grey,)
                                     ],
                                   ),
                                 ),
                               ),
 
-                              ConstantSizing.columnSpacingMedium,
+                              if(widget.recentDialogModel.description.isNotEmpty) ConstantSizing.columnSpacingMedium,
 
-                              Align(
+                              if(widget.recentDialogModel.description.isNotEmpty) Divider(color: Colors.blueGrey.withAlpha(40)),
+
+                              if(widget.recentDialogModel.description.isNotEmpty) Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  child: CustomText("Introduction to Java Programming"),
-                                ),
-                              ),
-
-                              ConstantSizing.columnSpacingMedium,
-
-                              Divider(color: Colors.blueGrey.withAlpha(40)),
-
-                              ConstantSizing.columnSpacingSmall,
-
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  child: CustomText("Tags", fontSize: 15, fontWeight: FontWeight.bold),
-                                ),
-                              ),
-
-                              ConstantSizing.columnSpacingMedium,
-
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 12),
-                                  child: Wrap(
-                                    crossAxisAlignment: WrapCrossAlignment.center,
-                                    spacing: 12.0,
+                                  padding: const EdgeInsets.only(left: 12, top: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      CustomTextButton(
-                                        pixelHeight: 28,
-                                        borderRadius: 16.0,
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                                        backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                                        child: CustomText("none", fontWeight: FontWeight.bold, fontSize: 15),
-                                      ),
+                                      CustomText("Description", fontSize: 16, fontWeight: FontWeight.bold,),
+                                      ConstantSizing.columnSpacingSmall,
+                                      CustomText(widget.recentDialogModel.description, color: Colors.grey,)
                                     ],
                                   ),
                                 ),
@@ -228,6 +194,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   ],
                                 ),
                               ),
+
+                              Divider(color: Colors.blueGrey.withAlpha(40)),
 
                               ConstantSizing.columnSpacing(24),
                             ],

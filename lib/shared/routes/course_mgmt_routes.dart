@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses_page.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course_view.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
@@ -20,7 +21,7 @@ class CourseMgmtRoute {
           duration: Durations.extralong1,
           reverseDuration: Durations.medium1,
           curve: CustomCurves.defaultIosSpring,
-          child: CourseDetailsPage(),
+          child: ManageCoursesPage(),
         ),
     routes: [
       //CREATE COURSE VIEW NAVIGATION

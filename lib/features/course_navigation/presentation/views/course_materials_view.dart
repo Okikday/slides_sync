@@ -55,15 +55,6 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
               index: index,
               isCourseMaterialCardExpandedFamily: isCourseMaterialCardExpandedFamily,
               listLength: CourseMaterialCardTestData.dummyCourseMaterials.length,
-            ).animate().slideX(
-              begin:
-                  0.2 *
-                  (index +
-                      (CourseMaterialCardTestData.dummyCourseMaterials.length * 0.1) /
-                          CourseMaterialCardTestData.dummyCourseMaterials.length),
-              end: 0,
-              curve: CustomCurves.bouncySpring,
-              duration: Durations.extralong4,
             );
           },
         ),

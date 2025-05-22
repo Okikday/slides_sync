@@ -3,7 +3,7 @@ import 'package:slides_sync/features/course_mgmt/data/models/course_model/course
 class ModifyCourseModelNotifier extends Notifier<CourseModel> {
   @override
   CourseModel build() {
-    return CourseModel();
+    return CourseModel.create(courseTitle: "");
   }
 
   void update(CourseModel courseModel) {

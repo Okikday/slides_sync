@@ -6,22 +6,21 @@ import 'package:wave/wave.dart';
 
 class StarWaveFilledProgressWidget extends ConsumerWidget {
   final double progress;
-  const StarWaveFilledProgressWidget({
-    super.key,
-    required this.progress
-  });
+  final double width;
+  final double height;
+  const StarWaveFilledProgressWidget({super.key, required this.progress, this.width = 100, this.height = 100});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final double fill;
-    if(progress < 0.0 || progress > 1.0){
+    if (progress < 0.0 || progress > 1.0) {
       fill = 0.0;
-    }else{
+    } else {
       fill = 1.0 - progress;
     }
     return SizedBox(
-      width: 100,
-      height: 100,
+      width: width,
+      height: height,
       child: Stack(
         clipBehavior: Clip.hardEdge,
         children: [
@@ -31,17 +30,9 @@ class StarWaveFilledProgressWidget extends ConsumerWidget {
               clipBehavior: Clip.hardEdge,
               child: WaveWidget(
                 config: CustomConfig(
-                  colors: [
-                    Colors.deepPurple.withAlpha(50),
-                    Colors.deepPurple.withAlpha(80),
-                  ],
-                  durations: [
-                    5000,
-                    4000,
-                  ],
-                  heightPercentages: [
-                    fill - 0.01, fill + 0.01
-                  ],
+                  colors: [Colors.deepPurple.withAlpha(50), Colors.deepPurple.withAlpha(80)],
+                  durations: [5000, 4000],
+                  heightPercentages: [fill - 0.01, fill + 0.01],
                 ),
                 backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                 size: Size(double.infinity, double.infinity),
@@ -51,15 +42,20 @@ class StarWaveFilledProgressWidget extends ConsumerWidget {
           ),
 
           Positioned.fill(
-            child: Align(alignment: Alignment.center, child: CustomText("${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%", fontWeight: FontWeight.bold, textAlign: TextAlign.center,)),
-          )
+            child: Align(
+              alignment: Alignment.center,
+              child: CustomText(
+                "${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%",
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-
 
 /// Widget's clipped
 

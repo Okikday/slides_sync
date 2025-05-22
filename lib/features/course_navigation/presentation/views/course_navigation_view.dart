@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_navigation/collection_card_tile.dart';
@@ -15,6 +16,7 @@ import 'package:slides_sync/test/dummy_slides.dart';
 import '../../../../core/utils/ui_utils.dart';
 import '../../../../shared/components/app_bar_container.dart';
 import '../../../../shared/components/app_bar_container_child.dart';
+import 'course_materials_view.dart';
 import 'course_navigation/path_indicator_header.dart';
 
 class CourseNavigationView extends ConsumerStatefulWidget {
@@ -29,8 +31,7 @@ class CourseNavigationView extends ConsumerStatefulWidget {
 class _CourseNavigationViewState extends ConsumerState<CourseNavigationView> {
   @override
   Widget build(BuildContext context) {
-    
-    
+    final List<String> categoriesList = ["Slides", "Textbooks", "Questions", "Additional", "Tips"];
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -59,19 +60,32 @@ class _CourseNavigationViewState extends ConsumerState<CourseNavigationView> {
             // _buildExample(),
             // _buildExample(),
             SliverList.builder(
-              itemCount: DummySlides.dummySlides.length,
+              itemCount: categoriesList.length,
               itemBuilder: (context, index) {
                 return CollectionCardTile(
                       context.isDarkMode,
-                      title: DummySlides.dummySlides[index]['title'] as String? ?? "Unknown",
+                      title: categoriesList[index],
                       contentCount: 12,
+                      onTap: () {
+                        if (context.mounted) {
+                          Navigator.of(context).push(
+                            PageTransition(
+                              type: PageTransitionType.rightToLeftWithFade,
+                              duration: Durations.extralong3,
+                              reverseDuration: Durations.medium1,
+                              curve: CustomCurves.snappySpring,
+                              child: CourseMaterialsView(),
+                            ),
+                          );
+                        }
+                      },
                     )
                     .animate()
                     .slideY(
                       begin: 0.5 * (index / DummySlides.dummySlides.length + 1),
                       duration: Durations.extralong4,
                       curve: CustomCurves.bouncySpring,
-                )
+                    )
                     .fadeIn();
               },
             ),

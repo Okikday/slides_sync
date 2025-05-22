@@ -37,5 +37,6 @@ class SlidesRepoColors {
   static const Color lightGray = Color(0xFFEDEDED);
   static const Color altLightGray = Color(0xFFC5C5C5);
   static const Color darkBlue = Color(0xFF242432);
+  static const Color deepBlue = Color(0xff0e1d27);
 
 }

@@ -1,11 +1,8 @@
 import 'dart:developer';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
@@ -65,8 +62,8 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
         LoadingDialog.showLoadingDialog(
           context,
-          scaffoldBgColor: Colors.black.withValues(alpha: 0.2),
-          blurSigma: 5,
+          barrierColor: Colors.black.withValues(alpha: 0.4),
+          blurSigma: 4,
           transitionDuration: Durations.medium2,
           loadingInfoWidget: AppAlertDialog(
             title: "Confirm exit",

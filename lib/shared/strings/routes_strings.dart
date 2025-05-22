@@ -8,5 +8,6 @@ class RoutesStrings {
   static const manageCoursesView = "/manageCoursesView";
     static const createCoursePage = "createCoursePage";
     static const modifyCoursePage = "modifyCoursePage";
+    static const courseMaterialsPage = "courseMaterialsPage";
 
 }

@@ -29,12 +29,11 @@ class HomeDashBoard extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
       child: Container(
-        height: 200,
         constraints: BoxConstraints(maxHeight: 200),
         width: context.deviceWidth,
         padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
         decoration: BoxDecoration(
-          color: (context.isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
+          color: (context.isDarkMode ? SlidesRepoColors.deepBlue : SlidesRepoColors.lightGray),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(width: 2, color: Colors.lightBlueAccent.withAlpha(25)),
         ),
@@ -79,6 +78,8 @@ class HomeDashBoard extends ConsumerWidget {
               ],
             ),
 
+            ConstantSizing.columnSpacingMedium,
+
             Expanded(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -98,15 +99,15 @@ class HomeDashBoard extends ConsumerWidget {
                       },
                     ),
                   ),
-                  CustomElevatedButton(
-                    pixelHeight: 48,
-                    overlayColor: Colors.white.withAlpha(50),
-                    backgroundColor: Colors.black,
-                    onClick: () {
-                      if (onSettingTapped != null) onSettingTapped!();
-                    },
-                    child: Icon(Iconsax.setting_4, color: Colors.white),
-                  ),
+                  // CustomElevatedButton(
+                  //   pixelHeight: 48,
+                  //   overlayColor: Colors.white.withAlpha(50),
+                  //   backgroundColor: Colors.black,
+                  //   onClick: () {
+                  //     if (onSettingTapped != null) onSettingTapped!();
+                  //   },
+                  //   child: Icon(Iconsax.setting_4, color: Colors.white),
+                  // ),
                 ],
               ),
             ),

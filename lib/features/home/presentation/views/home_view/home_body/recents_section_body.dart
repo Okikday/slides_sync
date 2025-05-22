@@ -3,7 +3,6 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
-import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recent_dialog.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
@@ -17,7 +16,7 @@ class RecentsSectionBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
+
     return SliverList.builder(
       itemCount: DummySlides.dummySlides.length,
       itemBuilder: (context, index) {
@@ -30,7 +29,7 @@ class RecentsSectionBody extends ConsumerWidget {
             dataModel: RecentListTileModel(
               title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
             subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
-            extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+            // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
             progressLevel: ProgressLevel.neutral,
             isStarred: false,
             progress: DummySlides.dummySlides[index]['progress'] as double?,
@@ -38,19 +37,16 @@ class RecentsSectionBody extends ConsumerWidget {
               LoadingDialog.showLoadingDialog(
                 context,
                 canPop: true,
-                blurSigma: 2,
+                blurSigma: 4,
+                barrierColor: Colors.black.withValues(alpha: 0.4),
                 transitionDuration: Duration(milliseconds: 550),
                 loadingInfoWidget: RecentDialog(
                   scaffoldBgColor: context.scaffoldBackgroundColor,
                   heroTag: "recents_list_tile$index",
                   recentDialogModel: RecentDialogModel(
                     isStarred: false,
-                    hasNote: false,
-                    title: "Figure it out",
-                    fileType: "pdf",
-                    tags: ["none", "lol"],
-                    canShare: true,
-                    canDelete: false,
+                    title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+                    description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
                   ),
                 ),
               );

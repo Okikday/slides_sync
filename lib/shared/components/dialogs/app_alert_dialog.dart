@@ -15,7 +15,7 @@ class AppAlertDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isDarkMode = (Theme.of(context).brightness == Brightness.dark);
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -33,7 +33,7 @@ class AppAlertDialog extends ConsumerWidget {
                 border: Border.all(width: 1, color: Colors.lightBlueAccent.withAlpha(25)),
                 boxShadow: [
                   BoxShadow(
-                    color: isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20),
+                    color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20),
                     blurRadius: 8,
                     offset: Offset(0, 0),
                     blurStyle: BlurStyle.inner,
@@ -51,7 +51,7 @@ class AppAlertDialog extends ConsumerWidget {
                     child: Center(child: CustomText(title, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center)),
                   ),
                   ConstantSizing.columnSpacingSmall,
-                  Divider(color: isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
+                  Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
                   ConstantSizing.columnSpacingSmall,
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: CustomText(content, fontSize: 15)),
                   ConstantSizing.columnSpacingHuge,

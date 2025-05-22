@@ -30,5 +30,8 @@ class AppNavigator {
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
   }
 
+  // void courseMaterialsPageRoute(){
+  //   final route =
+  // }
 
 }
