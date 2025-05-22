@@ -2,7 +2,6 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/app_ui_model.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AllCoursesHeader extends ConsumerWidget {
@@ -25,8 +24,6 @@ class AllCoursesHeader extends ConsumerWidget {
               child: Row(
                 children: [
                   Expanded(child: CustomText("All Courses", fontSize: 20, fontWeight: FontWeight.bold)),
-
-                  // CustomElevatedButton(backgroundColor: Colors.transparent, shape: CircleBorder(), child: Icon(Iconsax.crop_copy)),
 
                   CustomElevatedButton(
                     contentPadding: EdgeInsets.all(8),

@@ -1,12 +1,13 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class GridCourseCard extends ConsumerWidget {
   const GridCourseCard({
     super.key,
-    required this.courseCode,
+    this.courseCode = '',
     required this.courseName,
     required this.categoriesCount,
     required this.progress,
@@ -34,24 +35,37 @@ class GridCourseCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Padding(padding: const EdgeInsets.only(top: 4), child: CustomText(courseCode, fontSize: 15, fontWeight: FontWeight.bold)),
-            //
-            // ConstantSizing.columnSpacing(8),
-
-            CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold),
-
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 8,
                 children: [
-                  // CustomText("This is a Content."),
-                  CustomText("$categoriesCount categories", fontSize: 14),
+                  if (courseCode.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: CustomText(courseCode, fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+
+                  Flexible(
+                    child: CustomText(
+                      courseName,
+                      fontSize: courseCode.isNotEmpty ? 12 : 14,
+                      fontWeight: courseCode.isEmpty ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
                 ],
               ),
             ),
 
-            ConstantSizing.columnSpacing(16),
+            ConstantSizing.columnSpacingSmall,
+
+            CustomText("$categoriesCount categories", fontSize: 12, color: context.isDarkMode ? Colors.grey : Colors.deepPurple),
+
+            ConstantSizing.columnSpacing(10.0),
+
             Row(
+              spacing: 8.0,
               children: [
                 Expanded(
                   child: LinearProgressIndicator(
@@ -62,8 +76,7 @@ class GridCourseCard extends ConsumerWidget {
                     color: Colors.deepPurple, //.withAlpha(40)
                   ),
                 ),
-                ConstantSizing.rowSpacing(8),
-                CustomText("${(progress * 100).truncate()}%", fontSize: 12),
+                CustomText("${(progress * 100).truncate()}%", fontSize: 12, fontWeight: FontWeight.bold),
               ],
             ),
           ],

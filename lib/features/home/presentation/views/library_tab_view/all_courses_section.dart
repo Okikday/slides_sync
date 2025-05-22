@@ -9,9 +9,6 @@ import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_navigation/presentation/views/course_details_page.dart';
-import 'package:slides_sync/features/home_library/presentation/viewmodels/notifiers/course_card_scale_click_family_notifier.dart';
-import 'package:slides_sync/features/home_library/presentation/viewmodels/notifiers/is_course_card_clicked_notifier.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_section/grid_course_card.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_section/list_course_card.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
@@ -28,28 +25,25 @@ class AllCoursesSection extends ConsumerStatefulWidget {
 }
 
 class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
-  late final NotifierProviderFamily<CourseCardScaleClickFamilyNotifier, bool, int> scaleClickProviderFamily;
-
-  late final NotifierProvider<IsCourseCardClickedNotifier, bool> isCourseClickedProvider;
+  late final AutoDisposeStateProviderFamily<bool, int> scaleClickProviderFamily;
+  late final AutoDisposeStateProvider<bool> isCourseClickedProvider;
 
   @override
   void initState() {
     super.initState();
-    scaleClickProviderFamily = NotifierProviderFamily<CourseCardScaleClickFamilyNotifier, bool, int>(
-      CourseCardScaleClickFamilyNotifier.new,
-    );
-    isCourseClickedProvider = NotifierProvider<IsCourseCardClickedNotifier, bool>(IsCourseCardClickedNotifier.new);
+    scaleClickProviderFamily = AutoDisposeStateProviderFamily((ref, index) => false);
+    isCourseClickedProvider = AutoDisposeStateProvider((ref) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.isListView) {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: 12),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(childCount: 7, (context, index) {
-            final NotifierFamilyProvider<CourseCardScaleClickFamilyNotifier, bool, int> provider = scaleClickProviderFamily(index);
+            final AutoDisposeStateProvider<bool> provider = scaleClickProviderFamily(index);
+            updateScaleClickProvider(bool newValue)=> ref.read(provider.notifier).update((cb) => newValue);
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: AnimatedScale(
@@ -60,28 +54,27 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
                   borderRadius: BorderRadius.circular(12),
                   onTapDown: (details) {
                     log("Detected tap down...");
-                    ref.read(provider.notifier).update(true);
+                    updateScaleClickProvider(true);
                   },
                   onTapCancel: () {
                     log("Detected tap cancel...");
-                    ref.read(provider.notifier).update(false);
+                    updateScaleClickProvider(false);
                   },
                   onTapUp: (details) async {
                     log("Detected tap up...");
                     await Future.delayed(Durations.short2);
-                    ref.read(provider.notifier).update(false);
+                    updateScaleClickProvider(false);
                   },
                   onTap: () async {
-                    final bool isCourseOpen = ref.watch(isCourseClickedProvider);
-                    if (isCourseOpen) return;
-                    final CourseDetailsPage cachePage = CourseDetailsPage();
-                    ref.read(isCourseClickedProvider.notifier).update(true); // Tell that a course is currently opened
+                    final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
+                    if (isCourseClickedNotifier.state) return;
+                    isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
 
                     await Future.delayed(Durations.short4);
                     if (context.mounted) {
                       AppNavigator.of(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
                     }
-                    ref.read(isCourseClickedProvider.notifier).update(false);
+                    isCourseClickedNotifier.update((cb) => false);
                   },
                   child: ListCourseCard(
                     isDarkMode: context.isDarkMode,
@@ -106,7 +99,8 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
             crossAxisSpacing: 12,
           ),
           delegate: SliverChildBuilderDelegate(childCount: 7, (context, index) {
-            final NotifierFamilyProvider<CourseCardScaleClickFamilyNotifier, bool, int> provider = scaleClickProviderFamily(index);
+            final AutoDisposeStateProvider<bool> provider = scaleClickProviderFamily(index);
+            updateScaleClickProvider(bool newValue)=> ref.read(provider.notifier).update((cb) => newValue);
             return AnimatedScale(
               scale: ref.watch(provider) ? 0.8 : 1.0,
               duration: Durations.medium3,
@@ -115,28 +109,27 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
                 borderRadius: BorderRadius.circular(12),
                 onTapDown: (details) {
                   log("Detected tap down...");
-                  ref.read(provider.notifier).update(true);
+                  updateScaleClickProvider(true);
                 },
                 onTapCancel: () {
                   log("Detected tap cancel...");
-                  ref.read(provider.notifier).update(false);
+                  updateScaleClickProvider(false);
                 },
                 onTapUp: (details) async {
                   log("Detected tap up...");
                   await Future.delayed(Durations.short2);
-                  ref.read(provider.notifier).update(false);
+                  updateScaleClickProvider(false);
                 },
                 onTap: () async {
-                  final bool isCourseOpen = ref.watch(isCourseClickedProvider);
-                  if (isCourseOpen) return;
-                  final CourseDetailsPage cachePage = CourseDetailsPage();
-                  ref.read(isCourseClickedProvider.notifier).update(true); // Tell that a course is currently opened
+                  final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
+                  if (isCourseClickedNotifier.state) return;
+                  isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
 
                   await Future.delayed(Durations.short4);
                   if (context.mounted) {
                     AppNavigator.of(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
                   }
-                  ref.read(isCourseClickedProvider.notifier).update(false);
+                  isCourseClickedNotifier.update((cb) => false);
                 },
                 child: GridCourseCard(
                   isDarkMode: context.isDarkMode,

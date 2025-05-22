@@ -3,31 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/utils/app_ui_state.dart';
+import 'package:slides_sync/features/home_library/presentation/viewmodels/notifiers/is_list_view_notifier.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_section.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/library_view_header.dart';
 import 'package:slides_sync/shared/components/loading_view.dart';
-import 'package:slides_sync/data/hive_data/app_hive_data.dart';
-import 'package:slides_sync/data/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/features/home_library/presentation/views/library_tab_view/all_courses_header.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-class IsListViewNotifier extends AsyncNotifier<bool> {
-  final String _key = "${HiveDataPaths.views}/library/all_courses_section/var/isListView";
-
-  @override
-  Future<bool> build() async {
-    final value = await AppHiveData.instance.getData(key: _key);
-    return value is bool ? value : true;
-  }
-
-  Future<void> toggle() async {
-    final current = state.value ?? true;
-    final updated = !current;
-    state = AsyncData(updated);
-    await AppHiveData.instance.setData(key: _key, value: updated);
-  }
-}
 
 class LibraryView extends ConsumerStatefulWidget {
   const LibraryView({super.key});

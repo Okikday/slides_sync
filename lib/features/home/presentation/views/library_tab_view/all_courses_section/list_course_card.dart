@@ -2,13 +2,14 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class ListCourseCard extends ConsumerWidget {
   const ListCourseCard({
     super.key,
-    required this.courseCode,
+    this.courseCode = '',
     required this.courseName,
     required this.categoriesCount,
     required this.progress,
@@ -32,8 +33,8 @@ class ListCourseCard extends ConsumerWidget {
       label: CircleAvatar(radius: 5, backgroundColor: dotColor),
       offset: Offset(-12, 12),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        height: 132,
+        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        constraints: BoxConstraints(minHeight: 120, maxHeight: 140),
         decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Row(
           children: [
@@ -61,11 +62,11 @@ class ListCourseCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Padding(padding: const EdgeInsets.only(top: 4), child: CustomText(courseCode, fontSize: 13, fontWeight: FontWeight.bold)),
-                  //
-                  // ConstantSizing.columnSpacingSmall,
+                  if (courseCode.isNotEmpty) CustomText(courseCode, fontSize: 13),
 
-                  CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold),
+                  if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(4),
+
+                  Flexible(child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold)),
 
                   ConstantSizing.columnSpacingSmall,
 
@@ -73,10 +74,9 @@ class ListCourseCard extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // CustomText("This is a Content."),
-                      CustomText("$categoriesCount categories", fontSize: 12),
+                      CustomText("$categoriesCount categories", fontSize: 12, color: context.isDarkMode ? Colors.grey : Colors.deepPurple),
                     ],
                   ),
-
                 ],
               ),
             ),
@@ -90,7 +90,11 @@ class ListCourseCard extends ConsumerWidget {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    child: CircularProgressIndicator(strokeCap: StrokeCap.round, value: progress, backgroundColor: Colors.black.withAlpha(40)),
+                    child: CircularProgressIndicator(
+                      strokeCap: StrokeCap.round,
+                      value: progress,
+                      backgroundColor: Colors.black.withAlpha(40),
+                    ),
                   ),
 
                   Align(alignment: Alignment.center, child: CustomText("${(progress * 100).truncate()}%", fontSize: 12)),
