@@ -25,12 +25,14 @@ class CreateCourseView extends ConsumerStatefulWidget {
 }
 
 class _CreateCourseViewState extends ConsumerState<CreateCourseView> with SingleTickerProviderStateMixin {
+  late final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
   late final TextEditingController courseNameController;
   late final TextEditingController courseCodeController;
 
   @override
   void initState() {
     super.initState();
+    isCourseCodeFieldVisible = AutoDisposeStateProvider((ref) => false);
     courseNameController = TextEditingController();
     courseCodeController = TextEditingController();
   }
@@ -64,16 +66,22 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                     child: Column(
                       children: [
                         ConstantSizing.columnSpacingMedium,
-                        
+
                         AddImageAvatar(),
 
                         ConstantSizing.columnSpacing(56),
 
-                        InputCourseTitleField(courseNameController: courseNameController),
+                        InputCourseTitleField(
+                          courseNameController: courseNameController,
+                          isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                        ),
 
                         ConstantSizing.columnSpacingLarge,
 
-                        InputCourseCodeField(courseCodeController: courseCodeController,),
+                        InputCourseCodeField(
+                          courseCodeController: courseCodeController,
+                          isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                        ),
 
                         ConstantSizing.columnSpacing(72),
                       ],
@@ -81,7 +89,11 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                   ),
                 ),
 
-                CreateCourseButton(courseNameController: courseNameController),
+                CreateCourseButton(
+                  courseNameController: courseNameController,
+                  courseCodeController: courseCodeController,
+                  isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                ),
               ],
             ),
           ),
@@ -91,6 +103,15 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
   }
 }
 
-
-
-
+String? checkIfCanCreateCourse(String courseName, String courseCode, bool isCourseCodeVisible, {int minLength = 2, int maxLength = 64}) {
+  if (courseName.isEmpty || courseName.length < minLength || courseName.length > maxLength || double.tryParse(courseName) != null) {
+    if(courseName.isEmpty) return "Kindly fill the course title field!";
+    if (courseName.length < 2) return "Course title too short!";
+    if (courseName.length > 64) return "Course title too long!";
+    return "Kindly input a valid course title!";
+  }
+  else if (isCourseCodeVisible && courseCode.length < 2 ) {
+    return "Kindly input a valid course code or hide it";
+  }
+  return null;
+}

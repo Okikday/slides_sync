@@ -1,17 +1,19 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-class InputCourseTitleField extends StatelessWidget {
+class InputCourseTitleField extends ConsumerWidget {
   const InputCourseTitleField({
     super.key,
     required this.courseNameController,
+    required this.isCourseCodeFieldVisible,
   });
-
+   final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseNameController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CustomTextfield(
       controller: courseNameController,
       backgroundColor: Colors.grey.withAlpha(40),
@@ -35,9 +37,13 @@ class InputCourseTitleField extends StatelessWidget {
         pixelHeight: 50,
         borderRadius: 12,
         overlayColor: Colors.deepPurple.withAlpha(40),
-        onClick: () {},
+        onClick: () {
+          final bool isCourseCodeVisible = ref.read(isCourseCodeFieldVisible.notifier).state;
+          if(isCourseCodeVisible) FocusScope.of(context).unfocus();
+          ref.read(isCourseCodeFieldVisible.notifier).update((cb) => !ref.read(isCourseCodeFieldVisible.notifier).state);
+        },
         backgroundColor: Colors.transparent,
-        child: Icon(Icons.keyboard_arrow_down_rounded, size: 30),
+        child: Tooltip(message: "Add Optional Course code", triggerMode: TooltipTriggerMode.longPress, child: Icon(ref.watch(isCourseCodeFieldVisible) ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded, size: 30)),
       ),
       alwaysShowSuffixIcon: true,
     );

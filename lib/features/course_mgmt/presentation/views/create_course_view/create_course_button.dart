@@ -1,20 +1,30 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view.dart';
+import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-class CreateCourseButton extends StatelessWidget {
+class CreateCourseButton extends ConsumerWidget {
   const CreateCourseButton({
     super.key,
     required this.courseNameController,
+    required this.courseCodeController,
+    required this.isCourseCodeFieldVisible,
   });
 
   final TextEditingController courseNameController;
+  final TextEditingController courseCodeController;
+  final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Positioned(
       bottom: 12,
       left: 0,
@@ -27,45 +37,30 @@ class CreateCourseButton extends StatelessWidget {
         pixelWidth: context.deviceWidth,
         pixelHeight: 48,
         borderRadius: 24,
-        onClick: () {
-          final String text = courseNameController.text.trim();
-          if (text.isEmpty || text.length < 2 || text.length > 64 || double.tryParse(text) != null) {
-            final textStyle = CustomText("").effectiveStyle(context);
-            if (text.isEmpty) {
-              CustomSnackBar.showSnackBar(
-                context,
-                content: "Kindly input into the Text Field!",
-                usePrimaryColor: true,
-                textStyle: textStyle,
-                icon: Icon(Iconsax.info_circle_copy, color: textStyle.color),
-                margin: EdgeInsets.only(bottom: 64, left: 16, right: 16),
-              );
-            } else if (text.length > 64) {
-              CustomSnackBar.showSnackBar(
-                context,
-                content: "Course name input too long!",
-                usePrimaryColor: true,
-                textStyle: textStyle,
-                icon: Icon(Iconsax.info_circle_copy, color: textStyle.color),
-                margin: EdgeInsets.only(bottom: 64, left: 16, right: 16),
-              );
-            } else {
-              CustomSnackBar.showSnackBar(
-                context,
-                content: "Kindly input a valid Course name!",
-                usePrimaryColor: true,
-                textStyle: textStyle,
-                icon: Icon(Iconsax.info_circle_copy, color: textStyle.color),
-                margin: EdgeInsets.only(bottom: 64, left: 16, right: 16),
-              );
-            }
+        onClick: () async{
+          final String courseName = courseNameController.text.trim();
+          final String courseCode = courseCodeController.text.trim();
+          final String? errorString = checkIfCanCreateCourse(courseName, courseCode, ref.watch(isCourseCodeFieldVisible));
+          if (errorString != null) {
+            UiUtils.showFlushBar(context, msg: errorString);
             return;
           }
           FocusScope.of(context).unfocus();
-    
-          final CourseModel courseModel = CourseModel.create(courseTitle: text);
-    
-          AppNavigator.of(context).modifyCoursePageRoute(courseModel);
+
+          await Future.delayed(Durations.medium2);
+
+         if(context.mounted) LoadingDialog.showLoadingDialog(context, msg: "Adding Course");
+
+          await Future.delayed(Duration(seconds: 1));
+
+          if(context.mounted) LoadingDialog.hideLoadingDialog(context);
+
+          await Future.delayed(Durations.short4);
+
+
+          final CourseModel courseModel = CourseModel.create(courseTitle: CourseFormatter.joinCodeToTitle(courseCode, courseName));
+
+          if(context.mounted) AppNavigator.of(context).modifyCoursePageRoute(courseModel);
         },
       ),
     );

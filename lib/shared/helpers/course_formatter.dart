@@ -1,6 +1,6 @@
 class CourseFormatter{
   /// Returns [CourseTitle, CourseCode]
-  List<String> separateCodeFromTitle(String joinedStr){
+  static List<String> separateCodeFromTitle(String joinedStr){
     final regex = RegExp(r'^\*\[([^\]]+)\]\*(.*)');
     final match = regex.firstMatch(joinedStr);
     if(match != null){
@@ -12,5 +12,10 @@ class CourseFormatter{
     }else{
       return [joinedStr];
     }
+  }
+
+  static String joinCodeToTitle(String courseCode, String courseName) {
+    if(courseCode.isEmpty || courseCode.length < 2) return courseName;
+    return "*[$courseCode]* $courseName";
   }
 }

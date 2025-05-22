@@ -29,8 +29,6 @@ class _CourseDescriptionDialogState extends ConsumerState<CourseDescriptionDialo
 
   @override
   Widget build(BuildContext context) {
-    
-    final scaffoldBgColor = Theme.of(context).scaffoldBackgroundColor;
 
     return Stack(
       children: [

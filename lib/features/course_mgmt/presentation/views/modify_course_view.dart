@@ -17,6 +17,7 @@ import 'package:slides_sync/features/course_mgmt/presentation/views/modify_cours
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
+import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 /// VIEW
@@ -72,7 +73,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
         body: CustomScrollView(
           slivers: [
             ModifyCourseHeader(
-              title: courseModel.courseTitle,
+              title: CourseFormatter.separateCodeFromTitle(courseModel.courseTitle)[0],
               description: courseModel.description.trim(),
               onClickEditCourse: () async {
                 await showModalBottomSheet(
