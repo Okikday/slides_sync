@@ -75,6 +75,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
             ModifyCourseHeader(
               title: courseModel.courseName,
               description: courseModel.description.trim(),
+              courseImagePath: courseModel.imagePath,
               onClickEditCourse: () async {
                 await showModalBottomSheet(
                   context: context,

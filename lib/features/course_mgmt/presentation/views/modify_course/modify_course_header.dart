@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/app_ui_model.dart';
+import 'package:slides_sync/shared/helpers/widget_helper.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
   
   final String title;
   final String description;
+  final String? courseImagePath;
 
   final void Function() onClickAddDescription;
   final void Function() onClickEditCourse;
@@ -18,6 +20,7 @@ class ModifyCourseHeader extends ConsumerWidget {
     super.key,
     required this.title,
     required this.description,
+    this.courseImagePath,
     required this.onClickAddDescription,
     required this.onClickEditCourse,
     required this.onClickFilter,
@@ -60,7 +63,10 @@ class ModifyCourseHeader extends ConsumerWidget {
                   ),
                 ),
                 ConstantSizing.rowSpacingLarge,
-                CircleAvatar(radius: 35, child: Icon(Iconsax.book)),
+                CircleAvatar(
+                  radius: 42,
+                  backgroundColor: Colors.deepPurple,
+                  child: ClipOval(child: SizedBox.square(dimension: 80, child: WidgetHelper.resolveImageWidget(courseImagePath)))),
               ],
             ),
 
