@@ -61,12 +61,13 @@ class ManageCoursesPage extends ConsumerWidget {
                       iconData: Iconsax.add_copy,
                       title: "Create Course",
                       onTap: () {
-                        AppNavigator.of(context).createCoursePageRoute();
+                        AppNavigator.to(context).createCoursePageRoute();
                       },
                     ),
 
-                    ManageCourseButton(iconData: Iconsax.edit_2_copy, title: "Modify existing Course", onTap: () {
+                    ManageCourseButton(iconData: Iconsax.edit_2_copy, title: "Modify existing Courses", onTap: () {
                       // Select course to modify view
+                      AppNavigator.to(context).modifyExistingCoursesRoute();
                     }),
 
                     ManageCourseButton(iconData: Icons.explore_outlined, title: "Explore Online Library", onTap: () {}),

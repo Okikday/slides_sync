@@ -9,7 +9,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:slides_sync/data/isar_data/isar_data.dart';
 import 'package:slides_sync/data/isar_data/isar_schemas.dart';
 
-import 'core/utils/app_ui_state.dart';
 
 // TODO: Allow Courses and other collections alongside:
 // courseTitle can be "*[courseCode]* CourseName"

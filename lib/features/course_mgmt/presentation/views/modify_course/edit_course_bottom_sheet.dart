@@ -120,7 +120,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                     child: CustomRichText(
                                       children: [
                                         CustomTextSpanData(
-                                          courseModel.courseTitle,
+                                          courseModel.courseName,
                                           fontWeight: FontWeight.bold,
                                           fontSize: ConstantSizing.fontSizeExtraLarge,
                                         ),

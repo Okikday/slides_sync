@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
+import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/add_image_avatar.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/create_course_button.dart';
@@ -25,14 +29,16 @@ class CreateCourseView extends ConsumerStatefulWidget {
 }
 
 class _CreateCourseViewState extends ConsumerState<CreateCourseView> with SingleTickerProviderStateMixin {
-  late final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+  late final StateProvider<bool> isCourseCodeFieldVisible;
   late final TextEditingController courseNameController;
   late final TextEditingController courseCodeController;
+  late final StateProvider<String?> courseImagePathProvider;
 
   @override
   void initState() {
     super.initState();
-    isCourseCodeFieldVisible = AutoDisposeStateProvider((ref) => false);
+    isCourseCodeFieldVisible = StateProvider((ref) => false);
+    courseImagePathProvider = StateProvider((ref) => null);
     courseNameController = TextEditingController();
     courseCodeController = TextEditingController();
   }
@@ -67,7 +73,9 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                       children: [
                         ConstantSizing.columnSpacingMedium,
 
-                        AddImageAvatar(),
+                        AddImageAvatar(
+                          courseImagePathProvider: courseImagePathProvider,
+                        ),
 
                         ConstantSizing.columnSpacing(56),
 
@@ -93,6 +101,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                   courseNameController: courseNameController,
                   courseCodeController: courseCodeController,
                   isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                  courseImagePathProvider: courseImagePathProvider,
                 ),
               ],
             ),
@@ -105,12 +114,11 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
 
 String? checkIfCanCreateCourse(String courseName, String courseCode, bool isCourseCodeVisible, {int minLength = 2, int maxLength = 64}) {
   if (courseName.isEmpty || courseName.length < minLength || courseName.length > maxLength || double.tryParse(courseName) != null) {
-    if(courseName.isEmpty) return "Kindly fill the course title field!";
+    if (courseName.isEmpty) return "Kindly fill the course title field!";
     if (courseName.length < 2) return "Course title too short!";
     if (courseName.length > 64) return "Course title too long!";
     return "Kindly input a valid course title!";
-  }
-  else if (isCourseCodeVisible && courseCode.length < 2 ) {
+  } else if (isCourseCodeVisible && courseCode.length < 2) {
     return "Kindly input a valid course code or hide it";
   }
   return null;

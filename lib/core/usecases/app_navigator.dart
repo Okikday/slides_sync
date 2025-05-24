@@ -7,7 +7,7 @@ class AppNavigator {
   final BuildContext context;
   final bool _isPushedAsReplacement;
   AppNavigator(this.context, {bool isPushedAsReplacement = false}) : _isPushedAsReplacement = isPushedAsReplacement;
-  static AppNavigator of(BuildContext context, {bool isPushedAsReplacement = false}) {
+  static AppNavigator to(BuildContext context, {bool isPushedAsReplacement = false}) {
     return AppNavigator(context, isPushedAsReplacement: isPushedAsReplacement);
   }
 
@@ -28,6 +28,11 @@ class AppNavigator {
   void modifyCoursePageRoute(CourseModel courseModel) {
     final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.modifyCoursePage}";
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
+  }
+
+  void modifyExistingCoursesRoute(){
+    final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.selectToModifyCoursePage}";
+    _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
   }
 
   // void courseMaterialsPageRoute(){

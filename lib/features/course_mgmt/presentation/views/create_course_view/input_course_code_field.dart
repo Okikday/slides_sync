@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class InputCourseCodeField extends ConsumerWidget {
-   final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+   final StateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseCodeController;
   const InputCourseCodeField({super.key, required this.courseCodeController, required this.isCourseCodeFieldVisible});
 

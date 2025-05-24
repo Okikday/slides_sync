@@ -72,7 +72,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
 
                     await Future.delayed(Durations.short4);
                     if (context.mounted) {
-                      AppNavigator.of(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
+                      AppNavigator.to(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
                     }
                    if(context.mounted) isCourseClickedNotifier.update((cb) => false);
                   },
@@ -127,7 +127,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
 
                   await Future.delayed(Durations.short4);
                   if (context.mounted) {
-                    AppNavigator.of(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
+                    AppNavigator.to(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
                   }
                   isCourseClickedNotifier.update((cb) => false);
                 },

@@ -72,6 +72,10 @@ dependencies:
   flutter_pdfview: ^1.4.0+1
   pdfx: ^2.9.1
   share_plus: ^11.0.0
+  image_picker: ^1.1.2
+  file_picker: ^10.1.9
+  path: ^1.9.1
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

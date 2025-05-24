@@ -73,7 +73,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
         body: CustomScrollView(
           slivers: [
             ModifyCourseHeader(
-              title: CourseFormatter.separateCodeFromTitle(courseModel.courseTitle)[0],
+              title: courseModel.courseName,
               description: courseModel.description.trim(),
               onClickEditCourse: () async {
                 await showModalBottomSheet(
@@ -105,7 +105,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                     context,
                     canPop: true,
                     loadingInfoWidget: AddCourseDescriptionDialog(
-                      title: courseModel.courseTitle,
+                      title: courseModel.courseName,
                       courseProvider: modifyCourseProvider,
                     ),
                   );

@@ -8,7 +8,6 @@ import 'package:slides_sync/shared/routes/course_mgmt_routes.dart';
 import 'package:slides_sync/shared/routes/home_tabs_routes.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
-
 class Routes {
   static final GoRouter mainRouter = _router;
 
@@ -21,6 +20,7 @@ class Routes {
 
       // MANAGE COURSES
       // -> CREATE COURSE
+      // -> SELECT TO MODIFY COURSE / MODIFY EXISTING COURSE
       // -> MODIFY COURSE
       //    -> EDIT COURSE
       CourseMgmtRoute.route,
@@ -35,7 +35,7 @@ class Routes {
               duration: Durations.extralong1,
               reverseDuration: Durations.medium1,
               curve: CustomCurves.defaultIosSpring,
-              child: CourseDetailsPage(courseModel: state.extra as CourseModel,),
+              child: CourseDetailsPage(courseModel: state.extra as CourseModel),
             ),
       ),
 
@@ -43,13 +43,13 @@ class Routes {
         path: RoutesStrings.courseMaterialsPage,
         pageBuilder:
             (context, state) => PageAnimation.buildCustomTransitionPage(
-          state.pageKey,
-          type: TransitionType.topLevel,
-          duration: Durations.extralong1,
-          reverseDuration: Durations.medium1,
-          curve: CustomCurves.defaultIosSpring,
-          child: CourseDetailsPage(courseModel: state.extra as CourseModel,),
-        ),
+              state.pageKey,
+              type: TransitionType.topLevel,
+              duration: Durations.extralong1,
+              reverseDuration: Durations.medium1,
+              curve: CustomCurves.defaultIosSpring,
+              child: CourseDetailsPage(courseModel: state.extra as CourseModel),
+            ),
       ),
     ],
   );

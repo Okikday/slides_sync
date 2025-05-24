@@ -9,7 +9,7 @@ class InputCourseTitleField extends ConsumerWidget {
     required this.courseNameController,
     required this.isCourseCodeFieldVisible,
   });
-   final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+   final StateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseNameController;
 
   @override

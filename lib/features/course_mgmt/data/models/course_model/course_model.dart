@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:collection/collection.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/course_sub_collection.dart';
+import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:uuid/uuid.dart';
 
 export 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/course_sub_collection.dart';
@@ -25,6 +26,9 @@ class CourseModel {
   final List<CourseSubCollection> subCollections;
   final List<CourseContent> rootContents;
   final String courseMetadataJson;
+
+  String get courseName => CourseFormatter.separateCodeFromTitle(courseTitle)[0];
+  String get courseCode => CourseFormatter.separateCodeFromTitle(courseTitle)[1];
 
   CourseModel({
     this.courseId = '',
