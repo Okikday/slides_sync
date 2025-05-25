@@ -14,4 +14,12 @@ class CourseRepo {
   static Future<List<CourseModel>> getAllCourses() async {
     return IsarData.instance<CourseModel>().getAll();
   }
+
+  static Stream<List<CourseModel>> watchAllCourses(){
+    return IsarData.instance<CourseModel>().watchAll();
+  }
+
+  static Future<Stream<List<CourseModel>>> watchAllCoursesLazily() async{
+    return await IsarData.instance<CourseModel>().watchAllLazily();
+  }
 }

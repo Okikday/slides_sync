@@ -41,8 +41,10 @@ class PlainCourseTile extends ConsumerWidget {
                 height: 48,
                 width: 48,
                 clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(color: Colors.lightBlueAccent.withAlpha(100), borderRadius: BorderRadius.circular(12)),
-                child: WidgetHelper.resolveImageWidget(syncImagePath),
+                decoration: BoxDecoration(color: Colors.lightBlueAccent.withAlpha(100), borderRadius: BorderRadius.circular(12), border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(100), width: 2))),
+                child: ClipRSuperellipse(
+                  borderRadius: BorderRadiusGeometry.circular(12),
+                  child: WidgetHelper.resolveImageWidget(syncImagePath)),
               ),
             ),
             ConstantSizing.rowSpacingMedium,

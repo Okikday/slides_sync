@@ -9,4 +9,5 @@ extension AppUiContext on BuildContext {
   double get deviceHeight => screenSize.height;
   EdgeInsets get viewInsets => MediaQuery.viewInsetsOf(this);
   EdgeInsets get padding => MediaQuery.paddingOf(this);
+  double get topPadding => padding.top;
 }

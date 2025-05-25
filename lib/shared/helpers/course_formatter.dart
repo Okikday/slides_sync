@@ -10,7 +10,7 @@ class CourseFormatter{
 
       return [courseTitle ?? "", courseCode];
     }else{
-      return [joinedStr];
+      return [joinedStr, ""];
     }
   }
 

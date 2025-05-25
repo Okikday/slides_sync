@@ -4,10 +4,13 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_app_bar.dart';
 import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recents_section_body.dart';
+import 'package:slides_sync/shared/components/loading_view.dart';
+import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
@@ -31,7 +34,7 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
     final topPadding = context.padding.top;
 
     return NestedScrollView(
-      physics: NeverScrollableScrollPhysics(),
+      // physics: NeverScrollableScrollPhysics(),
       headerSliverBuilder: (context, isInnerBoxScrolled) {
         WidgetsBinding.instance.addPostFrameCallback(
           (_) => ref.read(widget.isScrolledProvider.notifier).update((cb) => isInnerBoxScrolled),
@@ -74,7 +77,12 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
                     shrinkExtent: context.deviceWidth * 0.95,
                     itemExtent: context.deviceWidth,
                     children: [
-                      HomeDashBoard(courseName: 'Foundation of Sequential Programming', detail: 'CSC 213', progressValue: 0.45, completed: false,),
+                      HomeDashBoard(
+                        courseName: 'Foundation of Sequential Programming',
+                        detail: 'CSC 213',
+                        progressValue: 0.45,
+                        completed: false,
+                      ),
                       HomeDashBoard(courseName: 'Software Workshop II', detail: 'CSC 211', progressValue: 0.45),
                       HomeDashBoard(courseName: 'Mathematical Methods I', detail: 'MAT 233', progressValue: 0.45),
                     ],
@@ -84,15 +92,17 @@ class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClie
             ),
           ),
 
-          SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
+          SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
 
           // Recents Section Header
-          RecentsSectionHeader(),
+          // Won't show up if the recent courses is empty
+          RecentsSectionHeader(onClickSeeAll: (){},),
 
           // Recents Section Body
-          RecentsSectionBody(),
+          RecentsSectionBody(recentCourses: [],),
+          
 
-          SliverToBoxAdapter(child: ConstantSizing.columnSpacing(isScrolled ? kBottomNavigationBarHeight + topPadding : 0)),
+          
         ],
       ),
     );

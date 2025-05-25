@@ -75,7 +75,7 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
             onPageChanged: (index) {
               ref.read(homeNavBarIndexProvider.notifier).update((cb) => index);
             },
-            children: [HomeBody(isScrolledProvider: isScrolledProvider), LibraryView(), ExploreTabView()],
+            children: [HomeBody(isScrolledProvider: isScrolledProvider), LibraryTabView(), ExploreTabView()],
           ),
         ),
       ),

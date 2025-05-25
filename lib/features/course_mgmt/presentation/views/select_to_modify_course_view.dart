@@ -1,3 +1,4 @@
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
@@ -48,6 +49,17 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
             futureCourses.when(
               data: (data) {
                 final isDarkMode = context.isDarkMode;
+
+                if (data.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      
+                      spacing: 8.0,
+                      children: [CircleAvatar(radius: 26, child: Icon(Icons.info_rounded, size: 48)), CustomText("No Existing courses!")],
+                    ),
+                  );
+                }
 
                 return SliverList.builder(
                   itemCount: data.length,

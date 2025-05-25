@@ -15,6 +15,7 @@ import 'package:slides_sync/features/course_mgmt/presentation/views/modify_cours
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/modify_course_header.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
+import 'package:slides_sync/features/course_navigation/presentation/views/course_navigation_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
@@ -127,25 +128,25 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
               sliver: SliverToBoxAdapter(
                 child: CustomElevatedButton(
                   onClick: () {
-                    if (context.mounted) {
-                      Navigator.of(context).push(
-                        PageTransition(
-                          type: PageTransitionType.rightToLeftWithFade,
-                          duration: Durations.extralong3,
-                          reverseDuration: Durations.medium1,
-                          curve: CustomCurves.snappySpring,
-                          child: CourseMaterialsView(),
-                        ),
-                      );
-                    }
-                    // Navigator.of(context).push(
-                    //   PageAnimation.pageRouteBuilder(
-                    //     CourseNavigationView(courseModel: courseModel),
-                    //     type: TransitionType.uptown,
-                    //     duration: Durations.extralong1,
-                    //     curve: CustomCurves.defaultIosSpring,
-                    //   ),
-                    // );
+                    // if (context.mounted) {
+                    //   Navigator.of(context).push(
+                    //     PageTransition(
+                    //       type: PageTransitionType.rightToLeftWithFade,
+                    //       duration: Durations.extralong3,
+                    //       reverseDuration: Durations.medium1,
+                    //       curve: CustomCurves.snappySpring,
+                    //       child: CourseMaterialsView(),
+                    //     ),
+                    //   );
+                    // }
+                    Navigator.of(context).push(
+                      PageAnimation.pageRouteBuilder(
+                        CourseNavigationView(courseModel: courseModel),
+                        type: TransitionType.uptown,
+                        duration: Durations.extralong1,
+                        curve: CustomCurves.defaultIosSpring,
+                      ),
+                    );
                   },
                   borderRadius: 48,
                   pixelHeight: 56,

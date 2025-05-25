@@ -18,7 +18,7 @@ class CourseMgmtRoute {
     pageBuilder:
         (context, state) => PageAnimation.buildCustomTransitionPage(
           state.pageKey,
-          type: TransitionType.levelFromTopLeftWithFade,
+          type: TransitionType.levelFromBottomRight,
           duration: Durations.extralong1,
           reverseDuration: Durations.medium1,
           curve: CustomCurves.defaultIosSpring,
@@ -40,7 +40,7 @@ class CourseMgmtRoute {
       ),
 
       // SELECT TO MODIFY COURSE VIEW NAVIGATION
-       GoRoute(
+      GoRoute(
         path: RoutesStrings.selectToModifyCoursePage,
         pageBuilder:
             (context, state) => PageAnimation.buildCustomTransitionPage(

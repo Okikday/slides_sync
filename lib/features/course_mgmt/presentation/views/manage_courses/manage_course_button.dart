@@ -14,18 +14,24 @@ class ManageCourseButton extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: 16,
       children: [
-        CustomElevatedButton(
-        onClick: onTap,
-        shape: CircleBorder(),
-        overlayColor: Colors.lightBlueAccent.withAlpha(100),
-        pixelHeight: 100,
-        pixelWidth: 100,
-        backgroundColor: Colors.lightBlueAccent.withAlpha(80),
-        textColor: Colors.white,
-        borderRadius: 24,
-        child: Icon(iconData, size: 64),
-      ),
-      CustomText(title),
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(150), width: 4)),
+          ),
+          child: CustomElevatedButton(
+            onClick: onTap,
+            shape: CircleBorder(),
+            overlayColor: Colors.lightBlueAccent.withAlpha(100),
+            pixelHeight: 100,
+            pixelWidth: 100,
+            backgroundColor: Colors.lightBlueAccent.withAlpha(80),
+            textColor: Colors.white,
+            borderRadius: 24,
+            child: Icon(iconData, size: 64),
+          ),
+        ),
+        CustomText(title),
       ],
     );
   }

@@ -14,20 +14,21 @@ class HomeBottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ClipRRect(
+    return ClipRSuperellipse(
+      // borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: isScrolled ? 8 : 0, sigmaY: isScrolled ? 8 : 0),
         child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: currentIndex,
           selectedItemColor: Colors.deepPurple,
           onTap: (index) => onTap(index),
-          backgroundColor:
-          isScrolled ? Colors.lightBlueAccent.withAlpha(20) : (context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
+          backgroundColor: isScrolled ? Colors.lightBlueAccent.withAlpha(20) : (context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
           elevation: 48,
           items: [
             BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
-            BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library"),
-            BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore"),
+            BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library holding all your courses"),
+            BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore courses"),
           ],
         ),
       ),

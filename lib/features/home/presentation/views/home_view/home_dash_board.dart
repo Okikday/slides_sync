@@ -14,7 +14,7 @@ class HomeDashBoard extends ConsumerWidget {
     required this.progressValue,
     this.completed,
     this.onReadingBtnTapped,
-    this.onSettingTapped,
+    this.onShareTapped,
   });
 
   final String courseName;
@@ -22,7 +22,7 @@ class HomeDashBoard extends ConsumerWidget {
   final double progressValue;
   final bool? completed;
   final void Function()? onReadingBtnTapped;
-  final void Function()? onSettingTapped;
+  final void Function()? onShareTapped;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +71,7 @@ class HomeDashBoard extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(36),
                       value: progressValue,
                       backgroundColor: Colors.black.withAlpha(40),
-                      color: Colors.lightBlueAccent.withAlpha(40),
+                      color: context.isDarkMode ? Colors.deepPurple.withAlpha(150) : Colors.deepPurple.withAlpha(200),
                     ),
                   ),
                 ),
@@ -89,6 +89,7 @@ class HomeDashBoard extends ConsumerWidget {
                     child: CustomElevatedButton(
                       pixelHeight: 48,
                       elevation: 100,
+                      borderRadius: 12,
                       overlayColor: Colors.lightBlueAccent.withAlpha(50),
                       backgroundColor: context.isDarkMode ? Colors.black.withAlpha(40) : Colors.lightBlueAccent.withAlpha(40),
                       label: completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
@@ -99,15 +100,18 @@ class HomeDashBoard extends ConsumerWidget {
                       },
                     ),
                   ),
-                  // CustomElevatedButton(
-                  //   pixelHeight: 48,
-                  //   overlayColor: Colors.white.withAlpha(50),
-                  //   backgroundColor: Colors.black,
-                  //   onClick: () {
-                  //     if (onSettingTapped != null) onSettingTapped!();
-                  //   },
-                  //   child: Icon(Iconsax.setting_4, color: Colors.white),
-                  // ),
+                  CustomElevatedButton(
+                    pixelHeight: 48,
+                    pixelWidth: 48,
+                    borderRadius: 12,
+                    elevation: 10,
+                    overlayColor: Colors.white.withAlpha(50),
+                    backgroundColor: context.isDarkMode ? Colors.deepPurple.withAlpha(160) : Colors.black,
+                    onClick: () {
+                      if (onShareTapped != null) onShareTapped!();
+                    },
+                    child: Icon(Icons.share_rounded, color: Colors.white),
+                  ),
                 ],
               ),
             ),

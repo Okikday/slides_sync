@@ -22,17 +22,10 @@ class IsarData<T> {
   IsarData._();
 
   /// Initializes the shared database only once
-  static Future<void> initialize({
-    String dbName = 'default',
-    List<CollectionSchema> collectionSchemas = const [],
-  }) async {
+  static Future<void> initialize({String dbName = 'default', List<CollectionSchema> collectionSchemas = const []}) async {
     if (_openDb == null) {
       final dir = await getApplicationDocumentsDirectory();
-      _openDb = Isar.open(
-        collectionSchemas,
-        directory: dir.path,
-        name: dbName,
-      );
+      _openDb = Isar.open(collectionSchemas, directory: dir.path, name: dbName);
       log("Successfully initialized db");
     }
   }
@@ -78,8 +71,8 @@ class IsarData<T> {
 
   /// Query builder: run a custom Isar Query.
   Future<QueryBuilder<T, R, QAfterWhereClause>> query<R>(
-      QueryBuilder<T, R, QAfterWhereClause> Function(QueryBuilder<T, R, QWhereClause>) builder,
-      ) async {
+    QueryBuilder<T, R, QAfterWhereClause> Function(QueryBuilder<T, R, QWhereClause>) builder,
+  ) async {
     final isar = await isarFuture;
     final queryBuilder = isar.collection<T>().where() as QueryBuilder<T, R, QWhereClause>;
     return builder(queryBuilder);
@@ -91,6 +84,11 @@ class IsarData<T> {
     yield* isar.collection<T>().where().watch(fireImmediately: true);
   }
 
+  Future<Stream<List<T>>> watchAllLazily() async {
+    final isar = await isarFuture;
+    return isar.collection<T>().where().watchLazy(fireImmediately: true).asyncMap((_) => getAll());
+  }
+
   /// Stream specific object by ID in real-time.
   Stream<T?> watchById(int id) async* {
     final isar = await isarFuture;
@@ -98,9 +96,7 @@ class IsarData<T> {
   }
 
   /// Stream query results in real-time.
-  Stream<List<T>> watchQuery(
-      QueryBuilder<T, T, QAfterWhereClause> Function(QueryBuilder<T, T, QWhereClause>) builder,
-      ) async* {
+  Stream<List<T>> watchQuery(QueryBuilder<T, T, QAfterWhereClause> Function(QueryBuilder<T, T, QWhereClause>) builder) async* {
     final isar = await isarFuture;
     final queryBuilder = isar.collection<T>().where();
     yield* builder(queryBuilder).watch(fireImmediately: true);

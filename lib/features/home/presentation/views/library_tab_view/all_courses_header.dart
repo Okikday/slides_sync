@@ -13,30 +13,24 @@ class AllCoursesHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     
-    return PinnedHeaderSliver(
-      child: ColoredBox(
-        // color: Colors.lightBlueAccent.withAlpha(100),
-        color: context.scaffoldBackgroundColor,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
-            child: GestureDetector(
-              onTap: onTap,
-              child: Row(
-                children: [
-                  Expanded(child: CustomText("All Courses", fontSize: 20, fontWeight: FontWeight.bold)),
-
-                  CustomElevatedButton(
-                    contentPadding: EdgeInsets.all(8),
-                    backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                    shape: CircleBorder(),
-                    onClick: onTapGridButton,
-                    child: Icon(isListView ? Iconsax.menu : Icons.list_rounded, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
-                  ),
-                ],
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
+        child: GestureDetector(
+          onTap: onTap,
+          child: Row(
+            children: [
+              Expanded(child: CustomText("All Courses", fontSize: 20, fontWeight: FontWeight.bold)),
+        
+              CustomElevatedButton(
+                contentPadding: EdgeInsets.all(8),
+                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                shape: CircleBorder(),
+                onClick: onTapGridButton,
+                child: Icon(isListView ? Iconsax.menu : Icons.list_rounded, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
               ),
-            )
-        ),
-      ),
+            ],
+          ),
+        )
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -9,21 +8,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:slides_sync/data/isar_data/isar_data.dart';
 import 'package:slides_sync/data/isar_data/isar_schemas.dart';
 
-
 // TODO: Allow Courses and other collections alongside:
 // courseTitle can be "*[courseCode]* CourseName"
 // Extract starting with *[ and ending with ]* and the get the substringAfter.trim()
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await AppHiveData.instance.initialize();
   await IsarData.initialize(collectionSchemas: isarSchemas);
   log("Initialized data...");
 
-
-
-  runApp(ProviderScope(
-      child: const App()
-  ));
+  runApp(ProviderScope(child: const App()));
 }
