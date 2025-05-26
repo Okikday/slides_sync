@@ -78,7 +78,8 @@ class RecentsSectionBody extends ConsumerWidget {
                 LoadingDialog.showLoadingDialog(
                   context,
                   canPop: true,
-                  blurSigma: 4,
+                  blurSigma: Offset(4.0, 4.0),
+                  transitionType: TransitionType.fade,
                   barrierColor: Colors.black.withValues(alpha: 0.4),
                   transitionDuration: Duration(milliseconds: 550),
                   loadingInfoWidget: RecentDialog(

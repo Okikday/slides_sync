@@ -1,0 +1,81 @@
+import 'dart:developer';
+
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/usecases/app_navigator.dart';
+import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/home/presentation/views/library_tab_view/all_courses_section/list_course_card.dart';
+import 'package:slides_sync/shared/helpers/widget_helper.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
+
+class CoursesListView extends ConsumerWidget {
+  const CoursesListView({super.key, required this.scaleClickProviderFamily, required this.isCourseClickedProvider, required this.data});
+
+  final StateProviderFamily<bool, int> scaleClickProviderFamily;
+  final StateProvider<bool> isCourseClickedProvider;
+  final List<CourseModel> data;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(childCount: data.length, (context, index) {
+          final StateProvider<bool> provider = scaleClickProviderFamily(index);
+          final CourseModel courseModel = data[index];
+          updateScaleClickProvider(bool newValue) => ref.read(provider.notifier).update((cb) => newValue);
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: AnimatedScale(
+              scale: ref.watch(provider) ? 0.85 : 1.0,
+              duration: Durations.medium3,
+              curve: CustomCurves.defaultIosSpring,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTapDown: (details) {
+                  log("Detected tap down...");
+                  updateScaleClickProvider(true);
+                },
+                onTapCancel: () {
+                  log("Detected tap cancel...");
+                  updateScaleClickProvider(false);
+                },
+                onTapUp: (details) async {
+                  log("Detected tap up...");
+                  await Future.delayed(Durations.short2);
+                  updateScaleClickProvider(false);
+                },
+                onTap: () async {
+                  final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
+                  if (isCourseClickedNotifier.state) return;
+                  isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
+
+                  await Future.delayed(Durations.short4);
+                  if (context.mounted) {
+                    AppNavigator.to(context).courseDetailsViewRoute(CourseModel.create(courseTitle: "Course title"));
+                  }
+                  if (context.mounted) isCourseClickedNotifier.update((cb) => false);
+                },
+                child: ListCourseCard(
+                  isDarkMode: context.isDarkMode,
+                  courseCode: courseModel.courseCode,
+                  courseName: courseModel.courseName,
+                  categoriesCount: courseModel.subCollections.length,
+                  progress: 0.0,
+                  courseImageWidget: WidgetHelper.resolveImageWidget(
+                    courseModel.imagePath,
+                    fallbackWidget: Icon(Iconsax.document_1, size: 26),
+                  ),
+                ),
+              ),
+            ),
+          ).animate().fadeIn();
+        }),
+      ),
+    );
+  }
+}

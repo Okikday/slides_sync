@@ -84,6 +84,8 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
               error: (_, __) => SliverToBoxAdapter(child: const Icon(Icons.error_rounded)),
               loading: () => SliverToBoxAdapter(child: LoadingView(msg: "Loading Courses...")),
             ),
+
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
           ],
         ),
       ),

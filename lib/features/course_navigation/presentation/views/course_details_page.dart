@@ -58,6 +58,7 @@ class CourseDetailsPage extends ConsumerWidget {
                                     LoadingDialog.showLoadingDialog(
                                       context,
                                       canPop: true,
+                                      transitionType: TransitionType.cupertinoDialog,
                                       reverseTransitionDuration: Durations.short4,
                                       curve: CustomCurves.defaultIosSpring,
                                       barrierColor: Colors.black.withAlpha(100),
@@ -84,14 +85,14 @@ class CourseDetailsPage extends ConsumerWidget {
             ),
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
 
-            // Bottom sheet would pop up for the More info button
+            // Bottom sheet would pop up for Editing Course
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: CustomElevatedButton(
                   borderRadius: 24,
                   pixelHeight: 48,
-                  backgroundColor: Colors.deepPurple.withAlpha(10),
+                  backgroundColor: Colors.deepPurple.withAlpha(80),
                   onClick: () async {
                     await showModalBottomSheet(
                       context: context,
@@ -106,14 +107,7 @@ class CourseDetailsPage extends ConsumerWidget {
                       },
                     );
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomText("More info", color: context.isDarkMode ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
-                      ConstantSizing.rowSpacing(4),
-                      Icon(Icons.keyboard_arrow_down_rounded, size: 24),
-                    ],
-                  ),
+                  child: CustomText("Edit course", color: context.isDarkMode ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -158,7 +152,7 @@ class CourseDetailsPage extends ConsumerWidget {
                         );
                       }
                     },
-                  ).animate().slideY(begin: 0.5 * (index + (categoriesList.length/2)/categoriesList.length), end: 0, curve: CustomCurves.bouncySpring, duration: Durations.extralong4),
+                  ).animate().slideY(begin: double.parse((0.5 * (index + (categoriesList.length/2)/categoriesList.length)).toStringAsFixed(2)), end: 0, curve: CustomCurves.bouncySpring, duration: Durations.extralong4),
                 );
               },
             ),

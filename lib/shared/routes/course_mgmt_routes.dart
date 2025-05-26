@@ -17,9 +17,9 @@ class CourseMgmtRoute {
         (context, state) => PageAnimation.buildCustomTransitionPage(
           state.pageKey,
           type: TransitionType.levelFromBottomRightWithFade,
-          duration: Durations.extralong1,
+          duration: Durations.extralong4,
           reverseDuration: Durations.medium1,
-          curve: CustomCurves.defaultIosSpring,
+          curve: CustomCurves.bouncySpring,
           child: ManageCoursesPage(),
         ),
     routes: [

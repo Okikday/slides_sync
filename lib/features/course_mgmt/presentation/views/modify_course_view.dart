@@ -93,6 +93,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                     context,
                     canPop: true,
                     reverseTransitionDuration: Durations.short4,
+                    transitionType: TransitionType.cupertinoDialog,
                     curve: CustomCurves.defaultIosSpring,
                     barrierColor: Colors.black.withAlpha(100),
                     loadingInfoWidget: CourseDescriptionDialog(
@@ -103,6 +104,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                   LoadingDialog.showLoadingDialog(
                     context,
                     canPop: true,
+                    transitionType: TransitionType.cupertinoDialog,
                     loadingInfoWidget: AddCourseDescriptionDialog(
                       title: courseModel.courseName,
                       courseProvider: modifyCourseProvider,

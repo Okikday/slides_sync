@@ -63,7 +63,8 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
         LoadingDialog.showLoadingDialog(
           context,
           barrierColor: Colors.black.withValues(alpha: 0.4),
-          blurSigma: 4,
+          transitionType: TransitionType.fade,
+          blurSigma: Offset(4.0, 4.0),
           transitionDuration: Durations.medium2,
           loadingInfoWidget: AppAlertDialog(
             title: "Confirm exit",

@@ -79,7 +79,7 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
             children: [HomeTabView(isScrolledProvider: isScrolledProvider), LibraryTabView(), ExploreTabView()],
           ),
 
-          floatingActionButton: homeNavBarIndex == 1 ? LibraryFloatingActionButton() : null,
+          floatingActionButton: homeNavBarIndex == 1 && ref.watch(isLibrarySectionScrolledProvider) ? LibraryFloatingActionButton() : null,
         ),
       ),
     );

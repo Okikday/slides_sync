@@ -8,6 +8,8 @@ import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 import 'library_tab_view/all_courses_section.dart';
 
+final StateProvider<bool> isLibrarySectionScrolledProvider = StateProvider((ref) => true);
+
 class LibraryTabView extends ConsumerStatefulWidget {
   const LibraryTabView({super.key});
 
@@ -45,6 +47,7 @@ class _LibraryTabViewState extends ConsumerState<LibraryTabView> with AutomaticK
       child: NestedScrollView(
         physics: NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, innerBoxIsScrolled) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(isLibrarySectionScrolledProvider.notifier).update((cb) => !innerBoxIsScrolled));
           return [LibraryTabViewAppBar(isListViewProvider: isListViewProvider, scrollOffsetProvider: scrollOffsetProvider)];
         },
         

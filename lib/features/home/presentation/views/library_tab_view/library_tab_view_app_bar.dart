@@ -49,37 +49,29 @@ class LibraryTabViewAppBar extends ConsumerWidget {
       automaticallyImplyLeading: false,
       flexibleSpace: FlexibleSpaceBar(
         expandedTitleScale: 1.0,
-        title: ClipRSuperellipse(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-            child: ColoredBox(
-              color: context.scaffoldBackgroundColor.withAlpha(200),
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(child: SizedBox()),
+        title: GestureDetector(
+          onTap: () {
+            PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
+          },
+          child: ClipRSuperellipse(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: ColoredBox(
+                color: context.scaffoldBackgroundColor.withAlpha(200),
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(child: SizedBox()),
 
-                      // ALL COURSES HEADER
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        child: GestureDetector(
-                          onTap: () {
-                            PrimaryScrollController.of(
-                              context,
-                            ).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
-                          },
+                        // ALL COURSES HEADER
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                           child: Row(
                             spacing: 8.0,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              // Expanded(child: Container(
-
-                              //   width: context.deviceWidth,
-                              //   height: 4.0,
-                              //   decoration: BoxDecoration(color: Colors.lightBlueAccent.withAlpha(40), borderRadius: BorderRadius.circular(4)),
-                              // )),
                               const Expanded(child: SizedBox()),
 
                               CustomElevatedButton(
@@ -87,6 +79,9 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                                 backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                                 shape: CircleBorder(),
                                 child: Icon(Iconsax.search_normal_copy, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
+                                onClick: (){
+                                  
+                                },
                               ),
 
                               CustomElevatedButton(
@@ -105,18 +100,18 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                             ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
 
-                  Positioned(
-                    // left: 24,
-                    // bottom: 12,
-                    bottom: bottomPad,
-                    left: leftPad,
-                    child: textWidget,
-                  ),
-                ],
+                    Positioned(
+                      // left: 24,
+                      // bottom: 12,
+                      bottom: bottomPad,
+                      left: leftPad,
+                      child: textWidget,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

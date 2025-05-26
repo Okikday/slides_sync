@@ -1,8 +1,11 @@
+import 'dart:ui';
+
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/shared/strings/routes_strings.dart';
+import 'package:slides_sync/features/home/presentation/views/library_tab_view/library_floating_action_button/manage_course_dialog.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class LibraryFloatingActionButton extends ConsumerWidget {
@@ -12,13 +15,34 @@ class LibraryFloatingActionButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: () {
-        context.push(RoutesStrings.manageCoursesView);
+        LoadingDialog.showLoadingDialog(
+          context,
+          canPop: true,
+          blurSigma: Offset(2.0, 2.0),
+          transitionType: TransitionType.fade,
+          transitionDuration: Durations.short1,
+          reverseTransitionDuration: Durations.medium1,
+          curve: CustomCurves.decelerate,
+          barrierColor: Colors.black.withAlpha(100),
+          loadingInfoWidget: ManageCourseDialog(),
+        );
       },
-      elevation: 40,
-      backgroundColor: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(40) : Colors.lightBlueAccent.withAlpha(80),
-      shape: CircleBorder(),
+      elevation: 1.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(18)),
+      backgroundColor:  Colors.lightBlueAccent.withAlpha(80),
+      
 
-      child: CircleAvatar(radius: 25, backgroundColor: Colors.deepPurple, child: Icon(Iconsax.setting_4, color: Colors.white)),
+      child: ClipRSuperellipse(
+        borderRadius: BorderRadius.circular(16.0),
+        child: ColoredBox(
+          color: context.isDarkMode ? Colors.lightBlueAccent : Colors.deepPurpleAccent,
+          child: SizedBox(
+            width: 51,
+            height: 51,
+            child: Icon(Iconsax.setting_4, color: context.isDarkMode ? Colors.black : Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }

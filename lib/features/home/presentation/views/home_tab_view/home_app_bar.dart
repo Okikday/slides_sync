@@ -12,7 +12,6 @@ class HomeAppBar extends StatelessWidget {
     required this.topPadding,
     required this.onClickUserIcon,
     required this.title,
-    required this.onToggleFullScreen,
     required this.onClickNotification,
   });
 
@@ -22,7 +21,6 @@ class HomeAppBar extends StatelessWidget {
   final void Function() onClickUserIcon;
 
   final String title;
-  final void Function() onToggleFullScreen;
   final void Function() onClickNotification;
   @override
   Widget build(BuildContext context) {
@@ -81,13 +79,13 @@ class HomeAppBar extends StatelessWidget {
                   ConstantSizing.rowSpacingMedium,
                   Expanded(child: CustomText(title, fontSize: 16, fontWeight: FontWeight.bold)),
 
-                  CustomElevatedButton(
-                    shape: CircleBorder(),
-                    backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                    overlayColor: Colors.deepPurple.withAlpha(20),
-                    onClick: onToggleFullScreen,
-                    child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : Colors.deepPurple),
-                  ),
+                  // CustomElevatedButton(
+                  //   shape: CircleBorder(),
+                  //   backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                  //   overlayColor: Colors.deepPurple.withAlpha(20),
+                  //   onClick: onToggleFullScreen,
+                  //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : Colors.deepPurple),
+                  // ),
 
                   CustomElevatedButton(
                     onClick: onClickNotification,
