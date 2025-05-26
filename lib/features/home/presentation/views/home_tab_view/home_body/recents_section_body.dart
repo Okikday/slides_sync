@@ -5,7 +5,7 @@ import 'package:heroine/heroine.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/home/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
-import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recent_dialog.dart';
+import 'package:slides_sync/features/home/presentation/views/home_tab_view/home_body/recent_dialog.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
@@ -20,37 +20,40 @@ class RecentsSectionBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (recentCourses.isEmpty) {
-      return SliverList.list(
-        children: [
-          SizedBox.square(dimension: context.deviceWidth * 0.5, child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace)),
-
-          ConstantSizing.columnSpacingHuge,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: CustomElevatedButton(
-              backgroundColor: Colors.deepPurple,
-              borderRadius: 12,
-              pixelHeight: 44,
-              label: "Explore Courses",
-              textSize: 15,
-              textColor: Colors.white,
+      return SliverToBoxAdapter(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            SizedBox.square(dimension: context.deviceWidth * 0.5, child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace)),
+        
+            ConstantSizing.columnSpacingHuge,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: CustomElevatedButton(
+                backgroundColor: Colors.deepPurple,
+                borderRadius: 12,
+                pixelHeight: 44,
+                label: "Explore Courses",
+                textSize: 15,
+                textColor: Colors.white,
+              ),
             ),
-          ),
-
-          // ConstantSizing.columnSpacingMedium,
-
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          //   child: CustomElevatedButton(
-          //     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-          //     borderRadius: 12,
-          //     pixelHeight: 44,
-          //     label: "See your courses",
-          //     textSize: 15,
-          //     textColor: context.isDarkMode ? Colors.white : Colors.black,
-          //   ),
-          // ),
-        ],
+        
+            // ConstantSizing.columnSpacingMedium,
+        
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //   child: CustomElevatedButton(
+            //     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+            //     borderRadius: 12,
+            //     pixelHeight: 44,
+            //     label: "See your courses",
+            //     textSize: 15,
+            //     textColor: context.isDarkMode ? Colors.white : Colors.black,
+            //   ),
+            // ),
+          ],
+        ),
       );
     }
 

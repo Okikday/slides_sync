@@ -1,32 +1,24 @@
-import 'dart:developer';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
-import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/features/home/presentation/views/home_view/home_app_bar.dart';
-import 'package:slides_sync/features/home/presentation/views/home_view/home_body/recents_section_body.dart';
-import 'package:slides_sync/shared/components/loading_view.dart';
-import 'package:slides_sync/shared/strings/icon_strings.dart';
+import 'package:slides_sync/features/home/presentation/views/home_tab_view/home_app_bar.dart';
+import 'package:slides_sync/features/home/presentation/views/home_tab_view/home_body/recents_section_body.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
-import 'home_body/recents_section_header.dart';
-import 'home_dash_board.dart';
+import 'home_tab_view/home_body/recents_section_header.dart';
+import 'home_tab_view/home_dash_board.dart';
 
-class HomeBody extends ConsumerStatefulWidget {
+class HomeTabView extends ConsumerStatefulWidget {
   final AutoDisposeStateProvider<bool> isScrolledProvider;
-  const HomeBody({super.key, required this.isScrolledProvider});
+  const HomeTabView({super.key, required this.isScrolledProvider});
 
   @override
-  ConsumerState createState() => _HomeBodyState();
+  ConsumerState createState() => _HomeTabViewState();
 }
 
-class _HomeBodyState extends ConsumerState<HomeBody> with AutomaticKeepAliveClientMixin {
+class _HomeTabViewState extends ConsumerState<HomeTabView> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);

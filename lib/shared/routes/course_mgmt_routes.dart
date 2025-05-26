@@ -5,11 +5,9 @@ import 'package:slides_sync/features/course_mgmt/data/models/course_model/course
 import 'package:slides_sync/features/course_mgmt/presentation/views/manage_courses_page.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course_view.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course_view.dart';
-import 'package:slides_sync/features/home/presentation/views/home_view.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
 import '../../features/course_mgmt/presentation/views/create_course_view.dart';
-import '../../features/course_navigation/presentation/views/course_details_page.dart';
 
 class CourseMgmtRoute {
   static GoRoute route = //COURSE MGMT NAVIGATION
@@ -18,7 +16,7 @@ class CourseMgmtRoute {
     pageBuilder:
         (context, state) => PageAnimation.buildCustomTransitionPage(
           state.pageKey,
-          type: TransitionType.levelFromBottomRight,
+          type: TransitionType.levelFromBottomRightWithFade,
           duration: Durations.extralong1,
           reverseDuration: Durations.medium1,
           curve: CustomCurves.defaultIosSpring,

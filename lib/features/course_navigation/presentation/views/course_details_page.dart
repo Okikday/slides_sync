@@ -2,20 +2,15 @@ import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/core/usecases/app_navigator.dart';
-import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/star_wave_filled_progress_widget.dart';
-import 'package:slides_sync/features/course_navigation/presentation/views/course_navigation/collection_card_tile.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
-import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 

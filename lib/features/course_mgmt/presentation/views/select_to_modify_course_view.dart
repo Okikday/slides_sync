@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/select_to_modify_course/get_courses_notifier.dart';
+import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course/plain_course_tile.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
@@ -19,12 +19,12 @@ class SelectToModifyCourseView extends ConsumerStatefulWidget {
 }
 
 class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseView> {
-  late final AsyncNotifierProvider<GetCoursesAsyncNotifier, List<CourseModel>> asyncGetCoursesProvider;
+  late final FutureProvider<List<CourseModel>> futureCoursesProvider;
 
   @override
   void initState() {
     super.initState();
-    asyncGetCoursesProvider = AsyncNotifierProvider<GetCoursesAsyncNotifier, List<CourseModel>>(GetCoursesAsyncNotifier.new);
+    futureCoursesProvider = FutureProvider((ref) => CourseRepo.getAllCourses());
   }
 
   @override
@@ -34,7 +34,7 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<CourseModel>> futureCourses = ref.watch(asyncGetCoursesProvider);
+    final AsyncValue<List<CourseModel>> futureCourses = ref.watch(futureCoursesProvider);
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),

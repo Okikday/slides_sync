@@ -1,25 +1,15 @@
-import 'dart:io';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:slides_sync/core/usecases/app_navigator.dart';
-import 'package:slides_sync/core/utils/app_ui_state.dart';
-import 'package:slides_sync/core/utils/file_utils.dart';
-import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/add_image_avatar.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/create_course_button.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_code_field.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_title_field.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
-import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
-import 'package:uuid/uuid.dart';
 
 class CreateCourseView extends ConsumerStatefulWidget {
   const CreateCourseView({super.key});

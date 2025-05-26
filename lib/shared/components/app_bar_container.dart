@@ -1,9 +1,6 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/models/app_ui_model.dart';
-import 'package:slides_sync/core/utils/app_ui_state.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {

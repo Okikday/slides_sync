@@ -4,12 +4,11 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:googleapis/forms/v1.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/select_to_modify_course/get_courses_notifier.dart';
+import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
 import 'package:slides_sync/shared/components/loading_view.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
@@ -29,20 +28,21 @@ class AllCoursesSection extends ConsumerStatefulWidget {
 class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
   late final AutoDisposeStateProviderFamily<bool, int> scaleClickProviderFamily;
   late final StateProvider<bool> isCourseClickedProvider;
-  late final StreamNotifierProvider<WatchAllCoursesStreamNotifier, List<CourseModel>> asyncGetCoursesProvider;
+  late final StreamProvider<List<CourseModel>> watchAllcoursesProvider;
 
   @override
   void initState() {
     super.initState();
     scaleClickProviderFamily = AutoDisposeStateProviderFamily((ref, index) => false);
     isCourseClickedProvider = StateProvider((ref) => false);
-    asyncGetCoursesProvider = StreamNotifierProvider<WatchAllCoursesStreamNotifier, List<CourseModel>>(WatchAllCoursesStreamNotifier.new);
+    watchAllcoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
   }
 
   @override
   Widget build(BuildContext context) {
     
-    final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(asyncGetCoursesProvider);
+    final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
+    log("Streamed course");
 
     return streamedCourses.when(
       data: (data) {

@@ -2,23 +2,24 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/features/home/presentation/views/home_view/home_drawer.dart';
+import 'package:slides_sync/features/home/presentation/views/home_tab_view/home_drawer.dart';
 import 'package:slides_sync/features/home/presentation/views/library_tab_view.dart';
 import 'package:slides_sync/features/home/presentation/views/explore_tab_view.dart';
+import 'package:slides_sync/features/home/presentation/views/library_tab_view/library_floating_action_button.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-import 'home_view/home_body.dart';
-import 'home_view/home_bottom_nav_bar.dart';
+import 'home_tab_view.dart';
+import 'home_tab_view/home_bottom_nav_bar.dart';
 
-class HomeView extends ConsumerStatefulWidget {
+class MainView extends ConsumerStatefulWidget {
   final int tabIndex;
-  const HomeView({super.key, required this.tabIndex});
+  const MainView({super.key, required this.tabIndex});
 
   @override
-  ConsumerState createState() => _HomeViewState();
+  ConsumerState createState() => _MainViewState();
 }
 
-class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClientMixin {
+class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClientMixin {
   late final AutoDisposeStateProvider<int> homeNavBarIndexProvider;
   late final AutoDisposeStateProvider<bool> isScrolledProvider;
   late final PageController pageController;
@@ -75,8 +76,10 @@ class _HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClie
             onPageChanged: (index) {
               ref.read(homeNavBarIndexProvider.notifier).update((cb) => index);
             },
-            children: [HomeBody(isScrolledProvider: isScrolledProvider), LibraryTabView(), ExploreTabView()],
+            children: [HomeTabView(isScrolledProvider: isScrolledProvider), LibraryTabView(), ExploreTabView()],
           ),
+
+          floatingActionButton: homeNavBarIndex == 1 ? LibraryFloatingActionButton() : null,
         ),
       ),
     );

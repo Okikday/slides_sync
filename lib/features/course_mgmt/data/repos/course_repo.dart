@@ -1,4 +1,3 @@
-import 'package:isar/isar.dart';
 import 'package:slides_sync/data/isar_data/isar_data.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 
