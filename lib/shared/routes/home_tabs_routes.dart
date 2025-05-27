@@ -1,6 +1,6 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/features/home/presentation/views/main_view.dart';
+import 'package:slides_sync/features/main/presentation/views/main_view.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
 class HomeTabsRoutes {

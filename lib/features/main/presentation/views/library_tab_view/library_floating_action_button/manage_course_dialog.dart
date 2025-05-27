@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -68,7 +67,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: context.isDarkMode ? Color(0xFF0E1F27).withValues(alpha: 0.87) : Color(0XFFDCF4FF).withValues(alpha: 0.94),
+                    color: context.isDarkMode ? Color(0xFF0E1F27).withValues(alpha: 0.87) : Color(0XFFDCF4FF).withValues(alpha: 0.80),
                     border: Border.fromBorderSide(BorderSide(color: Colors.deepPurple.withAlpha(40), width: 2)),
                   ),
                   child: SingleChildScrollView(
@@ -78,7 +77,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ConstantSizing.columnSpacingMedium,
-                          Divider(color: Colors.white.withAlpha(40)),
+                          Divider(color: context.isDarkMode ? Colors.white.withAlpha(40) : Colors.black.withAlpha(40)),
                           CustomElevatedButton(
                             contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
                             backgroundColor: Colors.transparent,
@@ -96,7 +95,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                               ],
                             ),
                           ),
-                          Divider(color: Colors.white.withAlpha(40)),
+                          Divider(color: context.isDarkMode ? Colors.white.withAlpha(40) : Colors.black.withAlpha(40)),
                           CustomElevatedButton(
                             contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
                             backgroundColor: Colors.transparent,
@@ -118,7 +117,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                               ],
                             ),
                           ),
-                          Divider(color: Colors.white.withAlpha(40)),
+                          Divider(color: context.isDarkMode ? Colors.white.withAlpha(40) : Colors.black.withAlpha(40)),
                         ],
                       ),
                     ),
@@ -133,3 +132,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
     );
   }
 }
+
+
+
+

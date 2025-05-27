@@ -68,21 +68,21 @@ class GridCourseCard extends ConsumerWidget {
                                   if (courseCode.isNotEmpty)
                                     Padding(
                                       padding: const EdgeInsets.only(top: 4),
-                                      child: CustomText(courseCode, fontSize: 15, fontWeight: FontWeight.bold),
+                                      child: CustomText(courseCode, fontSize: 13),
                                     ),
 
                                   Flexible(
                                     child: CustomText(
                                       courseName,
                                       fontSize: courseCode.isNotEmpty ? 12 : 14,
-                                      fontWeight: courseCode.isEmpty ? FontWeight.bold : FontWeight.normal,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
 
-                            ConstantSizing.rowSpacing(28),
+                            ConstantSizing.rowSpacing(30),
                           ],
                         ),
                       ),

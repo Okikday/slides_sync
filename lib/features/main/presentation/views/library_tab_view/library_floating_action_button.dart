@@ -1,11 +1,9 @@
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/features/home/presentation/views/library_tab_view/library_floating_action_button/manage_course_dialog.dart';
+import 'package:slides_sync/features/main/presentation/views/library_tab_view/library_floating_action_button/manage_course_dialog.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class LibraryFloatingActionButton extends ConsumerWidget {
@@ -18,7 +16,7 @@ class LibraryFloatingActionButton extends ConsumerWidget {
         LoadingDialog.showLoadingDialog(
           context,
           canPop: true,
-          blurSigma: Offset(2.0, 2.0),
+          blurSigma: Offset(3.0, 3.0),
           transitionType: TransitionType.fade,
           transitionDuration: Durations.short1,
           reverseTransitionDuration: Durations.medium1,
@@ -46,3 +44,12 @@ class LibraryFloatingActionButton extends ConsumerWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+

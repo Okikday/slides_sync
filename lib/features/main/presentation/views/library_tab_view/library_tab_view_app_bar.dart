@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/util_functions.dart';
-import 'package:slides_sync/features/home/presentation/viewmodels/library_vm/notifiers/is_list_view_notifier.dart';
+import 'package:slides_sync/features/main/presentation/viewmodels/library_vm/notifiers/is_list_view_notifier.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class LibraryTabViewAppBar extends ConsumerWidget {

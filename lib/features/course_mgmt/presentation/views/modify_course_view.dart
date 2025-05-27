@@ -101,15 +101,21 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                     ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
                   );
                 } else {
-                  LoadingDialog.showLoadingDialog(
-                    context,
-                    canPop: true,
-                    transitionType: TransitionType.cupertinoDialog,
-                    loadingInfoWidget: AddCourseDescriptionDialog(
-                      title: courseModel.courseName,
-                      courseProvider: modifyCourseProvider,
-                    ),
-                  );
+                  showModalBottomSheet(
+                  context: context,
+                  enableDrag: false,
+                  showDragHandle: false,
+                  backgroundColor: context.scaffoldBackgroundColor,
+                  barrierColor: Colors.black54,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider, isEditingDescription: true,);
+                  },
+                ).then((_) {
+                  log("Closed Bottom sheet");
+                });
+
+                
                 }
               },
             ),

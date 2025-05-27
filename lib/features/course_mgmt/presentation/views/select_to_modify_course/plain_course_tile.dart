@@ -30,21 +30,25 @@ class PlainCourseTile extends ConsumerWidget {
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-        constraints: BoxConstraints(minHeight: 120, maxHeight: 140),
+        constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
         decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Row(
           children: [
             InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: (){},
-              child: Container(
-                height: 48,
-                width: 48,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(color: Colors.lightBlueAccent.withAlpha(100), borderRadius: BorderRadius.circular(12), border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(100), width: 2))),
-                child: ClipRSuperellipse(
-                  borderRadius: BorderRadiusGeometry.circular(12),
-                  child: WidgetHelper.resolveImageWidget(syncImagePath)),
+              child: ClipRSuperellipse(
+                borderRadius: BorderRadius.circular(13),
+                child: ColoredBox(
+                  color: Colors.deepPurple.withAlpha(80),
+                  child: Padding(
+                    padding: EdgeInsets.all(2),
+                    child: ClipRSuperellipse(
+                      borderRadius: BorderRadius.circular(12),
+                      child: SizedBox.square(dimension: 44, child: WidgetHelper.resolveImageWidget(syncImagePath)),
+                    ),
+                  ),
+                ),
               ),
             ),
             ConstantSizing.rowSpacingMedium,
