@@ -1,9 +1,12 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class ManageCourseDialog extends ConsumerStatefulWidget {
@@ -52,7 +55,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
             child: CircleAvatar(
               radius: 25,
               backgroundColor: context.isDarkMode ? Colors.lightBlueAccent : Colors.deepPurpleAccent,
-              child: Icon(Iconsax.close_circle, color: Colors.white),
+              child: Icon(Iconsax.close_circle, color: context.isDarkMode ? Colors.blueGrey : Colors.white),
             ),
           ),
         ),
@@ -83,15 +86,20 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                             backgroundColor: Colors.transparent,
                             onClick: () {
                               LoadingDialog.hideLoadingDialog(context);
-                              AppNavigator.to(context).createCoursePageRoute();
+                              Navigator.push(
+                                context,
+                                CupertinoSheetRoute(
+                                  builder: (context) {
+                                    return CreateCourseView();
+                                  },
+                                ),
+                              );
                             },
                             child: Row(
                               spacing: 8.0,
                               children: [
                                 Icon(Iconsax.add_circle, size: 24, color: Colors.deepPurpleAccent),
-                                Expanded(
-                                  child: CustomText("Create your course", fontSize: 14, fontWeight: FontWeight.bold,),
-                                ),
+                                Expanded(child: CustomText("Create your course", fontSize: 14, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -101,19 +109,21 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                             backgroundColor: Colors.transparent,
                             onClick: () {
                               LoadingDialog.hideLoadingDialog(context);
-                              AppNavigator.to(context).modifyExistingCoursesRoute();
+                              // AppNavigator.to(context).modifyExistingCoursesRoute();
+                              Navigator.push(
+                                context,
+                                CupertinoSheetRoute(
+                                  builder: (context) {
+                                    return SelectToModifyCourseView();
+                                  },
+                                ),
+                              );
                             },
                             child: Row(
                               spacing: 8.0,
                               children: [
                                 Icon(Iconsax.setting_2, size: 24, color: Colors.deepPurpleAccent),
-                                Expanded(
-                                  child: CustomText(
-                                    "Modify Existing course",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                Expanded(child: CustomText("Modify Existing course", fontSize: 14, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ),
@@ -132,7 +142,3 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
     );
   }
 }
-
-
-
-

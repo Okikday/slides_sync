@@ -1,17 +1,22 @@
 import 'dart:developer';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
+import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_code_field.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_title_field.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
+import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class EditCourseBottomSheet extends ConsumerStatefulWidget {
-  final NotifierProvider<ModifyCourseModelNotifier, CourseModel> modifyCourseProvider;
+  final StateProvider<CourseModel> modifyCourseProvider;
   final bool isEditingDescription;
   const EditCourseBottomSheet({super.key, required this.modifyCourseProvider, this.isEditingDescription = false});
 
@@ -21,9 +26,11 @@ class EditCourseBottomSheet extends ConsumerStatefulWidget {
 
 class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
   late final TextEditingController courseNameTextController;
+  late final TextEditingController courseCodeController;
   late final TextEditingController descriptionTextController;
   late final StateProvider<bool> canExitProvider;
   late final FocusNode descriptionFocusNode;
+  late final StateProvider<bool> isCourseCodeFieldVisible;
 
   @override
   void initState() {
@@ -31,6 +38,8 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
     canExitProvider = StateProvider<bool>((ref) => false);
     courseNameTextController = TextEditingController();
     descriptionTextController = TextEditingController();
+    courseCodeController = TextEditingController();
+    isCourseCodeFieldVisible = StateProvider((ref) => false);
     if (widget.isEditingDescription) {
       descriptionFocusNode = FocusNode();
     }
@@ -38,7 +47,9 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
       final readCourseModel = ref.watch(widget.modifyCourseProvider);
       final formerCourseName = readCourseModel.courseName;
       final formerDescription = readCourseModel.description;
+      final formerCourseCode = readCourseModel.courseCode;
       courseNameTextController.text = formerCourseName;
+      if (formerCourseCode.isNotEmpty) courseCodeController.text = formerCourseCode;
 
       if (formerDescription.isNotEmpty) {
         descriptionTextController.text = formerDescription;
@@ -48,18 +59,23 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
     });
   }
 
-  bool isInputValid() {
-    final courseNameText = courseNameTextController.text;
-
-    if(courseNameText.isEmpty || courseNameText.length < 2 || courseNameText.length > 64){
-      return false;
+  // Check if can update course
+  String? checkIfCanUpdateCourse() {
+    final courseName = courseNameTextController.text;
+    final courseCode = courseCodeController.text;
+    final description = descriptionTextController.text;
+    final isVisible = ref.watch(isCourseCodeFieldVisible);
+    if (courseName.isEmpty || courseName.length < 2 || courseName.length > 64 || double.tryParse(courseName) != null) {
+      if (courseName.isEmpty) return "Kindly fill the course title field!";
+      if (courseName.length < 2) return "Course title too short!";
+      if (courseName.length > 64) return "Course title too long!";
+      return "Kindly input a valid course title!";
+    } else if (isVisible && (courseCode.length < 2 || courseCode.length > 12)) {
+      return "Kindly input a valid course code or hide it";
+    } else if (description.length > 1024) {
+      return "Kindly input a valid description!";
     }
-
-    final descText = descriptionTextController.text;
-    if (descText.isEmpty || descText.length < 8 || descText.length > 1024) {
-      return false;
-    }
-    return true;
+    return null;
   }
 
   @override
@@ -73,8 +89,6 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
     final double bottomPadding = MediaQuery.paddingOf(context).bottom;
     final double keyboardInsets = double.parse((context.viewInsets.bottom / context.deviceHeight).toStringAsFixed(2)).clamp(0.0, 0.25);
-    final buttonBgColor =
-        isInputValid() && (descriptionTextController.text != courseModel.description) ? Colors.deepPurple : Colors.blueGrey;
 
     // CupertinoContextMenu(actions: actions, child: child)
 
@@ -84,12 +98,11 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
         if (ref.watch(canExitProvider)) {
           return;
         }
-        // final currCourseModel = ref.watch(widget.modifyCourseProvider);
 
         LoadingDialog.showLoadingDialog(
           context,
-          barrierColor: Colors.black.withValues(alpha: 0.7),
-          transitionType: TransitionType.fade,
+          barrierColor: context.isDarkMode ? Colors.white10 : Colors.black.withValues(alpha: 0.7),
+          transitionType: TransitionType.cupertinoDialog,
           blurSigma: Offset(3.0, 3.0),
           transitionDuration: Durations.medium2,
           loadingInfoWidget: AppAlertDialog(
@@ -140,7 +153,12 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
                             child: CustomScrollView(
                               slivers: [
-                                SliverToBoxAdapter(child: CustomText("Edit Course", fontSize: 18, fontWeight: FontWeight.bold)),
+                                PinnedHeaderSliver(
+                                  child: ColoredBox(
+                                    color: context.scaffoldBackgroundColor,
+                                    child: CustomText("Edit Course", fontSize: 18, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
 
                                 SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
@@ -150,37 +168,15 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     spacing: 6.0,
                                     children: [
-                                      CustomText("Course name", fontSize: 13),
-                                      CustomTextfield(
-                                        backgroundColor: Colors.grey.withAlpha(40),
-                                        controller: courseNameTextController,
-                                        cursorColor: CustomText("").effectiveStyle(context).color ?? Colors.white,
-                                        maxLength: 64,
-                                        ontap: (){
-                                          final courseNameText = courseNameTextController.text;
-                                            if (courseNameText == courseModel.courseName) {
-                                              courseNameTextController.selection = TextSelection(
-                                                baseOffset: 0,
-                                                extentOffset: courseNameText.length,
-                                              );
-                                            }
-                                        },
-                                        onSubmitted: (text){
-                                          FocusScope.of(context).nextFocus();
-                                        },
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(8.0),
-                                          borderSide: BorderSide(
-                                            color:
-                                                context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(40),
-                                          ),
-                                        ),
-                                        pixelWidth: context.deviceWidth,
-                                        maxLines: 1,
-                                        prefixIcon: SizedBox(width: 36, child: Icon(Icons.abc_rounded, color: Colors.deepPurple)),
-                                        inputContentPadding: EdgeInsets.fromLTRB(4.0, 12.0, 12.0, 12.0),
-                                        hint: "Enter Course name",
-                                        inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
+                                      CustomText("Course title", fontSize: 13),
+                                      InputCourseTitleField(
+                                        courseNameController: courseNameTextController,
+                                        isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                                      ),
+
+                                      InputCourseCodeField(
+                                        courseCodeController: courseCodeController,
+                                        isCourseCodeFieldVisible: isCourseCodeFieldVisible,
                                       ),
                                     ],
                                   ),
@@ -207,15 +203,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                               );
                                             }
                                           },
-                                          onchanged: (text) {
-                                            if (isInputValid()) {
-                                              if (courseModel.description == text) {
-                                                ref.read(canExitProvider.notifier).update((cb) => true);
-                                              }
-                                            } else {
-                                              ref.read(canExitProvider.notifier).update((cb) => false);
-                                            }
-                                          },
+                                          onchanged: (text) {},
                                           // onTapOutside: () {},
                                           focusNode: widget.isEditingDescription ? descriptionFocusNode : null,
                                           controller: descriptionTextController,
@@ -267,30 +255,34 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: CustomElevatedButton(
-                          onClick: () {
-                            final text = descriptionTextController.text;
-                            final String providerDesc = ref.watch(widget.modifyCourseProvider).description;
-
-                            if (!isInputValid()) {
-                              if (text == providerDesc) {
-                                CustomSnackBar.showSnackBar(context, content: "Kindly input a different description from previous");
-                                return;
-                              }
-                              CustomSnackBar.showSnackBar(context, content: "Kindly input a valid description!");
+                          onClick: () async {
+                            final String? errorMsg = checkIfCanUpdateCourse();
+                            if (errorMsg != null) {
+                              log("Cant update");
+                              UiUtils.showFlushBar(context, msg: errorMsg, flushbarPosition: FlushbarPosition.TOP);
                               return;
                             }
-
                             final currCourseModel = ref.watch(widget.modifyCourseProvider);
-                            ref.read(widget.modifyCourseProvider.notifier).update(currCourseModel.copyWith(description: text));
+                            final description = descriptionTextController.text;
+                            final String courseTitle = CourseFormatter.joinCodeToTitle(
+                              courseCodeController.text,
+                              courseNameTextController.text,
+                            );
+                            final CourseModel updatedCourseModel = currCourseModel.copyWith(
+                              courseTitle: courseTitle,
+                              description: description,
+                            );
+                            ref.read(widget.modifyCourseProvider.notifier).update((ref) => updatedCourseModel);
+                            await CourseRepo.addCourse(updatedCourseModel);
                             ref.read(canExitProvider.notifier).update((cb) => true);
-                            Navigator.pop(context);
+                            if (context.mounted) Navigator.pop(context);
                           },
                           contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                           label: "Update details",
                           textColor: Colors.white,
                           textSize: 15,
                           pixelHeight: 48,
-                          backgroundColor: buttonBgColor,
+                          backgroundColor: Colors.deepPurple,
                           borderRadius: 48,
                         ),
                       ),

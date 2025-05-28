@@ -29,7 +29,7 @@ class PlainCourseTile extends ConsumerWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
         decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Row(
@@ -37,14 +37,13 @@ class PlainCourseTile extends ConsumerWidget {
             InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: (){},
-              child: ClipRSuperellipse(
-                borderRadius: BorderRadius.circular(13),
+              child: ClipOval(
+                // borderRadius: BorderRadius.circular(13),
                 child: ColoredBox(
                   color: Colors.deepPurple.withAlpha(80),
                   child: Padding(
                     padding: EdgeInsets.all(2),
-                    child: ClipRSuperellipse(
-                      borderRadius: BorderRadius.circular(12),
+                    child: ClipOval(
                       child: SizedBox.square(dimension: 44, child: WidgetHelper.resolveImageWidget(syncImagePath)),
                     ),
                   ),

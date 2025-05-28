@@ -8,9 +8,11 @@ class InputCourseTitleField extends ConsumerWidget {
     super.key,
     required this.courseNameController,
     required this.isCourseCodeFieldVisible,
+    this.viewScrollController,
   });
-   final StateProvider<bool> isCourseCodeFieldVisible;
+  final StateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseNameController;
+  final ScrollController? viewScrollController;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,9 +23,7 @@ class InputCourseTitleField extends ConsumerWidget {
       selectionHandleColor: Colors.deepPurple,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
-        ),
+        borderSide: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20)),
       ),
       pixelWidth: context.deviceWidth,
       pixelHeight: 60,
@@ -31,19 +31,30 @@ class InputCourseTitleField extends ConsumerWidget {
       hint: "Enter course title",
       inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
       onTapOutside: () {},
-    
+
       suffixIcon: CustomElevatedButton(
         pixelWidth: 50,
         pixelHeight: 50,
         borderRadius: 12,
         overlayColor: Colors.deepPurple.withAlpha(40),
-        onClick: () {
+        onClick: () async {
           final bool isCourseCodeVisible = ref.read(isCourseCodeFieldVisible.notifier).state;
-          if(isCourseCodeVisible) FocusScope.of(context).unfocus();
+          if (isCourseCodeVisible) FocusScope.of(context).unfocus();
           ref.read(isCourseCodeFieldVisible.notifier).update((cb) => !ref.read(isCourseCodeFieldVisible.notifier).state);
+          if(FocusScope.of(context).hasFocus && viewScrollController != null){
+            viewScrollController?.animateTo(
+            viewScrollController!.position.maxScrollExtent + 150,
+            duration: Durations.extralong1,
+            curve: CustomCurves.decelerate,
+          );
+          }
         },
         backgroundColor: Colors.transparent,
-        child: Tooltip(message: "Add Optional Course code", triggerMode: TooltipTriggerMode.longPress, child: Icon(ref.watch(isCourseCodeFieldVisible) ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded, size: 30)),
+        child: Tooltip(
+          message: "Add Optional Course code",
+          triggerMode: TooltipTriggerMode.longPress,
+          child: Icon(ref.watch(isCourseCodeFieldVisible) ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded, size: 30),
+        ),
       ),
       alwaysShowSuffixIcon: true,
     );

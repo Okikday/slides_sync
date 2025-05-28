@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
 import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/courses_grid_view.dart';
 import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/courses_list_view.dart';
+import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
 import 'package:slides_sync/shared/components/loading_view.dart';
-import 'package:slides_sync/shared/strings/icon_strings.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AllCoursesSection extends ConsumerStatefulWidget {
   final bool isListView;
@@ -39,6 +39,20 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
   Widget build(BuildContext context) {
     final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
     log("Streamed course");
+    void onTap(CourseModel course) async {
+      final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
+      if (isCourseClickedNotifier.state) return;
+      isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
+
+      await Future.delayed(Durations.short4);
+      if (context.mounted) {
+        AppNavigator.to(context).courseDetailsRoute(course);
+      }
+      if (context.mounted) isCourseClickedNotifier.update((cb) => false);
+    }
+
+
+    
 
     return streamedCourses.when(
       data: (data) {
@@ -47,17 +61,9 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
         }
 
         if (widget.isListView) {
-          return CoursesListView(
-            scaleClickProviderFamily: scaleClickProviderFamily,
-            isCourseClickedProvider: isCourseClickedProvider,
-            data: data,
-          );
+          return CoursesListView(scaleClickProviderFamily: scaleClickProviderFamily, data: data, onTap: (index) => onTap(data[index]));
         } else {
-          return CoursesGridView(
-            scaleClickProviderFamily: scaleClickProviderFamily,
-            data: data,
-            isCourseClickedProvider: isCourseClickedProvider,
-          );
+          return CoursesGridView(scaleClickProviderFamily: scaleClickProviderFamily, data: data, onTap: (index) => onTap(data[index]));
         }
       },
       error: (_, __) {
@@ -66,53 +72,6 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
       loading: () {
         return SliverToBoxAdapter(child: LoadingView(msg: "Loading Courses"));
       },
-    );
-  }
-}
-
-
-
-
-
-class EmptyLibraryView extends StatelessWidget {
-  const EmptyLibraryView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          SizedBox.square(dimension: context.deviceWidth * 0.5, child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace)),
-
-          ConstantSizing.columnSpacingExtraLarge,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: CustomElevatedButton(
-              backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-              borderRadius: 12,
-              pixelHeight: 44,
-              label: "Create your course",
-              textSize: 15,
-              textColor: context.isDarkMode ? Colors.white : Colors.black,
-            ),
-          ),
-
-          ConstantSizing.columnSpacingMedium,
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: CustomElevatedButton(
-              backgroundColor: Colors.deepPurple,
-              borderRadius: 12,
-              pixelHeight: 44,
-              label: "Explore Courses",
-              textSize: 15,
-              textColor: Colors.white,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

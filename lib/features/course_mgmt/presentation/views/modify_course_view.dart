@@ -1,21 +1,24 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/is_plain_view_notifier.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/modify_course_model_notifier.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/add_course_description_dialog.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/modify_course_header.dart';
-import 'package:slides_sync/features/course_navigation/presentation/views/course_navigation_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
+import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 /// VIEW
@@ -28,7 +31,10 @@ class ModifyCourseView extends ConsumerStatefulWidget {
 }
 
 class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProviderStateMixin {
-  late final NotifierProvider<ModifyCourseModelNotifier, CourseModel> modifyCourseProvider;
+  // late final NotifierProvider<ModifyCourseModelNotifier, CourseModel> modifyCourseProvider;
+
+  late final StateProvider<CourseModel> modifyCourseProvider;
+  late final StreamProvider<CourseModel?> syncCourseProvider;
 
   late final PageController collectionPageController;
   late final PageController contentPageController;
@@ -38,11 +44,18 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
   @override
   void initState() {
     super.initState();
-    modifyCourseProvider = NotifierProvider<ModifyCourseModelNotifier, CourseModel>(ModifyCourseModelNotifier.new);
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(modifyCourseProvider.notifier).update(widget.courseModel));
+    modifyCourseProvider = StateProvider((ref) => widget.courseModel);
+    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseById(widget.courseModel.id));
     collectionPageController = PageController(initialPage: 4);
     contentPageController = PageController(initialPage: 4);
     isPlainViewProvider = AsyncNotifierProvider<IsPlainViewNotifier, bool>(IsPlainViewNotifier.new);
+  }
+
+  void syncCourseWithStorage(AsyncValue<CourseModel?>? prev, AsyncValue<CourseModel?> next) {
+    if (!next.hasValue) return;
+    final CourseModel? currCourse = next.value;
+    if (currCourse == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(modifyCourseProvider.notifier).update((cb) => currCourse));
   }
 
   @override
@@ -54,11 +67,8 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-
-
+    ref.listen(syncCourseProvider, syncCourseWithStorage);
     final CourseModel courseModel = ref.watch(modifyCourseProvider);
-
-    final List<String> categoriesList = ["Slides", "Textbooks", "Questions", "Additional", "Tips"];
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -73,6 +83,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
             ModifyCourseHeader(
               title: courseModel.courseName,
               description: courseModel.description.trim(),
+              courseCode: courseModel.courseCode.trim(),
               courseImagePath: courseModel.imagePath,
               onClickEditCourse: () async {
                 await showModalBottomSheet(
@@ -86,7 +97,56 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                   log("Closed Bottom sheet");
                 });
               },
-              onClickFilter: () {},
+              onClickDelete: () {
+                LoadingDialog.showLoadingDialog(
+                  context,
+                  canPop: true,
+                  barrierColor: Colors.black.withValues(alpha: 0.6),
+                  transitionType: TransitionType.cupertinoDialog,
+                  transitionDuration: Durations.medium2,
+                  loadingInfoWidget: AppAlertDialog(
+                    title: "Confirm deletion",
+                    content: "Are you sure you want to delete this course?",
+                    actions: [
+                      CustomElevatedButton(
+                        label: "Go back",
+                        textSize: 14,
+                        pixelHeight: 44,
+                        textColor: Colors.white,
+                        backgroundColor: Colors.white.withAlpha(40),
+                        borderRadius: ConstantSizing.borderRadiusCircle,
+                        onClick: () => LoadingDialog.hideLoadingDialog(context),
+                      ),
+
+                      CustomElevatedButton(
+                        label: "Delete",
+                        textSize: 14,
+                        pixelHeight: 44,
+                        textColor: Colors.red,
+                        backgroundColor: Colors.red.withAlpha(40),
+                        borderRadius: ConstantSizing.borderRadiusCircle,
+                        onClick: () async {
+                          LoadingDialog.hideLoadingDialog(context);
+                          await Future.delayed(Durations.medium1);
+
+                          if (context.mounted) {
+                            LoadingDialog.showLoadingDialog(
+                              context,
+                              canPop: true,
+                              msg: "Deleting Course",
+                              barrierColor: Colors.black.withValues(alpha: 0.6),
+                              transitionDuration: Durations.medium2,
+                            );
+                          }
+                          await CourseRepo.deleteCourse(courseModel.id);
+                          if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+                          if (context.mounted) context.pop();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
               onClickAddDescription: () {
                 if (courseModel.description.isNotEmpty) {
                   LoadingDialog.showLoadingDialog(
@@ -95,73 +155,56 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                     reverseTransitionDuration: Durations.short4,
                     transitionType: TransitionType.cupertinoDialog,
                     curve: CustomCurves.defaultIosSpring,
-                    barrierColor: Colors.black.withAlpha(100),
+                    barrierColor: Colors.black54,
                     loadingInfoWidget: CourseDescriptionDialog(
                       description: courseModel.description,
                     ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
                   );
                 } else {
                   showModalBottomSheet(
-                  context: context,
-                  enableDrag: false,
-                  showDragHandle: false,
-                  backgroundColor: context.scaffoldBackgroundColor,
-                  barrierColor: Colors.black54,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider, isEditingDescription: true,);
-                  },
-                ).then((_) {
-                  log("Closed Bottom sheet");
-                });
-
-                
+                    context: context,
+                    enableDrag: false,
+                    showDragHandle: false,
+                    backgroundColor: context.scaffoldBackgroundColor,
+                    barrierColor: Colors.black54,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider, isEditingDescription: true);
+                    },
+                  ).then((_) {
+                    log("Closed Bottom sheet");
+                  });
                 }
               },
             ),
 
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
 
-            CollectionsSection(collections: categoriesList, pageController: collectionPageController),
+            CollectionsSection(
+              collections: courseModel.subCollections,
+              pageController: collectionPageController,
+              onClickNewCollection: () {
+                AppNavigator.to(context).courseCollectionsRoute(courseModel);
+              },
+            ),
 
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
-            // if ((courseModel.collectionIds != null && courseModel.collectionIds!.isNotEmpty) ||
-            //     (courseModel.rootContentIds != null && courseModel.rootContentIds!.isNotEmpty))
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              sliver: SliverToBoxAdapter(
-                child: CustomElevatedButton(
-                  onClick: () {
-                    // if (context.mounted) {
-                    //   Navigator.of(context).push(
-                    //     PageTransition(
-                    //       type: PageTransitionType.rightToLeftWithFade,
-                    //       duration: Durations.extralong3,
-                    //       reverseDuration: Durations.medium1,
-                    //       curve: CustomCurves.snappySpring,
-                    //       child: CourseMaterialsView(),
-                    //     ),
-                    //   );
-                    // }
-                    Navigator.of(context).push(
-                      PageAnimation.pageRouteBuilder(
-                        CourseNavigationView(courseModel: courseModel),
-                        type: TransitionType.uptown,
-                        duration: Durations.extralong1,
-                        curve: CustomCurves.defaultIosSpring,
-                      ),
-                    );
-                  },
-                  borderRadius: 48,
-                  pixelHeight: 56,
-                  backgroundColor: Colors.deepPurple.withAlpha(80),
-                  label: "See all materials",
-                  textSize: 15,
-                  textColor: Colors.deepPurple,
+            if (courseModel.subCollections.isNotEmpty)
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                sliver: SliverToBoxAdapter(
+                  child: CustomElevatedButton(
+                    onClick: () {},
+                    borderRadius: 48,
+                    pixelHeight: 56,
+                    backgroundColor: Colors.deepPurple.withAlpha(80),
+                    label: "See all materials",
+                    textSize: 15,
+                    textColor: Colors.deepPurple,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

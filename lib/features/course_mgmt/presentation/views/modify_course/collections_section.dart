@@ -1,9 +1,11 @@
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_navigation/collection_card_tile.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
@@ -11,9 +13,10 @@ import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
 /// COLLECTION SECTION
 class CollectionsSection extends ConsumerStatefulWidget {
-  final List<String> collections;
+  final List<CourseSubCollection> collections;
   final PageController pageController;
-  const CollectionsSection({super.key, required this.collections, required this.pageController});
+  final void Function() onClickNewCollection;
+  const CollectionsSection({super.key, required this.collections, required this.pageController, required this.onClickNewCollection});
 
   @override
   ConsumerState createState() => _CollectionsSectionState();
@@ -21,27 +24,38 @@ class CollectionsSection extends ConsumerStatefulWidget {
 
 class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   late final AutoDisposeStateProvider<double> scrollOffsetNotifier;
-  late final AutoDisposeStateProvider<bool> canScrollNotifier;
+  int maxCards = 3;
+  // late final AutoDisposeStateProvider<bool> canScrollNotifier;
 
   @override
   void initState() {
     super.initState();
     scrollOffsetNotifier = AutoDisposeStateProvider<double>((ref) => 0.0);
-    canScrollNotifier = AutoDisposeStateProvider<bool>((ref) => false);
-    widget.pageController.addListener(updateScrollOffset);
+    // canScrollNotifier = AutoDisposeStateProvider<bool>((ref) => false);
+    // widget.pageController.addListener(updateScrollOffset);
+    widget.pageController.addListener(updateScrollProgress);
   }
 
-  void updateScrollOffset() {
+  // void updateScrollOffset() {
+  //   final scrollOffsetNotif = ref.read(scrollOffsetNotifier.notifier);
+  //   final newUpdate = widget.pageController.position.maxScrollExtent - widget.pageController.offset;
+  //   if (newUpdate == scrollOffsetNotif.state) return;
+  //   scrollOffsetNotif.update((cb) => widget.pageController.position.maxScrollExtent - widget.pageController.offset);
+  //   if (widget.pageController.page == 0) ref.read(canScrollNotifier.notifier).update((cb) => true);
+  // }
+
+  void updateScrollProgress() {
     final scrollOffsetNotif = ref.read(scrollOffsetNotifier.notifier);
-    final newUpdate = widget.pageController.position.maxScrollExtent - widget.pageController.offset;
-    if (newUpdate == scrollOffsetNotif.state) return;
-    scrollOffsetNotif.update((cb) => widget.pageController.position.maxScrollExtent - widget.pageController.offset);
-    if (widget.pageController.page == 0) ref.read(canScrollNotifier.notifier).update((cb) => true);
+    final double progress = (widget.pageController.page ?? 0.0) / (widget.collections.length - 1).clamp(0, maxCards);
+    if (progress == scrollOffsetNotif.state) return;
+    scrollOffsetNotif.update((cb) => progress);
+    log("progress: $progress");
   }
 
   @override
   void dispose() {
-    widget.pageController.removeListener(updateScrollOffset);
+    // widget.pageController.removeListener(updateScrollOffset);
+    widget.pageController.removeListener(updateScrollProgress);
     super.dispose();
   }
 
@@ -53,7 +67,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
     if (widget.collections.isEmpty) {
       return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        sliver: _buildNewCollectionTile(context.isDarkMode, onTap: () {}),
+        sliver: _buildNewCollectionTile(context.isDarkMode, onTap: widget.onClickNewCollection),
       );
     }
 
@@ -73,21 +87,24 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                       curve: CustomCurves.bouncySpring,
                       reverseDuration: Durations.extralong1,
                       child: SizedBox(
-                        height:
-                            (88 +
-                            88 / (5 - widget.collections.length.clamp(0, 3)) +
-                            (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collections.length.clamp(0, 3) - 1))),
-                        //
+                        height: double.parse(
+                          (88.0 * widget.collections.length.clamp(0, maxCards) * (1.0 - ref.watch(scrollOffsetNotifier))).toStringAsFixed(2),
+                        ).clamp(88.0 + 88 / (5 - widget.collections.length.clamp(0, maxCards)), 88.0 * widget.collections.length),
+
+                        // height:
+                        //     (88 +
+                        //     88 / (5 - widget.collections.length.clamp(0, 3)) +
+                        //     (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collections.length.clamp(0, 3) - 1))),
                         child: RotatedBox(
-                          quarterTurns: 2,
+                          quarterTurns: 0,
                           child: StackedCardCarousel(
                             initialOffset: 0,
-                            spaceBetweenItems: 80,
+                            spaceBetweenItems: 72,
                             pageController: pageController,
-                            items: List.generate(widget.collections.length.clamp(0, 3), (index) {
+                            items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
                               return RotatedBox(
-                                quarterTurns: 2,
-                                child: CollectionCardTile(context.isDarkMode, title: widget.collections[index], contentCount: 12),
+                                quarterTurns: 0,
+                                child: CollectionCardTile(context.isDarkMode, title: "Title to be assigned", contentCount: 12),
                               );
                             }),
                           ),

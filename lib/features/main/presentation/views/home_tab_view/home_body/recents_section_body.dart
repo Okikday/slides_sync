@@ -24,7 +24,7 @@ class RecentsSectionBody extends ConsumerWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-            SizedBox.square(dimension: context.deviceWidth * 0.5, child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace)),
+            SizedBox.square(dimension: context.deviceWidth * 0.5, child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true,)),
         
             ConstantSizing.columnSpacingHuge,
             Padding(
@@ -38,20 +38,6 @@ class RecentsSectionBody extends ConsumerWidget {
                 textColor: Colors.white,
               ),
             ),
-        
-            // ConstantSizing.columnSpacingMedium,
-        
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            //   child: CustomElevatedButton(
-            //     backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-            //     borderRadius: 12,
-            //     pixelHeight: 44,
-            //     label: "See your courses",
-            //     textSize: 15,
-            //     textColor: context.isDarkMode ? Colors.white : Colors.black,
-            //   ),
-            // ),
           ],
         ),
       );

@@ -15,7 +15,7 @@ class InputCourseCodeField extends ConsumerWidget {
       duration: Durations.extralong4,
       curve: CustomCurves.bouncySpring,
       child: SizedBox(
-        height: isCourseVisible ? 60 + ConstantSizing.columnSpacingMedium.height! : 0,
+        height: isCourseVisible ? 76 : 0,
         child: Stack(
           clipBehavior: Clip.hardEdge,
           children: [

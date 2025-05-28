@@ -1,4 +1,3 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -63,36 +62,45 @@ class ListCourseCard extends ConsumerWidget {
                 ),
               ),
             ),
-            ConstantSizing.rowSpacingMedium,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (courseCode.isNotEmpty) CustomText(courseCode, fontSize: 13),
-      
-                  if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(4),
-      
-                  Flexible(child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold)),
-      
-                  ConstantSizing.columnSpacingSmall,
-      
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        "${categoriesCount < 1 ? "No" : categoriesCount} categories",
-                        fontSize: 12,
-                        color: context.isDarkMode ? Colors.grey : Colors.deepPurple,
+                  if (courseCode.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 13.0),
+                      child: CustomTextButton(
+                        backgroundColor: Colors.deepPurple.withAlpha(80),
+                        pixelHeight: 24,
+                        borderRadius: 12,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 7.0),
+                        child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
                       ),
-                    ],
+                    ),
+
+                  if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(6.0),
+
+                  Flexible(child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold),
+                  )),
+
+                  ConstantSizing.columnSpacingSmall,
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CustomText(
+                      "${categoriesCount < 1 ? "No" : categoriesCount} categories",
+                      fontSize: 12,
+                      color: context.isDarkMode ? Colors.grey : Colors.deepPurple,
+                    ),
                   ),
                 ],
               ),
             ),
-      
-            ConstantSizing.rowSpacingMedium,
-      
+
+
             SizedBox.square(
               dimension: 40,
               child: Stack(
@@ -106,7 +114,7 @@ class ListCourseCard extends ConsumerWidget {
                       backgroundColor: Colors.black.withAlpha(40),
                     ),
                   ),
-      
+
                   Align(alignment: Alignment.center, child: CustomText("${(progress * 100).truncate()}%", fontSize: 12)),
                 ],
               ),

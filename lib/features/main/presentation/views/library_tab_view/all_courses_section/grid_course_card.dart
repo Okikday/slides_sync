@@ -49,7 +49,7 @@ class GridCourseCard extends ConsumerWidget {
                 ),
 
                 Padding(
-                  padding: EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -67,50 +67,64 @@ class GridCourseCard extends ConsumerWidget {
                                 children: [
                                   if (courseCode.isNotEmpty)
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: CustomText(courseCode, fontSize: 13),
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: CustomTextButton(
+                                        backgroundColor: Colors.deepPurple.withAlpha(80),
+                                        pixelHeight: 24,
+                                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0,),
+                                        child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent,),
+                                      ),
                                     ),
-
+                  
                                   Flexible(
-                                    child: CustomText(
-                                      courseName,
-                                      fontSize: courseCode.isNotEmpty ? 12 : 14,
-                                      fontWeight: FontWeight.bold,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                                      child: CustomText(
+                                        courseName,
+                                        fontSize: courseCode.isNotEmpty ? 12 : 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-
+                  
                             ConstantSizing.rowSpacing(30),
                           ],
                         ),
                       ),
-
+                  
                       ConstantSizing.columnSpacingSmall,
-
-                      CustomText(
-                        "${categoriesCount < 1 ? "No" : categoriesCount} categories",
-                        fontSize: 12,
-                        color: context.isDarkMode ? Colors.grey : Colors.deepPurple,
+                  
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: CustomText(
+                          "${categoriesCount < 1 ? "No" : categoriesCount} categories",
+                          fontSize: 12,
+                          color: context.isDarkMode ? Colors.grey : Colors.deepPurple,
+                        ),
                       ),
-
+                  
                       ConstantSizing.columnSpacing(16),
-
-                      Row(
-                        spacing: 8.0,
-                        children: [
-                          Expanded(
-                            child: LinearProgressIndicator(
-                              minHeight: 16,
-                              borderRadius: BorderRadius.circular(36),
-                              value: (progress).clamp(0.1, 1.0),
-                              backgroundColor: Colors.black.withAlpha(40),
-                              color: Colors.deepPurple, //.withAlpha(40)
+                  
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Row(
+                          spacing: 8.0,
+                          children: [
+                            Expanded(
+                              child: LinearProgressIndicator(
+                                minHeight: 16,
+                                borderRadius: BorderRadius.circular(36),
+                                value: (progress).clamp(0.1, 1.0),
+                                backgroundColor: Colors.black.withAlpha(40),
+                                color: Colors.deepPurple, //.withAlpha(40)
+                              ),
                             ),
-                          ),
-                          CustomText("${(progress * 100).truncate()}%", fontSize: 12, fontWeight: FontWeight.bold),
-                        ],
+                            CustomText("${(progress * 100).truncate()}%", fontSize: 12, fontWeight: FontWeight.bold),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,10 +1,12 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course/plain_course_tile.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
@@ -19,12 +21,12 @@ class SelectToModifyCourseView extends ConsumerStatefulWidget {
 }
 
 class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseView> {
-  late final FutureProvider<List<CourseModel>> futureCoursesProvider;
+  late final StreamProvider<List<CourseModel>> streamedCoursesProvider;
 
   @override
   void initState() {
     super.initState();
-    futureCoursesProvider = FutureProvider((ref) => CourseRepo.getAllCourses());
+    streamedCoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
   }
 
   @override
@@ -34,10 +36,10 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<CourseModel>> futureCourses = ref.watch(futureCoursesProvider);
+    final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(streamedCoursesProvider);
 
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
+      value: UiUtils.getSystemUiOverlayStyle(Colors.transparent, context.isDarkMode).copyWith(statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
@@ -46,17 +48,47 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
         ),
         body: CustomScrollView(
           slivers: [
-            futureCourses.when(
+            streamedCourses.when(
               data: (data) {
                 final isDarkMode = context.isDarkMode;
 
                 if (data.isEmpty) {
                   return SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      
-                      spacing: 8.0,
-                      children: [CircleAvatar(radius: 26, child: Icon(Icons.info_rounded, size: 48)), CustomText("No Existing courses!")],
+                    child: SizedBox(
+                      height: context.deviceHeight / 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+
+                        spacing: 8.0,
+                        children: [
+                          CircleAvatar(radius: 26, child: Icon(Icons.info_rounded, size: 32)),
+                          CustomText("No Existing courses!"),
+                          ConstantSizing.columnSpacingLarge,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: CustomElevatedButton(
+                              onClick: () {
+                                Navigator.pop(context);
+                                
+                                Navigator.push(
+                                  context,
+                                  CupertinoSheetRoute(
+                                    builder: (context) {
+                                      return CreateCourseView();
+                                    },
+                                  ),
+                                );
+                              },
+                              backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                              borderRadius: 12,
+                              pixelHeight: 44,
+                              label: "Create your course",
+                              textSize: 15,
+                              textColor: context.isDarkMode ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }
@@ -73,16 +105,26 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
                         courseCode: courseModel.courseCode,
                         categoriesCount: courseModel.rootContents.length,
                         syncImagePath: courseModel.imagePath,
-                        onTap: () {
-                          AppNavigator.to(context).modifyCoursePageRoute(courseModel);
+                        onTap: () async {
+                          Navigator.pop(context);
+
+                          await Future.delayed(Durations.medium1);
+
+                          if (context.mounted) AppNavigator.to(context).modifyCourseRoute(courseModel);
                         },
                       ),
                     );
                   },
                 );
               },
-              error: (_, __) => SliverToBoxAdapter(child: const Icon(Icons.error_rounded)),
-              loading: () => SliverToBoxAdapter(child: LoadingView(msg: "Loading Courses...")),
+              error:
+                  (_, __) => SliverToBoxAdapter(
+                    child: SizedBox(height: context.deviceHeight / 2 - 24, child: Center(child: const Icon(Icons.error_rounded))),
+                  ),
+              loading:
+                  () => SliverToBoxAdapter(
+                    child: SizedBox(height: context.deviceHeight / 2 - 48, child: Center(child: LoadingView(msg: "Loading Courses..."))),
+                  ),
             ),
 
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),

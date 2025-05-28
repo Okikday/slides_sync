@@ -17,18 +17,27 @@ class UiUtils {
     );
   }
 
-  static Future<dynamic> showFlushBar(BuildContext context, {required String msg, Duration duration = const Duration(milliseconds: 1500)}) async {
+  static Future<dynamic> showFlushBar(
+    BuildContext context, {
+    required String msg,
+    Duration duration = const Duration(milliseconds: 1500),
+    FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
+  }) async {
     await Flushbar(
       message: msg,
       messageColor: context.isDarkMode ? Colors.white : Colors.black,
       duration: duration,
       dismissDirection: FlushbarDismissDirection.VERTICAL,
+      flushbarPosition: flushbarPosition,
       backgroundColor:
           (context.isDarkMode ? SlidesRepoColors.deepBlue.withValues(alpha: 0.8) : SlidesRepoColors.lightGray.withValues(alpha: 0.8)),
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
       borderColor: Colors.grey.withValues(alpha: 0.2),
       boxShadows: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode).boxShadow,
-      margin: EdgeInsets.only(left: 24, right: 24, bottom: kBottomNavigationBarHeight + 12),
+      margin:
+          flushbarPosition == FlushbarPosition.BOTTOM
+              ? EdgeInsets.only(left: 24, right: 24, bottom: kBottomNavigationBarHeight + 12)
+              : EdgeInsets.only(left: 24, right: 24, top: context.topPadding + 8.0),
       barBlur: 4.0,
     ).show(context);
   }

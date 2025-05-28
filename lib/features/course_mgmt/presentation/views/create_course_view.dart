@@ -3,6 +3,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/add_image_avatar.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/create_course_button.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_code_field.dart';
@@ -23,6 +24,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
   late final TextEditingController courseNameController;
   late final TextEditingController courseCodeController;
   late final StateProvider<String?> courseImagePathProvider;
+  late final ScrollController scrollController;
 
   @override
   void initState() {
@@ -31,17 +33,19 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
     courseImagePathProvider = StateProvider((ref) => null);
     courseNameController = TextEditingController();
     courseCodeController = TextEditingController();
+    scrollController = ScrollController();
+  }
+  
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: context.scaffoldBackgroundColor,
-        systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarColor: context.scaffoldBackgroundColor,
-        statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
-      ),
+      value: UiUtils.getSystemUiOverlayStyle(Colors.transparent, context.isDarkMode).copyWith(statusBarIconBrightness: Brightness.light),
       child: Scaffold(
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
@@ -59,6 +63,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                 Align(
                   alignment: Alignment.center,
                   child: SingleChildScrollView(
+                    controller: scrollController,
                     child: Column(
                       children: [
                         ConstantSizing.columnSpacingMedium,
@@ -72,6 +77,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
                         InputCourseTitleField(
                           courseNameController: courseNameController,
                           isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                          viewScrollController: scrollController
                         ),
 
                         ConstantSizing.columnSpacingLarge,
@@ -108,7 +114,7 @@ String? checkIfCanCreateCourse(String courseName, String courseCode, bool isCour
     if (courseName.length < 2) return "Course title too short!";
     if (courseName.length > 64) return "Course title too long!";
     return "Kindly input a valid course title!";
-  } else if (isCourseCodeVisible && courseCode.length < 2) {
+  } else if (isCourseCodeVisible && (courseCode.length < 2 || courseCode.length > 12)) {
     return "Kindly input a valid course code or hide it";
   }
   return null;

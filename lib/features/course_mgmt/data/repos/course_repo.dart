@@ -6,9 +6,14 @@ class CourseRepo {
   static Future<int> addCourse(CourseModel course) async => await isar.store(course);
   static Future<List<int>> addMultipleCourses(List<CourseModel> courses) async => await isar.storeAll(courses);
 
-  static Future<void> deleteCourse(CourseModel course) async {
-    await isar.deleteById(course.id);
+  static Future<void> deleteCourse(int courseId) async {
+    await isar.deleteById(courseId);
   }
+
+  static Stream<CourseModel?> watchCourseById(int courseId){
+    return IsarData.instance<CourseModel>().watchById(courseId);
+  }
+  
 
   static Future<List<CourseModel>> getAllCourses() async {
     return IsarData.instance<CourseModel>().getAll();

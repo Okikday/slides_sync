@@ -70,9 +70,11 @@ class CreateCourseButton extends ConsumerWidget {
 
           await Future.delayed(Durations.short1);
 
-          if(context.mounted) context.pop();
+          if(context.mounted) Navigator.pop(context);
 
-          if (context.mounted) AppNavigator.to(context).modifyCoursePageRoute(courseModel);
+          await Future.delayed(Durations.medium1);
+
+          if (context.mounted) AppNavigator.to(context).modifyCourseRoute(courseModel);
         },
       ),
     );

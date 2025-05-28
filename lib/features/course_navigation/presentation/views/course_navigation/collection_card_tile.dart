@@ -57,39 +57,36 @@ class CollectionCardTile extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.fromBorderSide(BorderSide.none),
                   ),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                    child: Row(
-                      children: [
-                        CustomElevatedButton(
-                          onClick: () {
-                            if (onSelected != null) onSelected!();
-                          },
-                          contentPadding: EdgeInsets.all(8.0),
-                          backgroundColor: Colors.lightBlueAccent.withAlpha(25),
-                          child: Icon(iconData, size: 24, color: isDarkMode ? Colors.white : Colors.black),
+                  child: Row(
+                    children: [
+                      CustomElevatedButton(
+                        onClick: () {
+                          if (onSelected != null) onSelected!();
+                        },
+                        contentPadding: EdgeInsets.all(8.0),
+                        backgroundColor: Colors.lightBlueAccent.withAlpha(25),
+                        child: Icon(iconData, size: 24, color: isDarkMode ? Colors.white : Colors.black),
+                      ),
+                      ConstantSizing.rowSpacingMedium,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(title, fontWeight: FontWeight.bold),
+                            ConstantSizing.columnSpacing(4),
+                            if (subCollectionCount > 0 || contentCount > 0)
+                              CustomText(
+                                "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}${contentCount < 1 ? '' : "$contentCount items"}",
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                          ],
                         ),
-                        ConstantSizing.rowSpacingMedium,
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(title, fontWeight: FontWeight.bold),
-                              ConstantSizing.columnSpacing(4),
-                              if (subCollectionCount > 0 || contentCount > 0)
-                                CustomText(
-                                  "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}${contentCount < 1 ? '' : "$contentCount items"}",
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                            ],
-                          ),
-                        ),
-                        ConstantSizing.rowSpacingMedium,
-                        Icon(Iconsax.arrow_right, color: isDarkMode ? Colors.white : Colors.black),
-                      ],
-                    ),
+                      ),
+                      ConstantSizing.rowSpacingMedium,
+                      Icon(Iconsax.arrow_right, color: isDarkMode ? Colors.white : Colors.black),
+                    ],
                   ),
                 ),
               ),

@@ -20,15 +20,15 @@ class MainView extends ConsumerStatefulWidget {
 }
 
 class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClientMixin {
-  late final AutoDisposeStateProvider<int> homeNavBarIndexProvider;
-  late final AutoDisposeStateProvider<bool> isScrolledProvider;
+  late final StateProvider<int> homeNavBarIndexProvider;
+  late final StateProvider<bool> isScrolledProvider;
   late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
-    homeNavBarIndexProvider = AutoDisposeStateProvider((ref) => 0);
-    isScrolledProvider = AutoDisposeStateProvider((ref) => false);
+    homeNavBarIndexProvider = StateProvider((ref) => 0);
+    isScrolledProvider = StateProvider((ref) => false);
     pageController = PageController(initialPage: widget.tabIndex);
     WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(homeNavBarIndexProvider.notifier).update((cb) => widget.tabIndex));
   }

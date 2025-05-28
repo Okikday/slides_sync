@@ -23,24 +23,11 @@ class Routes {
       // -> SELECT TO MODIFY COURSE / MODIFY EXISTING COURSE
       // -> MODIFY COURSE
       //    -> EDIT COURSE
-      CourseMgmtRoute.route,
+      ...CourseMgmtRoutes.route,
 
       //COURSE NAVIGATION
       GoRoute(
         path: RoutesStrings.courseDetailsView,
-        pageBuilder:
-            (context, state) => PageAnimation.buildCustomTransitionPage(
-              state.pageKey,
-              type: TransitionType.topLevel,
-              duration: Durations.extralong1,
-              reverseDuration: Durations.medium1,
-              curve: CustomCurves.defaultIosSpring,
-              child: CourseDetailsPage(courseModel: state.extra as CourseModel),
-            ),
-      ),
-
-      GoRoute(
-        path: RoutesStrings.courseMaterialsPage,
         pageBuilder:
             (context, state) => PageAnimation.buildCustomTransitionPage(
               state.pageKey,

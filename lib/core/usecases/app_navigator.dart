@@ -15,24 +15,29 @@ class AppNavigator {
 
   void _pushAsReplacement(String location, {Object? extra}) => context.go(location, extra: extra);
 
-  void courseDetailsViewRoute(CourseModel courseModel) =>
+  void courseDetailsRoute(CourseModel courseModel) =>
       _isPushedAsReplacement
           ? _pushAsReplacement(RoutesStrings.courseDetailsView, extra: courseModel)
           : _push(RoutesStrings.courseDetailsView, extra: courseModel);
 
-  void createCoursePageRoute() {
-    final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.createCoursePage}";
+  void createCourseRoute() {
+    final route = RoutesStrings.createCourseView;
     _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
   }
 
-  void modifyCoursePageRoute(CourseModel courseModel) {
-    final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.modifyCoursePage}";
+  void modifyCourseRoute(CourseModel courseModel) {
+    final route = RoutesStrings.modifyCourseView;
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
   }
 
-  void modifyExistingCoursesRoute(){
-    final route = "${RoutesStrings.manageCoursesView}/${RoutesStrings.selectToModifyCoursePage}";
-    _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
+  // void modifyExistingCoursesRoute(){
+  //   final route = RoutesStrings.selectToModifyCourseView;
+  //   _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
+  // }
+
+  void courseCollectionsRoute(CourseModel courseModel){
+    final route = RoutesStrings.courseCollectionsView;
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
   }
 
   // void courseMaterialsPageRoute(){

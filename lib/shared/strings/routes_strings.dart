@@ -4,9 +4,10 @@ class RoutesStrings {
   static const libraryView = "/library";
   static const exploreView = "/explore";
   static const courseDetailsView = "/courseDetailsView";
-  static const manageCoursesView = "/manageCoursesView";
-  static const createCoursePage = "createCoursePage";
-  static const modifyCoursePage = "modifyCoursePage";
-  static const courseMaterialsPage = "courseMaterialsPage";
-  static const selectToModifyCoursePage = "selectToModifyCoursePage";
+  // static const manageCoursesView = "/manageCoursesView";
+  static const createCourseView = "/createCourseView";
+  static const modifyCourseView = "/modifyCourseView";
+  static const courseMaterialsView = "/courseMaterialsView";
+  static const selectToModifyCourseView = "/selectToModifyCourseView";
+  static const courseCollectionsView = "/courseCollectionsView";
 }

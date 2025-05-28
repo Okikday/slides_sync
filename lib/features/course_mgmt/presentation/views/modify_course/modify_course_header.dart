@@ -5,47 +5,61 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
-  
   final String title;
+  final String courseCode;
   final String description;
   final String? courseImagePath;
 
   final void Function() onClickAddDescription;
   final void Function() onClickEditCourse;
-  final void Function() onClickFilter;
+  final void Function() onClickDelete;
 
-  const ModifyCourseHeader(
-    {
+  const ModifyCourseHeader({
     super.key,
     required this.title,
+    this.courseCode = "",
     required this.description,
     this.courseImagePath,
     required this.onClickAddDescription,
     required this.onClickEditCourse,
-    required this.onClickFilter,
+    required this.onClickDelete,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverPadding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      sliver: SliverToBoxAdapter(
-        child: Column(
-          spacing: 24.0,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 8.0,
-                    children: [
-                      ConstantSizing.columnSpacingMedium,
-                      Flexible(child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold)),
-                      Flexible(
+    return SliverToBoxAdapter(
+      child: Column(
+        spacing: 24.0,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 8.0,
+                  children: [
+                    ConstantSizing.columnSpacingMedium,
+                    if (courseCode.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: CustomTextButton(
+                          backgroundColor: Colors.deepPurple.withAlpha(80),
+                          pixelHeight: 28,
+                          contentPadding: EdgeInsets.symmetric(horizontal: 12.0,),
+                          child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent,),
+                        ),
+                      ),
+    
+                    Flexible(child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold),
+                    )),
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
                         child: ConstrainedBox(
                           constraints: BoxConstraints(maxHeight: 80),
                           child: SingleChildScrollView(
@@ -58,18 +72,23 @@ class ModifyCourseHeader extends ConsumerWidget {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                ConstantSizing.rowSpacingLarge,
-                CircleAvatar(
-                  radius: 42,
-                  backgroundColor: Colors.deepPurple,
-                  child: ClipOval(child: SizedBox.square(dimension: 80, child: WidgetHelper.resolveImageWidget(courseImagePath)))),
-              ],
-            ),
-
-            Row(
+              ),
+              ConstantSizing.rowSpacingLarge,
+              CircleAvatar(
+                radius: 42,
+                backgroundColor: Colors.deepPurple,
+                child: ClipOval(child: SizedBox.square(dimension: 80, child: WidgetHelper.resolveImageWidget(courseImagePath))),
+              ),
+              ConstantSizing.rowSpacingMedium,
+            ],
+          ),
+    
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
               spacing: 12.0,
               children: [
                 Expanded(
@@ -85,16 +104,16 @@ class ModifyCourseHeader extends ConsumerWidget {
                 ),
                 CustomElevatedButton(
                   pixelHeight: 48,
-                  onClick: onClickFilter,
+                  onClick: onClickDelete,
                   contentPadding: EdgeInsets.all(16),
-                  backgroundColor: Colors.lightBlueAccent.withAlpha(50),
+                  backgroundColor: Colors.red.withAlpha(50),
                   shape: CircleBorder(),
-                  child: Icon(Iconsax.filter, color: Colors.lightBlueAccent),
+                  child: Icon(Iconsax.trash_copy, color: Colors.red),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
