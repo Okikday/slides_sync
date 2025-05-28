@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +16,6 @@ void main() async {
   await Hive.initFlutter();
   await AppHiveData.instance.initialize();
   await IsarData.initialize(collectionSchemas: isarSchemas);
-  log("Initialized data...");
 
   runApp(ProviderScope(child: const App()));
 }

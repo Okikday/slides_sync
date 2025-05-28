@@ -4,35 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-class ManageCourseDialog extends ConsumerStatefulWidget {
+class ManageCourseDialog extends ConsumerWidget {
   const ManageCourseDialog({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ManageCourseDialogState();
-}
-
-class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with SingleTickerProviderStateMixin {
-  late final AnimationController animationController;
-
-  @override
-  void initState() {
-    super.initState();
-    animationController = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final double bottomPad = kBottomNavigationBarHeight + context.padding.bottom + context.viewInsets.bottom + kFloatingActionButtonMargin;
     final double rightPad = kToolbarHeight + 16 + 8.0;
     final double containerDimension = context.deviceHeight > context.deviceWidth ? context.deviceWidth * 0.65 : context.deviceWidth * 0.65;
@@ -45,7 +25,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
           right: 16,
           child: FloatingActionButton(
             onPressed: () async {
-              animationController.reverse();
+              // animationController.reverse();
               if (context.mounted) LoadingDialog.hideLoadingDialog(context);
             },
             elevation: 8.0,
@@ -133,7 +113,9 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                     ),
                   ),
                 )
-                .animate(controller: animationController)
+                .animate(
+                  // controller: animationController
+                )
                 .scale(alignment: Alignment.bottomRight, curve: CustomCurves.defaultIosSpring, duration: Durations.medium2)
                 .fade(begin: 0.0, end: 1.0),
           ),

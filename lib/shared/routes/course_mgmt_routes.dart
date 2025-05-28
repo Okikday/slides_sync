@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/course_collections_view.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course_view.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
 import '../../features/course_mgmt/presentation/views/create_course_view.dart';

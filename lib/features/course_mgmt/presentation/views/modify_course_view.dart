@@ -1,8 +1,6 @@
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -112,7 +110,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                         label: "Go back",
                         textSize: 14,
                         pixelHeight: 44,
-                        textColor: Colors.white,
+                        textColor: context.isDarkMode ? Colors.white : Colors.black,
                         backgroundColor: Colors.white.withAlpha(40),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: () => LoadingDialog.hideLoadingDialog(context),

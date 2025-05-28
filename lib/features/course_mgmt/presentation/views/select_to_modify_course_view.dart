@@ -105,12 +105,12 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
                         courseCode: courseModel.courseCode,
                         categoriesCount: courseModel.rootContents.length,
                         syncImagePath: courseModel.imagePath,
-                        onTap: () async {
+                        onTap: () {
                           Navigator.pop(context);
 
-                          await Future.delayed(Durations.medium1);
+                          Future.delayed(Durations.medium1);
 
-                          if (context.mounted) AppNavigator.to(context).modifyCourseRoute(courseModel);
+                          AppNavigator.to(context).modifyCourseRoute(courseModel);
                         },
                       ),
                     );
