@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
@@ -13,14 +14,14 @@ class PlainCourseTile extends ConsumerWidget {
     required this.courseName,
     required this.courseCode,
     required this.categoriesCount,
-    this.syncImagePath,
+    required this.syncImagePath,
     required this.onTap,
   });
   final bool isDarkMode;
   final String courseName;
   final String courseCode;
   final int categoriesCount;
-  final String? syncImagePath;
+  final String syncImagePath;
   final void Function() onTap;
 
   @override
@@ -44,7 +45,7 @@ class PlainCourseTile extends ConsumerWidget {
                   child: Padding(
                     padding: EdgeInsets.all(2),
                     child: ClipOval(
-                      child: SizedBox.square(dimension: 44, child: WidgetHelper.resolveImageWidget(syncImagePath)),
+                      child: SizedBox.square(dimension: 44, child: WidgetHelper.resolveImageWidget(syncImagePath.imageLocation)),
                     ),
                   ),
                 ),

@@ -2,27 +2,31 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
+import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
   final String title;
   final String courseCode;
   final String description;
-  final String? courseImagePath;
+  final String courseImageLocation;
 
   final void Function() onClickAddDescription;
   final void Function() onClickEditCourse;
   final void Function() onClickDelete;
+  final void Function() onClickImage;
 
   const ModifyCourseHeader({
     super.key,
     required this.title,
     this.courseCode = "",
     required this.description,
-    this.courseImagePath,
+    required this.courseImageLocation,
     required this.onClickAddDescription,
     required this.onClickEditCourse,
     required this.onClickDelete,
+    required this.onClickImage,
   });
 
   @override
@@ -48,15 +52,17 @@ class ModifyCourseHeader extends ConsumerWidget {
                         child: CustomTextButton(
                           backgroundColor: Colors.deepPurple.withAlpha(80),
                           pixelHeight: 28,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 12.0,),
-                          child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent,),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
                         ),
                       ),
-    
-                    Flexible(child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold),
-                    )),
+
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 16.0),
@@ -77,15 +83,25 @@ class ModifyCourseHeader extends ConsumerWidget {
                 ),
               ),
               ConstantSizing.rowSpacingLarge,
-              CircleAvatar(
-                radius: 42,
-                backgroundColor: Colors.deepPurple,
-                child: ClipOval(child: SizedBox.square(dimension: 80, child: WidgetHelper.resolveImageWidget(courseImagePath))),
+              ClipOval(
+                child: GestureDetector(
+                  onTap: onClickImage,
+                  child: ColoredBox(
+                    color: Colors.deepPurple.withAlpha(80),
+                    child: SizedBox.square(
+                      dimension: 80,
+                      child: WidgetHelper.resolveImageWidget(
+                        courseImageLocation.imageLocation,
+                        fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
+                      ),
+                    ),
+                  ),
+                ),
               ),
               ConstantSizing.rowSpacingMedium,
             ],
           ),
-    
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(

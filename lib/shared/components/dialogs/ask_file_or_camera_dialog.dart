@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-class AppAlertDialog extends ConsumerWidget {
+class AskFileOrCameraDialog extends ConsumerWidget {
   final String title;
-  final String content;
   final List<Widget> actions;
-  final void Function()? onCancel;
-  final void Function()? onConfirm;
   final Color? backgroundColor;
-  const AppAlertDialog({super.key, required this.title, required this.content, this.actions = const [], this.onCancel, this.onConfirm, this.backgroundColor});
+  const AskFileOrCameraDialog({super.key, this.title = "Select Image from", this.actions = const [], this.backgroundColor});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,40 +49,7 @@ class AppAlertDialog extends ConsumerWidget {
                   ),
                   ConstantSizing.columnSpacingSmall,
                   Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
-                  ConstantSizing.columnSpacingSmall,
-                  Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: CustomText(content, fontSize: 15)),
-                  ConstantSizing.columnSpacingHuge,
-                  Row(
-                    spacing: 16.0,
-                    children: [
-                      ...actions.map((e) => Flexible(child: e)),
-                      if (actions.isEmpty)
-                        ...[
-                          CustomElevatedButton(
-                            label: "Cancel",
-                            textSize: 14,
-                            pixelHeight: 44,
-                            textColor: Colors.red,
-                            backgroundColor: Colors.red.withAlpha(40),
-                            borderRadius: ConstantSizing.borderRadiusCircle,
-                            onClick: () {
-                              if (onCancel != null) onCancel!();
-                            },
-                          ),
-                          CustomElevatedButton(
-                            label: "Confirm",
-                            textSize: 14,
-                            pixelHeight: 44,
-                            textColor: Colors.deepPurpleAccent,
-                            backgroundColor: Colors.deepPurple.withAlpha(80),
-                            borderRadius: ConstantSizing.borderRadiusCircle,
-                            onClick: () {
-                              if (onConfirm != null) onConfirm!();
-                            },
-                          ),
-                        ].map((e) => Flexible(child: e)),
-                    ],
-                  ),
+
                 ],
               ),
             ),

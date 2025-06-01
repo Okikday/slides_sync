@@ -10,4 +10,5 @@ extension AppUiContext on BuildContext {
   EdgeInsets get viewInsets => MediaQuery.viewInsetsOf(this);
   EdgeInsets get padding => MediaQuery.paddingOf(this);
   double get topPadding => padding.top;
+  double get bottomPadding => padding.bottom;
 }

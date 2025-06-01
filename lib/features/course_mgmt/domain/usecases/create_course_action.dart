@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -11,13 +12,9 @@ Future<Result<CourseModel>> createCourseAction({String courseCode = '', required
   final Result<CourseModel?> createCourseOutcome = await Result.tryRunAsync<CourseModel>(() async {
     CourseModel courseModel = CourseModel.create(courseTitle: CourseFormatter.joinCodeToTitle(courseCode, courseName));
 
-    if (courseImagePath != null && courseImagePath.isNotEmpty) {
-      final Result<File> result = await ImageUtils().compressImage(inputFile: File(courseImagePath), targetMB: 0.1);
-      if (result.isSuccess) {
-        final String path = await FileUtils.storeFile(file: result.data!, folderPath: "courses/${courseModel.courseId}");
-        courseModel = courseModel.copyWith(imagePath: "file: $path");
-      }
-      log("Tried compress Image. \nResult: ${result.status}");
+    final String? newPath = await compressCourseImageAsFile(courseImagePath, folderPath: "courses/${courseModel.courseId}");
+    if (newPath != null) {
+      courseModel = courseModel.copyWith(imageLocation: ImageLocation(filePath: newPath));
     }
 
     await CourseRepo.addCourse(courseModel);
@@ -30,4 +27,16 @@ Future<Result<CourseModel>> createCourseAction({String courseCode = '', required
     return Result.success(createCourseOutcome.data!);
   }
   return Result.error("Unable to create course");
+}
+
+Future<String?> compressCourseImageAsFile(String? courseImagePath, {required String folderPath}) async {
+  if (courseImagePath != null && courseImagePath.isNotEmpty) {
+    final Result<File> result = await ImageUtils().compressImage(inputFile: File(courseImagePath), targetMB: 0.1);
+    if (result.isSuccess) {
+      final String path = await FileUtils.storeFile(file: result.data!, folderPath: folderPath);
+      return path;
+    }
+    log("Tried compress Image. \nResult: ${result.status}");
+  }
+  return null;
 }

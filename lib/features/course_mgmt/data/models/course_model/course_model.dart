@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:isar/isar.dart';
 import 'package:collection/collection.dart';
+import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/course_sub_collection.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
@@ -11,8 +12,6 @@ export 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/co
 
 part 'course_model.g.dart';
 
-
-
 @collection
 class CourseModel {
   Id id = Isar.autoIncrement;
@@ -20,7 +19,7 @@ class CourseModel {
   final String courseId;
   final String courseTitle;
   final String description;
-  final String? imagePath;
+  final String imageLocation;
   final DateTime? createdAt;
 
   final List<CourseSubCollection> subCollections;
@@ -30,12 +29,14 @@ class CourseModel {
   String get courseName => CourseFormatter.separateCodeFromTitle(courseTitle)[0];
   String get courseCode => CourseFormatter.separateCodeFromTitle(courseTitle)[1];
 
+  // ImageLocation get getImageLocation => ImageLocation.fromJson(imageLocation);
+
   CourseModel({
     this.courseId = '',
     this.courseTitle = '',
     this.createdAt,
     this.description = '',
-    this.imagePath,
+    this.imageLocation = '{}',
     this.subCollections = const <CourseSubCollection>[],
     this.rootContents = const <CourseContent>[],
     this.courseMetadataJson = '{}',
@@ -45,7 +46,7 @@ class CourseModel {
     required String courseTitle,
     String description = '',
     DateTime? createdAt,
-    String? imagePath,
+    ImageLocation? imageLocation,
     List<CourseSubCollection> subCollections = const [],
     List<CourseContent> rootContents = const [],
     String courseMetadataJson = '{}',
@@ -55,7 +56,7 @@ class CourseModel {
       courseTitle: courseTitle,
       description: description,
       createdAt: createdAt ?? DateTime.now(),
-      imagePath: imagePath,
+      imageLocation: imageLocation?.toJson() ?? '{}',
       subCollections: subCollections,
       rootContents: rootContents,
       courseMetadataJson: courseMetadataJson,
@@ -67,7 +68,7 @@ class CourseModel {
     String? courseTitle,
     DateTime? createdAt,
     String? description,
-    String? imagePath,
+    ImageLocation? imageLocation,
     List<CourseSubCollection>? subCollections,
     List<CourseContent>? rootContents,
     String? courseMetadataJson,
@@ -77,7 +78,7 @@ class CourseModel {
       courseTitle: courseTitle ?? this.courseTitle,
       createdAt: createdAt ?? this.createdAt,
       description: description ?? this.description,
-      imagePath: imagePath ?? this.imagePath,
+      imageLocation: imageLocation?.toJson() ?? this.imageLocation,
       subCollections: subCollections ?? List<CourseSubCollection>.from(this.subCollections),
       rootContents: rootContents ?? List<CourseContent>.from(this.rootContents),
       courseMetadataJson: courseMetadataJson ?? this.courseMetadataJson,
@@ -91,7 +92,7 @@ class CourseModel {
       'createdAt': createdAt?.toIso8601String(),
       'courseTitle': courseTitle,
       'description': description,
-      'imagePath': imagePath,
+      'imageLocation': imageLocation,
       'subCollections': subCollections,
       'rootContents': rootContents,
       'courseMetadataJson': courseMetadataJson,
@@ -102,9 +103,9 @@ class CourseModel {
     return CourseModel(
       courseId: map['courseId'],
       courseTitle: map['courseTitle'],
-      createdAt: map['createdAt']  == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
+      createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       description: map['description'],
-      imagePath: map['imagePath'],
+      imageLocation: map['imageLocation'] as String? ?? '{}',
       subCollections: List<CourseSubCollection>.from(
         (map['subCollections'] as List<String>).map((e) => CourseSubCollection.fromJson(e)).toList(),
       ),
@@ -127,7 +128,7 @@ class CourseModel {
           courseTitle == other.courseTitle &&
           createdAt == other.createdAt &&
           description == other.description &&
-          imagePath == other.imagePath &&
+          imageLocation == other.imageLocation &&
           const DeepCollectionEquality().equals(subCollections, other.subCollections) &&
           const DeepCollectionEquality().equals(rootContents, other.rootContents) &&
           courseMetadataJson == other.courseMetadataJson;
@@ -139,7 +140,7 @@ class CourseModel {
     createdAt,
     courseTitle,
     description,
-    imagePath,
+    imageLocation,
     const DeepCollectionEquality().hash(subCollections),
     const DeepCollectionEquality().hash(rootContents),
     courseMetadataJson,

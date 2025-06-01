@@ -84,7 +84,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
-  analyzer: ^7.4.5
+  # analyzer: ^7.4.5
 #  custom_lint: ^0.7.5
 #  riverpod_lint: ^2.6.5
 
@@ -94,7 +94,7 @@ dev_dependencies:
 
 
 dependency_overrides:
-  analyzer: ^7.4.5
+  
 
 
 

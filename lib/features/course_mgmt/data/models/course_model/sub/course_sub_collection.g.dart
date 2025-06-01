@@ -44,9 +44,9 @@ const CourseSubCollectionSchema = Schema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'imagePath': PropertySchema(
+    r'imageLocation': PropertySchema(
       id: 6,
-      name: r'imagePath',
+      name: r'imageLocation',
       type: IsarType.string,
     )
   },
@@ -75,12 +75,7 @@ int _courseSubCollectionEstimateSize(
     }
   }
   bytesCount += 3 + object.description.length * 3;
-  {
-    final value = object.imagePath;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.imageLocation.length * 3;
   return bytesCount;
 }
 
@@ -101,7 +96,7 @@ void _courseSubCollectionSerialize(
   );
   writer.writeString(offsets[4], object.description);
   writer.writeLong(offsets[5], object.hashCode);
-  writer.writeString(offsets[6], object.imagePath);
+  writer.writeString(offsets[6], object.imageLocation);
 }
 
 CourseSubCollection _courseSubCollectionDeserialize(
@@ -122,7 +117,7 @@ CourseSubCollection _courseSubCollectionDeserialize(
         ) ??
         const <CourseContent>[],
     description: reader.readStringOrNull(offsets[4]) ?? "",
-    imagePath: reader.readStringOrNull(offsets[6]),
+    imageLocation: reader.readStringOrNull(offsets[6]) ?? '{}',
   );
   return object;
 }
@@ -153,7 +148,7 @@ P _courseSubCollectionDeserializeProp<P>(
     case 5:
       return (reader.readLong(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset) ?? '{}') as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -853,31 +848,13 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'imagePath',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'imagePath',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathEqualTo(
-    String? value, {
+      imageLocationEqualTo(
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imagePath',
+        property: r'imageLocation',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -885,15 +862,15 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathGreaterThan(
-    String? value, {
+      imageLocationGreaterThan(
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'imagePath',
+        property: r'imageLocation',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -901,15 +878,15 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathLessThan(
-    String? value, {
+      imageLocationLessThan(
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'imagePath',
+        property: r'imageLocation',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -917,16 +894,16 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathBetween(
-    String? lower,
-    String? upper, {
+      imageLocationBetween(
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'imagePath',
+        property: r'imageLocation',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -937,13 +914,13 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathStartsWith(
+      imageLocationStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'imagePath',
+        property: r'imageLocation',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -951,13 +928,13 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathEndsWith(
+      imageLocationEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'imagePath',
+        property: r'imageLocation',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -965,10 +942,10 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathContains(String value, {bool caseSensitive = true}) {
+      imageLocationContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'imagePath',
+        property: r'imageLocation',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -976,10 +953,10 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathMatches(String pattern, {bool caseSensitive = true}) {
+      imageLocationMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'imagePath',
+        property: r'imageLocation',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -987,20 +964,20 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathIsEmpty() {
+      imageLocationIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imagePath',
+        property: r'imageLocation',
         value: '',
       ));
     });
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
-      imagePathIsNotEmpty() {
+      imageLocationIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'imagePath',
+        property: r'imageLocation',
         value: '',
       ));
     });

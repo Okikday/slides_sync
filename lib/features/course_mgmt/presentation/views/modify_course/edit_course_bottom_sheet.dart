@@ -7,11 +7,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
+import 'package:slides_sync/features/course_mgmt/domain/usecases/modify_course_actions.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_code_field.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view/input_course_title_field.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/edit_course_bottom_sheet/edit_course_input_description_field.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class EditCourseBottomSheet extends ConsumerStatefulWidget {
   final StateProvider<CourseModel> modifyCourseProvider;
@@ -43,37 +46,15 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final readCourseModel = ref.watch(widget.modifyCourseProvider);
-      final formerCourseName = readCourseModel.courseName;
-      final formerDescription = readCourseModel.description;
-      final formerCourseCode = readCourseModel.courseCode;
-      courseNameTextController.text = formerCourseName;
-      if (formerCourseCode.isNotEmpty) courseCodeController.text = formerCourseCode;
+      courseNameTextController.text = readCourseModel.courseName;
+      if (readCourseModel.courseCode.isNotEmpty) courseCodeController.text = readCourseModel.courseCode;
 
-      if (formerDescription.isNotEmpty) {
-        descriptionTextController.text = formerDescription;
+      if (readCourseModel.description.isNotEmpty) {
+        descriptionTextController.text = readCourseModel.description;
         descriptionTextController.selection = TextSelection(baseOffset: 0, extentOffset: descriptionTextController.text.length);
       }
       if (widget.isEditingDescription) descriptionFocusNode.requestFocus();
     });
-  }
-
-  // Check if can update course
-  String? checkIfCanUpdateCourse() {
-    final courseName = courseNameTextController.text;
-    final courseCode = courseCodeController.text;
-    final description = descriptionTextController.text;
-    final isVisible = ref.watch(isCourseCodeFieldVisible);
-    if (courseName.isEmpty || courseName.length < 2 || courseName.length > 64 || double.tryParse(courseName) != null) {
-      if (courseName.isEmpty) return "Kindly fill the course title field!";
-      if (courseName.length < 2) return "Course title too short!";
-      if (courseName.length > 64) return "Course title too long!";
-      return "Kindly input a valid course title!";
-    } else if (isVisible && (courseCode.length < 2 || courseCode.length > 12)) {
-      return "Kindly input a valid course code or hide it";
-    } else if (description.length > 1024) {
-      return "Kindly input a valid description!";
-    }
-    return null;
   }
 
   @override
@@ -99,13 +80,14 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
         LoadingDialog.showLoadingDialog(
           context,
-          barrierColor: context.isDarkMode ? Colors.white10 : Colors.black.withValues(alpha: 0.7),
+          barrierColor: Colors.black.withValues(alpha: 0.7),
           transitionType: TransitionType.cupertinoDialog,
-          blurSigma: Offset(3.0, 3.0),
+          blurSigma: Offset(2.0, 2.0),
           transitionDuration: Durations.medium2,
           loadingInfoWidget: AppAlertDialog(
             title: "Confirm exit",
             content: "Are you sure you want to exit without saving?",
+            backgroundColor: context.isDarkMode ? SlidesRepoColors.darkBlue.withAlpha(200) : null,
             onCancel: () {
               LoadingDialog.hideLoadingDialog(context);
             },
@@ -118,6 +100,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
           ),
         );
       },
+
       child: AnimatedSize(
         duration: Durations.extralong1,
         curve: CustomCurves.defaultIosSpring,
@@ -182,52 +165,10 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
                                 SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
 
-                                SliverToBoxAdapter(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    spacing: 6.0,
-                                    children: [
-                                      CustomText("Description", fontSize: 13),
-                                      SizedBox(
-                                        width: context.deviceWidth,
-                                        child: CustomTextfield(
-                                          ontap: () {
-                                            final descriptionText = descriptionTextController.text;
-                                            if (descriptionText == courseModel.description) {
-                                              descriptionTextController.selection = TextSelection(
-                                                baseOffset: 0,
-                                                extentOffset: descriptionText.length,
-                                              );
-                                            }
-                                          },
-                                          onchanged: (text) {},
-                                          // onTapOutside: () {},
-                                          focusNode: widget.isEditingDescription ? descriptionFocusNode : null,
-                                          controller: descriptionTextController,
-                                          backgroundColor: Colors.grey.withAlpha(40),
-                                          cursorColor: CustomText("").effectiveStyle(context).color ?? Colors.white,
-                                          maxLength: 1024,
-                                          counterText: null,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8.0),
-                                            borderSide: BorderSide(
-                                              color:
-                                                  context.isDarkMode
-                                                      ? Colors.lightBlueAccent.withAlpha(80)
-                                                      : Colors.deepPurple.withAlpha(40),
-                                            ),
-                                          ),
-                                          pixelWidth: context.deviceWidth,
-                                          minLines: 3,
-                                          maxLines: 6,
-                                          inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                                          hint: "Enter new description",
-                                          inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                EditCourseInputDescriptionField(
+                                  descriptionTextController: descriptionTextController,
+                                  courseModel: courseModel,
+                                  descriptionFocusNode: widget.isEditingDescription ? descriptionFocusNode : null,
                                 ),
 
                                 SliverToBoxAdapter(
@@ -254,7 +195,12 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: CustomElevatedButton(
                           onClick: () async {
-                            final String? errorMsg = checkIfCanUpdateCourse();
+                            final String? errorMsg = ModifyCourseActions.checkIfCanUpdateCourse(
+                              courseName: courseNameTextController.text,
+                              courseCode: courseCodeController.text,
+                              description: descriptionTextController.text,
+                              isVisible: ref.watch(isCourseCodeFieldVisible),
+                            );
                             if (errorMsg != null) {
                               log("Cant update");
                               UiUtils.showFlushBar(context, msg: errorMsg, flushbarPosition: FlushbarPosition.TOP);
@@ -295,3 +241,5 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
     );
   }
 }
+
+

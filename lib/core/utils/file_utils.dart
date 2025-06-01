@@ -35,6 +35,26 @@ class FileUtils {
     return await _storeToApplicationsDocumentsDirectory(file, folderPath);
   }
 
+  /// Attempts to delete the file at [path].
+  ///
+  /// Returns `true` if the file existed and was deleted successfully,
+  /// `false` if the file did not exist or if any error occurred.
+  static Future<bool> deleteFileAtPath(String path) async {
+    try {
+      final file = File(path);
+      if (await file.exists()) {
+        await file.delete();
+        return true;
+      } else {
+        // File wasn’t there
+        return false;
+      }
+    } catch (e) {
+      // If something went wrong (e.g. permissions), treat as “couldn’t delete”
+      return false;
+    }
+  }
+
   /// Deletes [relativePath] under the selected [base] directory.
   /// e.g. if base==documents and relativePath=="foo/bar",
   /// this will delete <appDocDir>/foo/bar recursively.
@@ -63,16 +83,6 @@ class FileUtils {
       return true;
     } catch (e) {
       print('deleteAppDirectory error: $e');
-      return false;
-    }
-  }
-
-  /// Returns true if a file at [path] exists and is accessible.
-  static Future<bool> fileExists(String path) async {
-    try {
-      return await File(path).exists();
-    } catch (_) {
-      // e.g. bad path or permission error
       return false;
     }
   }

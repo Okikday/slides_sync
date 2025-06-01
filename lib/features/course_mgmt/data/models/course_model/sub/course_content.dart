@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
+import 'package:slides_sync/core/models/image_location.dart';
 import 'package:uuid/uuid.dart';
 
 import 'course_content_type.dart';
@@ -18,7 +19,7 @@ class CourseContent {
   final String description;
 
   /// appended with type before path/link e.g. "file:anonymous.jpg" or "link:https://image.jpg"
-  final String? imagePath;
+  final String imageLocation;
   @enumerated
   final CourseContentType courseContentType;
   //udilv
@@ -30,7 +31,7 @@ class CourseContent {
     this.createdAt,
     this.path = '',
     this.description = '',
-    this.imagePath,
+    this.imageLocation = '{}',
     this.courseContentType = CourseContentType.unknown,
     this.metadataJson = '{}',
   });
@@ -41,7 +42,7 @@ class CourseContent {
     required String path,
     required CourseContentType courseContentType,
     String description = "",
-    String? imagePath,
+    ImageLocation? imageLocation,
     String? metadataJson,
   }) {
 
@@ -51,7 +52,7 @@ class CourseContent {
       createdAt: DateTime.now(),
       path: path,
       description: description,
-      imagePath: imagePath,
+      imageLocation: imageLocation?.toJson() ?? '{}',
       courseContentType: courseContentType,
       metadataJson: metadataJson ?? '{}',
     );
@@ -63,7 +64,7 @@ class CourseContent {
     DateTime? createdAt,
     String? path,
     String? description,
-    String? imagePath,
+    ImageLocation? imageLocation,
     CourseContentType? courseContentType,
     String? metadataJson,
   }) {
@@ -73,7 +74,7 @@ class CourseContent {
       createdAt: createdAt ?? this.createdAt,
       path: path ?? this.path,
       description: description ?? this.description,
-      imagePath: imagePath ?? this.imagePath,
+      imageLocation: imageLocation?.toJson() ?? this.imageLocation,
       courseContentType: courseContentType ?? this.courseContentType,
       metadataJson: metadataJson ?? this.metadataJson,
     );
@@ -89,7 +90,7 @@ class CourseContent {
           createdAt == other.createdAt &&
           path == other.path &&
           description == other.description &&
-          imagePath == other.imagePath &&
+          imageLocation == other.imageLocation &&
           courseContentType == other.courseContentType &&
           metadataJson == other.metadataJson;
 
@@ -100,7 +101,7 @@ class CourseContent {
       createdAt.hashCode ^
       path.hashCode ^
       description.hashCode ^
-      imagePath.hashCode ^
+      imageLocation.hashCode ^
       courseContentType.hashCode ^
       metadataJson.hashCode;
 
@@ -111,7 +112,7 @@ class CourseContent {
       'createdAt': createdAt?.toIso8601String(),
       'path': path,
       'description': description,
-      'imagePath': imagePath,
+      'imageLocation': imageLocation,
       'courseContentType': courseContentType.index,
       'metadataJson': metadataJson,
     };
@@ -124,7 +125,7 @@ class CourseContent {
       createdAt: map['createdAt']  == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       path: map['path'] as String,
       description: map['description'] as String,
-      imagePath: map['imagePath'] as String?,
+      imageLocation: map['imageLocation'] as String? ?? '{}',
       courseContentType: CourseContentType.values[map['courseContentType'] as int],
       metadataJson: map['metadataJson'] as String,
     );
