@@ -7,6 +7,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/test/file_manager_page.dart';
 
 class ManageCourseDialog extends ConsumerWidget {
   const ManageCourseDialog({super.key});
@@ -108,6 +109,30 @@ class ManageCourseDialog extends ConsumerWidget {
                             ),
                           ),
                           Divider(color: context.isDarkMode ? Colors.white.withAlpha(40) : Colors.black.withAlpha(40)),
+
+                          CustomElevatedButton(
+                            contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
+                            backgroundColor: Colors.transparent,
+                            onClick: () {
+                              LoadingDialog.hideLoadingDialog(context);
+                              // AppNavigator.to(context).modifyExistingCoursesRoute();
+                              Navigator.push(
+                                context,
+                                CupertinoSheetRoute(
+                                  builder: (context) {
+                                    return FileManagerPage();
+                                  },
+                                ),
+                              );
+                            },
+                            child: Row(
+                              spacing: 8.0,
+                              children: [
+                                Icon(Iconsax.folder, size: 24, color: Colors.deepPurpleAccent),
+                                Expanded(child: CustomText("App File manager", fontSize: 14, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

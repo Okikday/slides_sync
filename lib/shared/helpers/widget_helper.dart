@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart';
+import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 
 class WidgetHelper {
@@ -22,11 +23,17 @@ class WidgetHelper {
               return Lottie.asset(IconStrings.instance.loadingSpinner);
             }
           },
+          errorBuilder: (context, error, stackTrace) => fallbackWidget,
         );
       } else if (imgPath.startsWith("url:")) {
-        image = CachedNetworkImage(imageUrl: imgPath.substring(4, imgPath.length).trim(), fit: BoxFit.cover, progressIndicatorBuilder: (context, url, progress) {
-          return Lottie.asset(IconStrings.instance.loadingSpinner);
-        },);
+        image = CachedNetworkImage(
+          imageUrl: imgPath.substring(4, imgPath.length).trim(),
+          fit: BoxFit.cover,
+          progressIndicatorBuilder: (context, url, progress) {
+            return Lottie.asset(IconStrings.instance.loadingSpinner);
+          },
+          errorWidget: (context, error, stackTrace) => fallbackWidget,
+        );
       } else {
         image = fallbackWidget;
       }

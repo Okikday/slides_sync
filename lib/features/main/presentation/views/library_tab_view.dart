@@ -2,7 +2,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/features/main/presentation/viewmodels/library_vm/notifiers/is_list_view_notifier.dart';
+import 'package:slides_sync/features/main/presentation/providers/is_list_view_notifier.dart';
 import 'package:slides_sync/features/main/presentation/views/library_tab_view/library_tab_view_app_bar.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 

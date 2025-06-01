@@ -10,6 +10,10 @@ class CourseRepo {
     await isar.deleteById(courseId);
   }
 
+  static Future<CourseModel?> getCourseById(int courseId){
+    return IsarData.instance<CourseModel>().getById(courseId);
+  }
+
   static Stream<CourseModel?> watchCourseById(int courseId){
     return IsarData.instance<CourseModel>().watchById(courseId);
   }

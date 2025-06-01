@@ -39,9 +39,6 @@ class _HomeTabViewState extends ConsumerState<HomeTabView> with AutomaticKeepAli
               Scaffold.of(context).openDrawer();
               // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Theme.of(context).scaffoldBackgroundColor));
             },
-            // onToggleFullScreen: () {
-            //   UiUtils.showFlushBar(context, msg: "Toggles full screen");
-            // },
             onClickNotification: () {},
           ),
         ];

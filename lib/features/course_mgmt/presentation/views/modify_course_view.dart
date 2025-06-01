@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
+import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
@@ -137,6 +138,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                             );
                           }
                           await CourseRepo.deleteCourse(courseModel.id);
+                          await FileUtils.deleteAppDirectory(relativePath: "courses/${courseModel.courseId}");
                           if (context.mounted) LoadingDialog.hideLoadingDialog(context);
                           if (context.mounted) context.pop();
                         },

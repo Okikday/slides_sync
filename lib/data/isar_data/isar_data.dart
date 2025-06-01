@@ -79,9 +79,9 @@ class IsarData<T> {
   }
 
   /// Stream all objects in the collection in real-time.
-  Stream<List<T>> watchAll() async* {
+  Stream<List<T>> watchAll({bool fireImmediately = true}) async* {
     final isar = await isarFuture;
-    yield* isar.collection<T>().where().watch(fireImmediately: true);
+    yield* isar.collection<T>().where().watch(fireImmediately: fireImmediately);
   }
 
   Future<Stream<List<T>>> watchAllLazily() async {
