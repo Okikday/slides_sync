@@ -25,6 +25,8 @@ class UiUtils {
     Duration duration = const Duration(milliseconds: 1500),
     FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
     FlushbarVibe vibe = FlushbarVibe.none,
+    EdgeInsets? margin,
+    double barBlur = 4.0
   }) async {
     final List<Color> colors = _resolveFlushbarVibe(context, vibe);
 
@@ -39,10 +41,11 @@ class UiUtils {
       borderColor: Colors.grey.withValues(alpha: 0.2),
       boxShadows: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode).boxShadow,
       margin:
-          flushbarPosition == FlushbarPosition.BOTTOM
+          margin ??
+          (flushbarPosition == FlushbarPosition.BOTTOM
               ? EdgeInsets.only(left: 24, right: 24, bottom: context.bottomPadding + 12)
-              : EdgeInsets.only(left: 24, right: 24, top: context.topPadding + 8.0),
-      barBlur: 4.0,
+              : EdgeInsets.only(left: 24, right: 24, top: context.topPadding + 8.0)),
+      barBlur: barBlur,
     ).show(context);
   }
 

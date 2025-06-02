@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
-import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
 import 'package:slides_sync/features/course_mgmt/domain/usecases/create_course_action.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/create_course_view.dart';
-import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class CreateCourseButton extends ConsumerWidget {
@@ -47,7 +44,13 @@ class CreateCourseButton extends ConsumerWidget {
           final String courseCode = courseCodeController.text.trim();
           final String? errorString = checkIfCanCreateCourse(courseName, courseCode, ref.watch(isCourseCodeFieldVisible));
           if (errorString != null) {
-            UiUtils.showFlushBar(context, msg: errorString);
+            UiUtils.showFlushBar(
+              context,
+              msg: errorString,
+              vibe: FlushbarVibe.error,
+              margin: EdgeInsets.only(left: 24, right: 24, bottom: context.bottomPadding + 60),
+              barBlur: 2.0,
+            );
             return;
           }
           FocusScope.of(context).unfocus();
@@ -56,20 +59,45 @@ class CreateCourseButton extends ConsumerWidget {
 
           final String? courseImagePath = ref.read(courseImagePathProvider.notifier).state;
 
-          final Result<CourseModel> createCourseOutcome = await createCourseAction(courseName: courseName, courseCode: courseCode, courseImagePath: courseImagePath);
+          final Result<CourseModel> createCourseOutcome = await createCourseAction(
+            courseName: courseName,
+            courseCode: courseCode,
+            courseImagePath: courseImagePath,
+          );
 
           if (context.mounted) LoadingDialog.hideLoadingDialog(context);
 
           createCourseOutcome
-              .doNext((value) {
-                if (context.mounted) Navigator.pop(context);
-                if (context.mounted) AppNavigator.to(context).modifyCourseRoute(value);
+              .doNext((value) async{
+                await UiUtils.showFlushBar(context, msg: "Successfully created course!", vibe: FlushbarVibe.success);
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  AppNavigator.to(context).modifyCourseRoute(value);
+                  
+                }
               })
-              .onError((error, [_]) {
-                UiUtils.showFlushBar(context, msg: error);
+              .onError((error, [_]) async{
+                await UiUtils.showFlushBar(
+                  context,
+                  msg: error,
+                  vibe: FlushbarVibe.error,
+                  margin: EdgeInsets.only(left: 24, right: 24, bottom: context.bottomPadding + 60),
+                );
               });
         },
       ),
     );
   }
+}
+
+String? checkIfCanCreateCourse(String courseName, String courseCode, bool isCourseCodeVisible, {int minLength = 2, int maxLength = 64}) {
+  if (courseName.isEmpty || courseName.length < minLength || courseName.length > maxLength || double.tryParse(courseName) != null) {
+    if (courseName.isEmpty) return "Kindly fill the course title field!";
+    if (courseName.length < 2) return "Course title too short!";
+    if (courseName.length > 64) return "Course title too long!";
+    return "Kindly input a valid course title!";
+  } else if (isCourseCodeVisible && (courseCode.length < 2 || courseCode.length > 12)) {
+    return "Kindly input a valid course code or hide it";
+  }
+  return null;
 }

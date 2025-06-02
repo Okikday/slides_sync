@@ -29,19 +29,21 @@ class AddImageAvatar extends ConsumerWidget {
             onTap: () async {
               LoadingDialog.showLoadingDialog(
                 context,
-                msg: "Just a moment...",
+                msg: "Selecting image...",
                 backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
               );
               ImagePicker imagePicker = ImagePicker();
               final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
               if (context.mounted) LoadingDialog.hideLoadingDialog(context);
-              if (pickedImage == null) return;
+              if (pickedImage == null){
+                if(context.mounted) UiUtils.showFlushBar(context, msg: "Oops, you didn't select an image");
+                return;
+              }
 
               ref.read(courseImagePathProvider.notifier).update((cb)=> pickedImage.path);
 
               if (context.mounted) UiUtils.showFlushBar(context, msg: "Selected course image!");
 
-              // await FileUtils.storeFile(file: File(pickedImage.path), path: "path");
             },
             onLongPress: () {
               final currentPathNotifier = ref.read(courseImagePathProvider.notifier);

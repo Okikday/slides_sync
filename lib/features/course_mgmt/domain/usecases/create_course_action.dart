@@ -34,6 +34,7 @@ Future<String?> compressCourseImageAsFile(String? courseImagePath, {required Str
     final Result<File> result = await ImageUtils().compressImage(inputFile: File(courseImagePath), targetMB: 0.1);
     if (result.isSuccess) {
       final String path = await FileUtils.storeFile(file: result.data!, folderPath: folderPath);
+      await result.data?.delete();
       return path;
     }
     log("Tried compress Image. \nResult: ${result.status}");

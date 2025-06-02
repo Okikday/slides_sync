@@ -1,18 +1,18 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
-class AskFileOrCameraDialog extends ConsumerWidget {
+class AppCustomizableDialog extends ConsumerWidget {
   final String title;
-  final List<Widget> actions;
+
+  /// Representing vertically aligned actions
+  final List<Widget> vActions;
   final Color? backgroundColor;
-  const AskFileOrCameraDialog({super.key, this.title = "Select Image from", this.actions = const [], this.backgroundColor});
+  const AppCustomizableDialog({super.key, this.title = "Dialog", this.vActions = const [], this.backgroundColor});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -41,6 +41,7 @@ class AskFileOrCameraDialog extends ConsumerWidget {
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   ConstantSizing.columnSpacingSmall,
                   Padding(
@@ -50,6 +51,7 @@ class AskFileOrCameraDialog extends ConsumerWidget {
                   ConstantSizing.columnSpacingSmall,
                   Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
 
+                  ...vActions,
                 ],
               ),
             ),

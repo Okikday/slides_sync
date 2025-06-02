@@ -16,6 +16,8 @@ class ModifyCourseHeader extends ConsumerWidget {
   final void Function() onClickEditCourse;
   final void Function() onClickDelete;
   final void Function() onClickImage;
+  final void Function() onEditImage;
+
 
   const ModifyCourseHeader({
     super.key,
@@ -27,6 +29,8 @@ class ModifyCourseHeader extends ConsumerWidget {
     required this.onClickEditCourse,
     required this.onClickDelete,
     required this.onClickImage,
+    required this.onEditImage,
+
   });
 
   @override
@@ -86,6 +90,8 @@ class ModifyCourseHeader extends ConsumerWidget {
               ClipOval(
                 child: GestureDetector(
                   onTap: onClickImage,
+                  onLongPress: onEditImage,
+                  onDoubleTap: onEditImage,
                   child: ColoredBox(
                     color: Colors.deepPurple.withAlpha(80),
                     child: SizedBox.square(

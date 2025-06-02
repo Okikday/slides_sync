@@ -106,15 +106,3 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
     );
   }
 }
-
-String? checkIfCanCreateCourse(String courseName, String courseCode, bool isCourseCodeVisible, {int minLength = 2, int maxLength = 64}) {
-  if (courseName.isEmpty || courseName.length < minLength || courseName.length > maxLength || double.tryParse(courseName) != null) {
-    if (courseName.isEmpty) return "Kindly fill the course title field!";
-    if (courseName.length < 2) return "Course title too short!";
-    if (courseName.length > 64) return "Course title too long!";
-    return "Kindly input a valid course title!";
-  } else if (isCourseCodeVisible && (courseCode.length < 2 || courseCode.length > 12)) {
-    return "Kindly input a valid course code or hide it";
-  }
-  return null;
-}

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -22,7 +24,8 @@ import 'package:slides_sync/features/course_mgmt/presentation/views/modify_cours
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
-import 'package:slides_sync/shared/components/dialogs/ask_file_or_camera_dialog.dart';
+import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
+import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -179,32 +182,79 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
               },
 
               onClickImage: () async {
+
+                // Show image in a Dialog
                 LoadingDialog.showLoadingDialog(
                   context,
-                  msg: "Just a moment...",
+                  msg: "Selecting image...",
                   backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
+                  transitionDuration: Durations.short3,
+                  reverseTransitionDuration: Durations.short4,
+                  canPop: true,
+                  barrierColor: Colors.black.withAlpha(200),
+                  loadingInfoWidget: ColoredBox(
+                    color: Colors.yellow,
+                    child: SizedBox(
+                      height: context.deviceHeight,
+                      width: context.deviceWidth,
+                      child: InteractiveViewer(
+                        constrained: false,
+                        alignment: Alignment.center,
+                        child: WidgetHelper.resolveImageWidget(
+                          courseModel.imageLocation.imageLocation,
+                          fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
+                        ),
+                      ),
+                    ),
+                  )
                 );
-                ImagePicker imagePicker = ImagePicker();
-                final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-                if (context.mounted) LoadingDialog.hideLoadingDialog(context);
-                if (pickedImage == null) {
-                 if(context.mounted) UiUtils.showFlushBar(context, msg: "Oops, You didn't select an image!", vibe: FlushbarVibe.warning);
-                  return;
-                }
 
-                final Result result = await ModifyCourseActions.modifyCourseImageAction(
-                  id: courseModel.id,
-                  newImageFile: File(pickedImage.path),
+                // ImagePicker imagePicker = ImagePicker();
+                // final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+                // if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+                // if (pickedImage == null) {
+                //   if (context.mounted) UiUtils.showFlushBar(context, msg: "Oops, You didn't select an image!", vibe: FlushbarVibe.warning);
+                //   return;
+                // }
+
+                // final Result result = await ModifyCourseActions.modifyCourseImageAction(
+                //   id: courseModel.id,
+                //   newImageFile: File(pickedImage.path),
+                // );
+
+                // if (context.mounted) {
+                //   LoadingDialog.hideLoadingDialog(context);
+                //   if (result.isSuccess) {
+                //     UiUtils.showFlushBar(context, msg: "Successfully changed course Image!", vibe: FlushbarVibe.success);
+                //   } else {
+                //     UiUtils.showFlushBar(context, msg: "Unable to change course Image!", vibe: FlushbarVibe.error);
+                //   }
+                // }
+              },
+
+              onEditImage: (){
+                LoadingDialog.showLoadingDialog(
+                  context,
+                  msg: "Selecting image...",
+                  backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
+                  barrierColor: Colors.black.withAlpha(200),
+                  loadingInfoWidget: AppCustomizableDialog(
+                    title: "What would you like to do?",
+                    vActions: [
+                      ConstantSizing.columnSpacingSmall,
+
+                      Row(spacing: 8.0, children: [Icon(Iconsax.camera, size: 24), Expanded(child: CustomText("View Image"))]),
+
+                      Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
+
+                      ConstantSizing.columnSpacingSmall,
+
+                      Row(spacing: 8.0, children: [Icon(Iconsax.camera, size: 24), Expanded(child: CustomText("Edit Image"))]),
+
+                      // Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
+                    ],
+                  ),
                 );
-
-                if (context.mounted) {
-                  LoadingDialog.hideLoadingDialog(context);
-                  if (result.isSuccess) {
-                    UiUtils.showFlushBar(context, msg: "Successfully changed course Image!", vibe: FlushbarVibe.success);
-                  } else {
-                    UiUtils.showFlushBar(context, msg: "Unable to change course Image!", vibe: FlushbarVibe.error);
-                  }
-                }
               },
             ),
 
