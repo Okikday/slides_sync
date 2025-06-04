@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:isar/isar.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:uuid/uuid.dart';
 
 import 'course_content.dart';
@@ -13,7 +13,7 @@ class CourseSubCollection {
   final String collectionTitle;
   final List<CourseContent> courseContents;
   final String description;
-  final String imageLocation;
+  final String imageLocationJson;
   final String collectionMetadataJson;
 
 
@@ -22,17 +22,17 @@ class CourseSubCollection {
     this.collectionTitle = '',
     this.courseContents = const <CourseContent>[],
     this.description = "",
-    this.imageLocation = '{}',
+    this.imageLocationJson = '{}',
     this.collectionMetadataJson = '{}',
   });
 
-  // ImageLocation get getImageLocation => ImageLocation.fromJson(imageLocation);
+  // FileLocation get getFileLocation => FileLocation.fromJson(fileLocation);
 
   factory CourseSubCollection.create({
     required String collectionTitle,
     String description = '',
     List<CourseContent>? courseContents,
-    ImageLocation? imageLocation,
+    FileLocation? imageLocation,
     String? collectionMetadataJson,
   }) {
     return CourseSubCollection(
@@ -40,7 +40,7 @@ class CourseSubCollection {
       collectionTitle: collectionTitle,
       courseContents: courseContents ?? const <CourseContent>[],
       description: description,
-      imageLocation: imageLocation?.toJson() ?? '{}',
+      imageLocationJson: imageLocation?.toJson() ?? '{}',
       collectionMetadataJson: collectionMetadataJson ?? '{}',
     );
   }
@@ -50,7 +50,7 @@ class CourseSubCollection {
     String? collectionTitle,
     List<CourseContent>? courseContents,
     String? description,
-    ImageLocation? imageLocation,
+    FileLocation? imageLocation,
     String? collectionMetadataJson,
   }) {
     return CourseSubCollection(
@@ -58,7 +58,7 @@ class CourseSubCollection {
       collectionTitle: collectionTitle ?? this.collectionTitle,
       courseContents: courseContents ?? this.courseContents,
       description: description ?? this.description,
-      imageLocation: imageLocation?.toJson() ?? this.imageLocation,
+      imageLocationJson: imageLocation?.toJson() ?? imageLocationJson,
       collectionMetadataJson: collectionMetadataJson ?? this.collectionMetadataJson,
     );
   }
@@ -69,7 +69,7 @@ class CourseSubCollection {
       'collectionTitle': collectionTitle,
       'courseContents': courseContents.map((e) => e.toJson()).toList(),
       'description': description,
-      'imageLocation': imageLocation,
+      'imageLocationJson': imageLocationJson,
       'collectionMetadataJson': collectionMetadataJson,
     };
   }
@@ -80,7 +80,7 @@ class CourseSubCollection {
       collectionTitle: map['collectionTitle'] as String,
       courseContents: List<CourseContent>.from((map['courseContents'] as List<String>).map((e) => CourseContent.fromJson(e)).toList()),
       description: map['description'] as String? ?? '',
-      imageLocation: map['imageLocation'] as String? ?? '{}',
+      imageLocationJson: map['imageLocationJson'] as String? ?? '{}',
     );
   }
 
@@ -97,8 +97,8 @@ class CourseSubCollection {
           collectionTitle == other.collectionTitle &&
           const ListEquality().equals(courseContents, other.courseContents) &&
           description == other.description &&
-          imageLocation == other.imageLocation;
+          imageLocationJson == other.imageLocationJson;
 
   @override
-  int get hashCode => Object.hash(collectionId, collectionTitle, const ListEquality().hash(courseContents), description, imageLocation);
+  int get hashCode => Object.hash(collectionId, collectionTitle, const ListEquality().hash(courseContents), description, imageLocationJson);
 }

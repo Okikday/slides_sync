@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
@@ -31,12 +31,12 @@ class ModifyCourseActions {
     final Result<bool?> createCourseOutcome = await Result.tryRunAsync<bool>(() async {
       CourseModel? courseModel = await CourseRepo.getCourseById(id);
       if (courseModel == null) return false;
-      if (courseModel.imageLocation.containsAnyImagePath) {
-        await FileUtils.deleteFileAtPath(courseModel.imageLocation.filePath);
+      if (courseModel.imageLocationJson.containsAnyImagePath) {
+        await FileUtils.deleteFileAtPath(courseModel.imageLocationJson.filePath);
       }
       final String? newPath = await compressCourseImageAsFile(newImageFile.path, folderPath: "courses/${courseModel.courseId}");
       if (newPath != null) {
-        courseModel = courseModel.copyWith(imageLocation: ImageLocation(filePath: newPath));
+        courseModel = courseModel.copyWith(imageLocation: FileLocation(filePath: newPath));
         await CourseRepo.addCourse(courseModel);
         log("Successfully changed image ");
         return true;
@@ -54,9 +54,9 @@ class ModifyCourseActions {
   Future<bool> deleteCourseImageAction({required int courseDbId}) async {
     CourseModel? courseModel = await CourseRepo.getCourseById(courseDbId);
     if (courseModel == null) return false;
-    if (courseModel.imageLocation.containsAnyImagePath) {
-      await CourseRepo.addCourse(courseModel.copyWith(imageLocation: ImageLocation()));
-      await FileUtils.deleteFileAtPath(courseModel.imageLocation.filePath);
+    if (courseModel.imageLocationJson.containsAnyImagePath) {
+      await CourseRepo.addCourse(courseModel.copyWith(imageLocation: FileLocation()));
+      await FileUtils.deleteFileAtPath(courseModel.imageLocationJson.filePath);
       return true;
     }
     return false;
@@ -99,7 +99,7 @@ class ModifyCourseActions {
 
   /// Navigates to dialog to preview image
   Future<void> previewImageActionRoute(BuildContext context, {required String courseImagePath}) async {
-    if (!courseImagePath.imageLocation.containsImagePath) return;
+    if (!courseImagePath.fileLocation.containsImagePath) return;
     LoadingDialog.showLoadingDialog(
       context,
       backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
@@ -143,7 +143,7 @@ class ModifyCourseActions {
         onTap: () async {
           LoadingDialog.hideLoadingDialog(context);
           await Future.delayed(Durations.short2);
-          if (context.mounted) previewImageActionRoute(context, courseImagePath: courseModel.imageLocation);
+          if (context.mounted) previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
         },
       ),
       AppActionDialogModel(

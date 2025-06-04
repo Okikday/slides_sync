@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/list_course_card.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
@@ -57,8 +57,8 @@ class CoursesListView extends ConsumerWidget {
                   courseName: courseModel.courseName,
                   categoriesCount: courseModel.subCollections.length,
                   progress: 0.0,
-                  courseImageWidget: BuildImagePathWidget(imageLocation:
-                    courseModel.imageLocation.imageLocation,
+                  courseImageWidget: BuildImagePathWidget(fileLocation:
+                    courseModel.imageLocationJson.fileLocation,
                     fallbackWidget: Icon(Iconsax.document_1, size: 26),
                   ),
                 ),

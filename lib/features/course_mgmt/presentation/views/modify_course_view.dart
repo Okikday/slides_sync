@@ -4,7 +4,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
@@ -55,7 +55,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
     final CourseModel? currCourse = next.value;
     if (currCourse == null) return;
     ref.read(modifyCourseProvider.notifier).update((cb) => currCourse);
-    log("currCourse: ${currCourse.imageLocation.filePath}");
+    log("currCourse: ${currCourse.imageLocationJson.filePath}");
   }
 
   @override
@@ -88,7 +88,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
               title: courseModel.courseName,
               description: courseModel.description.trim(),
               courseCode: courseModel.courseCode.trim(),
-              courseImageLocation: courseModel.imageLocation,
+              courseFileLocation: courseModel.imageLocationJson,
               onClickEditCourse: () async {
                 await showModalBottomSheet(
                   context: context,
@@ -152,7 +152,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                   ),
 
               onClickImage: () async {
-                if (!courseModel.imageLocation.imageLocation.containsImagePath) {
+                if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
                   modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
                   return;
                 }
@@ -161,12 +161,12 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
               },
 
               onLongPressImage: () async {
-                if (!courseModel.imageLocation.imageLocation.containsImagePath) {
+                if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
                   modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
                   return;
                 }
 
-                modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocation);
+                modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
               },
             ),
 

@@ -2,7 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
@@ -94,8 +94,8 @@ class CourseDetailsHeader extends ConsumerWidget {
                 padding: const EdgeInsets.only(right: 16.0),
                 child: StarWaveFilledProgressWidget(
                   progress: 0.56,
-                  backgroundWidget: BuildImagePathWidget(imageLocation:
-                    courseModel.imageLocation.imageLocation,
+                  backgroundWidget: BuildImagePathWidget(fileLocation:
+                    courseModel.imageLocationJson.fileLocation,
                     fallbackWidget: const SizedBox(),
                   ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),
                 ),

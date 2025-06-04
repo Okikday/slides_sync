@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
@@ -12,7 +12,7 @@ class ModifyCourseHeader extends ConsumerWidget {
   final String title;
   final String courseCode;
   final String description;
-  final String courseImageLocation;
+  final String courseFileLocation;
   final String? heroineTag;
 
   final void Function() onClickAddDescription;
@@ -21,20 +21,18 @@ class ModifyCourseHeader extends ConsumerWidget {
   final void Function() onClickImage;
   final void Function() onLongPressImage;
 
-
   const ModifyCourseHeader({
     super.key,
     required this.title,
     this.courseCode = "",
     this.heroineTag,
     required this.description,
-    required this.courseImageLocation,
+    required this.courseFileLocation,
     required this.onClickAddDescription,
     required this.onClickEditCourse,
     required this.onClickDelete,
     required this.onClickImage,
     required this.onLongPressImage,
-
   });
 
   @override
@@ -92,7 +90,7 @@ class ModifyCourseHeader extends ConsumerWidget {
               ),
               ConstantSizing.rowSpacingLarge,
               Heroine(
-                tag: "PreviewModifyCourseImageDialog => $courseImageLocation",
+                tag: "PreviewModifyCourseImageDialog => $courseFileLocation",
                 placeholderBuilder: (context, heroSize, child) => child,
                 spring: Spring.snappy,
                 child: ClipOval(
@@ -108,7 +106,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                         child: SizedBox.square(
                           dimension: 80,
                           child: BuildImagePathWidget(
-                            imageLocation: courseImageLocation.imageLocation,
+                            fileLocation: courseFileLocation.fileLocation,
                             fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
                           ),
                         ),

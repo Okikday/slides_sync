@@ -1,20 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class ImageLocation {
+class FileLocation {
   final String urlPath;
   final String filePath;
 
   bool get containsImagePath => urlPath.isNotEmpty || filePath.isNotEmpty;
 
-  ImageLocation({this.urlPath = '', this.filePath = ''});
+  FileLocation({this.urlPath = '', this.filePath = ''});
 
-  factory ImageLocation.fromJson(String json) {
+  factory FileLocation.fromJson(String json) {
     try {
       final Map<String, dynamic> decodedJson = Map<String, dynamic>.from(jsonDecode(json));
-      return ImageLocation(urlPath: decodedJson['url'] as String? ?? '', filePath: decodedJson['file'] as String? ?? '');
+      return FileLocation(urlPath: decodedJson['url'] as String? ?? '', filePath: decodedJson['file'] as String? ?? '');
     } catch (e) {
-      return ImageLocation();
+      return FileLocation();
     }
   }
 
@@ -23,7 +23,7 @@ class ImageLocation {
   String toJson() => jsonEncode(toMap());
 
   @override
-  bool operator ==(covariant ImageLocation other) {
+  bool operator ==(covariant FileLocation other) {
     if (identical(this, other)) return true;
 
     return other.urlPath == urlPath && other.filePath == filePath;
@@ -33,9 +33,9 @@ class ImageLocation {
   int get hashCode => urlPath.hashCode ^ filePath.hashCode;
 }
 
-extension ImageLocationExtension on String {
-  ImageLocation get imageLocation => ImageLocation.fromJson(this);
-  bool get containsAnyImagePath => imageLocation.containsImagePath;
-  String get filePath => imageLocation.filePath;
-  String get urlPath => imageLocation.urlPath;
+extension FileLocationExtension on String {
+  FileLocation get fileLocation => FileLocation.fromJson(this);
+  bool get containsAnyImagePath => fileLocation.containsImagePath;
+  String get filePath => fileLocation.filePath;
+  String get urlPath => fileLocation.urlPath;
 }

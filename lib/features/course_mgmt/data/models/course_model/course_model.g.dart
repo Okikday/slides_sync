@@ -57,9 +57,9 @@ const CourseModelSchema = CollectionSchema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'imageLocation': PropertySchema(
+    r'imageLocationJson': PropertySchema(
       id: 8,
-      name: r'imageLocation',
+      name: r'imageLocationJson',
       type: IsarType.string,
     ),
     r'rootContents': PropertySchema(
@@ -104,7 +104,7 @@ int _courseModelEstimateSize(
   bytesCount += 3 + object.courseName.length * 3;
   bytesCount += 3 + object.courseTitle.length * 3;
   bytesCount += 3 + object.description.length * 3;
-  bytesCount += 3 + object.imageLocation.length * 3;
+  bytesCount += 3 + object.imageLocationJson.length * 3;
   bytesCount += 3 + object.rootContents.length * 3;
   {
     final offsets = allOffsets[CourseContent]!;
@@ -140,7 +140,7 @@ void _courseModelSerialize(
   writer.writeDateTime(offsets[5], object.createdAt);
   writer.writeString(offsets[6], object.description);
   writer.writeLong(offsets[7], object.hashCode);
-  writer.writeString(offsets[8], object.imageLocation);
+  writer.writeString(offsets[8], object.imageLocationJson);
   writer.writeObjectList<CourseContent>(
     offsets[9],
     allOffsets,
@@ -167,7 +167,7 @@ CourseModel _courseModelDeserialize(
     courseTitle: reader.readStringOrNull(offsets[4]) ?? '',
     createdAt: reader.readDateTimeOrNull(offsets[5]),
     description: reader.readStringOrNull(offsets[6]) ?? '',
-    imageLocation: reader.readStringOrNull(offsets[8]) ?? '{}',
+    imageLocationJson: reader.readStringOrNull(offsets[8]) ?? '{}',
     rootContents: reader.readObjectList<CourseContent>(
           offsets[9],
           CourseContentSchema.deserialize,
@@ -1324,13 +1324,13 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationEqualTo(
+      imageLocationJsonEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1338,7 +1338,7 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationGreaterThan(
+      imageLocationJsonGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1346,7 +1346,7 @@ extension CourseModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1354,7 +1354,7 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationLessThan(
+      imageLocationJsonLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1362,7 +1362,7 @@ extension CourseModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1370,7 +1370,7 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationBetween(
+      imageLocationJsonBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1379,7 +1379,7 @@ extension CourseModelQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1390,13 +1390,13 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationStartsWith(
+      imageLocationJsonStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1404,13 +1404,13 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationEndsWith(
+      imageLocationJsonEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1418,10 +1418,10 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationContains(String value, {bool caseSensitive = true}) {
+      imageLocationJsonContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1429,10 +1429,10 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationMatches(String pattern, {bool caseSensitive = true}) {
+      imageLocationJsonMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1440,20 +1440,20 @@ extension CourseModelQueryFilter
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationIsEmpty() {
+      imageLocationJsonIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: '',
       ));
     });
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      imageLocationIsNotEmpty() {
+      imageLocationJsonIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'imageLocation',
+        property: r'imageLocationJson',
         value: '',
       ));
     });
@@ -1758,16 +1758,17 @@ extension CourseModelQuerySortBy
     });
   }
 
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> sortByImageLocation() {
+  QueryBuilder<CourseModel, CourseModel, QAfterSortBy>
+      sortByImageLocationJson() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageLocation', Sort.asc);
+      return query.addSortBy(r'imageLocationJson', Sort.asc);
     });
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterSortBy>
-      sortByImageLocationDesc() {
+      sortByImageLocationJsonDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageLocation', Sort.desc);
+      return query.addSortBy(r'imageLocationJson', Sort.desc);
     });
   }
 }
@@ -1884,16 +1885,17 @@ extension CourseModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> thenByImageLocation() {
+  QueryBuilder<CourseModel, CourseModel, QAfterSortBy>
+      thenByImageLocationJson() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageLocation', Sort.asc);
+      return query.addSortBy(r'imageLocationJson', Sort.asc);
     });
   }
 
   QueryBuilder<CourseModel, CourseModel, QAfterSortBy>
-      thenByImageLocationDesc() {
+      thenByImageLocationJsonDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imageLocation', Sort.desc);
+      return query.addSortBy(r'imageLocationJson', Sort.desc);
     });
   }
 }
@@ -1955,10 +1957,10 @@ extension CourseModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CourseModel, CourseModel, QDistinct> distinctByImageLocation(
+  QueryBuilder<CourseModel, CourseModel, QDistinct> distinctByImageLocationJson(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'imageLocation',
+      return query.addDistinctBy(r'imageLocationJson',
           caseSensitive: caseSensitive);
     });
   }
@@ -2021,9 +2023,10 @@ extension CourseModelQueryProperty
     });
   }
 
-  QueryBuilder<CourseModel, String, QQueryOperations> imageLocationProperty() {
+  QueryBuilder<CourseModel, String, QQueryOperations>
+      imageLocationJsonProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'imageLocation');
+      return query.addPropertyName(r'imageLocationJson');
     });
   }
 

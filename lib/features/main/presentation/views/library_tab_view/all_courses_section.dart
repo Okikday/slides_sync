@@ -36,7 +36,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
   @override
   Widget build(BuildContext context) {
     final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
-    log("Streamed course");
+    log("Streamed courses");
     void onTap(CourseModel course) async {
       final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
       if (isCourseClickedNotifier.state) return;
@@ -64,7 +64,8 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
           return CoursesGridView(scaleClickProviderFamily: scaleClickProviderFamily, data: data, onTap: (index) => onTap(data[index]));
         }
       },
-      error: (_, __) {
+      error: (error, st) {
+        log("error: ${st}");
         return SliverToBoxAdapter(child: RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle)));
       },
       loading: () {

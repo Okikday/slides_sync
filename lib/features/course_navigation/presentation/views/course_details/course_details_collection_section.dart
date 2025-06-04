@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/core/models/image_location.dart';
+import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
@@ -59,7 +59,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
           child: CourseCategoriesCard(
             isDarkMode: context.isDarkMode,
             title: collections[index].collectionTitle,
-            icon: BuildImagePathWidget(imageLocation:collections[index].imageLocation.imageLocation, fallbackWidget: Icon(Iconsax.book)),
+            icon: BuildImagePathWidget(fileLocation:collections[index].imageLocationJson.fileLocation, fallbackWidget: Icon(Iconsax.book)),
             onTap: () {
               if (context.mounted) {
                 Navigator.of(context).push(

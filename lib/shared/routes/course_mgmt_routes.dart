@@ -45,7 +45,7 @@ class CourseMgmtRoutes {
       pageBuilder:
           (context, state) => PageAnimation.buildCustomTransitionPage(
             state.pageKey,
-            type: TransitionType.uptown,
+            type: TransitionType.rightToLeftWithFade,
             duration: Durations.extralong1,
             reverseDuration: Durations.medium1,
             curve: CustomCurves.defaultIosSpring,

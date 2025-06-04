@@ -104,7 +104,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                             items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
                               return RotatedBox(
                                 quarterTurns: 0,
-                                child: CollectionCardTile(context.isDarkMode, title: "Title to be assigned", contentCount: 12),
+                                child: CollectionCardTile(title: "Title to be assigned", contentCount: 12),
                               );
                             }),
                           ),

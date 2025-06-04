@@ -39,23 +39,18 @@ const CourseContentSchema = Schema(
       name: r'id',
       type: IsarType.string,
     ),
-    r'imageLocation': PropertySchema(
-      id: 5,
-      name: r'imageLocation',
-      type: IsarType.string,
-    ),
     r'metadataJson': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'metadataJson',
       type: IsarType.string,
     ),
     r'path': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'path',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'title',
       type: IsarType.string,
     )
@@ -74,7 +69,6 @@ int _courseContentEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.id.length * 3;
-  bytesCount += 3 + object.imageLocation.length * 3;
   bytesCount += 3 + object.metadataJson.length * 3;
   bytesCount += 3 + object.path.length * 3;
   bytesCount += 3 + object.title.length * 3;
@@ -92,10 +86,9 @@ void _courseContentSerialize(
   writer.writeString(offsets[2], object.description);
   writer.writeLong(offsets[3], object.hashCode);
   writer.writeString(offsets[4], object.id);
-  writer.writeString(offsets[5], object.imageLocation);
-  writer.writeString(offsets[6], object.metadataJson);
-  writer.writeString(offsets[7], object.path);
-  writer.writeString(offsets[8], object.title);
+  writer.writeString(offsets[5], object.metadataJson);
+  writer.writeString(offsets[6], object.path);
+  writer.writeString(offsets[7], object.title);
 }
 
 CourseContent _courseContentDeserialize(
@@ -111,10 +104,9 @@ CourseContent _courseContentDeserialize(
     createdAt: reader.readDateTimeOrNull(offsets[1]),
     description: reader.readStringOrNull(offsets[2]) ?? '',
     id: reader.readStringOrNull(offsets[4]) ?? '',
-    imageLocation: reader.readStringOrNull(offsets[5]) ?? '{}',
-    metadataJson: reader.readStringOrNull(offsets[6]) ?? '{}',
-    path: reader.readStringOrNull(offsets[7]) ?? '',
-    title: reader.readStringOrNull(offsets[8]) ?? '',
+    metadataJson: reader.readStringOrNull(offsets[5]) ?? '{}',
+    path: reader.readStringOrNull(offsets[6]) ?? '',
+    title: reader.readStringOrNull(offsets[7]) ?? '',
   );
   return object;
 }
@@ -141,10 +133,8 @@ P _courseContentDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset) ?? '{}') as P;
     case 6:
-      return (reader.readStringOrNull(offset) ?? '{}') as P;
-    case 7:
       return (reader.readStringOrNull(offset) ?? '') as P;
-    case 8:
+    case 7:
       return (reader.readStringOrNull(offset) ?? '') as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -619,142 +609,6 @@ extension CourseContentQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'id',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imageLocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'imageLocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'imageLocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'imageLocation',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'imageLocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'imageLocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'imageLocation',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'imageLocation',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'imageLocation',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
-      imageLocationIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'imageLocation',
         value: '',
       ));
     });
