@@ -1,35 +1,39 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
   final String title;
   final String courseCode;
   final String description;
   final String courseImageLocation;
+  final String? heroineTag;
 
   final void Function() onClickAddDescription;
   final void Function() onClickEditCourse;
   final void Function() onClickDelete;
   final void Function() onClickImage;
-  final void Function() onEditImage;
+  final void Function() onLongPressImage;
 
 
   const ModifyCourseHeader({
     super.key,
     required this.title,
     this.courseCode = "",
+    this.heroineTag,
     required this.description,
     required this.courseImageLocation,
     required this.onClickAddDescription,
     required this.onClickEditCourse,
     required this.onClickDelete,
     required this.onClickImage,
-    required this.onEditImage,
+    required this.onLongPressImage,
 
   });
 
@@ -87,18 +91,27 @@ class ModifyCourseHeader extends ConsumerWidget {
                 ),
               ),
               ConstantSizing.rowSpacingLarge,
-              ClipOval(
-                child: GestureDetector(
-                  onTap: onClickImage,
-                  onLongPress: onEditImage,
-                  onDoubleTap: onEditImage,
-                  child: ColoredBox(
-                    color: Colors.deepPurple.withAlpha(80),
-                    child: SizedBox.square(
-                      dimension: 80,
-                      child: WidgetHelper.resolveImageWidget(
-                        courseImageLocation.imageLocation,
-                        fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
+              Heroine(
+                tag: "PreviewModifyCourseImageDialog => $courseImageLocation",
+                placeholderBuilder: (context, heroSize, child) => child,
+                spring: Spring.snappy,
+                child: ClipOval(
+                  child: CircleAvatar(
+                    radius: 40,
+                    backgroundColor: Colors.transparent,
+                    child: GestureDetector(
+                      onTap: onClickImage,
+                      onLongPress: onLongPressImage,
+                      onDoubleTap: onLongPressImage,
+                      child: ColoredBox(
+                        color: Colors.deepPurple.withAlpha(80),
+                        child: SizedBox.square(
+                          dimension: 80,
+                          child: BuildImagePathWidget(
+                            imageLocation: courseImageLocation.imageLocation,
+                            fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
+                          ),
+                        ),
                       ),
                     ),
                   ),

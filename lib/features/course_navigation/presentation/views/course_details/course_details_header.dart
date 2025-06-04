@@ -7,6 +7,7 @@ import 'package:slides_sync/features/course_mgmt/data/models/course_model/course
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseDetailsHeader extends ConsumerWidget {
   final CourseModel courseModel;
@@ -93,7 +94,7 @@ class CourseDetailsHeader extends ConsumerWidget {
                 padding: const EdgeInsets.only(right: 16.0),
                 child: StarWaveFilledProgressWidget(
                   progress: 0.56,
-                  backgroundWidget: WidgetHelper.resolveImageWidget(
+                  backgroundWidget: BuildImagePathWidget(imageLocation:
                     courseModel.imageLocation.imageLocation,
                     fallbackWidget: const SizedBox(),
                   ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),

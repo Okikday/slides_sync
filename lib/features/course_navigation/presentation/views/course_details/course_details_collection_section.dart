@@ -11,6 +11,7 @@ import 'package:slides_sync/features/course_navigation/presentation/views/course
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseDetailsCollectionSection extends StatelessWidget {
   const CourseDetailsCollectionSection({super.key, required this.collections});
@@ -58,7 +59,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
           child: CourseCategoriesCard(
             isDarkMode: context.isDarkMode,
             title: collections[index].collectionTitle,
-            icon: WidgetHelper.resolveImageWidget(collections[index].imageLocation.imageLocation, fallbackWidget: Icon(Iconsax.book)),
+            icon: BuildImagePathWidget(imageLocation:collections[index].imageLocation.imageLocation, fallbackWidget: Icon(Iconsax.book)),
             onTap: () {
               if (context.mounted) {
                 Navigator.of(context).push(

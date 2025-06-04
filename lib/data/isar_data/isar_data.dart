@@ -90,9 +90,9 @@ class IsarData<T> {
   }
 
   /// Stream specific object by ID in real-time.
-  Stream<T?> watchById(int id) async* {
+  Stream<T?> watchById(int id, {bool fireImmediately = true}) async* {
     final isar = await isarFuture;
-    yield* isar.collection<T>().watchObject(id, fireImmediately: true);
+    yield* isar.collection<T>().watchObject(id, fireImmediately: fireImmediately);
   }
 
   /// Stream query results in real-time.

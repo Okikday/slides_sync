@@ -6,6 +6,7 @@ import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class PlainCourseTile extends ConsumerWidget {
   const PlainCourseTile({
@@ -45,7 +46,7 @@ class PlainCourseTile extends ConsumerWidget {
                   child: Padding(
                     padding: EdgeInsets.all(2),
                     child: ClipOval(
-                      child: SizedBox.square(dimension: 44, child: WidgetHelper.resolveImageWidget(syncImagePath.imageLocation)),
+                      child: SizedBox.square(dimension: 44, child: BuildImagePathWidget(imageLocation: syncImagePath.imageLocation)),
                     ),
                   ),
                 ),

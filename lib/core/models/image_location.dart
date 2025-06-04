@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class ImageLocation {
@@ -20,10 +21,19 @@ class ImageLocation {
   Map<String, dynamic> toMap() => {'url': urlPath, 'file': filePath};
 
   String toJson() => jsonEncode(toMap());
+
+  @override
+  bool operator ==(covariant ImageLocation other) {
+    if (identical(this, other)) return true;
+
+    return other.urlPath == urlPath && other.filePath == filePath;
+  }
+
+  @override
+  int get hashCode => urlPath.hashCode ^ filePath.hashCode;
 }
 
-
-extension ImageLocationExtension on String{
+extension ImageLocationExtension on String {
   ImageLocation get imageLocation => ImageLocation.fromJson(this);
   bool get containsAnyImagePath => imageLocation.containsImagePath;
   String get filePath => imageLocation.filePath;

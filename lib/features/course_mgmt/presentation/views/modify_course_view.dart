@@ -2,30 +2,21 @@ import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:slides_sync/core/models/image_location.dart';
 import 'package:slides_sync/core/usecases/app_navigator.dart';
-import 'package:slides_sync/core/utils/file_utils.dart';
-import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
-import 'package:slides_sync/features/course_mgmt/domain/usecases/create_course_action.dart';
 import 'package:slides_sync/features/course_mgmt/domain/usecases/modify_course_actions.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/viewmodels/notifiers/modify_course/is_plain_view_notifier.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/collections_section.dart';
-import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/modify_course/modify_course_header.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
-import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
-import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -63,7 +54,8 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
     if (!next.hasValue) return;
     final CourseModel? currCourse = next.value;
     if (currCourse == null) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(modifyCourseProvider.notifier).update((cb) => currCourse));
+    ref.read(modifyCourseProvider.notifier).update((cb) => currCourse);
+    log("currCourse: ${currCourse.imageLocation.filePath}");
   }
 
   @override
@@ -76,7 +68,10 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
   @override
   Widget build(BuildContext context) {
     ref.listen(syncCourseProvider, syncCourseWithStorage);
+
     final CourseModel courseModel = ref.watch(modifyCourseProvider);
+
+    final ModifyCourseActions modifyCourseActions = ModifyCourseActions();
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -102,9 +97,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                   backgroundColor: context.scaffoldBackgroundColor,
                   isScrollControlled: true,
                   builder: (context) => EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider),
-                ).then((_) {
-                  log("Closed Bottom sheet");
-                });
+                );
               },
               onClickDelete: () {
                 LoadingDialog.showLoadingDialog(
@@ -142,7 +135,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                               transitionDuration: Durations.medium2,
                             );
                           }
-                          await ModifyCourseActions.onDeleteCourse(id: courseModel.id, courseId: courseModel.courseId);
+                          await modifyCourseActions.onDeleteCourse(id: courseModel.id, courseId: courseModel.courseId);
                           if (context.mounted) LoadingDialog.hideLoadingDialog(context);
                           if (context.mounted) context.pop();
                         },
@@ -151,110 +144,29 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                   ),
                 );
               },
-              onClickAddDescription: () {
-                if (courseModel.description.isNotEmpty) {
-                  LoadingDialog.showLoadingDialog(
+              onClickAddDescription:
+                  () => modifyCourseActions.onClickAddDescription(
                     context,
-                    canPop: true,
-                    reverseTransitionDuration: Durations.short4,
-                    transitionType: TransitionType.cupertinoDialog,
-                    curve: CustomCurves.defaultIosSpring,
-                    barrierColor: Colors.black54,
-                    loadingInfoWidget: CourseDescriptionDialog(
-                      description: courseModel.description,
-                    ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
-                  );
-                } else {
-                  showModalBottomSheet(
-                    context: context,
-                    enableDrag: false,
-                    showDragHandle: false,
-                    backgroundColor: context.scaffoldBackgroundColor,
-                    barrierColor: Colors.black54,
-                    isScrollControlled: true,
-                    builder: (context) {
-                      return EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider, isEditingDescription: true);
-                    },
-                  ).then((_) {
-                    log("Closed Bottom sheet");
-                  });
-                }
-              },
+                    currDescription: courseModel.description,
+                    modifyCourseProvider: modifyCourseProvider,
+                  ),
 
               onClickImage: () async {
+                if (!courseModel.imageLocation.imageLocation.containsImagePath) {
+                  modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
+                  return;
+                }
 
-                // Show image in a Dialog
-                LoadingDialog.showLoadingDialog(
-                  context,
-                  msg: "Selecting image...",
-                  backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
-                  transitionDuration: Durations.short3,
-                  reverseTransitionDuration: Durations.short4,
-                  canPop: true,
-                  barrierColor: Colors.black.withAlpha(200),
-                  loadingInfoWidget: ColoredBox(
-                    color: Colors.yellow,
-                    child: SizedBox(
-                      height: context.deviceHeight,
-                      width: context.deviceWidth,
-                      child: InteractiveViewer(
-                        constrained: false,
-                        alignment: Alignment.center,
-                        child: WidgetHelper.resolveImageWidget(
-                          courseModel.imageLocation.imageLocation,
-                          fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
-                        ),
-                      ),
-                    ),
-                  )
-                );
-
-                // ImagePicker imagePicker = ImagePicker();
-                // final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-                // if (context.mounted) LoadingDialog.hideLoadingDialog(context);
-                // if (pickedImage == null) {
-                //   if (context.mounted) UiUtils.showFlushBar(context, msg: "Oops, You didn't select an image!", vibe: FlushbarVibe.warning);
-                //   return;
-                // }
-
-                // final Result result = await ModifyCourseActions.modifyCourseImageAction(
-                //   id: courseModel.id,
-                //   newImageFile: File(pickedImage.path),
-                // );
-
-                // if (context.mounted) {
-                //   LoadingDialog.hideLoadingDialog(context);
-                //   if (result.isSuccess) {
-                //     UiUtils.showFlushBar(context, msg: "Successfully changed course Image!", vibe: FlushbarVibe.success);
-                //   } else {
-                //     UiUtils.showFlushBar(context, msg: "Unable to change course Image!", vibe: FlushbarVibe.error);
-                //   }
-                // }
+                modifyCourseActions.onClickCourseImage(context, courseModel: courseModel);
               },
 
-              onEditImage: (){
-                LoadingDialog.showLoadingDialog(
-                  context,
-                  msg: "Selecting image...",
-                  backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
-                  barrierColor: Colors.black.withAlpha(200),
-                  loadingInfoWidget: AppCustomizableDialog(
-                    title: "What would you like to do?",
-                    vActions: [
-                      ConstantSizing.columnSpacingSmall,
+              onLongPressImage: () async {
+                if (!courseModel.imageLocation.imageLocation.containsImagePath) {
+                  modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
+                  return;
+                }
 
-                      Row(spacing: 8.0, children: [Icon(Iconsax.camera, size: 24), Expanded(child: CustomText("View Image"))]),
-
-                      Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
-
-                      ConstantSizing.columnSpacingSmall,
-
-                      Row(spacing: 8.0, children: [Icon(Iconsax.camera, size: 24), Expanded(child: CustomText("Edit Image"))]),
-
-                      // Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
-                    ],
-                  ),
-                );
+                modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocation);
               },
             ),
 

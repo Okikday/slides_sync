@@ -10,6 +10,7 @@ import 'package:slides_sync/features/course_mgmt/data/models/course_model/course
 import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/grid_course_card.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CoursesGridView extends ConsumerWidget {
   const CoursesGridView({super.key, required this.scaleClickProviderFamily, required this.data, required this.onTap});
@@ -58,7 +59,7 @@ class CoursesGridView extends ConsumerWidget {
                 courseName: courseModel.courseName,
                 categoriesCount: courseModel.subCollections.length,
                 progress: 0.0,
-                courseImageWidget: WidgetHelper.resolveImageWidget(
+                courseImageWidget: BuildImagePathWidget(imageLocation:
                   courseModel.imageLocation.imageLocation,
                   fallbackWidget: Icon(Iconsax.document_1, size: 16, color: Colors.white),
                 ),

@@ -96,7 +96,7 @@ String? checkIfCanCreateCourse(String courseName, String courseCode, bool isCour
     if (courseName.length < 2) return "Course title too short!";
     if (courseName.length > 64) return "Course title too long!";
     return "Kindly input a valid course title!";
-  } else if (isCourseCodeVisible && (courseCode.length < 2 || courseCode.length > 12)) {
+  } else if (isCourseCodeVisible && (courseCode.length < 2 || courseCode.length > 16)) {
     return "Kindly input a valid course code or hide it";
   }
   return null;

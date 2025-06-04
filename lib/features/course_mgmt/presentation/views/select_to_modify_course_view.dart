@@ -106,9 +106,9 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
                         categoriesCount: courseModel.rootContents.length,
                         syncImagePath: courseModel.imageLocation,
                         onTap: () {
-                          Navigator.pop(context);
+                          // Navigator.pop(context);
 
-                          Future.delayed(Durations.medium1);
+                          // Future.delayed(Durations.medium1);
 
                           AppNavigator.to(context).modifyCourseRoute(courseModel);
                         },
