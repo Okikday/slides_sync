@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'routes.dart';
+import 'routes/routes.dart';
 import 'shared/styles/themes.dart';
 
 class App extends ConsumerWidget {

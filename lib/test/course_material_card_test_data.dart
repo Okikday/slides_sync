@@ -1,5 +1,5 @@
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/features/course_navigation/presentation/viewmodels/models/course_materials_models/course_material_card_model.dart';
+import 'package:slides_sync/features/course_navigation/presentation/models/course_materials_models/course_material_card_model.dart';
 
 
 class CourseMaterialCardTestData{
