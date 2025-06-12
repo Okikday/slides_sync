@@ -61,14 +61,14 @@ class RecentsSectionBody extends ConsumerWidget {
               isStarred: false,
               progress: DummySlides.dummySlides[index]['progress'] as double?,
               onLongTapTile: () {
-                LoadingDialog.showLoadingDialog(
+                CustomDialog.show(
                   context,
                   canPop: true,
                   blurSigma: Offset(4.0, 4.0),
                   transitionType: TransitionType.fade,
                   barrierColor: Colors.black.withValues(alpha: 0.4),
                   transitionDuration: Duration(milliseconds: 550),
-                  loadingInfoWidget: RecentDialog(
+                  child: RecentDialog(
                     scaffoldBgColor: context.scaffoldBackgroundColor,
                     heroTag: "recents_list_tile$index",
                     recentDialogModel: RecentDialogModel(

@@ -32,7 +32,7 @@ class _CourseDescriptionDialogState extends ConsumerState<CourseDescriptionDialo
 
     return Stack(
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => LoadingDialog.hideLoadingDialog(context))),
+        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
         Align(
           alignment: Alignment.center,
           child: Container(

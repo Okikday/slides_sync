@@ -85,7 +85,7 @@
 //                       if (text.isEmpty || text.length < 4 || text.length > 1024) return;
 //                       final CourseModel currentCourseModel = ref.watch(widget.courseProvider);
 //                       ref.read(widget.courseProvider.notifier).update(currentCourseModel.copyWith(description: text));
-//                       LoadingDialog.hideLoadingDialog(context);
+//                       CustomDialog.hide(context);
 //                     },
 //                   ),
 //                 ],
@@ -98,7 +98,7 @@
 //               child: CustomElevatedButton(
 //                 shape: CircleBorder(),
 //                 onClick: () {
-//                   LoadingDialog.hideLoadingDialog(context);
+//                   CustomDialog.hide(context);
 //                 },
 //                 backgroundColor: Colors.transparent,
 //                 child: Icon(Iconsax.close_circle, size: 30),

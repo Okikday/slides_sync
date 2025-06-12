@@ -17,7 +17,7 @@ class AppCustomizableDialog extends ConsumerWidget {
       alignment: Alignment.center,
       clipBehavior: Clip.hardEdge,
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => LoadingDialog.hideLoadingDialog(context))),
+        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
         Positioned(
           left: 24,
           right: 24,

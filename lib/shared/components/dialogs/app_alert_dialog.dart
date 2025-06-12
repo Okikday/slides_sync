@@ -19,7 +19,7 @@ class AppAlertDialog extends ConsumerWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => LoadingDialog.hideLoadingDialog(context))),
+        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
         Positioned(
           left: 24,
           right: 24,

@@ -27,7 +27,7 @@ class ManageCourseDialog extends ConsumerWidget {
           child: FloatingActionButton(
             onPressed: () async {
               // animationController.reverse();
-              if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+              if (context.mounted) CustomDialog.hide(context);
             },
             elevation: 8.0,
             backgroundColor: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(40) : Colors.lightBlueAccent.withAlpha(80),
@@ -66,7 +66,7 @@ class ManageCourseDialog extends ConsumerWidget {
                             contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
                             backgroundColor: Colors.transparent,
                             onClick: () {
-                              LoadingDialog.hideLoadingDialog(context);
+                              CustomDialog.hide(context);
                               Navigator.push(
                                 context,
                                 CupertinoSheetRoute(
@@ -89,7 +89,7 @@ class ManageCourseDialog extends ConsumerWidget {
                             contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
                             backgroundColor: Colors.transparent,
                             onClick: () {
-                              LoadingDialog.hideLoadingDialog(context);
+                              CustomDialog.hide(context);
                               // AppNavigator.to(context).modifyExistingCoursesRoute();
                               Navigator.push(
                                 context,
@@ -114,7 +114,7 @@ class ManageCourseDialog extends ConsumerWidget {
                             contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
                             backgroundColor: Colors.transparent,
                             onClick: () {
-                              LoadingDialog.hideLoadingDialog(context);
+                              CustomDialog.hide(context);
                               // AppNavigator.to(context).modifyExistingCoursesRoute();
                               Navigator.push(
                                 context,

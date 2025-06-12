@@ -55,7 +55,7 @@ class CreateCourseButton extends ConsumerWidget {
           }
           FocusScope.of(context).unfocus();
 
-          if (context.mounted) LoadingDialog.showLoadingDialog(context, msg: "Adding Course...");
+          if (context.mounted) CustomDialog.showLoadingDialog(context, msg: "Adding Course...");
 
           final String? courseImagePath = ref.read(courseImagePathProvider.notifier).state;
 
@@ -65,7 +65,7 @@ class CreateCourseButton extends ConsumerWidget {
             courseImagePath: courseImagePath,
           );
 
-          if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+          if (context.mounted) CustomDialog.hide(context);
 
           createCourseOutcome
               .doNext((value) async{

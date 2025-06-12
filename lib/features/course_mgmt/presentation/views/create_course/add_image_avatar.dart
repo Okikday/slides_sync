@@ -27,14 +27,14 @@ class AddImageAvatar extends ConsumerWidget {
           child: InkWell(
             customBorder: CircleBorder(),
             onTap: () async {
-              LoadingDialog.showLoadingDialog(
+              CustomDialog.showLoadingDialog(
                 context,
                 msg: "Selecting image...",
                 backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
               );
               ImagePicker imagePicker = ImagePicker();
               final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-              if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+              if (context.mounted) CustomDialog.hide(context);
               if (pickedImage == null){
                 if(context.mounted) UiUtils.showFlushBar(context, msg: "Oops, you didn't select an image");
                 return;

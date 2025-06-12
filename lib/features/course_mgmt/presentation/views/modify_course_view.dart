@@ -55,7 +55,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
     final CourseModel? currCourse = next.value;
     if (currCourse == null) return;
     ref.read(modifyCourseProvider.notifier).update((cb) => currCourse);
-    log("currCourse: ${currCourse.imageLocationJson.filePath}");
   }
 
   @override
@@ -100,13 +99,13 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                 );
               },
               onClickDelete: () {
-                LoadingDialog.showLoadingDialog(
+                CustomDialog.show(
                   context,
                   canPop: true,
                   barrierColor: Colors.black.withValues(alpha: 0.6),
                   transitionType: TransitionType.cupertinoDialog,
                   transitionDuration: Durations.medium2,
-                  loadingInfoWidget: AppAlertDialog(
+                  child: AppAlertDialog(
                     title: "Confirm deletion",
                     content: "Are you sure you want to delete this course?",
                     backgroundColor: context.isDarkMode ? SlidesRepoColors.darkBlue.withAlpha(200) : null,
@@ -115,7 +114,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                         label: "Go back",
                         textColor: context.isDarkMode ? Colors.white : Colors.black,
                         backgroundColor: Colors.blueGrey.withAlpha(40),
-                        onClick: () => LoadingDialog.hideLoadingDialog(context),
+                        onClick: () => CustomDialog.hide(context),
                       ),
 
                       _buildDialogButton(
@@ -123,11 +122,11 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                         textColor: Colors.red,
                         backgroundColor: Colors.red.withAlpha(40),
                         onClick: () async {
-                          LoadingDialog.hideLoadingDialog(context);
+                          CustomDialog.hide(context);
                           await Future.delayed(Durations.medium1);
 
                           if (context.mounted) {
-                            LoadingDialog.showLoadingDialog(
+                            CustomDialog.showLoadingDialog(
                               context,
                               canPop: true,
                               msg: "Deleting Course",
@@ -136,7 +135,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
                             );
                           }
                           await modifyCourseActions.onDeleteCourse(id: courseModel.id, courseId: courseModel.courseId);
-                          if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+                          if (context.mounted) CustomDialog.hide(context);
                           if (context.mounted) context.pop();
                         },
                       ),

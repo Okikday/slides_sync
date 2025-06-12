@@ -71,14 +71,14 @@ class ModifyCourseActions {
     required StateProvider<CourseModel> modifyCourseProvider,
   }) {
     if (currDescription.isNotEmpty) {
-      LoadingDialog.showLoadingDialog(
+      CustomDialog.show(
         context,
         canPop: true,
         reverseTransitionDuration: Durations.short4,
         transitionType: TransitionType.cupertinoDialog,
         curve: CustomCurves.defaultIosSpring,
         barrierColor: Colors.black54,
-        loadingInfoWidget: CourseDescriptionDialog(
+        child: CourseDescriptionDialog(
           description: currDescription,
         ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
       );
@@ -100,23 +100,22 @@ class ModifyCourseActions {
   /// Navigates to dialog to preview image
   Future<void> previewImageActionRoute(BuildContext context, {required String courseImagePath}) async {
     if (!courseImagePath.fileLocation.containsImagePath) return;
-    LoadingDialog.showLoadingDialog(
+    CustomDialog.show(
       context,
-      backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
       transitionDuration: Durations.short3,
       reverseTransitionDuration: Durations.short4,
       canPop: true,
       barrierColor: Colors.black.withAlpha(200),
-      loadingInfoWidget: PreviewModifyCourseImageDialog(imagePath: courseImagePath),
+      child: PreviewModifyCourseImageDialog(imagePath: courseImagePath),
     );
   }
 
   /// This picks image from device, shows a loading dialog
   Future<void> pickImageActionRoute(BuildContext context, {required int courseDbId}) async {
-    LoadingDialog.showLoadingDialog(context, msg: "Selecting image");
+    CustomDialog.showLoadingDialog(context, msg: "Selecting image");
     ImagePicker imagePicker = ImagePicker();
     final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-    if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+    if (context.mounted) CustomDialog.hide(context);
     if (pickedImage == null) {
       if (context.mounted) UiUtils.showFlushBar(context, msg: "Oops, You didn't select an image!", vibe: FlushbarVibe.warning);
       return;
@@ -125,7 +124,7 @@ class ModifyCourseActions {
     final Result result = await modifyCourseImageAction(id: courseDbId, newImageFile: File(pickedImage.path));
 
     if (context.mounted) {
-      LoadingDialog.hideLoadingDialog(context);
+      CustomDialog.hide(context);
       if (result.isSuccess) {
         UiUtils.showFlushBar(context, msg: "Successfully changed course Image!", vibe: FlushbarVibe.success);
       } else {
@@ -141,7 +140,7 @@ class ModifyCourseActions {
         title: "View image",
         icon: Icon(Iconsax.crop, size: 28),
         onTap: () async {
-          LoadingDialog.hideLoadingDialog(context);
+          CustomDialog.hide(context);
           await Future.delayed(Durations.short2);
           if (context.mounted) previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
         },
@@ -150,7 +149,7 @@ class ModifyCourseActions {
         title: "Change image",
         icon: Icon(Iconsax.edit, size: 28),
         onTap: () async {
-          LoadingDialog.hideLoadingDialog(context);
+          CustomDialog.hide(context);
           await Future.delayed(Durations.short2);
           if (context.mounted) await pickImageActionRoute(context, courseDbId: courseModel.id);
         },
@@ -159,15 +158,15 @@ class ModifyCourseActions {
         title: "Remove image",
         icon: Icon(Iconsax.trash, size: 28),
         onTap: () async {
-          LoadingDialog.hideLoadingDialog(context);
+          CustomDialog.hide(context);
           await Future.delayed(Durations.short2);
-          if (context.mounted) LoadingDialog.showLoadingDialog(context, msg: "Removing image");
+          if (context.mounted) CustomDialog.showLoadingDialog(context, msg: "Removing image");
           await deleteCourseImageAction(courseDbId: courseModel.id);
-          if (context.mounted) LoadingDialog.hideLoadingDialog(context);
+          if (context.mounted) CustomDialog.hide(context);
         },
       ),
     ];
-    LoadingDialog.showLoadingDialog(
+    CustomDialog.show(
       context,
       canPop: true,
       transitionDuration: Durations.medium2,
@@ -175,7 +174,7 @@ class ModifyCourseActions {
       transitionType: TransitionType.cupertinoDialog,
       curve: CustomCurves.defaultIosSpring,
       barrierColor: Colors.black.withAlpha(220),
-      loadingInfoWidget: AppActionDialog(title: "What would you like to do?", actions: dialogModels),
+      child: AppActionDialog(title: "What would you like to do?", actions: dialogModels),
     );
   }
 }

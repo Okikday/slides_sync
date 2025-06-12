@@ -9,6 +9,7 @@ import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_mgmt/data/models/course_model/sub/course_content_type.dart';
 import 'package:slides_sync/features/course_mgmt/data/repos/course_repo.dart';
+import 'package:slides_sync/features/course_mgmt/presentation/views/course_collections/add_collection_action_button.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/course_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/course_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/course_mgmt/presentation/views/course_collections/empty_collections_view.dart';
@@ -43,8 +44,17 @@ class _CourseCollectionsViewState extends ConsumerState<CourseCollectionsView> {
     syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseById(widget.courseModel.id));
   }
 
+    void syncCourseWithStorage(AsyncValue<CourseModel?>? prev, AsyncValue<CourseModel?> next) {
+    if (!next.hasValue) return;
+    final CourseModel? currCourse = next.value;
+    if (currCourse == null) return;
+    ref.read(modifyCourseProvider.notifier).update((cb) => currCourse);
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(syncCourseProvider, syncCourseWithStorage);
+
     final courseModel = widget.courseModel;
 
     return AnnotatedRegion(
@@ -61,7 +71,7 @@ class _CourseCollectionsViewState extends ConsumerState<CourseCollectionsView> {
             //   child: CustomElevatedButton(
             //     pixelHeight: 36,
             //     onClick: (){
-                  
+
             //     },
             //     backgroundColor: Colors.deepPurple.withAlpha(80),
             //     child: Icon(Iconsax.more_copy, color: Colors.grey),
@@ -70,23 +80,7 @@ class _CourseCollectionsViewState extends ConsumerState<CourseCollectionsView> {
           ),
         ),
 
-        floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Colors.deepPurple,
-          onPressed: () async {
-            await showModalBottomSheet(
-              context: context,
-              enableDrag: true,
-              showDragHandle: false,
-              backgroundColor: context.scaffoldBackgroundColor,
-              shape: RoundedRectangleBorder(),
-              builder: (context) {
-                return CreateCollectionBottomSheet();
-              },
-            );
-          },
-          label: CustomText("Add a collection", fontWeight: FontWeight.w600, color: Colors.white),
-          icon: Icon(Iconsax.add_copy, size: 32, color: Colors.white),
-        ),
+        floatingActionButton: AddCollectionActionButton(courseDbId: courseModel.id),
 
         body: CustomScrollView(
           slivers: [
@@ -115,23 +109,28 @@ class _CourseCollectionsViewState extends ConsumerState<CourseCollectionsView> {
                   // final CourseSubCollection collection = courseModel.subCollections[index];
                   return Padding(
                     padding: EdgeInsets.only(bottom: 16.0),
-                    child: CollectionCardTile(
-                      title: collection.collectionTitle,
-                      contentCount: collection.courseContents.length,
-                      onTap: () {
-                        if (context.mounted) {
-                          Navigator.of(context).push(
-                            PageTransition(
-                              type: PageTransitionType.rightToLeftWithFade,
-                              duration: Durations.extralong3,
-                              reverseDuration: Durations.medium1,
-                              curve: CustomCurves.snappySpring,
-                              child: CourseMaterialsView(),
-                            ),
-                          );
-                        }
-                      },
-                    ).animate().moveY(begin: -20, end: 0).flipV(begin: 0.1, end: 0).fadeIn(),
+                    child:
+                        CollectionCardTile(
+                              title: collection.collectionTitle,
+                              contentCount: collection.courseContents.length,
+                              onTap: () {
+                                if (context.mounted) {
+                                  Navigator.of(context).push(
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeftWithFade,
+                                      duration: Durations.extralong3,
+                                      reverseDuration: Durations.medium1,
+                                      curve: CustomCurves.snappySpring,
+                                      child: CourseMaterialsView(),
+                                    ),
+                                  );
+                                }
+                              },
+                            )
+                            .animate()
+                            .moveY(begin: -20, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
+                            .flipV(begin: 0.2, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
+                            .fadeIn(),
                   );
                 },
               ),

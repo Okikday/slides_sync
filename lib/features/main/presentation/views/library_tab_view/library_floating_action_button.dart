@@ -13,7 +13,7 @@ class LibraryFloatingActionButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: () {
-        LoadingDialog.showLoadingDialog(
+        CustomDialog.show(
           context,
           canPop: true,
           blurSigma: Offset(3.0, 3.0),
@@ -22,7 +22,7 @@ class LibraryFloatingActionButton extends ConsumerWidget {
           reverseTransitionDuration: Durations.medium1,
           curve: CustomCurves.decelerate,
           barrierColor: Colors.black.withAlpha(100),
-          loadingInfoWidget: ManageCourseDialog(),
+          child: ManageCourseDialog(),
         );
       },
       elevation: 1.0,

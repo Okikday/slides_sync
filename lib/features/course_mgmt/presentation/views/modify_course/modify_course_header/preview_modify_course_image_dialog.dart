@@ -22,7 +22,7 @@ class PreviewModifyCourseImageDialog extends ConsumerWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Positioned.fill(child: GestureDetector(onTap: () => LoadingDialog.hideLoadingDialog(context))),
+            Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
             Positioned(
               width: dimension > 300 ? 300 : dimension,
               height: dimension > 300 ? 300 : dimension,

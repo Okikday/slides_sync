@@ -36,21 +36,21 @@ class EditCourseActions {
   /// Logic to call when user tries to pop page. It'll ask if user wants to exit without saving
   void onPopInvokedWithResult(BuildContext context, StateController<bool> provider) {
     if (provider.state) return;
-    LoadingDialog.showLoadingDialog(
+    CustomDialog.show(
       context,
       barrierColor: Colors.black.withValues(alpha: 0.7),
       transitionType: TransitionType.cupertinoDialog,
       blurSigma: Offset(2.0, 2.0),
       transitionDuration: Durations.medium2,
-      loadingInfoWidget: AppAlertDialog(
+      child: AppAlertDialog(
         title: "Confirm exit",
         content: "Are you sure you want to exit without saving?",
         backgroundColor: context.isDarkMode ? SlidesRepoColors.darkBlue.withAlpha(200) : null,
         onCancel: () {
-          LoadingDialog.hideLoadingDialog(context);
+          CustomDialog.hide(context);
         },
         onConfirm: () async {
-          LoadingDialog.hideLoadingDialog(context);
+          CustomDialog.hide(context);
 
           provider.update((cb) => true);
           Navigator.pop(context);

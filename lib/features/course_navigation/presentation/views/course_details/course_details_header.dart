@@ -60,14 +60,14 @@ class CourseDetailsHeader extends ConsumerWidget {
                               contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                               onClick: () {
                                 if (courseModel.description.isNotEmpty) {
-                                  LoadingDialog.showLoadingDialog(
+                                  CustomDialog.show(
                                     context,
                                     canPop: true,
                                     transitionType: TransitionType.cupertinoDialog,
                                     reverseTransitionDuration: Durations.short4,
                                     curve: CustomCurves.defaultIosSpring,
                                     barrierColor: Colors.black.withAlpha(100),
-                                    loadingInfoWidget: CourseDescriptionDialog(description: courseModel.description).animate().scale(
+                                    child: CourseDescriptionDialog(description: courseModel.description).animate().scale(
                                       begin: Offset(0.5, 0.5),
                                       duration: Durations.extralong1,
                                       curve: CustomCurves.bouncySpring,

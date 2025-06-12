@@ -86,29 +86,46 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                       duration: Durations.extralong4,
                       curve: CustomCurves.bouncySpring,
                       reverseDuration: Durations.extralong1,
-                      child: SizedBox(
-                        height: double.parse(
-                          (88.0 * widget.collections.length.clamp(0, maxCards) * (1.0 - ref.watch(scrollOffsetNotifier))).toStringAsFixed(2),
-                        ).clamp(88.0 + 88 / (5 - widget.collections.length.clamp(0, maxCards)), 88.0 * widget.collections.length),
+                      child: Builder(
+                        builder: (context) {
+                          final clampedLen = widget.collections.length.clamp(0, maxCards);
+                          final offset = ref.watch(scrollOffsetNotifier).clamp(0.0, 1.0);
+                          final rawHeight = 88.0 * clampedLen * (1.0 - offset);
+                          final roundedHeight = double.parse(rawHeight.toStringAsFixed(2));
 
-                        // height:
-                        //     (88 +
-                        //     88 / (5 - widget.collections.length.clamp(0, 3)) +
-                        //     (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collections.length.clamp(0, 3) - 1))),
-                        child: RotatedBox(
-                          quarterTurns: 0,
-                          child: StackedCardCarousel(
-                            initialOffset: 0,
-                            spaceBetweenItems: 72,
-                            pageController: pageController,
-                            items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
-                              return RotatedBox(
-                                quarterTurns: 0,
-                                child: CollectionCardTile(title: "Title to be assigned", contentCount: 12),
-                              );
-                            }),
-                          ),
-                        ),
+                          final denominator = (5 - clampedLen).toDouble();
+                          final minHeight = denominator == 0 ? 88.0 : 88.0 + 88 / denominator;
+                          final maxHeight = 88.0 * widget.collections.length;
+
+                          final safeHeight = roundedHeight.clamp(minHeight, maxHeight);
+
+                          return SizedBox(
+                            height: safeHeight,
+                            // height: double.parse(
+                            //   (88.0 * widget.collections.length.clamp(0, maxCards) * (1.0 - ref.watch(scrollOffsetNotifier)))
+                            //       .toStringAsFixed(2),
+                            // ).clamp(88.0 + 88 / (5 - widget.collections.length.clamp(0, maxCards)), 88.0 * widget.collections.length),
+
+                            // height:
+                            //     (88 +
+                            //     88 / (5 - widget.collections.length.clamp(0, 3)) +
+                            //     (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collections.length.clamp(0, 3) - 1))),
+                            child: RotatedBox(
+                              quarterTurns: 0,
+                              child: StackedCardCarousel(
+                                initialOffset: 0,
+                                spaceBetweenItems: 72,
+                                pageController: pageController,
+                                items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
+                                  return RotatedBox(
+                                    quarterTurns: 0,
+                                    child: CollectionCardTile(title: "Title to be assigned", contentCount: 12),
+                                  );
+                                }),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ).animate().fadeIn(),
