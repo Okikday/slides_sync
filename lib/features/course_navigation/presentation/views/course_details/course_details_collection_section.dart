@@ -55,11 +55,11 @@ class CourseDetailsCollectionSection extends StatelessWidget {
       itemCount: collections.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 12.0, left: 16.0, right: 16.0),
+          padding: const EdgeInsets.only(bottom: 16.0, left: 16.0, right: 16.0),
           child: CourseCategoriesCard(
             isDarkMode: context.isDarkMode,
             title: collections[index].collectionTitle,
-            icon: BuildImagePathWidget(fileLocation:collections[index].imageLocationJson.fileLocation, fallbackWidget: Icon(Iconsax.book)),
+            icon: BuildImagePathWidget(fileLocation: collections[index].imageLocationJson.fileLocation, fallbackWidget: Icon(Iconsax.book)),
             onTap: () {
               if (context.mounted) {
                 Navigator.of(context).push(

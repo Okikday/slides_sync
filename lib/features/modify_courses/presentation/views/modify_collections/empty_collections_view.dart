@@ -6,7 +6,8 @@ import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class EmptyCollectionsView extends ConsumerWidget {
-  const EmptyCollectionsView({super.key});
+  final void Function()? onClickAddCollection;
+  const EmptyCollectionsView({super.key, this.onClickAddCollection});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +28,9 @@ class EmptyCollectionsView extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: CustomElevatedButton(
+                onClick: () {
+                  if (onClickAddCollection != null) onClickAddCollection!();
+                },
                 backgroundColor: Colors.deepPurple,
                 borderRadius: 12,
                 pixelHeight: 44,

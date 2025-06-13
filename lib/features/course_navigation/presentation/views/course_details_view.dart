@@ -42,6 +42,8 @@ class CourseDetailsView extends ConsumerWidget {
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
 
             CourseDetailsCollectionSection(collections: courseModel.subCollections),
+
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
           ],
         ),
       ),

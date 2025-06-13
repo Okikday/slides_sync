@@ -6,13 +6,20 @@ import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AddCollectionActionButton extends StatelessWidget {
   final int courseDbId;
-  const AddCollectionActionButton({super.key, required this.courseDbId});
+  final void Function() onClickUp;
+  final bool isScrolled;
+  const AddCollectionActionButton({super.key, required this.courseDbId, required this.isScrolled, required this.onClickUp});
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      backgroundColor: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Colors.deepPurple,
+      shape: isScrolled ? CircleBorder() : null,
+      backgroundColor: context.isDarkMode ? Colors.white : Colors.black,
       onPressed: () async {
+        if (isScrolled) {
+          onClickUp();
+          return;
+        }
         CustomDialog.show(
           context,
           canPop: true,
@@ -20,8 +27,20 @@ class AddCollectionActionButton extends StatelessWidget {
           child: CreateCollectionBottomSheet(courseDbId: courseDbId),
         );
       },
-      label: CustomText("Add a collection", fontWeight: FontWeight.w600, color: Colors.white),
-      icon: Icon(Iconsax.add_copy, size: 32, color: Colors.white),
+      extendedIconLabelSpacing: isScrolled ? 0 : null,
+      label:
+          isScrolled
+              ? const SizedBox()
+              : CustomText(
+                "Add a collection",
+                fontWeight: FontWeight.bold,
+                color: context.isDarkMode ? Colors.deepPurple : Colors.deepPurpleAccent,
+              ),
+      icon: Icon(
+        isScrolled ? Iconsax.arrow_up : Iconsax.add_circle,
+        size: 32,
+        color: context.isDarkMode ? Colors.deepPurple : Colors.deepPurpleAccent,
+      ),
     );
   }
 }

@@ -65,7 +65,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
         }
       },
       error: (error, st) {
-        log("error: ${st}");
+        log("error: $st");
         return SliverToBoxAdapter(child: RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle)));
       },
       loading: () {

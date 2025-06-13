@@ -7,6 +7,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
+import 'package:slides_sync/features/modify_courses/domain/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class CreateCollectionBottomSheet extends ConsumerStatefulWidget {
@@ -34,6 +35,8 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
 
   @override
   Widget build(BuildContext context) {
+    final ModifyCollectionActions modifyCollectionActions = ModifyCollectionActions();
+
     return Stack(
       children: [
         Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
@@ -58,45 +61,23 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   focusNode: focusNode,
                   onTapOutside: () {},
                   onSubmitted: (text) async {
-                    if (text.isNotEmpty && text.length > 4 && text.length < 256) {
-                      try {
-                        final CourseModel? courseModel = await CourseRepo.getCourseById(widget.courseDbId);
-                        if (courseModel == null) {
-                          if (context.mounted) CustomDialog.hide(context);
-                          return;
-                        }
-                        CourseRepo.addCourse(courseModel.copyWith(subCollections: [
-                          CourseSubCollection.create(collectionTitle: text),
-                          ...courseModel.subCollections,
-                        ]));
-                        if (context.mounted) {
-                          CustomDialog.hide(context);
-                          await UiUtils.showFlushBar(context, msg: "Added $text to Collections");
-                        }
-                      } catch (e) {
-                        log("$e");
-                        if (context.mounted) {
-                          CustomDialog.hide(context);
-                          await UiUtils.showFlushBar(context, msg: "An error occured while adding to collections");
-                        }
-                      }
-                    }
+                    await modifyCollectionActions.createNewCollection(context, text: text, courseDbId: widget.courseDbId);
                   },
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(fontSize: 15),
                   backgroundColor: Colors.transparent,
                   border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
-                  alwaysShowSuffixIcon: true,
-                  suffixIcon: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 10.0),
-                    child: CustomElevatedButton(
-                      onClick: () {},
-                      backgroundColor: Colors.deepPurple,
-                      contentPadding: EdgeInsets.all(2.0),
-                      shape: CircleBorder(),
-                      child: Icon(Iconsax.add_circle, size: 20, color: context.isDarkMode ? Colors.white : Colors.white),
-                    ),
-                  ),
+                  // alwaysShowSuffixIcon: true,
+                  // suffixIcon: Padding(
+                  //   padding: const EdgeInsets.only(left: 8.0, right: 10.0),
+                  //   child: CustomElevatedButton(
+                  //     onClick: () {},
+                  //     backgroundColor: Colors.deepPurple,
+                  //     contentPadding: EdgeInsets.all(2.0),
+                  //     shape: CircleBorder(),
+                  //     child: Icon(Iconsax.add_circle, size: 20, color: context.isDarkMode ? Colors.white : Colors.white),
+                  //   ),
+                  // ),
                 ),
                 ConstantSizing.columnSpacing(4.0),
               ],

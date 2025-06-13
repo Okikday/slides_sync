@@ -36,7 +36,7 @@ class ListCourseCard extends ConsumerWidget {
       offset: Offset(-12, 12),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-        constraints: BoxConstraints(minHeight: 120, maxHeight: 140),
+        constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
         decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Row(
           children: [

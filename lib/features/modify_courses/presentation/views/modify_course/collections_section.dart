@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collection_card_tile.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_list_view/collection_card_tile.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
@@ -14,9 +14,8 @@ import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 /// COLLECTION SECTION
 class CollectionsSection extends ConsumerStatefulWidget {
   final List<CourseSubCollection> collections;
-  final PageController pageController;
   final void Function() onClickNewCollection;
-  const CollectionsSection({super.key, required this.collections, required this.pageController, required this.onClickNewCollection});
+  const CollectionsSection({super.key, required this.collections, required this.onClickNewCollection});
 
   @override
   ConsumerState createState() => _CollectionsSectionState();
@@ -26,14 +25,16 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   late final AutoDisposeStateProvider<double> scrollOffsetNotifier;
   int maxCards = 3;
   // late final AutoDisposeStateProvider<bool> canScrollNotifier;
+  late final PageController pageController;
 
   @override
   void initState() {
     super.initState();
     scrollOffsetNotifier = AutoDisposeStateProvider<double>((ref) => 0.0);
+    pageController = PageController(initialPage: 4);
     // canScrollNotifier = AutoDisposeStateProvider<bool>((ref) => false);
     // widget.pageController.addListener(updateScrollOffset);
-    widget.pageController.addListener(updateScrollProgress);
+    pageController.addListener(updateScrollProgress);
   }
 
   // void updateScrollOffset() {
@@ -46,22 +47,20 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
 
   void updateScrollProgress() {
     final scrollOffsetNotif = ref.read(scrollOffsetNotifier.notifier);
-    final double progress = (widget.pageController.page ?? 0.0) / (widget.collections.length - 1).clamp(0, maxCards);
+    final double progress = (pageController.page ?? 0.0) / (widget.collections.length - 1).clamp(0, maxCards);
     if (progress == scrollOffsetNotif.state) return;
     scrollOffsetNotif.update((cb) => progress);
-    log("progress: $progress");
   }
 
   @override
   void dispose() {
     // widget.pageController.removeListener(updateScrollOffset);
-    widget.pageController.removeListener(updateScrollProgress);
+    pageController.removeListener(updateScrollProgress);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final PageController pageController = widget.pageController;
     // final int count = 10;
 
     if (widget.collections.isEmpty) {
@@ -79,59 +78,55 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
           children: [
             NotificationListener(
               onNotification: (notification) => true,
-              child: AnimatedSize(
-                duration: Durations.short2,
-                curve: CustomCurves.decelerate,
-                child:
-                    ClipRRect(
-                      child: AnimatedSize(
-                        duration: Durations.extralong4,
-                        curve: CustomCurves.bouncySpring,
-                        reverseDuration: Durations.extralong1,
-                        child: Builder(
-                          builder: (context) {
-                            
-                            final double safeHeight = double.parse(
-                              (88.0 * widget.collections.length.clamp(0, maxCards) * (1.0 - ref.watch(scrollOffsetNotifier)))
-                                  .toStringAsFixed(2),
-                            ).clamp(
+              child:
+                  ClipRRect(
+                    child: AnimatedSize(
+                      duration: Durations.extralong4,
+                      curve: CustomCurves.bouncySpring,
+                      reverseDuration: Durations.extralong1,
+                      child: Builder(
+                        builder: (context) {
+                          final double safeHeight = double.parse(
+                            (88.0 * widget.collections.length.clamp(0, maxCards) * (1.0 - ref.watch(scrollOffsetNotifier))).toStringAsFixed(
+                              2,
+                            ),
+                          ).clamp(
+                            (88.0 + 88 / (5 - widget.collections.length.clamp(0, maxCards))),
+                            (88.0 * widget.collections.length).clamp(
                               (88.0 + 88 / (5 - widget.collections.length.clamp(0, maxCards))),
-                              (88.0 * widget.collections.length).clamp(
-                                (88.0 + 88 / (5 - widget.collections.length.clamp(0, maxCards))),
-                                double.infinity,
-                              ),
-                            );
+                              double.infinity,
+                            ),
+                          );
 
-                            return SizedBox(
-                              height: safeHeight,
+                          return SizedBox(
+                            height: safeHeight,
 
-                              // height:
-                              //     (88 +
-                              //     88 / (5 - widget.collections.length.clamp(0, 3)) +
-                              //     (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collections.length.clamp(0, 3) - 1))),
-                              child: RotatedBox(
-                                quarterTurns: 0,
-                                child: StackedCardCarousel(
-                                  initialOffset: 0,
-                                  spaceBetweenItems: 72,
-                                  pageController: pageController,
-                                  items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
-                                    return RotatedBox(
-                                      quarterTurns: 0,
-                                      child: CollectionCardTile(
-                                        title: widget.collections[index].collectionTitle,
-                                        contentCount: widget.collections[index].courseContents.length,
-                                      ),
-                                    );
-                                  }),
-                                ),
+                            // height:
+                            //     (88 +
+                            //     88 / (5 - widget.collections.length.clamp(0, 3)) +
+                            //     (ref.watch(scrollOffsetNotifier) / 2).clamp(0.0, 88 * (widget.collections.length.clamp(0, 3) - 1))),
+                            child: RotatedBox(
+                              quarterTurns: 0,
+                              child: StackedCardCarousel(
+                                initialOffset: 0,
+                                spaceBetweenItems: 72,
+                                pageController: pageController,
+                                items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
+                                  return RotatedBox(
+                                    quarterTurns: 0,
+                                    child: CollectionCardTile(
+                                      title: widget.collections[index].collectionTitle,
+                                      contentCount: widget.collections[index].courseContents.length,
+                                    ),
+                                  );
+                                }),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    ).animate().fadeIn(),
-              ),
+                    ),
+                  ).animate().fadeIn(),
             ),
           ],
         ),

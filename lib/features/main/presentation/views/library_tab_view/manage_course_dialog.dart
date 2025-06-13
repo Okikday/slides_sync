@@ -60,8 +60,7 @@ class ManageCourseDialog extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ConstantSizing.columnSpacingMedium,
-                          Divider(color: context.isDarkMode ? Colors.white.withAlpha(40) : Colors.black.withAlpha(40)),
+                          ConstantSizing.columnSpacingSmall,
                           CustomElevatedButton(
                             contentPadding: const EdgeInsets.only(left: 4.0, top: 4.0, bottom: 4.0),
                             backgroundColor: Colors.transparent,

@@ -1,62 +1,72 @@
+import 'dart:ui';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
 class AppCustomizableDialog extends ConsumerWidget {
-  final String title;
+  final Widget? leading;
+  final Alignment alignment;
 
   /// Representing vertically aligned actions
   final Widget child;
   final Color? backgroundColor;
-  const AppCustomizableDialog({super.key, this.title = "Dialog", required this.child, this.backgroundColor});
+  final Offset? blurSigma;
+  const AppCustomizableDialog({
+    super.key,
+    this.blurSigma,
+    this.leading,
+    this.alignment = Alignment.center,
+    required this.child,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
-      alignment: Alignment.center,
+      alignment: alignment,
       clipBehavior: Clip.hardEdge,
       children: [
         Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
         Positioned(
           left: 24,
           right: 24,
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-              clipBehavior: Clip.hardEdge,
-              constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
-              decoration: BoxDecoration(
-                color: context.scaffoldBackgroundColor.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(16.0),
-                border: Border.all(width: 1, color: Colors.lightBlueAccent.withAlpha(25)),
-                boxShadow: [
-                  BoxShadow(
-                    color: backgroundColor ?? (context.isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20)),
-                    blurRadius: 8,
-                    offset: Offset(0, 0),
-                    blurStyle: BlurStyle.inner,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.symmetric(vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ConstantSizing.columnSpacingSmall,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(child: CustomText(title, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center)),
-                  ),
-                  ConstantSizing.columnSpacingSmall,
-                  Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
-
-                  Flexible(child: child)
-                ],
-              ),
+          bottom: alignment == Alignment.bottomCenter ? context.padding.bottom + 16.0 : null,
+          top: alignment == Alignment.topCenter ? context.padding.top + 16.0 : null,
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
+            decoration: BoxDecoration(
+              color: backgroundColor ?? context.scaffoldBackgroundColor.withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(16.0),
+              border: Border.all(width: 1, color: Colors.lightBlueAccent.withAlpha(25)),
+              boxShadow: [
+                BoxShadow(
+                  color: (context.isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20)),
+                  blurRadius: 8,
+                  offset: Offset(0, 0),
+                  blurStyle: BlurStyle.inner,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
+            padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
+            child:
+                blurSigma != null
+                    ? BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: blurSigma!.dx, sigmaY: blurSigma!.dy),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [if (leading != null) leading!, Flexible(child: child)],
+                      ),
+                    )
+                    : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [if (leading != null) leading!, Flexible(child: child)],
+                    ),
           ),
         ),
       ],

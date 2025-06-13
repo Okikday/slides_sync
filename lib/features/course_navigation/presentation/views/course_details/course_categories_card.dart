@@ -7,8 +7,16 @@ class CourseCategoriesCard extends ConsumerWidget {
   final bool isDarkMode;
   final String title;
   final Widget icon;
+  final int contentCount;
   final void Function() onTap;
-  const CourseCategoriesCard({super.key, required this.isDarkMode, required this.title, required this.onTap, required this.icon});
+  const CourseCategoriesCard({
+    super.key,
+    required this.isDarkMode,
+    required this.title,
+    required this.onTap,
+    required this.icon,
+    this.contentCount = 0,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,13 +26,13 @@ class CourseCategoriesCard extends ConsumerWidget {
       child: DecoratedBox(
         decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
         child: Padding(
-          padding: EdgeInsets.all(12),
-          
+          padding: EdgeInsets.all(16),
+
           child: Row(
             children: [
               Container(
-                width: 42,
-                height: 42,
+                width: 40,
+                height: 40,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   color: Colors.deepPurple,
@@ -34,8 +42,17 @@ class CourseCategoriesCard extends ConsumerWidget {
                 child: ClipOval(child: icon),
               ),
               ConstantSizing.rowSpacingMedium,
-              Expanded(child: CustomText(title, fontSize: 15)),
-              CustomText("15 items", fontSize: 12, color: Colors.grey),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 4.0,
+                  children: [
+                    CustomText(title, fontSize: 15),
+                    CustomText("${contentCount == 0 ? "No" : "$contentCount"} items", fontSize: 12, color: Colors.grey),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

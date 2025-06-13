@@ -34,7 +34,7 @@ class AppBarContainerChild extends ConsumerWidget {
             children: [
               ComponentWidgets.backButton(context, onPressed: onBackButtonClicked),
               ConstantSizing.rowSpacingMedium,
-              Expanded(child: CustomText(title, fontSize: 18, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis,)),
+              Expanded(child: CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis,)),
               if(trailing != null) trailing!
             ],
           ),

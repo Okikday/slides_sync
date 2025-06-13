@@ -174,7 +174,10 @@ class ModifyCourseActions {
       transitionType: TransitionType.cupertinoDialog,
       curve: CustomCurves.defaultIosSpring,
       barrierColor: Colors.black.withAlpha(220),
-      child: AppActionDialog(title: "What would you like to do?", actions: dialogModels),
+      child: AppActionDialog(
+        title: "What would you like to do?",
+        actions: dialogModels,
+      ).animate().scaleY(begin: 0.1, end: 1.0, curve: CustomCurves.bouncySpring, duration: Durations.extralong1),
     );
   }
 }

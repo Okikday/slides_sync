@@ -66,13 +66,13 @@ class CollectionCardTile extends ConsumerWidget {
                     children: [
                       CustomText(title, fontWeight: FontWeight.bold),
                       ConstantSizing.columnSpacing(4),
-                        CustomText(
-                          "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
-                          "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
-                          "${contentCount == 0 ? 'No items' : "$contentCount items"}",
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
+                      CustomText(
+                        "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
+                        "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
+                        "${contentCount == 0 ? 'No items' : "$contentCount items"}",
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
                     ],
                   ),
                 ),
