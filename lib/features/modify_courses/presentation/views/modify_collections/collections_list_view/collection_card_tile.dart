@@ -39,15 +39,12 @@ class CollectionCardTile extends ConsumerWidget {
               if (onSelected != null) onSelected!();
             },
             borderRadius: 12,
-            contentPadding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 16),
+            contentPadding: EdgeInsets.fromLTRB(16, 12, 8, 12),
             backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
             child: Row(
               spacing: ConstantSizing.spaceMedium,
               children: [
                 CustomElevatedButton(
-                  onClick: () {
-                    if (onSelected != null) onSelected!();
-                  },
                   contentPadding: EdgeInsets.all(8.0),
                   backgroundColor: Colors.lightBlueAccent.withAlpha(25),
                   child: BuildImagePathWidget(
@@ -75,6 +72,15 @@ class CollectionCardTile extends ConsumerWidget {
                       ),
                     ],
                   ),
+                ),
+
+                CustomElevatedButton(
+                  shape: CircleBorder(),
+                  onClick: () {
+                    if (onSelected != null) onSelected!();
+                  },
+                  backgroundColor: Colors.lightBlueAccent.withAlpha(20),
+                  child: Icon(Iconsax.edit_copy, size: 20),
                 ),
               ],
             ),

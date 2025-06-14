@@ -1,33 +1,50 @@
+import 'package:isar/isar.dart';
 import 'package:slides_sync/core/data/isar_data/isar_data.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 
 class CourseRepo {
-  static final IsarData<CourseModel> isar = IsarData.instance<CourseModel>();
-  static Future<int> addCourse(CourseModel course) async => await isar.store(course);
-  static Future<List<int>> addMultipleCourses(List<CourseModel> courses) async => await isar.storeAll(courses);
+  static final IsarData<CourseModel> isarData = IsarData.instance<CourseModel>();
 
-  static Future<void> deleteCourse(int courseId) async {
-    await isar.deleteById(courseId);
-  }
+  // static Future<QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>> _queryById(String courseId) async {
+  //   return (await isarData.query<CourseModel>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
+  // }
 
-  static Future<CourseModel?> getCourseById(int courseId){
-    return IsarData.instance<CourseModel>().getById(courseId);
-  }
+  static Future<void> deleteCourseByDbId(int dbId) async => await isarData.deleteById(dbId);
 
-  static Stream<CourseModel?> watchCourseById(int courseId){
-    return IsarData.instance<CourseModel>().watchById(courseId);
-  }
-  
+  static Future<CourseModel?> getCourseByDbId(int dbId) => isarData.getById(dbId);
 
-  static Future<List<CourseModel>> getAllCourses() async {
-    return IsarData.instance<CourseModel>().getAll();
-  }
+  static Stream<CourseModel?> watchCourseByDbId(int dbId) => isarData.watchById(dbId);
 
-  static Stream<List<CourseModel>> watchAllCourses(){
-    return IsarData.instance<CourseModel>().watchAll();
-  }
+  static Future<int> addCourse(CourseModel course) async => await isarData.store(course);
 
-  static Future<Stream<List<CourseModel>>> watchAllCoursesLazily() async{
-    return await IsarData.instance<CourseModel>().watchAllLazily();
-  }
+  static Future<List<int>> addMultipleCourses(List<CourseModel> courses) async => await isarData.storeAll(courses);
+
+  static Future<List<CourseModel>> getAllCourses() async => isarData.getAll();
+
+  static Stream<List<CourseModel>> watchAllCourses() => isarData.watchAll();
+
+  static Future<Stream<List<CourseModel>>> watchAllCoursesLazily() async => await isarData.watchAllLazily();
+
+
+
+  // static Future<CourseModel?> getCourseById(String courseId) async {
+  //   final idQuery = await _queryById(courseId);
+  //   return await idQuery.findFirst();
+  // }
+
+  // static Stream<CourseModel?> watchCourseById(String courseId) async* {
+  //   final idQuery = await _queryById(courseId);
+  //   yield* idQuery.watch(fireImmediately: true).map((list) => list.firstOrNull);
+  // }
+
+  // static Future<CourseModel?> deleteCourseById(String courseId) async {
+  //   final isar = await isarData.isarFuture;
+
+  //   return await isar.writeTxn<CourseModel?>(() async {
+  //     final idQuery = await _queryById(courseId);
+  //     final CourseModel? course = await idQuery.findFirst();
+  //     if (course != null) await idQuery.deleteFirst();
+  //     return course;
+  //   });
+  // }
 }

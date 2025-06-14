@@ -5,21 +5,25 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseDetailsCollectionSection extends StatelessWidget {
-  const CourseDetailsCollectionSection({super.key, required this.collections});
+  const CourseDetailsCollectionSection({super.key, required this.courseModel});
 
-  final List<CourseSubCollection> collections;
+  final CourseModel courseModel;
 
   @override
   Widget build(BuildContext context) {
+    final collections = courseModel.subCollections;
+
     if (collections.isEmpty) {
       return SliverToBoxAdapter(
         child: SingleChildScrollView(
@@ -37,6 +41,18 @@ class CourseDetailsCollectionSection extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: CustomElevatedButton(
+                  onClick: () async {
+                    AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+                    await Future.delayed(Durations.short1);
+                    if (context.mounted) {
+                      CustomDialog.show(
+                        context,
+                        canPop: true,
+                        barrierColor: Colors.black.withAlpha(150),
+                        child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
+                      );
+                    }
+                  },
                   backgroundColor: Colors.deepPurple,
                   borderRadius: 12,
                   pixelHeight: 44,

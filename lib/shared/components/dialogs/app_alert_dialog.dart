@@ -1,4 +1,3 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,16 +9,35 @@ class AppAlertDialog extends ConsumerWidget {
   final List<Widget> actions;
   final void Function()? onCancel;
   final void Function()? onConfirm;
+  final void Function()? onPop;
   final Color? backgroundColor;
-  const AppAlertDialog({super.key, required this.title, required this.content, this.actions = const [], this.onCancel, this.onConfirm, this.backgroundColor});
+  const AppAlertDialog({
+    super.key,
+    required this.title,
+    required this.content,
+    this.onPop,
+    this.actions = const [],
+    this.onCancel,
+    this.onConfirm,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Stack(
       alignment: Alignment.center,
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () {
+              if (onPop == null) {
+                CustomDialog.hide(context);
+                return;
+              }
+              onPop!();
+            },
+          ),
+        ),
         Positioned(
           left: 24,
           right: 24,

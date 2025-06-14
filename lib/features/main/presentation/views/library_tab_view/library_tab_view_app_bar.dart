@@ -18,7 +18,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
     final AsyncValue<bool> asyncIsListView = ref.watch(isListViewProvider);
     final double scrollOffset = ref.watch(scrollOffsetProvider);
 
-    final double maxHeight = context.deviceHeight * 0.3;
+    final double maxHeight = 240; // context.deviceHeight * 0.3
     final double minHeight = 80;
     final double percentScroll = 1.0 - scrollOffset / (maxHeight - minHeight);
 

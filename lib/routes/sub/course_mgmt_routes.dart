@@ -51,19 +51,20 @@ class CourseMgmtRoutes {
             curve: CustomCurves.defaultIosSpring,
             child: ModifyCourseView(courseModel: state.extra as CourseModel),
           ),
-    ),
-
-    //COURSE COLLECTIONS VIEW NAVIGATION
-    GoRoute(
-      path: RoutesStrings.courseCollectionsView,
-      pageBuilder:
-          (context, state) => PageAnimation.buildCustomTransitionPage(
-            state.pageKey,
-            type: TransitionType.fade,
-            duration: Durations.medium1,
-            reverseDuration: Durations.medium1,
-            child: ModifyCollectionsView(courseModel: state.extra as CourseModel),
-          ),
+      routes: [
+        //MODIFY COLLECTIONS VIEW NAVIGATION
+        GoRoute(
+          path: RoutesStrings.modifyCollectionsView,
+          pageBuilder:
+              (context, state) => PageAnimation.buildCustomTransitionPage(
+                state.pageKey,
+                type: TransitionType.fade,
+                duration: Durations.medium1,
+                reverseDuration: Durations.medium1,
+                child: ModifyCollectionsView(courseModel: state.extra as CourseModel),
+              ),
+        ),
+      ],
     ),
   ];
 }

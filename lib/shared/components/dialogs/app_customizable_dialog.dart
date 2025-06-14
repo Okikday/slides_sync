@@ -13,6 +13,7 @@ class AppCustomizableDialog extends ConsumerWidget {
   final Widget child;
   final Color? backgroundColor;
   final Offset? blurSigma;
+  final void Function()? onPop;
   const AppCustomizableDialog({
     super.key,
     this.blurSigma,
@@ -20,6 +21,7 @@ class AppCustomizableDialog extends ConsumerWidget {
     this.alignment = Alignment.center,
     required this.child,
     this.backgroundColor,
+    this.onPop,
   });
 
   @override
@@ -28,7 +30,17 @@ class AppCustomizableDialog extends ConsumerWidget {
       alignment: alignment,
       clipBehavior: Clip.hardEdge,
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () {
+              if (onPop != null) {
+                onPop!();
+              } else {
+                CustomDialog.hide(context);
+              }
+            },
+          ),
+        ),
         Positioned(
           left: 24,
           right: 24,

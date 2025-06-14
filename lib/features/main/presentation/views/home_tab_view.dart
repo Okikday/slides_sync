@@ -2,6 +2,9 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
+import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
 import 'package:slides_sync/features/main/presentation/views/home_tab_view/home_app_bar.dart';
 import 'package:slides_sync/features/main/presentation/views/home_tab_view/home_body/recents_section_body.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
@@ -87,7 +90,9 @@ class _HomeTabViewState extends ConsumerState<HomeTabView> with AutomaticKeepAli
           RecentsSectionHeader(onClickSeeAll: (){},),
 
           // Recents Section Body
-          RecentsSectionBody(recentCourses: [],),
+          RecentsSectionBody(recentCourses: [
+            CourseContent.create(title: "Context Free Grammar", path: FileLocation(), courseContentType: CourseContentType.image)
+          ],),
           
 
           

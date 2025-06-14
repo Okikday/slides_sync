@@ -18,7 +18,7 @@ Future<Result<CourseModel>> createCourseAction({String courseCode = '', required
     }
 
     await CourseRepo.addCourse(courseModel);
-    final CourseModel? getCourse = await CourseRepo.getCourseById(courseModel.id);
+    final CourseModel? getCourse = await CourseRepo.getCourseByDbId(courseModel.id);
     if (getCourse == null) return null;
     return getCourse;
   });

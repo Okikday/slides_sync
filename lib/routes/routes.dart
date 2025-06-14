@@ -8,11 +8,14 @@ import 'package:slides_sync/routes/sub/course_mgmt_routes.dart';
 import 'package:slides_sync/routes/sub/home_tabs_routes.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 class Routes {
   static final GoRouter mainRouter = _router;
 
   static final GoRouter _router = GoRouter(
     initialLocation: RoutesStrings.homeView,
+    navigatorKey: rootNavigatorKey,
     observers: [HeroineController()],
     routes: [
       // Home, Library, Explore tabs

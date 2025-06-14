@@ -100,7 +100,6 @@ class ModifyCourseHeader extends ConsumerWidget {
                     child: GestureDetector(
                       onTap: onClickImage,
                       onLongPress: onLongPressImage,
-                      onDoubleTap: onLongPressImage,
                       child: ColoredBox(
                         color: Colors.deepPurple.withAlpha(80),
                         child: SizedBox.square(

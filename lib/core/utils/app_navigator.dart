@@ -35,13 +35,12 @@ class AppNavigator {
   //   _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
   // }
 
-  void courseCollectionsRoute(CourseModel courseModel){
-    final route = RoutesStrings.courseCollectionsView;
+  void modifyCollectionsRoute(CourseModel courseModel) {
+    final route = "${RoutesStrings.modifyCourseView}/${RoutesStrings.modifyCollectionsView}";
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
   }
 
   // void courseMaterialsPageRoute(){
   //   final route =
   // }
-
 }

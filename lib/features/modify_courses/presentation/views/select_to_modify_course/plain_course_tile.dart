@@ -62,13 +62,13 @@ class PlainCourseTile extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (courseCode.isNotEmpty) CustomText(courseCode, fontSize: 13),
+                  if (courseCode.isNotEmpty) CustomText(courseCode, fontSize: 12),
 
-                  if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(4),
+                  if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(2),
 
                   Flexible(child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold)),
 
-                  ConstantSizing.columnSpacing(4.0),
+                  ConstantSizing.columnSpacing(2.0),
 
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

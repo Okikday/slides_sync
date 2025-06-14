@@ -3,5 +3,6 @@ enum CourseContentType{
   docFile,
   image,
   link,
+  audio,
   video
 }

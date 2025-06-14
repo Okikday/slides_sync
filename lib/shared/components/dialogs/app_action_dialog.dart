@@ -25,7 +25,15 @@ class AppActionDialog extends ConsumerWidget {
   final Offset? blurSigma;
   final Color? backgroundColor;
   final List<AppActionDialogModel> actions;
-  const AppActionDialog({super.key, this.title = "Title", this.blurSigma, this.backgroundColor, this.alignment, this.leading, required this.actions});
+  const AppActionDialog({
+    super.key,
+    this.title = "Title",
+    this.blurSigma,
+    this.backgroundColor,
+    this.alignment,
+    this.leading,
+    required this.actions,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,16 +85,28 @@ class BuildPlainActionButton extends ConsumerWidget {
   final String title;
   final Widget icon;
   final void Function() onTap;
-  const BuildPlainActionButton({super.key, required this.title, required this.icon, required this.onTap});
+
+  final Color? backgroundColor;
+  final TextStyle? textStyle;
+  final EdgeInsets? contentPadding;
+  const BuildPlainActionButton({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onTap,
+    this.backgroundColor,
+    this.textStyle,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomElevatedButton(
       borderRadius: 0,
-      backgroundColor: Colors.transparent,
-      contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+      backgroundColor: backgroundColor ?? Colors.transparent,
+      contentPadding: contentPadding,
       onClick: onTap,
-      child: Row(spacing: 12.0, children: [icon, Expanded(child: CustomText(title))]),
+      child: Row(spacing: 12.0, children: [icon, Expanded(child: CustomText(title, style: textStyle))]),
     );
   }
 }

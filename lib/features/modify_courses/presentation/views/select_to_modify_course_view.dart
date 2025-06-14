@@ -48,7 +48,12 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
     return PopScope(
       canPop: !isSelecting,
       onPopInvokedWithResult: (didPop, result) {
-        ref.read(selectedCoursesIdProvider.notifier).update((cb) => <int, bool>{});
+        final selectedNotifier = ref.read(selectedCoursesIdProvider.notifier);
+        if (selectedNotifier.state.isNotEmpty) {
+          selectedNotifier.update((cb) => <int, bool>{});
+          return;
+        }
+        
       },
       child: AnnotatedRegion(
         value: UiUtils.getSystemUiOverlayStyle(Colors.transparent, context.isDarkMode).copyWith(statusBarIconBrightness: Brightness.light),
@@ -146,7 +151,7 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
                               }
                               return;
                             }
-
+                            Navigator.of(context).pop();
                             AppNavigator.to(context).modifyCourseRoute(courseModel);
                           },
                           onSelected: () {

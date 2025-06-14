@@ -22,21 +22,23 @@ class UiUtils {
   static Future<dynamic> showFlushBar(
     BuildContext context, {
     required String msg,
+    Color? messageColor,
+    Color? backgroundColor,
     Duration duration = const Duration(milliseconds: 1500),
     FlushbarPosition flushbarPosition = FlushbarPosition.BOTTOM,
     FlushbarVibe vibe = FlushbarVibe.none,
     EdgeInsets? margin,
-    double barBlur = 4.0
+    double barBlur = 4.0,
   }) async {
     final List<Color> colors = _resolveFlushbarVibe(context, vibe);
 
     await Flushbar(
       message: msg,
-      messageColor: colors[0],
+      messageColor: messageColor ?? colors[0],
       duration: duration,
       dismissDirection: FlushbarDismissDirection.VERTICAL,
       flushbarPosition: flushbarPosition,
-      backgroundColor: colors[1],
+      backgroundColor: backgroundColor ?? colors[1],
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
       borderColor: Colors.grey.withValues(alpha: 0.2),
       boxShadows: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode).boxShadow,

@@ -61,7 +61,7 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   focusNode: focusNode,
                   onTapOutside: () {},
                   onSubmitted: (text) async {
-                    await modifyCollectionActions.createNewCollection(context, text: text, courseDbId: widget.courseDbId);
+                    await modifyCollectionActions.onCreateNewCollection(context, text: text, courseDbId: widget.courseDbId);
                   },
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(fontSize: 15),

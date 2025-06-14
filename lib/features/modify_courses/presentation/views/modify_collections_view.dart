@@ -9,6 +9,7 @@ import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/add_collection_action_button.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_list_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_view_search_bar.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/empty_collections_view.dart';
 import 'package:slides_sync/shared/styles/app_ui_context.dart';
 
@@ -36,7 +37,7 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
     super.initState();
     scrollController = ScrollController();
     modifyCourseProvider = StateProvider((ref) => widget.courseModel);
-    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseById(widget.courseModel.id));
+    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
     scrollOffsetProvider = StateProvider((ref) => 0.0);
     scrollController.addListener(listenToscrollOffsetProvider);
   }
@@ -75,27 +76,42 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
           padding: EdgeInsets.zero,
-          child: AppBarContainerChild(context.isDarkMode, title: courseModel.courseName),
+          child: AppBarContainerChild(
+            context.isDarkMode,
+            title: courseModel.courseName,
+            tooltipMessage: "${courseModel.courseName}(${courseModel.courseCode})",
+          ),
         ),
 
-        floatingActionButton: courseModel.subCollections.isNotEmpty ? AddCollectionActionButton(
-          courseDbId: courseModel.id,
-          isScrolled: ref.watch(scrollOffsetProvider) > 40,
-          onClickUp: () {
-            scrollController.animateTo(0.0, duration: Durations.medium1, curve: CustomCurves.defaultIosSpring);
-          },
-        ) : null,
+        floatingActionButton:
+            courseModel.subCollections.isNotEmpty
+                ? AddCollectionActionButton(
+                  courseDbId: courseModel.id,
+                  isScrolled: ref.watch(scrollOffsetProvider) > 40,
+                  onClickUp: () {
+                    scrollController.animateTo(0.0, duration: Durations.medium1, curve: CustomCurves.defaultIosSpring);
+                  },
+                )
+                : null,
 
         body: CustomScrollView(
           controller: scrollController,
           slivers: [
-           if(courseModel.subCollections.isNotEmpty) PinnedHeaderSliver(child: CollectionsViewSearchBar()),
+            if (courseModel.subCollections.isNotEmpty) PinnedHeaderSliver(child: CollectionsViewSearchBar()),
 
             if (courseModel.subCollections.isNotEmpty)
-            CollectionsListView(courseDbId: courseModel.id, collections: courseModel.subCollections)
-
+              CollectionsListView(courseDbId: courseModel.id, collections: courseModel.subCollections)
             else
-            EmptyCollectionsView(),
+              EmptyCollectionsView(
+                onClickAddCollection: () {
+                  CustomDialog.show(
+                    context,
+                    canPop: true,
+                    barrierColor: Colors.black.withAlpha(150),
+                    child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
+                  );
+                },
+              ),
             SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
             // ),

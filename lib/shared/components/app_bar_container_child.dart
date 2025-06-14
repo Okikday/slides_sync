@@ -5,15 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'component_widgets.dart';
 
 class AppBarContainerChild extends ConsumerWidget {
-  const AppBarContainerChild(this.isDarkMode, {
+  const AppBarContainerChild(
+    this.isDarkMode, {
     super.key,
     required this.title,
+    this.tooltipMessage,
     this.onBackButtonClicked,
-    this.trailing
+    this.trailing,
   });
 
   final bool isDarkMode;
   final String title;
+  final String? tooltipMessage;
   final void Function()? onBackButtonClicked;
   final Widget? trailing;
 
@@ -29,13 +32,13 @@ class AppBarContainerChild extends ConsumerWidget {
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: Tooltip(
           triggerMode: TooltipTriggerMode.tap,
-          message: title,
+          message: tooltipMessage ?? title,
           child: Row(
             children: [
               ComponentWidgets.backButton(context, onPressed: onBackButtonClicked),
               ConstantSizing.rowSpacingMedium,
-              Expanded(child: CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis,)),
-              if(trailing != null) trailing!
+              Expanded(child: CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis)),
+              if (trailing != null) trailing!,
             ],
           ),
         ),

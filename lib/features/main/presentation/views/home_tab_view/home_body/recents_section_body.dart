@@ -14,8 +14,8 @@ import '../../../viewmodels/home_vm/models/recent_list_tile_model.dart';
 import 'recent_list_tile.dart';
 
 class RecentsSectionBody extends ConsumerWidget {
-  final List<CourseModel> recentCourses;
-  const RecentsSectionBody({super.key, this.recentCourses = const <CourseModel>[]});
+  final List<CourseContent> recentCourses;
+  const RecentsSectionBody({super.key, this.recentCourses = const <CourseContent>[]});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,46 +43,48 @@ class RecentsSectionBody extends ConsumerWidget {
       );
     }
 
-    return SliverList.builder(
-      itemCount: DummySlides.dummySlides.length,
-
-      itemBuilder: (context, index) {
-        return Heroine(
-          tag: "recents_list_tile$index",
-          spring: Spring.snappy.copyWith(durationSeconds: 0.4),
-
-          child: RecentListTile(
-            isDarkMode: context.isDarkMode,
-            dataModel: RecentListTileModel(
-              title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
-              subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
-              // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
-              progressLevel: ProgressLevel.neutral,
-              isStarred: false,
-              progress: DummySlides.dummySlides[index]['progress'] as double?,
-              onLongTapTile: () {
-                CustomDialog.show(
-                  context,
-                  canPop: true,
-                  blurSigma: Offset(4.0, 4.0),
-                  transitionType: TransitionType.fade,
-                  barrierColor: Colors.black.withValues(alpha: 0.4),
-                  transitionDuration: Duration(milliseconds: 550),
-                  child: RecentDialog(
-                    scaffoldBgColor: context.scaffoldBackgroundColor,
-                    heroTag: "recents_list_tile$index",
-                    recentDialogModel: RecentDialogModel(
-                      isStarred: false,
-                      title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
-                      description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+    return SliverPadding(
+      padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
+      sliver: SliverList.builder(
+        itemCount: DummySlides.dummySlides.length,
+      
+        itemBuilder: (context, index) {
+          return Heroine(
+            tag: "recents_list_tile$index",
+            spring: Spring.snappy.copyWith(durationSeconds: 0.4),
+      
+            child: RecentListTile(
+              isDarkMode: context.isDarkMode,
+              dataModel: RecentListTileModel(
+                title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+                subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
+                // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+                progressLevel: ProgressLevel.neutral,
+                isStarred: false,
+                progress: DummySlides.dummySlides[index]['progress'] as double?,
+                onLongTapTile: () {
+                  CustomDialog.show(
+                    context,
+                    canPop: true,
+                    blurSigma: Offset(4.0, 4.0),
+                    transitionType: TransitionType.fade,
+                    barrierColor: Colors.black.withValues(alpha: 0.4),
+                    transitionDuration: Duration(milliseconds: 550),
+                    child: RecentDialog(
+                      heroTag: "recents_list_tile$index",
+                      recentDialogModel: RecentDialogModel(
+                        isStarred: false,
+                        title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+                        description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

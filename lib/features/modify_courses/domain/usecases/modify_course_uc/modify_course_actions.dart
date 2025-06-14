@@ -22,14 +22,14 @@ import 'package:slides_sync/shared/styles/app_ui_context.dart';
 class ModifyCourseActions {
   /// When the user clicks to delete the course, on the Dialog
   Future<void> onDeleteCourse({required int id, required String courseId}) async {
-    await CourseRepo.deleteCourse(id);
+    await CourseRepo.deleteCourseByDbId(id);
     await FileUtils.deleteAppDirectory(relativePath: "courses/$courseId");
   }
 
   /// When the user Modifies image
   Future<Result> modifyCourseImageAction({required int id, required File newImageFile}) async {
     final Result<bool?> createCourseOutcome = await Result.tryRunAsync<bool>(() async {
-      CourseModel? courseModel = await CourseRepo.getCourseById(id);
+      CourseModel? courseModel = await CourseRepo.getCourseByDbId(id);
       if (courseModel == null) return false;
       if (courseModel.imageLocationJson.containsAnyImagePath) {
         await FileUtils.deleteFileAtPath(courseModel.imageLocationJson.filePath);
@@ -52,7 +52,7 @@ class ModifyCourseActions {
 
   /// This deletes the course image
   Future<bool> deleteCourseImageAction({required int courseDbId}) async {
-    CourseModel? courseModel = await CourseRepo.getCourseById(courseDbId);
+    CourseModel? courseModel = await CourseRepo.getCourseByDbId(courseDbId);
     if (courseModel == null) return false;
     if (courseModel.imageLocationJson.containsAnyImagePath) {
       await CourseRepo.addCourse(courseModel.copyWith(imageLocation: FileLocation()));
