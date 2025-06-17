@@ -9,6 +9,6 @@ class RoutesStrings {
   static const courseMaterialsView = "/courseMaterialsView";
   static const selectToModifyCourseView = "/selectToModifyCourseView";
 
-
   static const modifyCollectionsView = "modifyCollectionsView";
+  static const modifyContentsView = "modifyContentsView";
 }

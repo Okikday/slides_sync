@@ -9,7 +9,7 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class EditCourseActions {

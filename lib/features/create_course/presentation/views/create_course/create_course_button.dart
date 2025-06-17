@@ -9,7 +9,7 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/create_course/domain/usecases/create_course_action.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CreateCourseButton extends ConsumerWidget {
   const CreateCourseButton({

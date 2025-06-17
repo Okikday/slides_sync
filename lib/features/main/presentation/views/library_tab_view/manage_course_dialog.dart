@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/create_course/presentation/views/create_course_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course_view.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/test/file_manager_page.dart';
 
 class ManageCourseDialog extends ConsumerWidget {

@@ -16,7 +16,7 @@ import 'package:slides_sync/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ModCollectionDialog extends ConsumerStatefulWidget {

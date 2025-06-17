@@ -13,7 +13,7 @@ import 'package:slides_sync/features/modify_courses/presentation/views/select_to
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/selected_items_count_popup.dart';
 
 class SelectToModifyCourseView extends ConsumerStatefulWidget {

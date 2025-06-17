@@ -21,7 +21,7 @@ import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 /// VIEW
@@ -182,6 +182,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
 
               // BODY
               CollectionsSection(
+                courseDbId: courseModel.id,
                 collections: courseModel.subCollections,
                 onClickNewCollection: () {
                   if (courseModel.subCollections.isEmpty) {

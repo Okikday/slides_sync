@@ -7,7 +7,7 @@ import 'package:slides_sync/core/models/file_location.dart';
 
 import 'package:slides_sync/features/main/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {
@@ -47,7 +47,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
             onTap: () {},
             child: Heroine(
               tag: widget.heroTag,
-              spring: Spring.bouncy.copyWith(durationSeconds: 0.75),
+              spring: Spring.defaultIOS.copyWith(durationSeconds: 0.4),
               child: Container(
                 clipBehavior: Clip.hardEdge,
                 margin: EdgeInsets.symmetric(horizontal: 32, vertical: context.deviceHeight > context.deviceWidth ? 0 : 32),

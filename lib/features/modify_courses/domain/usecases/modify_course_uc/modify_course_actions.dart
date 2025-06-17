@@ -17,7 +17,7 @@ import 'package:slides_sync/features/modify_courses/presentation/views/modify_co
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/modify_course_header/preview_modify_course_image_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyCourseActions {
   /// When the user clicks to delete the course, on the Dialog

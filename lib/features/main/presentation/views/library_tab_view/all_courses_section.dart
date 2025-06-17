@@ -33,21 +33,20 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
     watchAllcoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
-    log("Streamed courses");
-    void onTap(CourseModel course) async {
+  void onTap(CourseModel course) async {
       final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
       if (isCourseClickedNotifier.state) return;
       isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
 
       await Future.delayed(Durations.short4);
-      if (context.mounted) {
-        AppNavigator.to(context).courseDetailsRoute(course);
-      }
-      if (context.mounted) isCourseClickedNotifier.update((cb) => false);
+      if (mounted) AppNavigator.to(context).courseDetailsRoute(course);
+      if (mounted) isCourseClickedNotifier.update((cb) => false);
     }
+
+  @override
+  Widget build(BuildContext context) {
+    final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
+    
 
 
     

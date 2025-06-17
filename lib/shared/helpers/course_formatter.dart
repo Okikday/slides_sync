@@ -1,6 +1,8 @@
+import 'package:slides_sync/shared/models/type_defs.dart';
+
 class CourseFormatter {
   /// Returns [CourseTitle, CourseCode]
-  static ({String courseName, String courseCode}) separateCodeFromTitle(
+  static CourseTitleRecord separateCodeFromTitle(
     String joinedStr,
   ) {
     final regex = RegExp(r'^\*\[([^\]]+)\]\*(.*)');

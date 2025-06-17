@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/features/create_course/presentation/views/create_course_view.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EmptyLibraryView extends ConsumerWidget {
   const EmptyLibraryView({super.key});

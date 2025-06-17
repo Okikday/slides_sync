@@ -7,7 +7,7 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/main/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
 import 'package:slides_sync/features/main/presentation/views/home_tab_view/home_body/recent_dialog.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import '../../../../../../test/dummy_slides.dart';
 import '../../../viewmodels/home_vm/models/recent_list_tile_model.dart';

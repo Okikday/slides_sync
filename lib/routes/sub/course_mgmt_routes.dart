@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections_view.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_contents_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course_view.dart';
+import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
 import '../../features/create_course/presentation/views/create_course_view.dart';
@@ -63,6 +65,21 @@ class CourseMgmtRoutes {
                 reverseDuration: Durations.medium1,
                 child: ModifyCollectionsView(courseModel: state.extra as CourseModel),
               ),
+          routes: [
+            //MODIFY CONTENTS VIEW NAVIGATION
+            GoRoute(
+              path: RoutesStrings.modifyContentsView,
+              pageBuilder: (context, state) {
+                return PageAnimation.buildCustomTransitionPage(
+                  state.pageKey,
+                  type: TransitionType.fade,
+                  duration: Durations.medium1,
+                  reverseDuration: Durations.medium1,
+                  child: ModifyContentsView(record: state.extra as ContentRecord),
+                );
+              },
+            ),
+          ],
         ),
       ],
     ),

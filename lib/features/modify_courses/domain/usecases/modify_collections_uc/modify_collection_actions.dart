@@ -11,7 +11,7 @@ import 'package:slides_sync/routes/routes.dart';
 
 class ModifyCollectionActions {
   Future<void> onCreateNewCollection(BuildContext context, {required String text, required int courseDbId}) async {
-    if (text.isNotEmpty && text.length > 4 && text.length < 256) {
+    if (text.isNotEmpty && text.length > 1 && text.length < 256) {
       try {
         final CourseModel? courseModel = await CourseRepo.getCourseByDbId(courseDbId);
         if (courseModel == null) {

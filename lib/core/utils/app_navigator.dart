@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
 class AppNavigator {
@@ -38,6 +39,11 @@ class AppNavigator {
   void modifyCollectionsRoute(CourseModel courseModel) {
     final route = "${RoutesStrings.modifyCourseView}/${RoutesStrings.modifyCollectionsView}";
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
+  }
+
+  void modifyContentsRoute(ContentRecord record) {
+    final route = "${RoutesStrings.modifyCourseView}/${RoutesStrings.modifyCollectionsView}/${RoutesStrings.modifyContentsView}";
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: record) : _push(route, extra: record);
   }
 
   // void courseMaterialsPageRoute(){

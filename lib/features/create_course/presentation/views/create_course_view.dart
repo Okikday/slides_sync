@@ -9,7 +9,7 @@ import 'package:slides_sync/features/create_course/presentation/views/create_cou
 import 'package:slides_sync/features/create_course/presentation/views/create_course/input_course_title_field.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CreateCourseView extends ConsumerStatefulWidget {
   const CreateCourseView({super.key});

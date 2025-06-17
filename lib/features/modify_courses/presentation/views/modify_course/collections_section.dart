@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_list_view/collection_card_tile.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
 /// COLLECTION SECTION
 class CollectionsSection extends ConsumerStatefulWidget {
+  final int courseDbId;
   final List<CourseSubCollection> collections;
   final void Function() onClickNewCollection;
-  const CollectionsSection({super.key, required this.collections, required this.onClickNewCollection});
+  const CollectionsSection({super.key, required this.courseDbId, required this.collections, required this.onClickNewCollection});
 
   @override
   ConsumerState createState() => _CollectionsSectionState();
@@ -31,7 +34,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   void initState() {
     super.initState();
     scrollOffsetNotifier = AutoDisposeStateProvider<double>((ref) => 0.0);
-    pageController = PageController(initialPage: 4);
+    pageController = PageController(initialPage: maxCards);
     // canScrollNotifier = AutoDisposeStateProvider<bool>((ref) => false);
     // widget.pageController.addListener(updateScrollOffset);
     pageController.addListener(updateScrollProgress);
@@ -46,6 +49,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   // }
 
   void updateScrollProgress() {
+    log("page: ${pageController.page}");
     final scrollOffsetNotif = ref.read(scrollOffsetNotifier.notifier);
     final double progress = (pageController.page ?? 0.0) / (widget.collections.length - 1).clamp(0, maxCards);
     if (progress == scrollOffsetNotif.state) return;
@@ -111,15 +115,37 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                 initialOffset: 0,
                                 spaceBetweenItems: 72,
                                 pageController: pageController,
-                                items: List.generate(widget.collections.length.clamp(0, maxCards), (index) {
-                                  return RotatedBox(
-                                    quarterTurns: 0,
-                                    child: CollectionCardTile(
-                                      title: widget.collections[index].collectionTitle,
-                                      contentCount: widget.collections[index].courseContents.length,
+                                items: [
+                                  for (int index = 0; index < widget.collections.length.clamp(0, maxCards); index++)
+                                    Builder(
+                                      builder: (context) {
+                                        final collection = widget.collections[index];
+                                        return RotatedBox(
+                                          quarterTurns: 0,
+                                          child: ModCollectionCardTile(
+                                            title: widget.collections[index].collectionTitle,
+                                            contentCount: widget.collections[index].courseContents.length,
+                                            onSelected: () {
+                                              CustomDialog.show(
+                                                context,
+                                                blurSigma: Offset(3, 3),
+                                                barrierColor: Colors.black.withAlpha(150),
+                                                curve: CustomCurves.defaultIosSpring,
+                                                child: ModCollectionDialog(courseDbId: widget.courseDbId, collection: collection),
+                                              );
+                                            },
+                                            onTap: () {
+                                              AppNavigator.to(context).modifyContentsRoute((
+                                                collection: collection,
+                                                courseDbId: widget.courseDbId,
+                                                courseTitle: (courseCode: "", courseName: "CourseName"),
+                                              ));
+                                            },
+                                          ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                }),
+                                ],
                               ),
                             ),
                           );

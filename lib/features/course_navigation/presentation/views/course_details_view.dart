@@ -8,7 +8,7 @@ import 'package:slides_sync/features/course_navigation/presentation/views/course
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseDetailsView extends ConsumerStatefulWidget {
   final CourseModel courseModel;

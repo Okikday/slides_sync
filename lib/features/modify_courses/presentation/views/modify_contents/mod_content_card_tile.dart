@@ -3,22 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
-class ModCollectionCardTile extends ConsumerWidget {
-  final String title;
-  final int subCollectionCount;
-  final int contentCount;
+class ModContentCardTile extends ConsumerWidget {
+  final CourseContent courseContent;
 
   /// This entails on click the icon or on long press
   final void Function()? onSelected;
   final void Function()? onTap;
-  const ModCollectionCardTile({
+  const ModContentCardTile({
     super.key,
-    required this.title,
-    this.subCollectionCount = 0,
-    this.contentCount = 0,
+    required this.courseContent,
     this.onSelected,
     this.onTap,
   });
@@ -61,12 +58,10 @@ class ModCollectionCardTile extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(title, fontWeight: FontWeight.bold),
+                      CustomText("Essentials of Computer Organization and Architecture", fontWeight: FontWeight.bold),
                       ConstantSizing.columnSpacing(4),
                       CustomText(
-                        "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
-                        "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
-                        "${contentCount == 0 ? 'No items' : "$contentCount items"}",
+                        "document",
                         fontSize: 12,
                         color: Colors.grey,
                       ),

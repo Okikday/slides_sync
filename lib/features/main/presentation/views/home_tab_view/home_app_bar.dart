@@ -2,21 +2,19 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeAppBar extends StatelessWidget {
   const HomeAppBar({
     super.key,
     required this.isScrolled,
-    required this.topPadding,
     required this.onClickUserIcon,
     required this.title,
     required this.onClickNotification,
   });
 
   final bool isScrolled;
-  final double topPadding;
 
   final void Function() onClickUserIcon;
 
@@ -24,6 +22,7 @@ class HomeAppBar extends StatelessWidget {
   final void Function() onClickNotification;
   @override
   Widget build(BuildContext context) {
+    final topPadding = context.topPadding;
     return SliverAppBar(
       elevation: 64,
       pinned: true,
@@ -86,7 +85,6 @@ class HomeAppBar extends StatelessWidget {
                   //   onClick: onToggleFullScreen,
                   //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : Colors.deepPurple),
                   // ),
-
                   CustomElevatedButton(
                     onClick: onClickNotification,
                     overlayColor: Colors.lightBlueAccent.withAlpha(60),

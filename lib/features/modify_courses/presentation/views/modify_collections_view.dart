@@ -11,7 +11,7 @@ import 'package:slides_sync/features/modify_courses/presentation/views/modify_co
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/empty_collections_view.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import '../../../../core/utils/ui_utils.dart';
 import '../../../../shared/components/app_bar_container.dart';

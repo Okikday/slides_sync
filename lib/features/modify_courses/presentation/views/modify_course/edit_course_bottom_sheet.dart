@@ -7,7 +7,7 @@ import 'package:slides_sync/features/modify_courses/domain/usecases/modify_cours
 import 'package:slides_sync/features/create_course/presentation/views/create_course/input_course_code_field.dart';
 import 'package:slides_sync/features/create_course/presentation/views/create_course/input_course_title_field.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet/edit_course_input_description_field.dart';
-import 'package:slides_sync/shared/styles/app_ui_context.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EditCourseBottomSheet extends ConsumerStatefulWidget {
   final StateProvider<CourseModel> modifyCourseProvider;
