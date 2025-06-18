@@ -9,6 +9,9 @@ class AppBarContainerChild extends ConsumerWidget {
     this.isDarkMode, {
     super.key,
     required this.title,
+    this.titleStyle,
+    this.subtitle,
+    this.subtitleStyle,
     this.tooltipMessage,
     this.onBackButtonClicked,
     this.trailing,
@@ -16,6 +19,9 @@ class AppBarContainerChild extends ConsumerWidget {
 
   final bool isDarkMode;
   final String title;
+  final String? subtitle;
+  final TextStyle? titleStyle;
+  final TextStyle? subtitleStyle;
   final String? tooltipMessage;
   final void Function()? onBackButtonClicked;
   final Widget? trailing;
@@ -37,7 +43,20 @@ class AppBarContainerChild extends ConsumerWidget {
             children: [
               ComponentWidgets.backButton(context, onPressed: onBackButtonClicked),
               ConstantSizing.rowSpacingMedium,
-              Expanded(child: CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis)),
+              Expanded(
+                child:
+                    (subtitle != null || (subtitle != null && subtitle!.isNotEmpty))
+                        ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 2.5,
+                          children: [
+                            CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+                            CustomText(subtitle!, fontSize: 12, color: Colors.grey, overflow: TextOverflow.ellipsis, style: subtitleStyle),
+                          ],
+                        )
+                        : CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, style: titleStyle,),
+              ),
               if (trailing != null) trailing!,
             ],
           ),

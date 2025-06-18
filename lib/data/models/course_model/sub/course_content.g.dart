@@ -143,17 +143,19 @@ P _courseContentDeserializeProp<P>(
 
 const _CourseContentcourseContentTypeEnumValueMap = {
   'unknown': 0,
-  'docFile': 1,
+  'document': 1,
   'image': 2,
   'link': 3,
-  'video': 4,
+  'audio': 4,
+  'video': 5,
 };
 const _CourseContentcourseContentTypeValueEnumMap = {
   0: CourseContentType.unknown,
-  1: CourseContentType.docFile,
+  1: CourseContentType.document,
   2: CourseContentType.image,
   3: CourseContentType.link,
-  4: CourseContentType.video,
+  4: CourseContentType.audio,
+  5: CourseContentType.video,
 };
 
 extension CourseContentQueryFilter

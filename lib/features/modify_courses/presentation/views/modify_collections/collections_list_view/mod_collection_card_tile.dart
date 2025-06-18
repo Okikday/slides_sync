@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/common/modifying_list_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
@@ -25,68 +26,23 @@ class ModCollectionCardTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ClipRSuperellipse(
-      borderRadius: BorderRadius.circular(16),
-      child: ColoredBox(
-        color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: CustomElevatedButton(
-            onClick: () {
-              if (onTap != null) onTap!();
-            },
-            onLongClick: () {
-              if (onSelected != null) onSelected!();
-            },
-            borderRadius: 12,
-            contentPadding: EdgeInsets.fromLTRB(16, 12, 8, 12),
-            backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
-            child: Row(
-              spacing: ConstantSizing.spaceMedium,
-              children: [
-                CustomElevatedButton(
-                  contentPadding: EdgeInsets.all(8.0),
-                  backgroundColor: Colors.lightBlueAccent.withAlpha(25),
-                  child: BuildImagePathWidget(
-                    fileLocation: FileLocation(),
-                    fallbackWidget: Icon(
-                      Iconsax.document,
-                      size: 22,
-                      color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(title, fontWeight: FontWeight.bold),
-                      ConstantSizing.columnSpacing(4),
-                      CustomText(
-                        "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
-                        "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
-                        "${contentCount == 0 ? 'No items' : "$contentCount items"}",
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ],
-                  ),
-                ),
-
-                CustomElevatedButton(
-                  shape: CircleBorder(),
-                  onClick: () {
-                    if (onSelected != null) onSelected!();
-                  },
-                  backgroundColor: Colors.lightBlueAccent.withAlpha(20),
-                  child: Icon(Iconsax.edit_copy, size: 20),
-                ),
-              ],
-            ),
-          ),
-        ),
+    return ModifyingListTile(
+      leadingIcon: BuildImagePathWidget(
+        fileLocation: FileLocation(),
+        fallbackWidget: Icon(Iconsax.document, size: 22, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
       ),
+      trailingIcon: Icon(Iconsax.edit_copy, size: 20),
+      title: title,
+      subtitle:
+          "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
+          "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
+          "${contentCount == 0 ? 'No items' : "$contentCount items"}",
+
+      onTapTile: () {
+        if (onTap != null) onTap!();
+      },
+      onTapTrailing: onSelected,
+      onLongPressTile: onSelected,
     );
   }
 }

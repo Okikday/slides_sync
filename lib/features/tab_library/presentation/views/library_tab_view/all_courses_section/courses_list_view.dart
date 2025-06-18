@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/list_course_card.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/all_courses_section/list_course_card.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';

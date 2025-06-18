@@ -24,32 +24,28 @@ class CollectionsListView extends ConsumerWidget {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 12),
       sliver: SliverList.builder(
-        // itemCount: courseModel.subCollections.length,
         itemCount: collections.length,
         itemBuilder: (context, index) {
           final CourseSubCollection collection = collections[index];
-          return Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
-            child: ModCollectionCardTile(
-              title: collection.collectionTitle,
-              contentCount: collection.courseContents.length,
-              onSelected: () {
-                CustomDialog.show(
-                  context,
-                  blurSigma: Offset(3, 3),
-                  barrierColor: Colors.black.withAlpha(150),
-                  curve: CustomCurves.defaultIosSpring,
-                  child: ModCollectionDialog(courseDbId: courseDbId, collection: collection),
-                );
-              },
-              onTap: () {
-                AppNavigator.to(context).modifyContentsRoute((
-                  collection: collection,
-                  courseDbId: courseDbId,
-                  courseTitle: (courseCode: "", courseName: "CourseName"),
-                ));
-              },
-            ),
+          return ModCollectionCardTile(
+            title: collection.collectionTitle,
+            contentCount: collection.courseContents.length,
+            onSelected: () {
+              CustomDialog.show(
+                context,
+                blurSigma: Offset(3, 3),
+                barrierColor: Colors.black.withAlpha(150),
+                curve: CustomCurves.defaultIosSpring,
+                child: ModCollectionDialog(courseDbId: courseDbId, collection: collection),
+              );
+            },
+            onTap: () {
+              AppNavigator.to(context).modifyContentsRoute((
+                collection: collection,
+                courseDbId: courseDbId,
+                courseTitle: (courseCode: "", courseName: "CourseName"),
+              ));
+            },
           ).animate().slideY(
             begin: double.parse((0.5 * (index + (collections.length / 2) / collections.length)).toStringAsFixed(2)),
             end: 0,

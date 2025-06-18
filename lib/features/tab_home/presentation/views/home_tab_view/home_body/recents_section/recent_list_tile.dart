@@ -3,14 +3,15 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/features/main/presentation/viewmodels/home_vm/models/recent_list_tile_model.dart';
+import 'package:slides_sync/features/tab_home/presentation/viewmodels/recent_list_tile_model.dart';
 
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class RecentListTile extends ConsumerWidget {
   final bool isDarkMode;
+  final double tilePadding;
   final RecentListTileModel dataModel;
-  const RecentListTile({super.key, required this.isDarkMode, required this.dataModel});
+  const RecentListTile({super.key, required this.isDarkMode, required this.dataModel, required this.tilePadding});
 
   Color _resolveLevelColor(ProgressLevel level) {
     return level == ProgressLevel.danger
@@ -27,7 +28,7 @@ class RecentListTile extends ConsumerWidget {
         child: CustomElevatedButton(
           backgroundColor: (isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
           overlayColor: Colors.lightBlueAccent.withAlpha(50),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: EdgeInsets.all(tilePadding),
           borderRadius: 12,
           onClick: () {
             if (dataModel.onTapTile != null) dataModel.onTapTile!();

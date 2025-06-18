@@ -75,7 +75,7 @@ class CourseMgmtRoutes {
                   type: TransitionType.fade,
                   duration: Durations.medium1,
                   reverseDuration: Durations.medium1,
-                  child: ModifyContentsView(record: state.extra as ContentRecord),
+                  child: ModifyContentsView(record: state.extra as ContentRecord<int, CourseSubCollection, CourseTitleRecord>),
                 );
               },
             ),

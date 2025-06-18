@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/helpers/device_helper.dart';
+import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 
 extension ExtensionHelper on BuildContext {
   BuildContext get context => this;
@@ -16,4 +17,11 @@ extension ExtensionHelper on BuildContext {
   //
 }
 
+extension ResponsivenessExtension on BuildContext {
+  DeviceType get deviceType => DeviceHelper.getDeviceType(this);
+  double get hPadding => ResponsivenessHelper.resolveHPadding(this);
+  double get defaultBtnDimension => ResponsivenessHelper.resolveSquareButtonSize(this);
 
+  double get hPadding5 => hPadding * .5;
+  double get hPadding7 => hPadding * .7;
+}

@@ -3,18 +3,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/features/main/presentation/providers/main_view_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class HomeBottomNavBar extends ConsumerWidget {
-  final int currentIndex;
-  final bool isScrolled;
   final void Function(int index) onTap;
-  const HomeBottomNavBar({super.key, required this.currentIndex, required this.onTap, required this.isScrolled});
+  const HomeBottomNavBar({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bool isScrolled = ref.watch(isMainScrolledProvider);
+    final int currentIndex = ref.watch(mainTabViewIndexProvider);
+
     return ClipRSuperellipse(
-      // borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: isScrolled ? 8 : 0, sigmaY: isScrolled ? 8 : 0),
         child: BottomNavigationBar(

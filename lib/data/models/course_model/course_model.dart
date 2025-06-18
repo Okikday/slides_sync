@@ -26,11 +26,6 @@ class CourseModel {
   final List<CourseContent> rootContents;
   final String courseMetadataJson;
 
-  String get courseName =>
-      CourseFormatter.separateCodeFromTitle(courseTitle).courseName;
-  String get courseCode =>
-      CourseFormatter.separateCodeFromTitle(courseTitle).courseCode;
-
   CourseModel({
     this.courseId = '',
     this.courseTitle = '',
@@ -79,8 +74,7 @@ class CourseModel {
       createdAt: createdAt ?? this.createdAt,
       description: description ?? this.description,
       imageLocationJson: imageLocation?.toJson() ?? imageLocationJson,
-      subCollections:
-          subCollections ?? List<CourseSubCollection>.from(this.subCollections),
+      subCollections: subCollections ?? List<CourseSubCollection>.from(this.subCollections),
       rootContents: rootContents ?? List<CourseContent>.from(this.rootContents),
       courseMetadataJson: courseMetadataJson ?? this.courseMetadataJson,
     )..id = id;
@@ -104,30 +98,20 @@ class CourseModel {
     return CourseModel(
       courseId: map['courseId'],
       courseTitle: map['courseTitle'],
-      createdAt:
-          map['createdAt'] == null
-              ? DateTime.now()
-              : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
+      createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       description: map['description'],
       imageLocationJson: map['imageLocationJson'] as String? ?? '{}',
       subCollections: List<CourseSubCollection>.from(
-        (map['subCollections'] as List<String>)
-            .map((e) => CourseSubCollection.fromJson(e))
-            .toList(),
+        (map['subCollections'] as List<String>).map((e) => CourseSubCollection.fromJson(e)).toList(),
       ),
-      rootContents: List<CourseContent>.from(
-        (map['rootContents'] as List<String>)
-            .map((e) => CourseContent.fromJson(e))
-            .toList(),
-      ),
+      rootContents: List<CourseContent>.from((map['rootContents'] as List<String>).map((e) => CourseContent.fromJson(e)).toList()),
       courseMetadataJson: map['courseMetadata'] ?? '{}',
     )..id = map['id'] ?? Isar.autoIncrement;
   }
 
   String toJson() => jsonEncode(toMap());
 
-  factory CourseModel.fromJson(String source) =>
-      CourseModel.fromMap(jsonDecode(source));
+  factory CourseModel.fromJson(String source) => CourseModel.fromMap(jsonDecode(source));
 
   @override
   bool operator ==(Object other) =>
@@ -140,14 +124,8 @@ class CourseModel {
           createdAt == other.createdAt &&
           description == other.description &&
           imageLocationJson == other.imageLocationJson &&
-          const DeepCollectionEquality().equals(
-            subCollections,
-            other.subCollections,
-          ) &&
-          const DeepCollectionEquality().equals(
-            rootContents,
-            other.rootContents,
-          ) &&
+          const DeepCollectionEquality().equals(subCollections, other.subCollections) &&
+          const DeepCollectionEquality().equals(rootContents, other.rootContents) &&
           courseMetadataJson == other.courseMetadataJson;
 
   @override
@@ -162,4 +140,9 @@ class CourseModel {
     const DeepCollectionEquality().hash(rootContents),
     courseMetadataJson,
   );
+}
+
+extension CourseModelExtension on CourseModel {
+  String get courseName => CourseFormatter.separateCodeFromTitle(courseTitle).courseName;
+  String get courseCode => CourseFormatter.separateCodeFromTitle(courseTitle).courseCode;
 }

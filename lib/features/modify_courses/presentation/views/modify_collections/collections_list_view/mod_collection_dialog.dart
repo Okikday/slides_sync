@@ -109,6 +109,15 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 divider,
 
                 BuildPlainActionButton(
+                  title: "Select",
+                  icon: Icon(Iconsax.tick_circle_copy, size: 24, color: currThemeColor),
+                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                  onTap: () {},
+                ),
+
+                divider,
+
+                BuildPlainActionButton(
                   title: "View content",
                   icon: Icon(Iconsax.play_copy, size: 24, color: currThemeColor),
                   textStyle: TextStyle(fontSize: 16, color: currThemeColor),

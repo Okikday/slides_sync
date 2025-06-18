@@ -3,7 +3,7 @@ import 'package:slides_sync/core/data/hive_data/app_hive_data.dart';
 
 
 class IsListViewNotifier extends AsyncNotifier<bool> {
-  final String _key = "views/library/all_courses_section/var/isListView";
+  final String _key = "library_tab/isListView";
 
   @override
   Future<bool> build() async {

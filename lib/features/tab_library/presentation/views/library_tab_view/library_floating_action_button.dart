@@ -3,7 +3,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/features/main/presentation/views/library_tab_view/manage_course_dialog.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/manage_course_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class LibraryFloatingActionButton extends ConsumerWidget {

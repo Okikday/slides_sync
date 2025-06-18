@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/main/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
-import 'package:slides_sync/features/main/presentation/views/home_tab_view/home_body/recent_dialog.dart';
+import 'package:slides_sync/features/tab_home/presentation/viewmodels/recent_dialog_model.dart';
+import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
+import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-import '../../../../../../test/dummy_slides.dart';
-import '../../../viewmodels/home_vm/models/recent_list_tile_model.dart';
+import '../../../../../../../test/dummy_slides.dart';
+import '../../../../viewmodels/recent_list_tile_model.dart';
 import 'recent_list_tile.dart';
 
 class RecentsSectionBody extends ConsumerWidget {
@@ -43,6 +44,7 @@ class RecentsSectionBody extends ConsumerWidget {
       );
     }
 
+
     return SliverPadding(
       padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
       sliver: SliverList.builder(
@@ -55,6 +57,7 @@ class RecentsSectionBody extends ConsumerWidget {
       
             child: RecentListTile(
               isDarkMode: context.isDarkMode,
+              tilePadding: context.hPadding5,
               dataModel: RecentListTileModel(
                 title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
                 subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",

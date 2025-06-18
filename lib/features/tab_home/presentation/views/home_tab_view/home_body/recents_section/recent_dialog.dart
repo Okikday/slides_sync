@@ -5,7 +5,7 @@ import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_location.dart';
 
-import 'package:slides_sync/features/main/presentation/viewmodels/home_vm/models/recent_dialog_model.dart';
+import 'package:slides_sync/features/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';

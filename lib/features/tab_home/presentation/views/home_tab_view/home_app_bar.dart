@@ -1,28 +1,23 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/features/main/presentation/providers/main_view_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
-class HomeAppBar extends StatelessWidget {
-  const HomeAppBar({
-    super.key,
-    required this.isScrolled,
-    required this.onClickUserIcon,
-    required this.title,
-    required this.onClickNotification,
-  });
-
-  final bool isScrolled;
+class HomeAppBar extends ConsumerWidget {
+  const HomeAppBar({super.key, required this.onClickUserIcon, required this.title, required this.onClickNotification});
 
   final void Function() onClickUserIcon;
 
   final String title;
   final void Function() onClickNotification;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final topPadding = context.topPadding;
+    final bool isScrolled = ref.watch(isMainScrolledProvider);
     return SliverAppBar(
       elevation: 64,
       pinned: true,
@@ -68,11 +63,13 @@ class HomeAppBar extends StatelessWidget {
                 children: [
                   CustomElevatedButton(
                     onClick: onClickUserIcon,
+                    pixelHeight: context.defaultBtnDimension,
+                    pixelWidth: context.defaultBtnDimension,
                     overlayColor: Colors.lightBlueAccent.withAlpha(40),
+                    contentPadding: EdgeInsets.zero,
                     backgroundColor: isScrolled ? SlidesRepoColors.lightGray.withAlpha(100) : SlidesRepoColors.lightGray,
                     shape: CircleBorder(),
-                    contentPadding: EdgeInsets.all(12),
-                    child: Icon(Iconsax.profile_circle, color: isScrolled ? Colors.deepPurple : Colors.black, size: 26),
+                    child: Icon(Iconsax.profile_circle, color: isScrolled ? Colors.deepPurple : Colors.black, size: context.defaultBtnDimension * 0.5,),
                   ),
 
                   ConstantSizing.rowSpacingMedium,

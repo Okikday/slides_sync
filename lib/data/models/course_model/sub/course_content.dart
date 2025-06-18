@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:isar/isar.dart';
 import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
 import 'package:uuid/uuid.dart';
 
-import 'course_content_type.dart';
+export 'course_content_type.dart';
+
 
 part 'course_content.g.dart';
 

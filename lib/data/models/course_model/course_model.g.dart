@@ -17,59 +17,49 @@ const CourseModelSchema = CollectionSchema(
   name: r'CourseModel',
   id: 414938306419406862,
   properties: {
-    r'courseCode': PropertySchema(
-      id: 0,
-      name: r'courseCode',
-      type: IsarType.string,
-    ),
     r'courseId': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'courseId',
       type: IsarType.string,
     ),
     r'courseMetadataJson': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'courseMetadataJson',
       type: IsarType.string,
     ),
-    r'courseName': PropertySchema(
-      id: 3,
-      name: r'courseName',
-      type: IsarType.string,
-    ),
     r'courseTitle': PropertySchema(
-      id: 4,
+      id: 2,
       name: r'courseTitle',
       type: IsarType.string,
     ),
     r'createdAt': PropertySchema(
-      id: 5,
+      id: 3,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'description': PropertySchema(
-      id: 6,
+      id: 4,
       name: r'description',
       type: IsarType.string,
     ),
     r'hashCode': PropertySchema(
-      id: 7,
+      id: 5,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'imageLocationJson': PropertySchema(
-      id: 8,
+      id: 6,
       name: r'imageLocationJson',
       type: IsarType.string,
     ),
     r'rootContents': PropertySchema(
-      id: 9,
+      id: 7,
       name: r'rootContents',
       type: IsarType.objectList,
       target: r'CourseContent',
     ),
     r'subCollections': PropertySchema(
-      id: 10,
+      id: 8,
       name: r'subCollections',
       type: IsarType.objectList,
       target: r'CourseSubCollection',
@@ -98,10 +88,8 @@ int _courseModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.courseCode.length * 3;
   bytesCount += 3 + object.courseId.length * 3;
   bytesCount += 3 + object.courseMetadataJson.length * 3;
-  bytesCount += 3 + object.courseName.length * 3;
   bytesCount += 3 + object.courseTitle.length * 3;
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.imageLocationJson.length * 3;
@@ -132,23 +120,21 @@ void _courseModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.courseCode);
-  writer.writeString(offsets[1], object.courseId);
-  writer.writeString(offsets[2], object.courseMetadataJson);
-  writer.writeString(offsets[3], object.courseName);
-  writer.writeString(offsets[4], object.courseTitle);
-  writer.writeDateTime(offsets[5], object.createdAt);
-  writer.writeString(offsets[6], object.description);
-  writer.writeLong(offsets[7], object.hashCode);
-  writer.writeString(offsets[8], object.imageLocationJson);
+  writer.writeString(offsets[0], object.courseId);
+  writer.writeString(offsets[1], object.courseMetadataJson);
+  writer.writeString(offsets[2], object.courseTitle);
+  writer.writeDateTime(offsets[3], object.createdAt);
+  writer.writeString(offsets[4], object.description);
+  writer.writeLong(offsets[5], object.hashCode);
+  writer.writeString(offsets[6], object.imageLocationJson);
   writer.writeObjectList<CourseContent>(
-    offsets[9],
+    offsets[7],
     allOffsets,
     CourseContentSchema.serialize,
     object.rootContents,
   );
   writer.writeObjectList<CourseSubCollection>(
-    offsets[10],
+    offsets[8],
     allOffsets,
     CourseSubCollectionSchema.serialize,
     object.subCollections,
@@ -162,21 +148,21 @@ CourseModel _courseModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = CourseModel(
-    courseId: reader.readStringOrNull(offsets[1]) ?? '',
-    courseMetadataJson: reader.readStringOrNull(offsets[2]) ?? '{}',
-    courseTitle: reader.readStringOrNull(offsets[4]) ?? '',
-    createdAt: reader.readDateTimeOrNull(offsets[5]),
-    description: reader.readStringOrNull(offsets[6]) ?? '',
-    imageLocationJson: reader.readStringOrNull(offsets[8]) ?? '{}',
+    courseId: reader.readStringOrNull(offsets[0]) ?? '',
+    courseMetadataJson: reader.readStringOrNull(offsets[1]) ?? '{}',
+    courseTitle: reader.readStringOrNull(offsets[2]) ?? '',
+    createdAt: reader.readDateTimeOrNull(offsets[3]),
+    description: reader.readStringOrNull(offsets[4]) ?? '',
+    imageLocationJson: reader.readStringOrNull(offsets[6]) ?? '{}',
     rootContents: reader.readObjectList<CourseContent>(
-          offsets[9],
+          offsets[7],
           CourseContentSchema.deserialize,
           allOffsets,
           CourseContent(),
         ) ??
         const <CourseContent>[],
     subCollections: reader.readObjectList<CourseSubCollection>(
-          offsets[10],
+          offsets[8],
           CourseSubCollectionSchema.deserialize,
           allOffsets,
           CourseSubCollection(),
@@ -195,24 +181,20 @@ P _courseModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
-    case 1:
       return (reader.readStringOrNull(offset) ?? '') as P;
-    case 2:
+    case 1:
       return (reader.readStringOrNull(offset) ?? '{}') as P;
+    case 2:
+      return (reader.readStringOrNull(offset) ?? '') as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset) ?? '') as P;
     case 5:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 6:
-      return (reader.readStringOrNull(offset) ?? '') as P;
-    case 7:
       return (reader.readLong(offset)) as P;
-    case 8:
+    case 6:
       return (reader.readStringOrNull(offset) ?? '{}') as P;
-    case 9:
+    case 7:
       return (reader.readObjectList<CourseContent>(
             offset,
             CourseContentSchema.deserialize,
@@ -220,7 +202,7 @@ P _courseModelDeserializeProp<P>(
             CourseContent(),
           ) ??
           const <CourseContent>[]) as P;
-    case 10:
+    case 8:
       return (reader.readObjectList<CourseSubCollection>(
             offset,
             CourseSubCollectionSchema.deserialize,
@@ -326,142 +308,6 @@ extension CourseModelQueryWhere
 
 extension CourseModelQueryFilter
     on QueryBuilder<CourseModel, CourseModel, QFilterCondition> {
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'courseCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'courseCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'courseCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'courseCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'courseCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'courseCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'courseCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'courseCode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'courseCode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseCodeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'courseCode',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition> courseIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -728,142 +574,6 @@ extension CourseModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'courseMetadataJson',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'courseName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'courseName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'courseName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'courseName',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'courseName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'courseName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'courseName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'courseName',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'courseName',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>
-      courseNameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'courseName',
         value: '',
       ));
     });
@@ -1660,18 +1370,6 @@ extension CourseModelQueryLinks
 
 extension CourseModelQuerySortBy
     on QueryBuilder<CourseModel, CourseModel, QSortBy> {
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> sortByCourseCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> sortByCourseCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<CourseModel, CourseModel, QAfterSortBy> sortByCourseId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'courseId', Sort.asc);
@@ -1695,18 +1393,6 @@ extension CourseModelQuerySortBy
       sortByCourseMetadataJsonDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'courseMetadataJson', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> sortByCourseName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseName', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> sortByCourseNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseName', Sort.desc);
     });
   }
 
@@ -1775,18 +1461,6 @@ extension CourseModelQuerySortBy
 
 extension CourseModelQuerySortThenBy
     on QueryBuilder<CourseModel, CourseModel, QSortThenBy> {
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> thenByCourseCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> thenByCourseCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<CourseModel, CourseModel, QAfterSortBy> thenByCourseId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'courseId', Sort.asc);
@@ -1810,18 +1484,6 @@ extension CourseModelQuerySortThenBy
       thenByCourseMetadataJsonDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'courseMetadataJson', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> thenByCourseName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseName', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QAfterSortBy> thenByCourseNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'courseName', Sort.desc);
     });
   }
 
@@ -1902,13 +1564,6 @@ extension CourseModelQuerySortThenBy
 
 extension CourseModelQueryWhereDistinct
     on QueryBuilder<CourseModel, CourseModel, QDistinct> {
-  QueryBuilder<CourseModel, CourseModel, QDistinct> distinctByCourseCode(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'courseCode', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<CourseModel, CourseModel, QDistinct> distinctByCourseId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1921,13 +1576,6 @@ extension CourseModelQueryWhereDistinct
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'courseMetadataJson',
           caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<CourseModel, CourseModel, QDistinct> distinctByCourseName(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'courseName', caseSensitive: caseSensitive);
     });
   }
 
@@ -1974,12 +1622,6 @@ extension CourseModelQueryProperty
     });
   }
 
-  QueryBuilder<CourseModel, String, QQueryOperations> courseCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'courseCode');
-    });
-  }
-
   QueryBuilder<CourseModel, String, QQueryOperations> courseIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'courseId');
@@ -1990,12 +1632,6 @@ extension CourseModelQueryProperty
       courseMetadataJsonProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'courseMetadataJson');
-    });
-  }
-
-  QueryBuilder<CourseModel, String, QQueryOperations> courseNameProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'courseName');
     });
   }
 

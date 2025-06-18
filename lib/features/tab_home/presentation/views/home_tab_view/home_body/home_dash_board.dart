@@ -27,7 +27,7 @@ class HomeDashBoard extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
       child: Container(
-        constraints: BoxConstraints(maxHeight: 200),
+        constraints: BoxConstraints(maxHeight: 200, maxWidth: 400),
         width: context.deviceWidth,
         padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
         decoration: BoxDecoration(

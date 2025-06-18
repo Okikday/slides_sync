@@ -6,9 +6,9 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/courses_grid_view.dart';
-import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/courses_list_view.dart';
-import 'package:slides_sync/features/main/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/all_courses_section/courses_grid_view.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/all_courses_section/courses_list_view.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 
 class AllCoursesSection extends ConsumerStatefulWidget {
