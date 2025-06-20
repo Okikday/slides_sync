@@ -5,39 +5,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/util_functions.dart';
 import 'package:slides_sync/features/tab_library/presentation/providers/is_list_view_notifier.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_header_text.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class LibraryTabViewAppBar extends ConsumerWidget {
-  const LibraryTabViewAppBar({super.key, required this.isListViewProvider, required this.scrollOffsetProvider});
+  const LibraryTabViewAppBar({
+    super.key,
+    required this.isListViewAsyncProvider,
+    required this.scrollOffsetProvider,
+  });
 
-  final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewProvider;
+  final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewAsyncProvider;
   final StateProvider<double> scrollOffsetProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<bool> asyncIsListView = ref.watch(isListViewProvider);
-    final double scrollOffset = ref.watch(scrollOffsetProvider);
-
-    final double maxHeight = 240; // context.deviceHeight * 0.3
-    final double minHeight = 80;
-    final double percentScroll = 1.0 - scrollOffset / (maxHeight - minHeight);
-
-    final CustomText textWidget = CustomText(
-      "All Courses",
-      fontSize: (50 * percentScroll).clamp(20.0, 26),
-      fontWeight: FontWeight.bold,
-      textAlign: TextAlign.center,
-    );
-    final Size textSize = UtilFunctions.getTextSize(textWidget.data, textWidget.effectiveStyle(context));
-
-    final double leftPad = (double.parse((context.deviceWidth / 2 - textSize.width / 2).toStringAsFixed(2)) * percentScroll).clamp(
-      24.0,
-      double.infinity,
-    );
-    final double bottomPad = (double.parse((maxHeight / 2 - textSize.height / 2).toStringAsFixed(2)) * percentScroll).clamp(
-      12.0,
-      double.infinity,
-    );
+    // final AsyncValue<bool> asyncIsListView = ref.watch(isListViewProvider);
+    // final double scrollOffset = ref.watch(scrollOffsetProvider);
+    const double maxHeight = 240; // context.deviceHeight * 0.3
+    const double minHeight = 80;
 
     return SliverAppBar(
       pinned: true,
@@ -53,7 +40,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
           onTap: () {
             PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
           },
-          child: ClipRSuperellipse(
+          child: ClipRRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
               child: ColoredBox(
@@ -74,42 +61,14 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                             children: [
                               const Expanded(child: SizedBox()),
 
-                              CustomElevatedButton(
-                                contentPadding: EdgeInsets.all(12),
-                                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                                shape: CircleBorder(),
-                                child: Icon(Iconsax.search_normal_copy, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
-                                onClick: (){
-                                  
-                                },
-                              ),
-
-                              CustomElevatedButton(
-                                contentPadding: EdgeInsets.all(12),
-                                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                                shape: CircleBorder(),
-                                onClick: () {
-                                  ref.read(isListViewProvider.notifier).toggle();
-                                },
-                                child: Icon(
-                                  asyncIsListView.value ?? false ? Iconsax.menu : Icons.list_rounded,
-                                  size: 20,
-                                  color: context.isDarkMode ? Colors.white : Colors.black,
-                                ),
-                              ),
+                              LibraryTabViewLayoutButton(isListViewAsyncProvider: isListViewAsyncProvider),
                             ],
                           ),
                         ),
                       ],
                     ),
 
-                    Positioned(
-                      // left: 24,
-                      // bottom: 12,
-                      bottom: bottomPad,
-                      left: leftPad,
-                      child: textWidget,
-                    ),
+                    LibraryTabViewHeaderText(minHeight: minHeight, maxHeight: maxHeight, scrollOffsetProvider: scrollOffsetProvider),
                   ],
                 ),
               ),

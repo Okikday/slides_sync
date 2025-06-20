@@ -9,7 +9,7 @@ import 'package:slides_sync/features/main/presentation/views/main_view/main_view
 import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_drawer.dart';
 import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view.dart';
 import 'package:slides_sync/features/tab_explore/presentation/views/explore_tab_view.dart';
-import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_floating_action_button.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/sub/library_floating_action_button.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import '../../../tab_home/presentation/views/home_tab_view.dart';
