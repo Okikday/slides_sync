@@ -10,6 +10,7 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/empty_collections_view.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -25,45 +26,19 @@ class CourseDetailsCollectionSection extends StatelessWidget {
     final collections = courseModel.subCollections;
 
     if (collections.isEmpty) {
-      return SliverToBoxAdapter(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox.square(
-                dimension: context.deviceWidth * 0.5,
-                child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true),
-              ),
-
-              CustomText("Oops, can't find any collections", color: Colors.blueGrey),
-
-              ConstantSizing.columnSpacingHuge,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: CustomElevatedButton(
-                  onClick: () async {
-                    AppNavigator.to(context).modifyCollectionsRoute(courseModel);
-                    await Future.delayed(Durations.short1);
-                    if (context.mounted) {
-                      CustomDialog.show(
-                        context,
-                        canPop: true,
-                        barrierColor: Colors.black.withAlpha(150),
-                        child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
-                      );
-                    }
-                  },
-                  backgroundColor: Colors.deepPurple,
-                  borderRadius: 12,
-                  pixelHeight: 44,
-                  label: "Add a new collection",
-                  textSize: 15,
-                  textColor: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
+      return EmptyCollectionsView(
+        onClickAddCollection: () async {
+          AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+          await Future.delayed(Durations.short1);
+          if (context.mounted) {
+            CustomDialog.show(
+              context,
+              canPop: true,
+              barrierColor: Colors.black.withAlpha(150),
+              child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
+            );
+          }
+        },
       );
     }
 

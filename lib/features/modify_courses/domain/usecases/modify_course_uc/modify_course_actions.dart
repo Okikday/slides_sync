@@ -68,7 +68,7 @@ class ModifyCourseActions {
   void onClickAddDescription(
     BuildContext context, {
     required String currDescription,
-    required StateProvider<CourseModel> modifyCourseProvider,
+    required AutoDisposeStateProvider<CourseModel> modifyCourseProvider,
   }) {
     if (currDescription.isNotEmpty) {
       CustomDialog.show(

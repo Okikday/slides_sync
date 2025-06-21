@@ -79,6 +79,13 @@ dependencies:
 
   collection: any
   flutter_image_compress: ^2.3.0
+
+  # External Git package
+  material_shapes:
+    git:
+      url: https://github.com/ksokolovskyi/material_shapes.git
+
+      
 dev_dependencies:
   flutter_test:
     sdk: flutter

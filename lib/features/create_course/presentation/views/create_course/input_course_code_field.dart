@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class InputCourseCodeField extends ConsumerWidget {
-   final StateProvider<bool> isCourseCodeFieldVisible;
+   final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseCodeController;
   const InputCourseCodeField({super.key, required this.courseCodeController, required this.isCourseCodeFieldVisible});
 
@@ -26,6 +26,7 @@ class InputCourseCodeField extends ConsumerWidget {
                 backgroundColor: Colors.lightBlueAccent.withAlpha(40),
                 cursorColor: CustomText("").effectiveStyle(context).color ?? Colors.white,
                 selectionHandleColor: Colors.deepPurple,
+                autoDispose: false,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20)),

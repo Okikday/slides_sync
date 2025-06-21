@@ -10,7 +10,7 @@ class InputCourseTitleField extends ConsumerWidget {
     required this.isCourseCodeFieldVisible,
     this.viewScrollController,
   });
-  final StateProvider<bool> isCourseCodeFieldVisible;
+  final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseNameController;
   final ScrollController? viewScrollController;
 
@@ -31,7 +31,7 @@ class InputCourseTitleField extends ConsumerWidget {
       hint: "Enter course title",
       inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
       onTapOutside: () {},
-
+      autoDispose: false,
       suffixIcon: CustomElevatedButton(
         pixelWidth: 50,
         pixelHeight: 50,
@@ -41,12 +41,12 @@ class InputCourseTitleField extends ConsumerWidget {
           final bool isCourseCodeVisible = ref.read(isCourseCodeFieldVisible.notifier).state;
           if (isCourseCodeVisible) FocusScope.of(context).unfocus();
           ref.read(isCourseCodeFieldVisible.notifier).update((cb) => !ref.read(isCourseCodeFieldVisible.notifier).state);
-          if(FocusScope.of(context).hasFocus && viewScrollController != null){
+          if (FocusScope.of(context).hasFocus && viewScrollController != null) {
             viewScrollController?.animateTo(
-            viewScrollController!.position.maxScrollExtent + 150,
-            duration: Durations.extralong1,
-            curve: CustomCurves.decelerate,
-          );
+              viewScrollController!.position.maxScrollExtent + 150,
+              duration: Durations.extralong1,
+              curve: CustomCurves.decelerate,
+            );
           }
         },
         backgroundColor: Colors.transparent,

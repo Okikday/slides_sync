@@ -4,41 +4,70 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-class StarWaveFilledProgressWidget extends ConsumerWidget {
+// class StarWaveFilledProgressWidget extends ConsumerWidget {
+//   final double progress;
+//   final double width;
+//   final double height;
+//   final Widget? backgroundWidget;
+//   const StarWaveFilledProgressWidget({super.key, required this.progress, this.width = 100, this.height = 100, this.backgroundWidget});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return ClipPath(
+//       clipper: StarClipper(StarBorder(points: 4, pointRounding: 0.7, valleyRounding: 0.3, innerRadiusRatio: 0.4)),
+//       child: SizedBox(
+//         width: width,
+//         height: height,
+//         child: Stack(
+//           clipBehavior: Clip.hardEdge,
+//           children: [
+
+//             if(backgroundWidget != null) backgroundWidget!,
+
+//             CustomWaveWidget(progress: progress),
+
+//             Positioned.fill(
+//               child: Align(
+//                 alignment: Alignment.center,
+//                 child: CustomText(
+//                   "${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%",
+//                   fontWeight: FontWeight.bold,
+//                   textAlign: TextAlign.center,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class CustomShapeWaveFilledWidget extends StatelessWidget {
   final double progress;
-  final double width;
-  final double height;
   final Widget? backgroundWidget;
-  const StarWaveFilledProgressWidget({super.key, required this.progress, this.width = 100, this.height = 100, this.backgroundWidget});
+  final TextStyle? textStyle;
+  const CustomShapeWaveFilledWidget({super.key, required this.progress, this.backgroundWidget, this.textStyle});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ClipPath(
-      clipper: StarClipper(StarBorder(points: 4, pointRounding: 0.7, valleyRounding: 0.3, innerRadiusRatio: 0.4)),
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: Stack(
-          clipBehavior: Clip.hardEdge,
-          children: [
-      
-            if(backgroundWidget != null) backgroundWidget!,
-      
-            CustomWaveWidget(progress: progress),
-      
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: CustomText(
-                  "${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%",
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                ),
-              ),
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        if (backgroundWidget != null) backgroundWidget!,
+        CustomWaveWidget(progress: 0.56),
+
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: CustomText(
+              "${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%",
+              fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+              style: textStyle,
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -68,18 +97,18 @@ class CustomWaveWidget extends ConsumerWidget {
   }
 }
 
-/// Widget's clipped
+// /// Widget's clipped
 
-class StarClipper extends CustomClipper<Path> {
-  final StarBorder starBorder;
+// class StarClipper extends CustomClipper<Path> {
+//   final StarBorder starBorder;
 
-  StarClipper(this.starBorder);
+//   StarClipper(this.starBorder);
 
-  @override
-  Path getClip(Size size) {
-    return starBorder.getOuterPath(Rect.fromLTWH(0, 0, size.width, size.height));
-  }
+//   @override
+//   Path getClip(Size size) {
+//     return starBorder.getOuterPath(Rect.fromLTWH(0, 0, size.width, size.height));
+//   }
 
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
+//   @override
+//   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
+// }

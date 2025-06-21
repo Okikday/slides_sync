@@ -21,7 +21,7 @@ class HomeInnerScrollViewForDesktop extends ConsumerStatefulWidget {
 }
 
 class _HomeInnerScrollViewForDesktopState extends ConsumerState<HomeInnerScrollViewForDesktop> {
-  late final StateProvider<double> scrollOffsetNotifier;
+  late final AutoDisposeStateProvider<double> scrollOffsetNotifier;
   late final CarouselController carouselController;
   late final ScrollController scrollController;
 
@@ -30,7 +30,7 @@ class _HomeInnerScrollViewForDesktopState extends ConsumerState<HomeInnerScrollV
     super.initState();
     carouselController = CarouselController();
     scrollController = ScrollController();
-    scrollOffsetNotifier = StateProvider((ref) => 0.0);
+    scrollOffsetNotifier = AutoDisposeStateProvider((ref) => 0.0);
     carouselController.addListener(updateScrollOffset);
   }
 

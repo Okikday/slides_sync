@@ -22,7 +22,7 @@ class BuildImagePathWidget extends ConsumerStatefulWidget {
   const BuildImagePathWidget({
     super.key,
     required this.fileLocation,
-    this.fallbackWidget = const Icon(Iconsax.document),
+    this.fallbackWidget = const Icon(Iconsax.document, color: Colors.grey,),
     this.fit = BoxFit.cover,
     this.width,
     this.height,
@@ -66,7 +66,7 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
       final file = File(filePath);
       final bytes = file.readAsBytesSync();
       final modified = file.lastModifiedSync();
-      
+
       if (_lastModified != modified) {
         setState(() {
           imageBytes = bytes;
@@ -87,33 +87,77 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
     if (!fileLocation.containsImagePath) return fallbackWidget;
 
     if (fileLocation.filePath.isNotEmpty && imageBytes != null) {
-      return Image.memory(
-        imageBytes!,
-        fit: fit,
-        width: width,
-        height: height,
-        frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
-          if (wasSynchronouslyLoaded || frame != null) {
-            return child;
-          } else {
-            return Lottie.asset(IconStrings.instance.loadingSpinner);
-          }
-        },
-        errorBuilder: (context, error, stackTrace) => fallbackWidget,
-      );
+      return ImageFromMemory(imageBytes: imageBytes, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
     } else if (fileLocation.urlPath.isNotEmpty) {
-      return CachedNetworkImage(
-        imageUrl: fileLocation.urlPath,
-        fit: fit,
-        width: width,
-        height: height,
-        progressIndicatorBuilder: (context, url, progress) {
-          return Lottie.asset(IconStrings.instance.loadingSpinner);
-        },
-        errorWidget: (context, error, stackTrace) => fallbackWidget,
-      );
+      return ImageFromNetwork(fileLocation: fileLocation, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
     }
 
     return fallbackWidget;
+  }
+}
+
+class ImageFromNetwork extends StatelessWidget {
+  const ImageFromNetwork({
+    super.key,
+    required this.fileLocation,
+    required this.fit,
+    required this.width,
+    required this.height,
+    required this.fallbackWidget,
+  });
+
+  final FileLocation fileLocation;
+  final BoxFit fit;
+  final double? width;
+  final double? height;
+  final Widget fallbackWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: fileLocation.urlPath,
+      fit: fit,
+      width: width,
+      height: height,
+      progressIndicatorBuilder: (context, url, progress) {
+        return Lottie.asset(IconStrings.instance.loadingSpinner);
+      },
+      errorWidget: (context, error, stackTrace) => fallbackWidget,
+    );
+  }
+}
+
+class ImageFromMemory extends StatelessWidget {
+  const ImageFromMemory({
+    super.key,
+    required this.imageBytes,
+    required this.fit,
+    required this.width,
+    required this.height,
+    required this.fallbackWidget,
+  });
+
+  final Uint8List? imageBytes;
+  final BoxFit fit;
+  final double? width;
+  final double? height;
+  final Widget fallbackWidget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.memory(
+      imageBytes!,
+      fit: fit,
+      width: width,
+      height: height,
+      frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
+        if (wasSynchronouslyLoaded || frame != null) {
+          return child;
+        } else {
+          return Lottie.asset(IconStrings.instance.loadingSpinner);
+        }
+      },
+      errorBuilder: (context, error, stackTrace) => fallbackWidget,
+    );
   }
 }

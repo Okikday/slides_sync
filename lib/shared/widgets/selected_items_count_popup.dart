@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class SelectedItemsCountPopUp extends ConsumerWidget {
-  final bool isDarkMode;
   final int? selectedItemsCount;
-  const SelectedItemsCountPopUp({super.key, required this.isDarkMode, this.selectedItemsCount});
+  const SelectedItemsCountPopUp({super.key,this.selectedItemsCount});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    
     return Container(
       height: 48,
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

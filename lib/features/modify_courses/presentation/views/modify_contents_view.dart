@@ -45,16 +45,27 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
 
         floatingActionButton: FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
 
-        body: CustomScrollView(
-          slivers: [
-            ModifyContentsHeader(),
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
-            ModifyContentListView(),
-
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacing(context.bottomPadding)),
-          ],
-        ),
+        body: ModifyContentsOuterSection(),
       ),
+    );
+  }
+}
+
+class ModifyContentsOuterSection extends StatelessWidget {
+  const ModifyContentsOuterSection({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        ModifyContentsHeader(),
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
+        ModifyContentListView(),
+    
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacing(context.bottomPadding)),
+      ],
     );
   }
 }

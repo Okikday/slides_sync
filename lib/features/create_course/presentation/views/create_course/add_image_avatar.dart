@@ -10,7 +10,7 @@ import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class AddImageAvatar extends ConsumerWidget {
-  final StateProvider<String?> courseImagePathProvider;
+  final AutoDisposeStateProvider<String?> courseImagePathProvider;
   const AddImageAvatar({super.key, required this.courseImagePathProvider});
 
   @override

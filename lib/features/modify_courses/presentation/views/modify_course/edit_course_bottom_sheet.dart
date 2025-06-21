@@ -10,7 +10,7 @@ import 'package:slides_sync/features/modify_courses/presentation/views/modify_co
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EditCourseBottomSheet extends ConsumerStatefulWidget {
-  final StateProvider<CourseModel> modifyCourseProvider;
+  final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
   final bool isEditingDescription;
   const EditCourseBottomSheet({super.key, required this.modifyCourseProvider, this.isEditingDescription = false});
 
@@ -22,18 +22,18 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
   late final TextEditingController courseNameTextController;
   late final TextEditingController courseCodeController;
   late final TextEditingController descriptionTextController;
-  late final StateProvider<bool> canExitProvider;
+  late final AutoDisposeStateProvider<bool> canExitProvider;
   late final FocusNode descriptionFocusNode;
-  late final StateProvider<bool> isCourseCodeFieldVisible;
+  late final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
 
   @override
   void initState() {
     super.initState();
-    canExitProvider = StateProvider<bool>((ref) => false);
+    canExitProvider = AutoDisposeStateProvider<bool>((ref) => false);
     courseNameTextController = TextEditingController();
     descriptionTextController = TextEditingController();
     courseCodeController = TextEditingController();
-    isCourseCodeFieldVisible = StateProvider((ref) => false);
+    isCourseCodeFieldVisible = AutoDisposeStateProvider((ref) => false);
     if (widget.isEditingDescription) {
       descriptionFocusNode = FocusNode();
     }

@@ -7,6 +7,7 @@ import 'package:slides_sync/core/utils/util_functions.dart';
 import 'package:slides_sync/features/tab_library/presentation/providers/is_list_view_notifier.dart';
 import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_header_text.dart';
 import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';
+import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_search_button.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class LibraryTabViewAppBar extends ConsumerWidget {
@@ -60,7 +61,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               const Expanded(child: SizedBox()),
-
+                              LibraryTabViewSearchButton(),
                               LibraryTabViewLayoutButton(isListViewAsyncProvider: isListViewAsyncProvider),
                             ],
                           ),

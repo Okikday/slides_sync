@@ -49,7 +49,6 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   // }
 
   void updateScrollProgress() {
-    log("page: ${pageController.page}");
     final scrollOffsetNotif = ref.read(scrollOffsetNotifier.notifier);
     final double progress = (pageController.page ?? 0.0) / (widget.collections.length - 1).clamp(0, maxCards);
     if (progress == scrollOffsetNotif.state) return;

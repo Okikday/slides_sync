@@ -11,7 +11,7 @@ import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_courses/domain/usecases/modify_course_uc/modify_course_actions.dart';
-import 'package:slides_sync/features/modify_courses/presentation/notifiers/modify_course/is_plain_view_notifier.dart';
+import 'package:slides_sync/features/modify_courses/presentation/providers/modify_course/is_plain_view_notifier.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet.dart';
@@ -34,7 +34,7 @@ class ModifyCourseView extends ConsumerStatefulWidget {
 }
 
 class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProviderStateMixin {
-  late final StateProvider<CourseModel> modifyCourseProvider;
+  late final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
   late final StreamProvider<CourseModel?> syncCourseProvider;
 
   late final AsyncNotifierProvider<IsPlainViewNotifier, bool> isPlainViewProvider;
@@ -43,7 +43,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
   @override
   void initState() {
     super.initState();
-    modifyCourseProvider = StateProvider((ref) => widget.courseModel);
+    modifyCourseProvider = AutoDisposeStateProvider((ref) => widget.courseModel);
     syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
 
     isPlainViewProvider = AsyncNotifierProvider<IsPlainViewNotifier, bool>(IsPlainViewNotifier.new);
@@ -66,11 +66,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
   @override
   Widget build(BuildContext context) {
     ref.listen(syncCourseProvider, syncCourseWithStorage);
-
-    final CourseModel courseModel = ref.watch(modifyCourseProvider);
-
-    final ModifyCourseActions modifyCourseActions = ModifyCourseActions();
-
     return PopScope(
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
@@ -102,130 +97,146 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
               // },
             ),
           ),
-          body: CustomScrollView(
-            slivers: [
-              // HEADER
-              ModifyCourseHeader(
-                title: courseModel.courseName,
-                description: courseModel.description.trim(),
-                courseCode: courseModel.courseCode.trim(),
-                courseFileLocation: courseModel.imageLocationJson,
-                onClickEditCourse: () async {
-                  await showModalBottomSheet(
-                    context: context,
-                    enableDrag: false,
-                    showDragHandle: false,
-                    backgroundColor: context.scaffoldBackgroundColor,
-                    isScrollControlled: true,
-                    builder: (context) => EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider),
-                  );
-                },
-                onClickDelete: () {
-                  CustomDialog.show(
-                    context,
-                    canPop: true,
-                    barrierColor: Colors.black.withValues(alpha: 0.6),
-                    transitionType: TransitionType.cupertinoDialog,
-                    transitionDuration: Durations.medium2,
-                    child: ConfirmDeletionDialog(
-                      content:
-                          "This is a destructive action. It will delete all collections and course contents."
-                          "\n\nAre you sure you want to delete this course?",
-                      onDelete: () async {
-                        CustomDialog.hide(context);
-                        await Future.delayed(Durations.medium1);
-
-                        if (context.mounted) {
-                          CustomDialog.showLoadingDialog(
-                            context,
-                            canPop: true,
-                            msg: "Deleting Course",
-                            barrierColor: Colors.black.withValues(alpha: 0.6),
-                            transitionDuration: Durations.medium2,
-                          );
-                        }
-                        await modifyCourseActions.onDeleteCourse(id: courseModel.id, courseId: courseModel.courseId);
-                        if (context.mounted) CustomDialog.hide(context);
-                        if (context.mounted) context.pop();
-                        if (context.mounted) UiUtils.showFlushBar(context, msg: "Successfully deleted course");
-                      },
-                    ),
-                  );
-                },
-                onClickAddDescription:
-                    () => modifyCourseActions.onClickAddDescription(
-                      context,
-                      currDescription: courseModel.description,
-                      modifyCourseProvider: modifyCourseProvider,
-                    ),
-
-                onClickImage: () async {
-                  if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
-                    modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
-                    return;
-                  }
-
-                  modifyCourseActions.onClickCourseImage(context, courseModel: courseModel);
-                },
-
-                onLongPressImage: () async {
-                  if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
-                    modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
-                    return;
-                  }
-
-                  modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
-                },
-              ),
-
-              SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
-
-              // BODY
-              CollectionsSection(
-                courseDbId: courseModel.id,
-                collections: courseModel.subCollections,
-                onClickNewCollection: () {
-                  if (courseModel.subCollections.isEmpty) {
-                    CustomDialog.show(
-                      context,
-                      canPop: true,
-                      barrierColor: Colors.black.withAlpha(150),
-                      child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
-                    ).then((value) {
-                      if (courseModel.subCollections.isNotEmpty) {
-                        if (context.mounted) AppNavigator.to(context).modifyCollectionsRoute(courseModel);
-                      }
-                    });
-                    return;
-                  }
-                  AppNavigator.to(context).modifyCollectionsRoute(courseModel);
-                },
-              ),
-
-              SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-
-              // AFTER
-              if (courseModel.subCollections.isNotEmpty)
-                SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  sliver: SliverToBoxAdapter(
-                    child: CustomElevatedButton(
-                      onClick: () {
-                        AppNavigator.to(context).modifyCollectionsRoute(courseModel);
-                      },
-                      borderRadius: 48,
-                      pixelHeight: 56,
-                      backgroundColor: Colors.deepPurple.withAlpha(80),
-                      label: "See all collections",
-                      textSize: 15,
-                      textColor: Colors.deepPurple,
-                    ),
-                  ),
-                ),
-            ],
-          ),
+          body: ModifyCourseViewOuterSection(modifyCourseProvider: modifyCourseProvider),
         ),
       ),
+    );
+  }
+}
+
+class ModifyCourseViewOuterSection extends ConsumerWidget {
+  const ModifyCourseViewOuterSection({
+    super.key,
+    required this.modifyCourseProvider,
+  });
+
+  final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final CourseModel courseModel = ref.watch(modifyCourseProvider);
+    final ModifyCourseActions modifyCourseActions = ModifyCourseActions();
+    return CustomScrollView(
+      slivers: [
+        // HEADER
+        ModifyCourseHeader(
+          title: courseModel.courseName,
+          description: courseModel.description.trim(),
+          courseCode: courseModel.courseCode.trim(),
+          courseFileLocation: courseModel.imageLocationJson,
+          onClickEditCourse: () async {
+            await showModalBottomSheet(
+              context: context,
+              enableDrag: false,
+              showDragHandle: false,
+              backgroundColor: context.scaffoldBackgroundColor,
+              isScrollControlled: true,
+              builder: (context) => EditCourseBottomSheet(modifyCourseProvider: modifyCourseProvider),
+            );
+          },
+          onClickDelete: () {
+            CustomDialog.show(
+              context,
+              canPop: true,
+              barrierColor: Colors.black.withValues(alpha: 0.6),
+              transitionType: TransitionType.cupertinoDialog,
+              transitionDuration: Durations.medium2,
+              child: ConfirmDeletionDialog(
+                content:
+                    "This is a destructive action. It will delete all collections and course contents."
+                    "\n\nAre you sure you want to delete this course?",
+                onDelete: () async {
+                  CustomDialog.hide(context);
+                  await Future.delayed(Durations.medium1);
+    
+                  if (context.mounted) {
+                    CustomDialog.showLoadingDialog(
+                      context,
+                      canPop: true,
+                      msg: "Deleting Course",
+                      barrierColor: Colors.black.withValues(alpha: 0.6),
+                      transitionDuration: Durations.medium2,
+                    );
+                  }
+                  await modifyCourseActions.onDeleteCourse(id: courseModel.id, courseId: courseModel.courseId);
+                  if (context.mounted) CustomDialog.hide(context);
+                  if (context.mounted) context.pop();
+                  if (context.mounted) UiUtils.showFlushBar(context, msg: "Successfully deleted course");
+                },
+              ),
+            );
+          },
+          onClickAddDescription:
+              () => modifyCourseActions.onClickAddDescription(
+                context,
+                currDescription: courseModel.description,
+                modifyCourseProvider: modifyCourseProvider,
+              ),
+    
+          onClickImage: () async {
+            if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
+              modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
+              return;
+            }
+    
+            modifyCourseActions.onClickCourseImage(context, courseModel: courseModel);
+          },
+    
+          onLongPressImage: () async {
+            if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
+              modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
+              return;
+            }
+    
+            modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
+          },
+        ),
+    
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
+    
+        // BODY
+        CollectionsSection(
+          courseDbId: courseModel.id,
+          collections: courseModel.subCollections,
+          onClickNewCollection: () {
+            if (courseModel.subCollections.isEmpty) {
+              CustomDialog.show(
+                context,
+                canPop: true,
+                barrierColor: Colors.black.withAlpha(150),
+                child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
+              ).then((value) {
+                if (courseModel.subCollections.isNotEmpty) {
+                  if (context.mounted) AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+                }
+              });
+              return;
+            }
+            AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+          },
+        ),
+    
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+    
+        // AFTER
+        if (courseModel.subCollections.isNotEmpty)
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            sliver: SliverToBoxAdapter(
+              child: CustomElevatedButton(
+                onClick: () {
+                  AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+                },
+                borderRadius: 48,
+                pixelHeight: 56,
+                backgroundColor: Colors.deepPurple.withAlpha(80),
+                label: "See all collections",
+                textSize: 15,
+                textColor: Colors.deepPurple,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -22,8 +22,8 @@ class CreateCourseButton extends ConsumerWidget {
 
   final TextEditingController courseNameController;
   final TextEditingController courseCodeController;
-  final StateProvider<bool> isCourseCodeFieldVisible;
-  final StateProvider<String?> courseImagePathProvider;
+  final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+  final AutoDisposeStateProvider<String?> courseImagePathProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

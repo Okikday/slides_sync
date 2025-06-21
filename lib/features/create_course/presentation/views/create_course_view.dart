@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -19,28 +20,6 @@ class CreateCourseView extends ConsumerStatefulWidget {
 }
 
 class _CreateCourseViewState extends ConsumerState<CreateCourseView> with SingleTickerProviderStateMixin {
-  late final StateProvider<bool> isCourseCodeFieldVisible;
-  late final TextEditingController courseNameController;
-  late final TextEditingController courseCodeController;
-  late final StateProvider<String?> courseImagePathProvider;
-  late final ScrollController scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    isCourseCodeFieldVisible = StateProvider((ref) => false);
-    courseImagePathProvider = StateProvider((ref) => null);
-    courseNameController = TextEditingController();
-    courseCodeController = TextEditingController();
-    scrollController = ScrollController();
-  }
-  
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
@@ -52,55 +31,89 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
           child: AppBarContainerChild(context.isDarkMode, title: "Create course"),
         ),
 
-        body: SizedBox(
-          height: context.deviceHeight,
-          width: context.deviceWidth,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      children: [
-                        ConstantSizing.columnSpacingMedium,
+        body: CreateCourseOuterSection(),
+      ),
+    );
+  }
+}
 
-                        AddImageAvatar(
-                          courseImagePathProvider: courseImagePathProvider,
-                        ),
+class CreateCourseOuterSection extends ConsumerStatefulWidget {
+  const CreateCourseOuterSection({super.key});
 
-                        ConstantSizing.columnSpacing(56),
+  @override
+  ConsumerState<CreateCourseOuterSection> createState() => _CreateCourseOuterSectionState();
+}
 
-                        InputCourseTitleField(
-                          courseNameController: courseNameController,
-                          isCourseCodeFieldVisible: isCourseCodeFieldVisible,
-                          viewScrollController: scrollController
-                        ),
+class _CreateCourseOuterSectionState extends ConsumerState<CreateCourseOuterSection> {
+  late final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+  late final TextEditingController courseNameController;
+  late final TextEditingController courseCodeController;
+  late final AutoDisposeStateProvider<String?> courseImagePathProvider;
+  late final ScrollController scrollController;
 
-                        ConstantSizing.columnSpacingLarge,
+  @override
+  void initState() {
+    super.initState();
+    isCourseCodeFieldVisible = AutoDisposeStateProvider((ref) => false);
+    courseImagePathProvider = AutoDisposeStateProvider((ref) => null);
+    courseNameController = TextEditingController();
+    courseCodeController = TextEditingController();
+    scrollController = ScrollController();
+  }
 
-                        InputCourseCodeField(
-                          courseCodeController: courseCodeController,
-                          isCourseCodeFieldVisible: isCourseCodeFieldVisible,
-                        ),
+  @override
+  void dispose() {
+    courseNameController.dispose();
+    courseCodeController.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
 
-                        ConstantSizing.columnSpacing(72),
-                      ],
+  @override
+  Widget build(BuildContext context) {
+    log("Build create course view");
+    return SizedBox(
+      height: context.deviceHeight,
+      width: context.deviceWidth,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    ConstantSizing.columnSpacingMedium,
+
+                    AddImageAvatar(courseImagePathProvider: courseImagePathProvider),
+
+                    ConstantSizing.columnSpacing(56),
+
+                    InputCourseTitleField(
+                      courseNameController: courseNameController,
+                      isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                      viewScrollController: scrollController,
                     ),
-                  ),
-                ),
 
-                CreateCourseButton(
-                  courseNameController: courseNameController,
-                  courseCodeController: courseCodeController,
-                  isCourseCodeFieldVisible: isCourseCodeFieldVisible,
-                  courseImagePathProvider: courseImagePathProvider,
+                    ConstantSizing.columnSpacingLarge,
+
+                    InputCourseCodeField(courseCodeController: courseCodeController, isCourseCodeFieldVisible: isCourseCodeFieldVisible),
+
+                    ConstantSizing.columnSpacing(72),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+
+            CreateCourseButton(
+              courseNameController: courseNameController,
+              courseCodeController: courseCodeController,
+              isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+              courseImagePathProvider: courseImagePathProvider,
+            ),
+          ],
         ),
       ),
     );

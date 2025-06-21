@@ -19,14 +19,14 @@ class CourseDetailsView extends ConsumerStatefulWidget {
 }
 
 class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
-  late final StateProvider<CourseModel> courseProvider;
-  late final StreamProvider<CourseModel?> syncCourseProvider;
+  late final AutoDisposeStateProvider<CourseModel> courseProvider;
+  late final AutoDisposeStreamProvider<CourseModel?> syncCourseProvider;
 
   @override
   void initState() {
     super.initState();
-    courseProvider = StateProvider((ref) => widget.courseModel);
-    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
+    courseProvider = AutoDisposeStateProvider((ref) => widget.courseModel);
+    syncCourseProvider = AutoDisposeStreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
   }
 
 
@@ -41,7 +41,7 @@ class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
   @override
   Widget build(BuildContext context) {
     ref.listen(syncCourseProvider, syncCourseWithStorage);
-    final CourseModel courseModel = ref.watch(courseProvider);
+    
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -52,29 +52,44 @@ class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
           padding: EdgeInsets.zero,
           child: AppBarContainerChild(context.isDarkMode, title: "Course Info"),
         ),
-        body: CustomScrollView(
-          slivers: [
-            CourseDetailsHeader(courseModel: courseModel),
-
-            if (courseModel.subCollections.isNotEmpty)
-              PinnedHeaderSliver(
-                child: ColoredBox(
-                  color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    child: CustomText("Collections", fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
-
-            CourseDetailsCollectionSection(courseModel: courseModel),
-
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-          ],
-        ),
+        body: CourseDetailsOuterSection(courseProvider: courseProvider),
       ),
+    );
+  }
+}
+
+class CourseDetailsOuterSection extends ConsumerWidget {
+  const CourseDetailsOuterSection({
+    super.key,
+    required this.courseProvider,
+  });
+
+  final AutoDisposeStateProvider<CourseModel> courseProvider;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final CourseModel courseModel = ref.watch(courseProvider);
+    return CustomScrollView(
+      slivers: [
+        CourseDetailsHeader(courseModel: courseModel),
+    
+        if (courseModel.subCollections.isNotEmpty)
+          PinnedHeaderSliver(
+            child: ColoredBox(
+              color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: CustomText("Collections", fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+    
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
+    
+        CourseDetailsCollectionSection(courseModel: courseModel),
+    
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+      ],
     );
   }
 }

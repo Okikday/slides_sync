@@ -9,8 +9,8 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
-class PlainCourseTile extends ConsumerWidget {
-  const PlainCourseTile({
+class EditCourseTile extends ConsumerWidget {
+  const EditCourseTile({
     super.key,
     required this.isDarkMode,
     required this.courseName,
@@ -55,7 +55,7 @@ class PlainCourseTile extends ConsumerWidget {
                   ),
                 ),
               ),
-            ).animate().fade(begin: selectionState.selected ? 1.0 : 0.5, end: selectionState.selected ? 0.5 : 1.0,),
+            ).animate().fade(begin: selectionState.selected ? 1.0 : 0.5, end: selectionState.selected ? 0.5 : 1.0),
             ConstantSizing.rowSpacingMedium,
             Expanded(
               child: Column(
@@ -86,15 +86,18 @@ class PlainCourseTile extends ConsumerWidget {
             SizedBox.square(
               dimension: 40,
               child: Icon(
-                selectionState.isSelecting && !selectionState.selected ? Icons.circle_outlined : 
-                (selectionState.isSelecting && selectionState.selected ? Iconsax.tick_circle : Iconsax.arrow_right),
+                selectionState.isSelecting && !selectionState.selected
+                    ? Icons.circle_outlined
+                    : (selectionState.isSelecting && selectionState.selected ? Iconsax.tick_circle : Iconsax.edit_copy),
                 color:
                     selectionState.isSelecting && !selectionState.selected
                         ? Colors.grey
                         : (selectionState.isSelecting && selectionState.selected
-                        ? Colors.deepPurple
-                        : (isDarkMode ? Colors.white : Colors.black)),
-                size: 32,
+                            ? Colors.deepPurple
+                            :
+                            // (isDarkMode ? Colors.white : Colors.black)
+                            Colors.deepPurpleAccent),
+                size: 26,
               ),
             ).animate().scale(begin: Offset(0, 0), end: Offset(1, 1), curve: CustomCurves.bouncySpring, duration: Durations.extralong4),
           ],

@@ -3,20 +3,20 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
 
 class WidgetHelper {
-  static IconData resolveIconData(CourseContentType type) {
+  static IconData resolveIconData(CourseContentType type, [bool isOutlined = false]) {
     switch (type) {
       case CourseContentType.audio:
-        return Iconsax.audio_square;
+        return isOutlined ? Iconsax.audio_square_copy : Iconsax.audio_square;
       case CourseContentType.document:
-        return Iconsax.document;
+        return isOutlined ? Iconsax.document_copy : Iconsax.document;
       case CourseContentType.image:
-        return Iconsax.image;
+        return isOutlined ? Iconsax.image_copy : Iconsax.image;
       case CourseContentType.link:
-        return Iconsax.link;
+        return isOutlined ? Iconsax.link_copy : Iconsax.link;
       case CourseContentType.unknown:
-        return Iconsax.book;
+        return isOutlined ? Iconsax.info_circle_copy : Iconsax.info_circle;
       case CourseContentType.video:
-        return Iconsax.video;
+        return isOutlined ? Iconsax.video_copy : Iconsax.video;
     }
   }
 }

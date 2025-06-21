@@ -27,18 +27,18 @@ class ModifyCollectionsView extends ConsumerStatefulWidget {
 }
 
 class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
-  late final StateProvider<CourseModel> modifyCourseProvider;
+  late final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
   late final StreamProvider<CourseModel?> syncCourseProvider;
   late final ScrollController scrollController;
-  late final StateProvider<double> scrollOffsetProvider;
+  late final AutoDisposeStateProvider<double> scrollOffsetProvider;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    modifyCourseProvider = StateProvider((ref) => widget.courseModel);
+    modifyCourseProvider = AutoDisposeStateProvider((ref) => widget.courseModel);
     syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
-    scrollOffsetProvider = StateProvider((ref) => 0.0);
+    scrollOffsetProvider = AutoDisposeStateProvider((ref) => 0.0);
     scrollController.addListener(listenToscrollOffsetProvider);
   }
 
@@ -94,30 +94,46 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
                 )
                 : null,
 
-        body: CustomScrollView(
-          controller: scrollController,
-          slivers: [
-            if (courseModel.subCollections.isNotEmpty) PinnedHeaderSliver(child: CollectionsViewSearchBar()),
-
-            if (courseModel.subCollections.isNotEmpty)
-              CollectionsListView(courseDbId: courseModel.id, collections: courseModel.subCollections)
-            else
-              EmptyCollectionsView(
-                onClickAddCollection: () {
-                  CustomDialog.show(
-                    context,
-                    canPop: true,
-                    barrierColor: Colors.black.withAlpha(150),
-                    child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
-                  );
-                },
-              ),
-            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-
-            // ),
-          ],
-        ),
+        body: ModifyCollectionsOuterSection(scrollController: scrollController, courseModel: courseModel),
       ),
+    );
+  }
+}
+
+class ModifyCollectionsOuterSection extends StatelessWidget {
+  const ModifyCollectionsOuterSection({
+    super.key,
+    required this.scrollController,
+    required this.courseModel,
+  });
+
+  final ScrollController scrollController;
+  final CourseModel courseModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      controller: scrollController,
+      slivers: [
+        if (courseModel.subCollections.isNotEmpty) PinnedHeaderSliver(child: CollectionsViewSearchBar()),
+    
+        if (courseModel.subCollections.isNotEmpty)
+          CollectionsListView(courseDbId: courseModel.id, collections: courseModel.subCollections)
+        else
+          EmptyCollectionsView(
+            onClickAddCollection: () {
+              CustomDialog.show(
+                context,
+                canPop: true,
+                barrierColor: Colors.black.withAlpha(150),
+                child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
+              );
+            },
+          ),
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+    
+        // ),
+      ],
     );
   }
 }
