@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+
 import 'package:slides_sync/core/data/isar_data/isar_data.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 
@@ -25,7 +25,18 @@ class CourseRepo {
 
   static Future<Stream<List<CourseModel>>> watchAllCoursesLazily() async => await isarData.watchAllLazily();
 
+  // static Future<PageResponse<CourseModel>> fetchPagedCourses({required int page, required int limit}) async {
+  //   final offset = page * limit;
+  //   log("Resolved offset in fetching: $offset");
 
+  //   final isar = await isarData.isarFuture;
+  //   final items = await isar.courseModels.where().offset(offset).limit(limit).findAll();
+
+  //   // null = last page reached
+  //   final nextPageKey = items.length < limit ? null : page + 1;
+
+  //   return PageResponse(items: items, nextPageKey: nextPageKey);
+  // }
 
   // static Future<CourseModel?> getCourseById(String courseId) async {
   //   final idQuery = await _queryById(courseId);

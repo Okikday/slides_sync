@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_location.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_sub_collection.dart';
-import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_courses/domain/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';

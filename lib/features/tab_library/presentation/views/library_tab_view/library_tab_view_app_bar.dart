@@ -2,8 +2,6 @@ import 'dart:ui';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/utils/util_functions.dart';
 import 'package:slides_sync/features/tab_library/presentation/providers/is_list_view_notifier.dart';
 import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_header_text.dart';
 import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';

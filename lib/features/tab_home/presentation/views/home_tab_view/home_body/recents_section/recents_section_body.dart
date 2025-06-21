@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
-import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -69,10 +68,10 @@ class RecentsSectionBody extends ConsumerWidget {
                   CustomDialog.show(
                     context,
                     canPop: true,
-                    blurSigma: Offset(4.0, 4.0),
+                    blurSigma: Offset(2.0, 2.0),
                     transitionType: TransitionType.fade,
-                    barrierColor: Colors.black.withValues(alpha: 0.4),
-                    transitionDuration: Duration(milliseconds: 550),
+                    barrierColor: Colors.black.withValues(alpha: 0.5),
+                    transitionDuration: Duration(milliseconds: 500),
                     child: RecentDialog(
                       heroTag: "recents_list_tile$index",
                       recentDialogModel: RecentDialogModel(

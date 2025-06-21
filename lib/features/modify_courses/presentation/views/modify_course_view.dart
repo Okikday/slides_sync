@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,10 +18,8 @@ import 'package:slides_sync/features/modify_courses/presentation/views/modify_co
 import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
-import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 /// VIEW
 class ModifyCourseView extends ConsumerStatefulWidget {

@@ -4,7 +4,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_location.dart';
-import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';

@@ -47,7 +47,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
             onTap: () {},
             child: Heroine(
               tag: widget.heroTag,
-              spring: Spring.defaultIOS.copyWith(durationSeconds: 0.4),
+              spring: Spring.defaultIOS.copyWith(durationSeconds: 0.35),
               child: Container(
                 clipBehavior: Clip.hardEdge,
                 margin: EdgeInsets.symmetric(horizontal: 32, vertical: context.deviceHeight > context.deviceWidth ? 0 : 32),

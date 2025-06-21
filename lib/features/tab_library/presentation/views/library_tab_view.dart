@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/features/tab_library/presentation/providers/is_list_view_notifier.dart';
-import 'package:slides_sync/features/main/presentation/providers/main_view_providers.dart';
+import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
 import 'package:slides_sync/features/tab_library/presentation/views/sub/library_outer_scroll_view.dart';
 
 class LibraryTabView extends ConsumerStatefulWidget {

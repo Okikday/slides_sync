@@ -3,7 +3,6 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 
 class ModifyContentsHeader extends StatelessWidget {
   const ModifyContentsHeader({super.key});

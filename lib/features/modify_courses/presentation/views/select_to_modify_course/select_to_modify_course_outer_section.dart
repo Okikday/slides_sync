@@ -8,7 +8,6 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course/empty_courses_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course/edit_course_tile.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 import 'package:slides_sync/shared/widgets/selected_items_count_popup.dart';

@@ -1,14 +1,14 @@
-import 'dart:io';
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/create_course/domain/usecases/create_course_action.dart';
+import 'package:slides_sync/routes/routes.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CreateCourseButton extends ConsumerWidget {
@@ -68,15 +68,22 @@ class CreateCourseButton extends ConsumerWidget {
           if (context.mounted) CustomDialog.hide(context);
 
           createCourseOutcome
-              .doNext((value) async{
-                await UiUtils.showFlushBar(context, msg: "Successfully created course!", vibe: FlushbarVibe.success);
+              .doNext((value) async {
                 if (context.mounted) {
                   Navigator.of(context).pop();
+                  log("${context.mounted}");
                   AppNavigator.to(context).modifyCourseRoute(value);
-                  
+                  await Future.delayed(Durations.short4);
+                  if (rootNavigatorKey.currentContext != null && rootNavigatorKey.currentContext!.mounted) {
+                    await UiUtils.showFlushBar(
+                      rootNavigatorKey.currentContext!,
+                      msg: "Successfully created course!",
+                      vibe: FlushbarVibe.success,
+                    );
+                  }
                 }
               })
-              .onError((error, [_]) async{
+              .onError((error, [_]) async {
                 await UiUtils.showFlushBar(
                   context,
                   msg: error,

@@ -1,20 +1,14 @@
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_contents/mod_content_card_tile.dart';
+import 'package:slides_sync/features/modify_courses/presentation/views/modify_contents/add_contents_fab.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_contents/modify_content_list_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_contents/modify_contents_header.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
-import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -43,7 +37,7 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
           ),
         ),
 
-        floatingActionButton: FloatingActionButton(onPressed: () {}, child: Icon(Icons.add)),
+        floatingActionButton: AddContentsFAB(),
 
         body: ModifyContentsOuterSection(),
       ),
@@ -51,13 +45,13 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
   }
 }
 
-class ModifyContentsOuterSection extends StatelessWidget {
+class ModifyContentsOuterSection extends ConsumerWidget {
   const ModifyContentsOuterSection({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
       slivers: [
         ModifyContentsHeader(),

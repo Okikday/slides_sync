@@ -86,6 +86,7 @@ dependencies:
       url: https://github.com/ksokolovskyi/material_shapes.git
 
       
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

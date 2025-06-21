@@ -2,7 +2,6 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
@@ -11,8 +10,6 @@ import 'package:slides_sync/features/course_navigation/presentation/views/course
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/empty_collections_view.dart';
-import 'package:slides_sync/shared/helpers/widget_helper.dart';
-import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
@@ -65,7 +62,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
               }
             },
           ).animate().slideY(
-            begin: double.parse((0.5 * (index + (collections.length / 2) / collections.length)).toStringAsFixed(2)),
+            begin: double.parse((0.6 * (index + (collections.length / 2) / collections.length)).toStringAsFixed(2)),
             end: 0,
             curve: CustomCurves.bouncySpring,
             duration: Durations.extralong4,

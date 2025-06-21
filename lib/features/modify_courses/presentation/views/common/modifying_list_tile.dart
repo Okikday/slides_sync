@@ -1,7 +1,6 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 
 class ModifyingListTile extends StatelessWidget {
   final Widget leadingIcon;

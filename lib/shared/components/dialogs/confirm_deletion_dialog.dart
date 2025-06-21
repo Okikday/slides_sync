@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';

@@ -116,8 +116,8 @@ class _FileManagerPageState extends State<FileManagerPage> {
                         return ListTile(
                           leading: Icon(isDir ? Icons.folder : Icons.insert_drive_file),
                           title: Text(name),
-                          subtitle: Text(isDir ? '$modified' : '$modified • $size', style: TextStyle(fontSize: 12)),
-                          onTap: isDir ? () => _listDir(ent as Directory) : null,
+                          subtitle: Text(isDir ? modified : '$modified • $size', style: TextStyle(fontSize: 12)),
+                          onTap: isDir ? () => _listDir(ent) : null,
                           onLongPress:
                               isDir
                                   ? null

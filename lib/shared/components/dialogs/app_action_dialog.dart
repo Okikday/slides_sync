@@ -84,7 +84,7 @@ class AppActionDialog extends ConsumerWidget {
 class BuildPlainActionButton extends ConsumerWidget {
   final String title;
   final Widget icon;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   final Color? backgroundColor;
   final TextStyle? textStyle;
@@ -93,7 +93,7 @@ class BuildPlainActionButton extends ConsumerWidget {
     super.key,
     required this.title,
     required this.icon,
-    required this.onTap,
+    this.onTap,
     this.backgroundColor,
     this.textStyle,
     this.contentPadding = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),

@@ -5,9 +5,7 @@ import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_body.dart';
 import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_header.dart';
-import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/home_dash_board.dart';
 import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/build_dashboard_carousel_section.dart';
-import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class HomeBody extends ConsumerWidget {
   final ScrollController? scrollController;

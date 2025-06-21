@@ -4,14 +4,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/models/file_location.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body.dart';
-import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_body.dart';
-import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_header.dart';
-import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_body/home_dash_board.dart';
-import 'package:slides_sync/shared/helpers/device_helper.dart';
-import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class HomeInnerScrollViewForDesktop extends ConsumerStatefulWidget {
   const HomeInnerScrollViewForDesktop({super.key});
