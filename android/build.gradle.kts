@@ -11,19 +11,36 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
-}
-subprojects {
-    afterEvaluate {
-        if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
-            extensions.configure<com.android.build.gradle.BaseExtension>("android") {
+        afterEvaluate {
+        val project = this // 'this' refers to the Project
+
+        if (project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.library")) {
+            val androidExtension =
+                project.extensions.getByName("android") as? com.android.build.gradle.LibraryExtension
+                    ?: project.extensions.getByName("android") as? com.android.build.gradle.AppExtension
+
+            androidExtension?.apply {
+                compileSdkVersion(35)
+                buildToolsVersion = "35.0.0"
+            }
+        }
+
+        if (project.extensions.findByName("android") != null) {
+            val androidExtension =
+                project.extensions.getByName("android") as? com.android.build.gradle.LibraryExtension
+                    ?: project.extensions.getByName("android") as? com.android.build.gradle.AppExtension
+
+            androidExtension?.apply {
                 if (namespace == null) {
                     namespace = project.group.toString()
                 }
             }
         }
     }
+    // ============
+    buildDir = file("${rootProject.buildDir}/${project.name}")
+    evaluationDependsOn(":app")
 }
-
 subprojects {
     project.evaluationDependsOn(":app")
 }

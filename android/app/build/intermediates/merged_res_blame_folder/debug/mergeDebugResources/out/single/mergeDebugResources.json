@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.example.slides_sync.app-debug-49:/drawable-v21_launch_background.xml.flat",
+        "source": "com.example.slides_sync.app-main-51:/drawable-v21/launch_background.xml"
+    },
+    {
+        "merged": "com.example.slides_sync.app-debug-49:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.slides_sync.app-main-51:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.slides_sync.app-debug-49:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.slides_sync.app-main-51:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.slides_sync.app-debug-49:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.slides_sync.app-main-51:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.slides_sync.app-debug-49:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.slides_sync.app-main-51:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.slides_sync.app-debug-49:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.slides_sync.app-main-51:/mipmap-mdpi/ic_launcher.png"
+    }
+]
