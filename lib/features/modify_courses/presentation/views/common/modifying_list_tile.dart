@@ -34,7 +34,8 @@ class ModifyingListTile extends StatelessWidget {
       child: ClipRSuperellipse(
         borderRadius: BorderRadius.circular(16),
         child: ColoredBox(
-          color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
+          // color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
+          color: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: CustomElevatedButton(
@@ -43,7 +44,8 @@ class ModifyingListTile extends StatelessWidget {
               borderRadius: 12,
 
               contentPadding: EdgeInsets.all(buttonPadding),
-              backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
+              // backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
+              backgroundColor: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
               child: Row(
                 spacing: ConstantSizing.spaceMedium,
                 mainAxisSize: MainAxisSize.min,

@@ -107,7 +107,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                 PinnedHeaderSliver(
                                   child: ColoredBox(
                                     color: context.scaffoldBackgroundColor,
-                                    child: CustomText("Edit Course", fontSize: 18, fontWeight: FontWeight.bold),
+                                    child: CustomText("Edit Course", fontSize: 18, color: Colors.deepPurpleAccent, fontWeight: FontWeight.bold),
                                   ),
                                 ),
 

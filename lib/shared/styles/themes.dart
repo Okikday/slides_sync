@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
+
+
 class Themes {
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
@@ -13,9 +15,7 @@ class Themes {
       foregroundColor: SlidesRepoColors.textPrimary,
       elevation: 0,
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: SlidesRepoColors.primary,
-    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: SlidesRepoColors.primary),
   );
 
   static final ThemeData darkTheme = ThemeData(
@@ -29,8 +29,6 @@ class Themes {
       foregroundColor: SlidesRepoColors.darkTextPrimary,
       elevation: 0,
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: SlidesRepoColors.primaryDark,
-    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: SlidesRepoColors.primaryDark),
   );
 }
