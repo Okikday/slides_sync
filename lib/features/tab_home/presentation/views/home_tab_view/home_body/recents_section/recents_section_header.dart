@@ -24,7 +24,7 @@ class RecentsSectionHeader extends ConsumerWidget {
 
             CustomTextButton(
               label: "See all",
-              textColor: context.isDarkMode ? SlidesRepoColors.darkTextSecondary : SlidesRepoColors.textSecondary,
+              textColor: context.isDarkMode ? AppColors.darkTextSecondary : AppColors.textSecondary,
               textSize: 16,
               onClick: onClickSeeAll,
             ),

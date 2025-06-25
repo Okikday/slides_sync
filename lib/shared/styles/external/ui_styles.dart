@@ -4,7 +4,7 @@ import 'package:slides_sync/shared/styles/colors.dart';
 class UiStyles {
   static BoxDecoration getBlueThemedBoxDecoration(bool isDarkMode) {
     return BoxDecoration(
-      color: (isDarkMode ? SlidesRepoColors.deepBlue : SlidesRepoColors.lightGray),
+      color: (isDarkMode ? AppColors.deepBlue : AppColors.lightGray),
       borderRadius: BorderRadius.circular(12),
       border: Border.all(width: 2, color: Colors.lightBlueAccent.withAlpha(15)),
       boxShadow: [

@@ -42,6 +42,7 @@ class CourseContent {
   factory CourseContent.create({
     required String title,
     required FileLocation path,
+    DateTime? createdAt,
     required CourseContentType courseContentType,
     String description = "",
     String? metadataJson,
@@ -50,7 +51,7 @@ class CourseContent {
     return CourseContent(
       id: const Uuid().v4(), // generate a unique id
       title: title,
-      createdAt: DateTime.now(),
+      createdAt: createdAt ?? DateTime.now(),
       path: path.toJson(),
       description: description,
       courseContentType: courseContentType,
@@ -64,7 +65,6 @@ class CourseContent {
     DateTime? createdAt,
     String? path,
     String? description,
-    // FileLocation? fileLocation,
     CourseContentType? courseContentType,
     String? metadataJson,
   }) {
@@ -74,7 +74,6 @@ class CourseContent {
       createdAt: createdAt ?? this.createdAt,
       path: path ?? this.path,
       description: description ?? this.description,
-      // fileLocation: fileLocation?.toJson() ?? this.fileLocation,
       courseContentType: courseContentType ?? this.courseContentType,
       metadataJson: metadataJson ?? this.metadataJson,
     );
@@ -90,7 +89,6 @@ class CourseContent {
           createdAt == other.createdAt &&
           path == other.path &&
           description == other.description &&
-          // fileLocation == other.fileLocation &&
           courseContentType == other.courseContentType &&
           metadataJson == other.metadataJson;
 
@@ -101,7 +99,6 @@ class CourseContent {
       createdAt.hashCode ^
       path.hashCode ^
       description.hashCode ^
-      // fileLocation.hashCode ^
       courseContentType.hashCode ^
       metadataJson.hashCode;
 
@@ -112,7 +109,6 @@ class CourseContent {
       'createdAt': createdAt?.toIso8601String(),
       'path': path,
       'description': description,
-      // 'fileLocation': fileLocation,
       'courseContentType': courseContentType.index,
       'metadataJson': metadataJson,
     };
@@ -125,7 +121,6 @@ class CourseContent {
       createdAt: map['createdAt']  == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       path: map['path'] as String,
       description: map['description'] as String,
-      // fileLocation: map['fileLocation'] as String? ?? '{}',
       courseContentType: CourseContentType.values[map['courseContentType'] as int],
       metadataJson: map['metadataJson'] as String,
     );

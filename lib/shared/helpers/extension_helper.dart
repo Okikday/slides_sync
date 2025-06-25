@@ -4,8 +4,10 @@ import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
 
 extension ExtensionHelper on BuildContext {
   BuildContext get context => this;
+  ThemeData get theme => Theme.of(context);
   Color get scaffoldBackgroundColor => Theme.of(this).scaffoldBackgroundColor;
   bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+  MediaQueryData get mediaQuery => MediaQuery.of(context);
   Size get screenSize => MediaQuery.of(this).size;
   double get deviceWidth => screenSize.width;
   double get deviceHeight => screenSize.height;

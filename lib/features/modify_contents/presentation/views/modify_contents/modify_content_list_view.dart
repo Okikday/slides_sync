@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:slides_sync/core/models/file_location.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_contents/mod_content_card_tile.dart';
+import 'package:slides_sync/features/modify_contents/presentation/views/modify_contents/mod_content_card_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyContentListView extends StatelessWidget {

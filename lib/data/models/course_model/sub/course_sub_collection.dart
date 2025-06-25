@@ -13,6 +13,7 @@ class CourseSubCollection {
   final String collectionTitle;
   final List<CourseContent> courseContents;
   final String description;
+  final DateTime? createdAt;
   final String imageLocationJson;
   final String collectionMetadataJson;
 
@@ -22,6 +23,7 @@ class CourseSubCollection {
     this.collectionTitle = '',
     this.courseContents = const <CourseContent>[],
     this.description = "",
+    this.createdAt,
     this.imageLocationJson = '{}',
     this.collectionMetadataJson = '{}',
   });
@@ -32,12 +34,14 @@ class CourseSubCollection {
     required String collectionTitle,
     String description = '',
     List<CourseContent>? courseContents,
+    DateTime? createdAt,
     FileLocation? imageLocation,
     String? collectionMetadataJson,
   }) {
     return CourseSubCollection(
       collectionId: const Uuid().v4(),
       collectionTitle: collectionTitle,
+      createdAt: createdAt ?? DateTime.now(),
       courseContents: courseContents ?? const <CourseContent>[],
       description: description,
       imageLocationJson: imageLocation?.toJson() ?? '{}',
@@ -50,6 +54,7 @@ class CourseSubCollection {
     String? collectionTitle,
     List<CourseContent>? courseContents,
     String? description,
+    DateTime? createdAt,
     FileLocation? imageLocation,
     String? collectionMetadataJson,
   }) {
@@ -58,6 +63,7 @@ class CourseSubCollection {
       collectionTitle: collectionTitle ?? this.collectionTitle,
       courseContents: courseContents ?? this.courseContents,
       description: description ?? this.description,
+      createdAt: createdAt ?? DateTime.now(),
       imageLocationJson: imageLocation?.toJson() ?? imageLocationJson,
       collectionMetadataJson: collectionMetadataJson ?? this.collectionMetadataJson,
     );
@@ -69,6 +75,7 @@ class CourseSubCollection {
       'collectionTitle': collectionTitle,
       'courseContents': courseContents.map((e) => e.toJson()).toList(),
       'description': description,
+      'createdAt': createdAt?.toIso8601String(),
       'imageLocationJson': imageLocationJson,
       'collectionMetadataJson': collectionMetadataJson,
     };
@@ -79,6 +86,7 @@ class CourseSubCollection {
       collectionId: map['collectionId'] as String,
       collectionTitle: map['collectionTitle'] as String,
       courseContents: List<CourseContent>.from((map['courseContents'] as List<String>).map((e) => CourseContent.fromJson(e)).toList()),
+      createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       description: map['description'] as String? ?? '',
       imageLocationJson: map['imageLocationJson'] as String? ?? '{}',
     );
@@ -96,9 +104,10 @@ class CourseSubCollection {
           collectionId == other.collectionId &&
           collectionTitle == other.collectionTitle &&
           const ListEquality().equals(courseContents, other.courseContents) &&
+          createdAt == other.createdAt &&
           description == other.description &&
           imageLocationJson == other.imageLocationJson;
 
   @override
-  int get hashCode => Object.hash(collectionId, collectionTitle, const ListEquality().hash(courseContents), description, imageLocationJson);
+  int get hashCode => Object.hash(collectionId, collectionTitle, const ListEquality().hash(courseContents), createdAt, description, imageLocationJson);
 }

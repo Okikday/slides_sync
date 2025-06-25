@@ -23,7 +23,7 @@ class HomeOuterScrollView extends ConsumerWidget {
         });
         return [
           HomeAppBar(
-            title: 'Happy Reading',
+            title: 'Welcome back',
             onClickUserIcon: () {
               Scaffold.of(context).openDrawer();
               // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Theme.of(context).scaffoldBackgroundColor));

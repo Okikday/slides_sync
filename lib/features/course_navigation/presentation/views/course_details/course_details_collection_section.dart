@@ -8,8 +8,8 @@ import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/empty_collections_view.dart';
+import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
+import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/empty_collections_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 

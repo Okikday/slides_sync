@@ -34,31 +34,53 @@ class CoursesListView extends ConsumerWidget {
               scale: ref.watch(provider) ? 0.85 : 1.0,
               duration: Durations.medium3,
               curve: CustomCurves.defaultIosSpring,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTapDown: (details) {
-                  log("Detected tap down...");
-                  updateScaleClickProvider(true);
-                },
-                onTapCancel: () {
-                  log("Detected tap cancel...");
-                  updateScaleClickProvider(false);
-                },
-                onTapUp: (details) async {
-                  log("Detected tap up...");
-                  await Future.delayed(Durations.short2);
-                  updateScaleClickProvider(false);
-                },
-                onTap: () => onTap(index),
-                child: ListCourseCard(
-                  isDarkMode: context.isDarkMode,
-                  courseCode: courseModel.courseCode,
-                  courseName: courseModel.courseName,
-                  categoriesCount: courseModel.subCollections.length,
-                  progress: 0.0,
-                  courseImageWidget: BuildImagePathWidget(fileLocation:
-                    courseModel.imageLocationJson.fileLocation,
-                    fallbackWidget: Icon(Iconsax.document_1, size: 26),
+              child: Material(
+                type: MaterialType.transparency,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  overlayColor: WidgetStatePropertyAll(Colors.white.withAlpha(80)),
+                  onTapDown: (details) {
+                    log("Detected tap down...");
+                    updateScaleClickProvider(true);
+                  },
+                  onTapCancel: () {
+                    log("Detected tap cancel...");
+                    updateScaleClickProvider(false);
+                  },
+                  onTapUp: (details) async {
+                    log("Detected tap up...");
+                    await Future.delayed(Durations.short2);
+                    updateScaleClickProvider(false);
+                  },
+                  onTap: () => onTap(index),
+                  child: ListCourseCard(
+                    isDarkMode: context.isDarkMode,
+                    courseCode: courseModel.courseCode,
+                    courseName: courseModel.courseName,
+                    hasImage: courseModel.imageLocationJson.fileLocation.containsImagePath,
+                    categoriesCount: courseModel.subCollections.length,
+                    progress: 0.0,
+                    courseImageWidget: BuildImagePathWidget(
+                      fileLocation: courseModel.imageLocationJson.fileLocation,
+                      fallbackWidget: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child:
+                            courseModel.courseCode.isEmpty
+                                ? Icon(Iconsax.document_1)
+                                : Center(
+                                  child: CustomText(
+                                    courseModel.courseCode.substring(0, courseModel.courseCode.length.clamp(0, 8)),
+                                    fontSize:
+                                        context.deviceWidth < context.deviceHeight
+                                            ? context.deviceWidth * 0.025
+                                            : context.deviceHeight * 0.025,
+                                    fontWeight: FontWeight.bold,
+                                    textAlign: TextAlign.center,
+                                    color: context.isDarkMode ? context.theme.cardColor : context.theme.primaryColor,
+                                  ),
+                                ),
+                      ),
+                    ),
                   ),
                 ),
               ),

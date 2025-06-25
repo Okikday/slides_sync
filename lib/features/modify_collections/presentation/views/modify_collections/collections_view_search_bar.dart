@@ -28,7 +28,7 @@ class CollectionsViewSearchBar extends StatelessWidget {
                     child: CustomTextfield(
                       hint: "Search Collections",
                       inputTextStyle: TextStyle(fontSize: 15),
-                      backgroundColor: context.isDarkMode ? SlidesRepoColors.darkBlue : Colors.black,
+                      backgroundColor: context.isDarkMode ? AppColors.darkBlue : Colors.black,
                       border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.zero),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 12.0, right: 10.0, top: 12.0, bottom: 12.0),

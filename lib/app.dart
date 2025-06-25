@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/shared/styles/app_color_palette.dart';
 
 import 'routes/routes.dart';
 import 'shared/styles/themes.dart';
 
-final NotifierProvider<AppColorPaletteProvider, AppColorPalette> appPaletterProvider = NotifierProvider(AppColorPaletteProvider.new);
+final NotifierProvider<AppThemeDataProvider, ThemeData> appThemeDataProvider = NotifierProvider(AppThemeDataProvider.new);
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -14,12 +15,12 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    
+    log("Build Material App");
     return MaterialApp.router(
+      title: "SlideSync",
       routerConfig: Routes.mainRouter,
       debugShowCheckedModeBanner: false,
-      theme: Themes.lightTheme,
-      darkTheme: Themes.darkTheme,
+      theme: ref.watch(appThemeDataProvider)
     );
   }
 }

@@ -26,7 +26,7 @@ class ConfirmDeletionDialog extends ConsumerWidget {
     return AppAlertDialog(
       title: title,
       content: content,
-      backgroundColor: context.isDarkMode ? SlidesRepoColors.darkBlue.withAlpha(200) : null,
+      backgroundColor: context.isDarkMode ? AppColors.darkBlue.withAlpha(200) : null,
       onPop: onPop,
       actions: [
         _buildDialogButton(

@@ -40,7 +40,7 @@ class ContentListTile extends ConsumerWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), ),
         child: CustomElevatedButton(
-          backgroundColor: (isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray),
+          backgroundColor: (isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray),
           overlayColor: Colors.lightBlueAccent.withAlpha(50),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           borderRadius: 12,
@@ -57,7 +57,7 @@ class ContentListTile extends ConsumerWidget {
                 isLabelVisible: isStarred,
                 label: CircleAvatar(
                     radius: 10.5,
-                    backgroundColor: isDarkMode ? Color(0xff0e1d27) : SlidesRepoColors.lightGray,
+                    backgroundColor: isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray,
                     child: Icon(Iconsax.star_1, size: 16, color: Colors.deepPurple,)),
                 offset:  Offset(0, -2),
                 child: CustomElevatedButton(
@@ -87,7 +87,7 @@ class ContentListTile extends ConsumerWidget {
                         constraints: BoxConstraints(maxHeight: 30),
                         child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, height: 1.0),
                       ),
-                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: SlidesRepoColors.textSecondary)),
+                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: AppColors.textSecondary)),
                       if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13,),
                     ],
                   ),

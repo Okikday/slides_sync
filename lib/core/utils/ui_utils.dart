@@ -61,7 +61,7 @@ List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   const warningColor = Color(0xFFF46B22);
   final normalColor = context.isDarkMode ? Colors.white : Colors.black;
   final normalBgColor =
-      (context.isDarkMode ? SlidesRepoColors.deepBlue.withValues(alpha: 0.8) : SlidesRepoColors.lightGray.withValues(alpha: 0.8));
+      (context.isDarkMode ? AppColors.deepBlue.withValues(alpha: 0.8) : AppColors.lightGray.withValues(alpha: 0.8));
 
   switch (vibe) {
     case FlushbarVibe.none:

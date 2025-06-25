@@ -13,8 +13,8 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = context.deviceWidth;
     final bool isDesktop = context.deviceType == DeviceType.desktop;
-    return SizedBox(
-      height: 200,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 160),
       child: AnimatedSize(
         duration: Durations.medium4,
         child: CarouselView(

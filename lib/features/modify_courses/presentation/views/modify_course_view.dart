@@ -10,8 +10,7 @@ import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_courses/domain/usecases/modify_course_uc/modify_course_actions.dart';
-import 'package:slides_sync/features/modify_courses/presentation/providers/modify_course/is_plain_view_notifier.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
+import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/modify_course_header.dart';
@@ -34,7 +33,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
   late final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
   late final StreamProvider<CourseModel?> syncCourseProvider;
 
-  late final AsyncNotifierProvider<IsPlainViewNotifier, bool> isPlainViewProvider;
   late final ValueNotifier<bool> canPopNotifier;
 
   @override
@@ -43,7 +41,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
     modifyCourseProvider = AutoDisposeStateProvider((ref) => widget.courseModel);
     syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
 
-    isPlainViewProvider = AsyncNotifierProvider<IsPlainViewNotifier, bool>(IsPlainViewNotifier.new);
     canPopNotifier = ValueNotifier(true);
   }
 

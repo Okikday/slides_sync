@@ -1,33 +1,12 @@
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/features/modify_contents/presentation/views/modify_contents/add_contents_fab.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-
-class AddContentsFAB extends ConsumerWidget {
-  const AddContentsFAB({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return FloatingActionButton(
-      onPressed: () {
-        CustomDialog.show(
-          context,
-          transitionDuration: Durations.short1,
-          reverseTransitionDuration: Durations.short1,
-          blurSigma: Offset(2, 2),
-          child: AddContentsBottomSheet(),
-        );
-      },
-      shape: CircleBorder(),
-      child: Icon(Icons.add),
-    );
-  }
-}
 
 class AddContentsBottomSheet extends ConsumerStatefulWidget {
   const AddContentsBottomSheet({super.key});
@@ -35,7 +14,6 @@ class AddContentsBottomSheet extends ConsumerStatefulWidget {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddContentsBottomSheetState();
 }
-
 class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet> {
   late final FixedExtentScrollController fixedExtentScrollController;
   @override
@@ -82,23 +60,26 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
                       "What kind of content do you want to add?",
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.deepPurpleAccent,
                     ),
                   ),
                   // ConstantSizing.columnSpacingSmall,
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(
                         height: 200,
                         child: CupertinoPicker(
                           itemExtent: 60,
+                          offAxisFraction: -0.1,
                           scrollController: fixedExtentScrollController,
                           onSelectedItemChanged: (index) {},
                           children: [
-                            BuildPlainActionButton(title: "Visual Media", icon: Icon(Iconsax.image, color: Colors.deepPurple,)),
-                            BuildPlainActionButton(title: "Auto", icon: Icon(Iconsax.autobrightness)),
-                            BuildPlainActionButton(title: "Document", icon: Icon(Iconsax.document)),
-                            BuildPlainActionButton(title: "Audio", icon: Icon(Iconsax.audio_square)),
+                            BuildPlainActionButton(title: "Link", icon: Icon(Iconsax.link, color: context.theme.primaryColor,)),
+                            BuildPlainActionButton(title: "Auto", icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor,)),
+                            BuildPlainActionButton(title: "Media", icon: Icon(Iconsax.image, color: context.theme.primaryColor,)),
+                            BuildPlainActionButton(title: "Document", icon: Icon(Iconsax.document, color: context.theme.primaryColor,)),
+                            BuildPlainActionButton(title: "Audio", icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor,)),
+                            
                           ],
                         ),
                       ),
@@ -107,9 +88,11 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
                         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                         child: CustomElevatedButton(
                           pixelHeight: 40,
+                          borderRadius: 12,
+                          pixelWidth: context.deviceWidth,
                           backgroundColor: Colors.deepPurple,
                           contentPadding: EdgeInsets.symmetric(horizontal: 48, vertical: 8),
-                          child: CustomText("Pick", fontWeight: FontWeight.bold,),
+                          child: CustomText("Pick", fontWeight: FontWeight.bold, color: Colors.white,),
                         ),
                       ),
                     ],
@@ -125,6 +108,6 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
           ),
         ),
       ],
-    ).animate().scaleY(alignment: Alignment.bottomCenter, duration: Durations.short4, curve: CustomCurves.defaultIosSpring).fadeIn();
+    ).animate().flipV(begin: -.2, end: 0,  duration: Durations.medium4, curve: CustomCurves.bouncySpring).scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.medium4, curve: CustomCurves.bouncySpring).fadeIn();
   }
 }

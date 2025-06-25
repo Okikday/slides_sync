@@ -28,7 +28,7 @@ class HomeAppBar extends ConsumerWidget {
       surfaceTintColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor:
-            isScrolled ? (context.isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)) : Theme.of(context).scaffoldBackgroundColor,
+            isScrolled ? (context.isDarkMode ? AppColors.deepBlue : AppColors.accent) : Theme.of(context).scaffoldBackgroundColor,
         statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
         statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
@@ -67,13 +67,13 @@ class HomeAppBar extends ConsumerWidget {
                     pixelWidth: context.defaultBtnDimension,
                     overlayColor: Colors.lightBlueAccent.withAlpha(40),
                     contentPadding: EdgeInsets.zero,
-                    backgroundColor: isScrolled ? SlidesRepoColors.lightGray.withAlpha(100) : SlidesRepoColors.lightGray,
+                    backgroundColor: isScrolled ? AppColors.lightGray.withAlpha(100) : AppColors.lightGray,
                     shape: CircleBorder(),
                     child: Icon(Iconsax.profile_circle, color: isScrolled ? Colors.deepPurple : Colors.black, size: context.defaultBtnDimension * 0.5,),
                   ),
 
                   ConstantSizing.rowSpacingMedium,
-                  Expanded(child: CustomText(title, fontSize: 16, fontWeight: FontWeight.bold)),
+                  Expanded(child: CustomText(title, fontSize: 17, fontWeight: FontWeight.bold, color: context.theme.primaryColor,)),
 
                   // CustomElevatedButton(
                   //   shape: CircleBorder(),
@@ -86,7 +86,7 @@ class HomeAppBar extends ConsumerWidget {
                     onClick: onClickNotification,
                     overlayColor: Colors.lightBlueAccent.withAlpha(60),
                     shape: CircleBorder(),
-                    backgroundColor: isScrolled ? SlidesRepoColors.altLightGray.withAlpha(100) : SlidesRepoColors.lightGray,
+                    backgroundColor: isScrolled ? AppColors.altLightGray.withAlpha(100) : AppColors.lightGray,
                     child: Badge(
                       backgroundColor: Colors.transparent,
                       offset: Offset(-1, -1),

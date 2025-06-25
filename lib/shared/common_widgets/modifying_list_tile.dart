@@ -31,7 +31,7 @@ class ModifyingListTile extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(bottom: buttonPadding),
-      child: ClipRSuperellipse(
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: ColoredBox(
           // color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
