@@ -1,6 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class CourseCategoriesCard extends ConsumerWidget {
@@ -35,11 +36,11 @@ class CourseCategoriesCard extends ConsumerWidget {
                 height: 40,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple,
+                  color: context.theme.primaryColor.withAlpha(100),
                   shape: BoxShape.circle,
                   border: Border.fromBorderSide(BorderSide(color: Colors.deepPurpleAccent.withAlpha(40), width: 1.0)),
                 ),
-                child: ClipOval(child: icon),
+                child: icon,
               ),
               ConstantSizing.rowSpacingMedium,
               Expanded(

@@ -34,19 +34,29 @@ const CourseSubCollectionSchema = Schema(
       type: IsarType.objectList,
       target: r'CourseContent',
     ),
-    r'description': PropertySchema(
+    r'createdAt': PropertySchema(
       id: 4,
+      name: r'createdAt',
+      type: IsarType.dateTime,
+    ),
+    r'description': PropertySchema(
+      id: 5,
       name: r'description',
       type: IsarType.string,
     ),
     r'hashCode': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'imageLocationJson': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'imageLocationJson',
+      type: IsarType.string,
+    ),
+    r'parentId': PropertySchema(
+      id: 8,
+      name: r'parentId',
       type: IsarType.string,
     )
   },
@@ -76,6 +86,7 @@ int _courseSubCollectionEstimateSize(
   }
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.imageLocationJson.length * 3;
+  bytesCount += 3 + object.parentId.length * 3;
   return bytesCount;
 }
 
@@ -94,9 +105,11 @@ void _courseSubCollectionSerialize(
     CourseContentSchema.serialize,
     object.courseContents,
   );
-  writer.writeString(offsets[4], object.description);
-  writer.writeLong(offsets[5], object.hashCode);
-  writer.writeString(offsets[6], object.imageLocationJson);
+  writer.writeDateTime(offsets[4], object.createdAt);
+  writer.writeString(offsets[5], object.description);
+  writer.writeLong(offsets[6], object.hashCode);
+  writer.writeString(offsets[7], object.imageLocationJson);
+  writer.writeString(offsets[8], object.parentId);
 }
 
 CourseSubCollection _courseSubCollectionDeserialize(
@@ -116,8 +129,10 @@ CourseSubCollection _courseSubCollectionDeserialize(
           CourseContent(),
         ) ??
         const <CourseContent>[],
-    description: reader.readStringOrNull(offsets[4]) ?? "",
-    imageLocationJson: reader.readStringOrNull(offsets[6]) ?? '{}',
+    createdAt: reader.readDateTimeOrNull(offsets[4]),
+    description: reader.readStringOrNull(offsets[5]) ?? "",
+    imageLocationJson: reader.readStringOrNull(offsets[7]) ?? '{}',
+    parentId: reader.readStringOrNull(offsets[8]) ?? '',
   );
   return object;
 }
@@ -144,11 +159,15 @@ P _courseSubCollectionDeserializeProp<P>(
           ) ??
           const <CourseContent>[]) as P;
     case 4:
-      return (reader.readStringOrNull(offset) ?? "") as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset) ?? "") as P;
     case 6:
+      return (reader.readLong(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset) ?? '{}') as P;
+    case 8:
+      return (reader.readStringOrNull(offset) ?? '') as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -656,6 +675,80 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
   }
 
   QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      createdAtIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'createdAt',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      createdAtIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'createdAt',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      createdAtEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      createdAtGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      createdAtLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'createdAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      createdAtBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'createdAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
       descriptionEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -978,6 +1071,142 @@ extension CourseSubCollectionQueryFilter on QueryBuilder<CourseSubCollection,
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'imageLocationJson',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'parentId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'parentId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseSubCollection, CourseSubCollection, QAfterFilterCondition>
+      parentIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'parentId',
         value: '',
       ));
     });

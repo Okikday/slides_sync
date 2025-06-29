@@ -5,7 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_sub_collection.dart';
 import 'package:slides_sync/features/modify_courses/domain/usecases/modify_collections_uc/modify_collection_actions.dart';
@@ -72,7 +72,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
                     margin: EdgeInsets.only(left: 12),
                     decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.lightBlueAccent.withAlpha(40)),
-                    child: BuildImagePathWidget(fileLocation: FileLocation()),
+                    child: BuildImagePathWidget(fileDetails: FileDetails()),
                   ),
                   Expanded(
                     child: CustomTextfield(

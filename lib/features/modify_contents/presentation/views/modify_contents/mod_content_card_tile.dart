@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/shared/common_widgets/modifying_list_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -21,7 +21,7 @@ class ModContentCardTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ModifyingListTile(
       leadingIcon: BuildImagePathWidget(
-        fileLocation: FileLocation(),
+        fileDetails: FileDetails(),
         fallbackWidget: Icon(
           WidgetHelper.resolveIconData(content.courseContentType),
           size: 22,

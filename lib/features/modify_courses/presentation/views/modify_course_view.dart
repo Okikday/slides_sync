@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
@@ -117,7 +117,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
           title: courseModel.courseName,
           description: courseModel.description.trim(),
           courseCode: courseModel.courseCode.trim(),
-          courseFileLocation: courseModel.imageLocationJson,
+          courseFileDetails: courseModel.imageLocationJson,
           onClickEditCourse: () async {
             await showModalBottomSheet(
               context: context,
@@ -168,7 +168,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
               ),
     
           onClickImage: () async {
-            if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
+            if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
               modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
               return;
             }
@@ -177,7 +177,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
           },
     
           onLongPressImage: () async {
-            if (!courseModel.imageLocationJson.fileLocation.containsImagePath) {
+            if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
               modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
               return;
             }

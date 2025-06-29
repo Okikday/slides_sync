@@ -41,16 +41,8 @@ class ListCourseCard extends ConsumerWidget {
         decoration: BoxDecoration(
           color: (isDarkMode ? AppColors.deepBlue : AppColors.lightGray),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(width: 2, color: Colors.lightBlueAccent.withAlpha(15)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(50),
-              blurRadius: 8,
-              offset: Offset(0, 0),
-              blurStyle: BlurStyle.inner,
-              spreadRadius: 2,
-            ),
-          ],
+          border: Border.all(width: 2, color: context.theme.cardColor.withAlpha(15)),
+          
         ),
         child: Row(
           children: [

@@ -4,5 +4,6 @@ enum CourseContentType{
   image,
   link,
   audio,
-  video
+  video,
+  note,
 }

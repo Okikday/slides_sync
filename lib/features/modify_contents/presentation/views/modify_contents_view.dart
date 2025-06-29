@@ -37,7 +37,7 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
           ),
         ),
 
-        floatingActionButton: AddContentsFAB(),
+        floatingActionButton: AddContentsFAB(collection: widget.record.collection,),
 
         body: ModifyContentsOuterSection(),
       ),

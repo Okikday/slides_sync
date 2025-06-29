@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
 import 'package:uuid/uuid.dart';
 
 export 'course_content_type.dart';
-
 
 part 'course_content.g.dart';
 
 @embedded
 class CourseContent {
   final String id;
+  final String parentId;
   final String title;
 
   /// appended with type before path/link e.g. "file:anonymous.jpg" or "link:https://image.jpg"
@@ -21,7 +21,7 @@ class CourseContent {
   final String description;
 
   /// appended with type before path/link e.g. "file:anonymous.jpg" or "link:https://image.jpg"
-  // final String fileLocation;
+  // final String fileDetails;
   @enumerated
   final CourseContentType courseContentType;
   //udilv
@@ -29,27 +29,28 @@ class CourseContent {
 
   CourseContent({
     this.id = '',
+    this.parentId = '',
     this.title = '',
     this.createdAt,
     this.path = '',
     this.description = '',
-    // this.fileLocation = '{}',
+    // this.fileDetails = '{}',
     this.courseContentType = CourseContentType.unknown,
     this.metadataJson = '{}',
   });
 
-
   factory CourseContent.create({
     required String title,
-    required FileLocation path,
+    required String parentId,
+    required FileDetails path,
     DateTime? createdAt,
     required CourseContentType courseContentType,
     String description = "",
     String? metadataJson,
   }) {
-
     return CourseContent(
       id: const Uuid().v4(), // generate a unique id
+      parentId: parentId,
       title: title,
       createdAt: createdAt ?? DateTime.now(),
       path: path.toJson(),
@@ -61,6 +62,7 @@ class CourseContent {
 
   CourseContent copyWith({
     String? id,
+    String? parentId,
     String? title,
     DateTime? createdAt,
     String? path,
@@ -70,6 +72,7 @@ class CourseContent {
   }) {
     return CourseContent(
       id: id ?? this.id,
+      parentId: parentId ?? this.parentId,
       title: title ?? this.title,
       createdAt: createdAt ?? this.createdAt,
       path: path ?? this.path,
@@ -85,6 +88,7 @@ class CourseContent {
       other is CourseContent &&
           runtimeType == other.runtimeType &&
           id == other.id &&
+          parentId == other.parentId &&
           title == other.title &&
           createdAt == other.createdAt &&
           path == other.path &&
@@ -95,6 +99,7 @@ class CourseContent {
   @override
   int get hashCode =>
       id.hashCode ^
+      parentId.hashCode ^
       title.hashCode ^
       createdAt.hashCode ^
       path.hashCode ^
@@ -105,6 +110,7 @@ class CourseContent {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'parentId': parentId,
       'title': title,
       'createdAt': createdAt?.toIso8601String(),
       'path': path,
@@ -117,8 +123,9 @@ class CourseContent {
   factory CourseContent.fromMap(Map<String, dynamic> map) {
     return CourseContent(
       id: map['id'] as String,
+      parentId: map['parentId'] as String,
       title: map['title'] as String,
-      createdAt: map['createdAt']  == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
+      createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       path: map['path'] as String,
       description: map['description'] as String,
       courseContentType: CourseContentType.values[map['courseContentType'] as int],

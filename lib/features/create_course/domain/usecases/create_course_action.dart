@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -14,7 +14,7 @@ Future<Result<CourseModel>> createCourseAction({String courseCode = '', required
 
     final String? newPath = await compressCourseImageAsFile(courseImagePath, folderPath: "courses/${courseModel.courseId}");
     if (newPath != null) {
-      courseModel = courseModel.copyWith(imageLocation: FileLocation(filePath: newPath));
+      courseModel = courseModel.copyWith(imageLocation: FileDetails(filePath: newPath));
     }
 
     await CourseRepo.addCourse(courseModel);

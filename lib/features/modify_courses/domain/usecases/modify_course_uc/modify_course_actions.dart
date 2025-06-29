@@ -6,7 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
@@ -31,12 +31,12 @@ class ModifyCourseActions {
     final Result<bool?> createCourseOutcome = await Result.tryRunAsync<bool>(() async {
       CourseModel? courseModel = await CourseRepo.getCourseByDbId(id);
       if (courseModel == null) return false;
-      if (courseModel.imageLocationJson.containsAnyImagePath) {
+      if (courseModel.imageLocationJson.containsAnyFilePath) {
         await FileUtils.deleteFileAtPath(courseModel.imageLocationJson.filePath);
       }
       final String? newPath = await compressCourseImageAsFile(newImageFile.path, folderPath: "courses/${courseModel.courseId}");
       if (newPath != null) {
-        courseModel = courseModel.copyWith(imageLocation: FileLocation(filePath: newPath));
+        courseModel = courseModel.copyWith(imageLocation: FileDetails(filePath: newPath));
         await CourseRepo.addCourse(courseModel);
         log("Successfully changed image ");
         return true;
@@ -54,8 +54,8 @@ class ModifyCourseActions {
   Future<bool> deleteCourseImageAction({required int courseDbId}) async {
     CourseModel? courseModel = await CourseRepo.getCourseByDbId(courseDbId);
     if (courseModel == null) return false;
-    if (courseModel.imageLocationJson.containsAnyImagePath) {
-      await CourseRepo.addCourse(courseModel.copyWith(imageLocation: FileLocation()));
+    if (courseModel.imageLocationJson.containsAnyFilePath) {
+      await CourseRepo.addCourse(courseModel.copyWith(imageLocation: FileDetails()));
       await FileUtils.deleteFileAtPath(courseModel.imageLocationJson.filePath);
       return true;
     }
@@ -99,7 +99,7 @@ class ModifyCourseActions {
 
   /// Navigates to dialog to preview image
   Future<void> previewImageActionRoute(BuildContext context, {required String courseImagePath}) async {
-    if (!courseImagePath.fileLocation.containsImagePath) return;
+    if (!courseImagePath.fileDetails.containsFilePath) return;
     CustomDialog.show(
       context,
       transitionDuration: Durations.short3,

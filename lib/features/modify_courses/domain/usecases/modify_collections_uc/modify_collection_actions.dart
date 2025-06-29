@@ -18,7 +18,7 @@ class ModifyCollectionActions {
           return;
         }
         CourseRepo.addCourse(
-          courseModel.copyWith(subCollections: [CourseSubCollection.create(collectionTitle: text), ...courseModel.subCollections]),
+          courseModel.copyWith(subCollections: [CourseSubCollection.create(parentId: courseModel.courseId, collectionTitle: text), ...courseModel.subCollections]),
         );
         if (context.mounted) {
           CustomDialog.hide(context);

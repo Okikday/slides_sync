@@ -1,13 +1,13 @@
-
+import 'package:isar/isar.dart';
 import 'package:slides_sync/core/data/isar_data/isar_data.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 
 class CourseRepo {
   static final IsarData<CourseModel> isarData = IsarData.instance<CourseModel>();
 
-  // static Future<QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>> _queryById(String courseId) async {
-  //   return (await isarData.query<CourseModel>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
-  // }
+  static Future<QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>> _queryById(String courseId) async {
+    return (await isarData.query<CourseModel>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
+  }
 
   static Future<void> deleteCourseByDbId(int dbId) async => await isarData.deleteById(dbId);
 
@@ -38,24 +38,24 @@ class CourseRepo {
   //   return PageResponse(items: items, nextPageKey: nextPageKey);
   // }
 
-  // static Future<CourseModel?> getCourseById(String courseId) async {
-  //   final idQuery = await _queryById(courseId);
-  //   return await idQuery.findFirst();
-  // }
+  static Future<CourseModel?> getCourseById(String courseId) async {
+    final idQuery = await _queryById(courseId);
+    return await idQuery.findFirst();
+  }
 
-  // static Stream<CourseModel?> watchCourseById(String courseId) async* {
-  //   final idQuery = await _queryById(courseId);
-  //   yield* idQuery.watch(fireImmediately: true).map((list) => list.firstOrNull);
-  // }
+  static Stream<CourseModel?> watchCourseById(String courseId) async* {
+    final idQuery = await _queryById(courseId);
+    yield* idQuery.watch(fireImmediately: true).map((list) => list.firstOrNull);
+  }
 
-  // static Future<CourseModel?> deleteCourseById(String courseId) async {
-  //   final isar = await isarData.isarFuture;
+  static Future<CourseModel?> deleteCourseById(String courseId) async {
+    final isar = await isarData.isarFuture;
 
-  //   return await isar.writeTxn<CourseModel?>(() async {
-  //     final idQuery = await _queryById(courseId);
-  //     final CourseModel? course = await idQuery.findFirst();
-  //     if (course != null) await idQuery.deleteFirst();
-  //     return course;
-  //   });
-  // }
+    return await isar.writeTxn<CourseModel?>(() async {
+      final idQuery = await _queryById(courseId);
+      final CourseModel? course = await idQuery.findFirst();
+      if (course != null) await idQuery.deleteFirst();
+      return course;
+    });
+  }
 }

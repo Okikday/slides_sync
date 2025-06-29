@@ -2,11 +2,13 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:material_shapes/material_shapes.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
+import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/empty_collections_view.dart';
@@ -39,6 +41,10 @@ class CourseDetailsCollectionSection extends StatelessWidget {
       );
     }
 
+    List<RoundedPolygon> shapes =
+        materialShapes.map<RoundedPolygon>((({RoundedPolygon shape, String title}) record) => record.shape).toList();
+    shapes.shuffle();
+
     return SliverList.builder(
       itemCount: collections.length,
       itemBuilder: (context, index) {
@@ -47,7 +53,13 @@ class CourseDetailsCollectionSection extends StatelessWidget {
           child: CourseCategoriesCard(
             isDarkMode: context.isDarkMode,
             title: collections[index].collectionTitle,
-            icon: BuildImagePathWidget(fileLocation: collections[index].imageLocationJson.fileLocation, fallbackWidget: Icon(Iconsax.book)),
+            icon: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipPath(
+                clipper: MorphClipper(path: shapes[index.clamp(0, 30)].toPath(), size: Size(20, 20)),
+                child: ColoredBox(color: context.theme.primaryColor),
+              ),
+            ),
             onTap: () {
               if (context.mounted) {
                 Navigator.of(context).push(

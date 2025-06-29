@@ -50,7 +50,6 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
     final AsyncValue<bool> asyncIsListView = ref.watch(widget.isListViewAsyncProvider);
     final isListView = asyncIsListView.value ?? false;
 
-
     return streamedCourses.when(
       data: (List<CourseModel> data) {
         if (data.isEmpty) {

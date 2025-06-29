@@ -7,6 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/features/create_content/presentation/views/add_contents_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -108,6 +109,23 @@ class ManageCourseDialogCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          ClipRSuperellipse(
+                            borderRadius: BorderRadius.circular(12),
+                            child: BuildPlainActionButton(
+                              contentPadding: EdgeInsets.fromLTRB(4, 8, 4, 8),
+                              title: "Add material",
+                              icon: Icon(Iconsax.add_circle, size: 24, color: Colors.deepPurpleAccent),
+                              onTap: () {
+                                CustomDialog.hide(context);
+                                CustomDialog.show(context,
+                                barrierColor: Colors.black12,
+                                 child: AddContentsBottomSheet());
+                              },
+                            ),
+                          ),
+
+                          divider,
+
                           ClipRSuperellipse(
                             borderRadius: BorderRadius.circular(12),
                             child: BuildPlainActionButton(

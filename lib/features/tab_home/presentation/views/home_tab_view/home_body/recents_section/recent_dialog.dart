@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 
 import 'package:slides_sync/features/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
@@ -87,7 +87,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                     color: Colors.lightBlueAccent.withAlpha(40),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
-                                  child: BuildImagePathWidget(fileLocation: FileLocation()),
+                                  child: BuildImagePathWidget(fileDetails: FileDetails()),
                                 ),
                                 Expanded(
                                   child: Row(

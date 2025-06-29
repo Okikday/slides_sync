@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
@@ -26,7 +26,7 @@ class PreviewModifyCourseImageDialog extends ConsumerWidget {
               width: dimension > 300 ? 300 : dimension,
               height: dimension > 300 ? 300 : dimension,
               child: BuildImagePathWidget(
-                fileLocation: imagePath.fileLocation,
+                fileDetails: imagePath.fileDetails,
                 fit: BoxFit.contain,
                 width: dimension,
                 fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),

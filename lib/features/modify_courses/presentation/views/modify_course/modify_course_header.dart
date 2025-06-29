@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
@@ -11,7 +11,7 @@ class ModifyCourseHeader extends ConsumerWidget {
   final String title;
   final String courseCode;
   final String description;
-  final String courseFileLocation;
+  final String courseFileDetails;
   final String? heroineTag;
 
   final void Function() onClickAddDescription;
@@ -26,7 +26,7 @@ class ModifyCourseHeader extends ConsumerWidget {
     this.courseCode = "",
     this.heroineTag,
     required this.description,
-    required this.courseFileLocation,
+    required this.courseFileDetails,
     required this.onClickAddDescription,
     required this.onClickEditCourse,
     required this.onClickDelete,
@@ -89,7 +89,7 @@ class ModifyCourseHeader extends ConsumerWidget {
               ),
               ConstantSizing.rowSpacingLarge,
               Heroine(
-                tag: "PreviewModifyCourseImageDialog => $courseFileLocation",
+                tag: "PreviewModifyCourseImageDialog => $courseFileDetails",
                 placeholderBuilder: (context, heroSize, child) => child,
                 spring: Spring.snappy,
                 child: ClipOval(
@@ -104,7 +104,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                         child: SizedBox.square(
                           dimension: 80,
                           child: BuildImagePathWidget(
-                            fileLocation: courseFileLocation.fileLocation,
+                            fileDetails: courseFileDetails.fileDetails,
                             fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
                           ),
                         ),

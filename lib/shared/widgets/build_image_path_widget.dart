@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -13,14 +13,14 @@ import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 
 class BuildImagePathWidget extends ConsumerStatefulWidget {
-  final FileLocation fileLocation;
+  final FileDetails fileDetails;
   final Widget fallbackWidget;
   final BoxFit fit;
   final double? width;
   final double? height;
   const BuildImagePathWidget({
     super.key,
-    required this.fileLocation,
+    required this.fileDetails,
     this.fallbackWidget = const Icon(Iconsax.document, color: Colors.grey,),
     this.fit = BoxFit.cover,
     this.width,
@@ -45,8 +45,8 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
   void didUpdateWidget(covariant BuildImagePathWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final oldPath = oldWidget.fileLocation.filePath;
-    final newPath = widget.fileLocation.filePath;
+    final oldPath = oldWidget.fileDetails.filePath;
+    final newPath = widget.fileDetails.filePath;
 
     if (newPath.isNotEmpty) {
       final file = File(newPath);
@@ -60,7 +60,7 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
   }
 
   void _loadImageBytes() {
-    final filePath = widget.fileLocation.filePath;
+    final filePath = widget.fileDetails.filePath;
     if (filePath.isNotEmpty && File(filePath).existsSync()) {
       final file = File(filePath);
       final bytes = file.readAsBytesSync();
@@ -77,18 +77,18 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final fileLocation = widget.fileLocation;
+    final fileDetails = widget.fileDetails;
     final fallbackWidget = widget.fallbackWidget;
     final fit = widget.fit;
     final width = widget.width;
     final height = widget.height;
 
-    if (!fileLocation.containsImagePath) return fallbackWidget;
+    if (!fileDetails.containsFilePath) return fallbackWidget;
 
-    if (fileLocation.filePath.isNotEmpty && imageBytes != null) {
+    if (fileDetails.filePath.isNotEmpty && imageBytes != null) {
       return ImageFromMemory(imageBytes: imageBytes, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
-    } else if (fileLocation.urlPath.isNotEmpty) {
-      return ImageFromNetwork(fileLocation: fileLocation, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
+    } else if (fileDetails.urlPath.isNotEmpty) {
+      return ImageFromNetwork(fileDetails: fileDetails, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
     }
 
     return fallbackWidget;
@@ -98,14 +98,14 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
 class ImageFromNetwork extends StatelessWidget {
   const ImageFromNetwork({
     super.key,
-    required this.fileLocation,
+    required this.fileDetails,
     required this.fit,
     required this.width,
     required this.height,
     required this.fallbackWidget,
   });
 
-  final FileLocation fileLocation;
+  final FileDetails fileDetails;
   final BoxFit fit;
   final double? width;
   final double? height;
@@ -114,7 +114,7 @@ class ImageFromNetwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: fileLocation.urlPath,
+      imageUrl: fileDetails.urlPath,
       fit: fit,
       width: width,
       height: height,

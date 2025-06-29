@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -37,9 +38,10 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
   void initState() {
     super.initState();
     expandAnimationController = AnimationController(vsync: this, duration: Durations.extralong2, reverseDuration: Durations.medium2);
-    expandAnim = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: expandAnimationController, curve: CustomCurves.bouncySpring, reverseCurve: CustomCurves.bouncySpring),
-    );
+    expandAnim = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: expandAnimationController, curve: CustomCurves.bouncySpring, reverseCurve: CustomCurves.decelerate));
   }
 
   @override
@@ -54,6 +56,8 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
       if (!mounted) return;
       next ? expandAnimationController.forward() : expandAnimationController.reverse();
     });
+
+    log("Build Course Material Card");
 
     final courseContent = widget.courseContent;
     return AnimatedContainer(

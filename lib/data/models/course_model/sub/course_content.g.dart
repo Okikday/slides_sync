@@ -44,13 +44,18 @@ const CourseContentSchema = Schema(
       name: r'metadataJson',
       type: IsarType.string,
     ),
-    r'path': PropertySchema(
+    r'parentId': PropertySchema(
       id: 6,
+      name: r'parentId',
+      type: IsarType.string,
+    ),
+    r'path': PropertySchema(
+      id: 7,
       name: r'path',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'title',
       type: IsarType.string,
     )
@@ -70,6 +75,7 @@ int _courseContentEstimateSize(
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.metadataJson.length * 3;
+  bytesCount += 3 + object.parentId.length * 3;
   bytesCount += 3 + object.path.length * 3;
   bytesCount += 3 + object.title.length * 3;
   return bytesCount;
@@ -87,8 +93,9 @@ void _courseContentSerialize(
   writer.writeLong(offsets[3], object.hashCode);
   writer.writeString(offsets[4], object.id);
   writer.writeString(offsets[5], object.metadataJson);
-  writer.writeString(offsets[6], object.path);
-  writer.writeString(offsets[7], object.title);
+  writer.writeString(offsets[6], object.parentId);
+  writer.writeString(offsets[7], object.path);
+  writer.writeString(offsets[8], object.title);
 }
 
 CourseContent _courseContentDeserialize(
@@ -105,8 +112,9 @@ CourseContent _courseContentDeserialize(
     description: reader.readStringOrNull(offsets[2]) ?? '',
     id: reader.readStringOrNull(offsets[4]) ?? '',
     metadataJson: reader.readStringOrNull(offsets[5]) ?? '{}',
-    path: reader.readStringOrNull(offsets[6]) ?? '',
-    title: reader.readStringOrNull(offsets[7]) ?? '',
+    parentId: reader.readStringOrNull(offsets[6]) ?? '',
+    path: reader.readStringOrNull(offsets[7]) ?? '',
+    title: reader.readStringOrNull(offsets[8]) ?? '',
   );
   return object;
 }
@@ -136,6 +144,8 @@ P _courseContentDeserializeProp<P>(
       return (reader.readStringOrNull(offset) ?? '') as P;
     case 7:
       return (reader.readStringOrNull(offset) ?? '') as P;
+    case 8:
+      return (reader.readStringOrNull(offset) ?? '') as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -148,6 +158,7 @@ const _CourseContentcourseContentTypeEnumValueMap = {
   'link': 3,
   'audio': 4,
   'video': 5,
+  'note': 6,
 };
 const _CourseContentcourseContentTypeValueEnumMap = {
   0: CourseContentType.unknown,
@@ -156,6 +167,7 @@ const _CourseContentcourseContentTypeValueEnumMap = {
   3: CourseContentType.link,
   4: CourseContentType.audio,
   5: CourseContentType.video,
+  6: CourseContentType.note,
 };
 
 extension CourseContentQueryFilter
@@ -747,6 +759,142 @@ extension CourseContentQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'metadataJson',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'parentId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'parentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'parentId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'parentId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      parentIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'parentId',
         value: '',
       ));
     });

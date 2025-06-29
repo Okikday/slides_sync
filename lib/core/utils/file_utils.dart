@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
@@ -95,6 +96,53 @@ class FileUtils {
       return await file.length();
     } catch (_) {
       return 0;
+    }
+  }
+
+  /// Clears the cache and temporary directories.
+  Future<void> clearCacheOrTemp() async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      if (tempDir.existsSync()) {
+        tempDir.deleteSync(recursive: true);
+      }
+
+      final cacheDir = await getApplicationCacheDirectory();
+      if (cacheDir.existsSync()) {
+        cacheDir.deleteSync(recursive: true);
+      }
+
+      log('Cache and temporary directories cleared.');
+    } catch (e) {
+      log('Error clearing cache/temp: $e');
+    }
+  }
+
+  /// Searches for a file by name in the given [searchPath] or
+  /// defaults to the app’s application directory.
+  Future<File?> searchFile(String fileName, {Directory? searchPath}) async {
+    try {
+      final Directory dir = searchPath ?? await getApplicationDocumentsDirectory();
+
+      File? result;
+
+      await for (var entity in dir.list(recursive: true, followLinks: false)) {
+        if (entity is File && entity.path.endsWith(fileName)) {
+          result = entity;
+          break; // Stop at first match
+        }
+      }
+
+      if (result != null) {
+        log('File found: ${result.path}');
+      } else {
+        log('File not found.');
+      }
+
+      return result;
+    } catch (e) {
+      log('Error searching for file: $e');
+      return null;
     }
   }
 }

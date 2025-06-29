@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:isar/isar.dart';
 import 'package:collection/collection.dart';
-import 'package:slides_sync/core/models/file_location.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_sub_collection.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
@@ -41,7 +41,7 @@ class CourseModel {
     required String courseTitle,
     String description = '',
     DateTime? createdAt,
-    FileLocation? imageLocation,
+    FileDetails? imageLocation,
     List<CourseSubCollection> subCollections = const [],
     List<CourseContent> rootContents = const [],
     String courseMetadataJson = '{}',
@@ -63,7 +63,7 @@ class CourseModel {
     String? courseTitle,
     DateTime? createdAt,
     String? description,
-    FileLocation? imageLocation,
+    FileDetails? imageLocation,
     List<CourseSubCollection>? subCollections,
     List<CourseContent>? rootContents,
     String? courseMetadataJson,
