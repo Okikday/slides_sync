@@ -1,4 +1,3 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,18 +36,17 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
           ),
         ),
 
-        floatingActionButton: AddContentsFAB(collection: widget.record.collection,),
+        floatingActionButton: AddContentsFAB(collection: widget.record.collection),
 
-        body: ModifyContentsOuterSection(),
+        body: ModifyContentsOuterSection(collection: widget.record.collection,),
       ),
     );
   }
 }
 
 class ModifyContentsOuterSection extends ConsumerWidget {
-  const ModifyContentsOuterSection({
-    super.key,
-  });
+  final CourseSubCollection collection;
+  const ModifyContentsOuterSection({super.key, required this.collection});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,8 +54,8 @@ class ModifyContentsOuterSection extends ConsumerWidget {
       slivers: [
         ModifyContentsHeader(),
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
-        ModifyContentListView(),
-    
+        ModifyContentListView(contentList: collection.courseContents,),
+
         SliverToBoxAdapter(child: ConstantSizing.columnSpacing(context.bottomPadding)),
       ],
     );

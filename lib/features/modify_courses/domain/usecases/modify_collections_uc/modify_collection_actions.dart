@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
@@ -18,7 +19,12 @@ class ModifyCollectionActions {
           return;
         }
         CourseRepo.addCourse(
-          courseModel.copyWith(subCollections: [CourseSubCollection.create(parentId: courseModel.courseId, collectionTitle: text), ...courseModel.subCollections]),
+          courseModel.copyWith(
+            subCollections: [
+              CourseSubCollection.create(parentId: courseModel.courseId, collectionTitle: text),
+              ...courseModel.subCollections,
+            ],
+          ),
         );
         if (context.mounted) {
           CustomDialog.hide(context);
@@ -105,6 +111,7 @@ class ModifyCollectionActions {
         if (context.mounted) await UiUtils.showFlushBar(newContext, msg: "Couldn't find collection");
       } else {
         try {
+          await FileUtils.deleteAppDirectory(relativePath: collection.absolutePath);
           await CourseRepo.addCourse(
             currCourseModel.copyWith(
               subCollections: currCourseModel.subCollections.where((cm) => cm.collectionId != collection.collectionId).toList(),

@@ -23,7 +23,7 @@ class AddContentsFAB extends ConsumerWidget {
           transitionDuration: Durations.short1,
           reverseTransitionDuration: Durations.short1,
           blurSigma: Offset(2, 2),
-          child: AddContentsBottomSheet(),
+          child: AddContentsBottomSheet(collection: collection),
         );
       },
       shape: CircleBorder(),

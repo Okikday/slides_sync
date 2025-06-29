@@ -68,7 +68,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
                     duration: Durations.extralong3,
                     reverseDuration: Durations.medium1,
                     curve: CustomCurves.snappySpring,
-                    child: CourseMaterialsView(),
+                    child: CourseMaterialsView(collection: courseModel.subCollections[index],),
                   ),
                 );
               }

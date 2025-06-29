@@ -132,5 +132,6 @@ class CourseSubCollection {
 }
 
 extension CourseSubCollectionExtension on CourseSubCollection {
-  String get absolutePath => "$parentId${Platform.pathSeparator}$collectionId";
+  String get relativePath => "$parentId${Platform.pathSeparator}$collectionId";
+  String get absolutePath => "courses${Platform.pathSeparator}$relativePath";
 }

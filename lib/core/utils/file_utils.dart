@@ -25,7 +25,7 @@ class FileUtils {
       await targetDir.create(recursive: true);
     }
 
-    final String newPath = p.join(targetDirPath, fileName);
+    final String newPath = getUniqueFilePath(targetDirPath, fileName);
     await file.copy(newPath);
     return newPath;
   }
@@ -34,6 +34,20 @@ class FileUtils {
   /// Returns the path it's stored to.
   static Future<String> storeFile({required File file, String folderPath = ''}) async {
     return await _storeToApplicationsDocumentsDirectory(file, folderPath);
+  }
+
+  static String getUniqueFilePath(String dirPath, String fileName) {
+    String baseName = p.basenameWithoutExtension(fileName);
+    String extension = p.extension(fileName);
+    String newPath = p.join(dirPath, fileName);
+    int counter = 1;
+
+    while (File(newPath).existsSync()) {
+      newPath = p.join(dirPath, '$baseName($counter)$extension');
+      counter++;
+    }
+
+    return newPath;
   }
 
   /// Attempts to delete the file at [path].

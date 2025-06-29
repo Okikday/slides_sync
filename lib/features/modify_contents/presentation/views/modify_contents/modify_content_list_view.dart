@@ -7,19 +7,18 @@ import 'package:slides_sync/features/modify_contents/presentation/views/modify_c
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyContentListView extends StatelessWidget {
-  const ModifyContentListView({super.key});
+  final List<CourseContent> contentList;
+  const ModifyContentListView({super.key, required this.contentList});
 
   @override
   Widget build(BuildContext context) {
-    
-
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: context.hPadding7),
       sliver: SliverList.builder(
-        itemCount: 10,
+        itemCount: contentList.length,
         itemBuilder: (context, index) {
           return ModContentCardTile(
-            content: CourseContent.create(parentId: 'lol', title: "Last class recording", path: FileDetails(), courseContentType: CourseContentType.video),
+            content: contentList[index],
           ).animate().slideY(
             begin: double.parse((0.5 * (index + (10 / 2) / 10)).toStringAsFixed(2)),
             end: 0,

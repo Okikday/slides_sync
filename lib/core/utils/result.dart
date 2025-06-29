@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 enum ResultStatus { loading, success, error }
 
 class Result<T> {
@@ -15,6 +17,7 @@ class Result<T> {
   }
 
   factory Result.error(String message, [StackTrace? st]) {
+    log("error: $message", error: message, stackTrace: st);
     return Result._(status: ResultStatus.error, message: message, stackTrace: st);
   }
 

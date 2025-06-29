@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:developer';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:isar/isar.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/create_content/domain/usecases/add_contents_uc/add_contents_uc.dart';
@@ -36,6 +38,7 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
 
   @override
   Widget build(BuildContext context) {
+    final Map<int, ContentType> typeMap = {0: ContentType.auto, 1: ContentType.media, 2: ContentType.document, 3: ContentType.audio};
     return Stack(
           children: [
             Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
@@ -74,35 +77,28 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
                               itemExtent: 60,
                               offAxisFraction: -0.1,
                               scrollController: fixedExtentScrollController,
-                              onSelectedItemChanged: (index) async {
-                                final Map<int, ContentType> typeMap = {
-                                  0: ContentType.auto,
-                                  1: ContentType.media,
-                                  2: ContentType.document,
-                                  3: ContentType.audio,
-                                };
-                                if (widget.collection == null) {
-                                  await UiUtils.showFlushBar(context, msg: "Successfully added course contents!");
-                                  return;
-                                }
-                                await AddContentsUc.addToCollection(
-                                  rootNavigatorKey.currentContext!,
-                                  collection: widget.collection!,
-                                  type: typeMap[index] ?? typeMap[0]!,
-                                );
-                                await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "Successfully added course contents!");
-                              },
+                              onSelectedItemChanged: (index) async {},
                               children: [
                                 // BuildPlainActionButton(title: "Link", icon: Icon(Iconsax.link, color: context.theme.primaryColor)),
                                 BuildPlainActionButton(
                                   title: "Auto",
                                   icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
+                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[0] ?? typeMap[0]!),
                                 ),
-                                BuildPlainActionButton(title: "Media", icon: Icon(Iconsax.image, color: context.theme.primaryColor)),
-                                BuildPlainActionButton(title: "Document", icon: Icon(Iconsax.document, color: context.theme.primaryColor)),
+                                BuildPlainActionButton(
+                                  title: "Media",
+                                  icon: Icon(Iconsax.image, color: context.theme.primaryColor),
+                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[1] ?? typeMap[0]!),
+                                ),
+                                BuildPlainActionButton(
+                                  title: "Document",
+                                  icon: Icon(Iconsax.document, color: context.theme.primaryColor),
+                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[2] ?? typeMap[0]!),
+                                ),
                                 BuildPlainActionButton(
                                   title: "Audio",
                                   icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
+                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[3] ?? typeMap[0]!),
                                 ),
                               ],
                             ),
@@ -154,5 +150,23 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
         .flipV(begin: -.2, end: 0, duration: Durations.medium4, curve: CustomCurves.bouncySpring)
         .scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.medium4, curve: CustomCurves.bouncySpring)
         .fadeIn();
+  }
+}
+
+void onClickToAddContent(BuildContext context, {required CourseSubCollection? collection, required ContentType type}) async {
+  if (collection == null) {
+    log("Unable to add contents");
+    await UiUtils.showFlushBar(context, msg: "Unable to add contents", vibe: FlushbarVibe.warning);
+    return;
+  }
+  final result = await AddContentsUc.addToCollection(collection: collection, type: type);
+  if (result.isSuccess) {
+    if (result.data!) {
+      await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "Successfully added course contents!", vibe: FlushbarVibe.success);
+    } else if (!result.data!) {
+      await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "Couldn't complete adding content", vibe: FlushbarVibe.warning);
+    }
+  } else {
+    await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "An error occured while adding content", vibe: FlushbarVibe.error);
   }
 }

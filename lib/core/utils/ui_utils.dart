@@ -54,23 +54,51 @@ class UiUtils {
   ///
 }
 
-/// returns a list of Colors starting with the messageColor, backgroundColor
+// /// returns a list of Colors starting with the messageColor, backgroundColor
+// List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
+//   const errorColor = Color(0xfff30d0d);
+//   const successColor = Color(0xff00ff00);
+//   const warningColor = Color(0xFFF46B22);
+//   final normalColor = context.isDarkMode ? Colors.white : Colors.black;
+//   final normalBgColor =
+//       (context.isDarkMode ? AppColors.deepBlue.withValues(alpha: 0.8) : AppColors.lightGray.withValues(alpha: 0.8));
+
+//   switch (vibe) {
+//     case FlushbarVibe.none:
+//       return [normalColor, normalBgColor];
+//     case FlushbarVibe.error:
+//       return [errorColor, errorColor.withValues(alpha: 0.5)];
+//     case FlushbarVibe.success:
+//       return [successColor, successColor.withValues(alpha: 0.5)];
+//     case FlushbarVibe.warning:
+//       return [warningColor, warningColor.withValues(alpha: 0.5)];
+//   }
+// }
+
 List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
-  const errorColor = Color(0xfff30d0d);
-  const successColor = Color(0xff00ff00);
-  const warningColor = Color(0xFFF46B22);
-  final normalColor = context.isDarkMode ? Colors.white : Colors.black;
-  final normalBgColor =
-      (context.isDarkMode ? AppColors.deepBlue.withValues(alpha: 0.8) : AppColors.lightGray.withValues(alpha: 0.8));
+  // Premium colors with good contrast and subtle backgrounds
+  const errorColor = Color(0xFFB00020); // Deep red
+  final errorBgColor = errorColor.withOpacity(0.15);
+
+  const successColor = Color(0xFF2E7D32); // Rich green
+  final successBgColor = successColor.withOpacity(0.15);
+
+  const warningColor = Color(0xFFF9A825); // Warm gold
+  final warningBgColor = warningColor.withOpacity(0.15);
+
+  final normalColor = context.isDarkMode ? Colors.white : Colors.black87;
+  final normalBgColor = context.isDarkMode
+      ? const Color(0xFF1E1E2C).withOpacity(0.85) // Darker, muted blue-gray
+      : const Color(0xFFF5F5F7).withOpacity(0.85); // Soft off-white
 
   switch (vibe) {
     case FlushbarVibe.none:
       return [normalColor, normalBgColor];
     case FlushbarVibe.error:
-      return [errorColor, errorColor.withValues(alpha: 0.1)];
+      return [errorColor, errorBgColor];
     case FlushbarVibe.success:
-      return [successColor, successColor.withValues(alpha: 0.15)];
+      return [successColor, successBgColor];
     case FlushbarVibe.warning:
-      return [warningColor, warningColor.withValues(alpha: 0.15)];
+      return [warningColor, warningBgColor];
   }
 }
