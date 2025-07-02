@@ -50,13 +50,11 @@ class ModifyingListTile extends StatelessWidget {
                 spacing: ConstantSizing.spaceMedium,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomElevatedButton(
-                    pixelHeight: btnDimension,
-                    pixelWidth: btnDimension,
-                    contentPadding: EdgeInsets.all(buttonPadding),
-                    backgroundColor: Colors.lightBlueAccent.withAlpha(25),
-                    onClick: onTapLeading,
-                    child: leadingIcon,
+                  ClipRSuperellipse(
+                    borderRadius: BorderRadius.circular(12),
+                    child: ColoredBox(
+                      color: context.theme.primaryColor.withAlpha(80),
+                      child: SizedBox.square(dimension: btnDimension, child: leadingIcon)),
                   ),
                   Expanded(
                     child: Column(

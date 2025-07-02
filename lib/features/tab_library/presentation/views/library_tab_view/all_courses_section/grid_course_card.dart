@@ -1,8 +1,8 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class GridCourseCard extends ConsumerWidget {
@@ -15,6 +15,7 @@ class GridCourseCard extends ConsumerWidget {
     required this.isDarkMode,
     this.dotColor = Colors.transparent,
     this.courseImageWidget,
+    required this.dimension,
   });
 
   final String courseCode;
@@ -24,6 +25,7 @@ class GridCourseCard extends ConsumerWidget {
   final bool isDarkMode;
   final Color dotColor;
   final Widget? courseImageWidget;
+  final double dimension;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,100 +37,92 @@ class GridCourseCard extends ConsumerWidget {
         builder: (context, constraints) {
           return Container(
             decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
-            child: Stack(
-              children: [
-                Positioned(
-                  right: 12.0,
-                  top: 12.0,
-                  child: CircleAvatar(
-                    radius: 12,
-                    backgroundColor: Colors.deepPurple,
-                    child: ClipOval(child: SizedBox.square(dimension: 20, child: courseImageWidget)),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                spacing: 8,
-                                children: [
-                                  if (courseCode.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
-                                      child: CustomTextButton(
-                                        backgroundColor: Colors.deepPurple.withAlpha(80),
-                                        pixelHeight: 24,
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0,),
-                                        child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent,),
-                                      ),
-                                    ),
-                  
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                      child: CustomText(
-                                        courseName,
-                                        fontSize: courseCode.isNotEmpty ? 12 : 14,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: dimension / 2 - 3,
+                          backgroundColor: context.theme.cardColor.withAlpha(80),
+                          child: ClipOval(
+                            child: CircleAvatar(
+                              radius: dimension / 2 - 4,
+                              backgroundColor: context.theme.cardColor.withAlpha(100),
+                              child: SizedBox.square(dimension: dimension - 8, child: courseImageWidget),
+                            ),
+                          ),
+                        ),
+                        if (courseCode.isNotEmpty)
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: CustomTextButton(
+                                  backgroundColor: Colors.deepPurple.withAlpha(40),
+                                  pixelHeight: 24,
+                                  borderRadius: 6,
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: CustomText(
+                                    courseCode,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: context.theme.primaryColor.withAlpha(200),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                  
-                            ConstantSizing.rowSpacing(30),
-                          ],
-                        ),
-                      ),
-                  
-                      ConstantSizing.columnSpacingSmall,
-                  
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: CustomText(
-                          "${categoriesCount < 1 ? "No" : categoriesCount} categories",
-                          fontSize: 12,
-                          color: context.isDarkMode ? Colors.grey : Colors.deepPurple,
-                        ),
-                      ),
-                  
-                      ConstantSizing.columnSpacing(16),
-                  
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Row(
-                          spacing: 8.0,
-                          children: [
-                            Expanded(
-                              child: LinearProgressIndicator(
-                                minHeight: 16,
-                                borderRadius: BorderRadius.circular(36),
-                                value: (progress).clamp(0.1, 1.0),
-                                backgroundColor: Colors.black.withAlpha(40),
-                                color: Colors.deepPurple, //.withAlpha(40)
-                              ),
-                            ),
-                            CustomText("${(progress * 100).truncate()}%", fontSize: 12, fontWeight: FontWeight.bold),
-                          ],
-                        ),
-                      ),
-                    ],
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Align(alignment: Alignment.centerLeft, child: CustomText(courseName, overflow: TextOverflow.fade, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                
+                ConstantSizing.columnSpacing(4.0),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: CustomText(
+                      "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
+                      fontSize: 12,
+                      color: context.isDarkMode ? Colors.grey : AppColors.battleshipGrey,
+                    ),
+                  ),
+
+                  ConstantSizing.columnSpacing(14),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      spacing: 8.0,
+                      children: [
+                        Expanded(
+                          child: LinearProgressIndicator(
+                            minHeight: 12,
+                            borderRadius: BorderRadius.circular(36),
+                            value: (progress).clamp(0.1, 1.0),
+                            backgroundColor: Colors.black.withAlpha(40),
+                            color: Colors.deepPurple, //.withAlpha(40)
+                          ),
+                        ),
+                        // CustomText("${(progress * 100).truncate()}%", fontSize: 10, fontWeight: FontWeight.bold),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

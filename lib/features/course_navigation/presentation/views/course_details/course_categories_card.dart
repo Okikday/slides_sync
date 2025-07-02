@@ -50,7 +50,7 @@ class CourseCategoriesCard extends ConsumerWidget {
                   spacing: 4.0,
                   children: [
                     CustomText(title, fontSize: 15),
-                    CustomText("${contentCount == 0 ? "No" : "$contentCount"} items", fontSize: 12, color: Colors.grey),
+                    CustomText("${contentCount == 0 ? "No" : "$contentCount"} ${contentCount == 1 ? "item" : "items"}", fontSize: 12, color: Colors.grey),
                   ],
                 ),
               ),

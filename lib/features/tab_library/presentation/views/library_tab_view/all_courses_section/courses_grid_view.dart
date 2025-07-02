@@ -20,6 +20,8 @@ class CoursesGridView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDarkMode = context.isDarkMode;
+    final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 12),
       sliver: SliverGrid(
@@ -53,14 +55,15 @@ class CoursesGridView extends ConsumerWidget {
               },
               onTap: () => onTap(index),
               child: GridCourseCard(
-                isDarkMode: context.isDarkMode,
+                isDarkMode: isDarkMode,
+                dimension: dimension,
                 courseCode: courseModel.courseCode,
                 courseName: courseModel.courseName,
                 categoriesCount: courseModel.subCollections.length,
                 progress: 0.0,
-                courseImageWidget: BuildImagePathWidget(fileDetails:
-                  courseModel.imageLocationJson.fileDetails,
-                  fallbackWidget: Icon(Iconsax.document_1, size: 16, color: Colors.white),
+                courseImageWidget: BuildImagePathWidget(
+                  fileDetails: courseModel.imageLocationJson.fileDetails,
+                  fallbackWidget: Icon(Iconsax.document_1, size: 16, color: isDarkMode ? Colors.white : Colors.black),
                 ),
               ),
             ),

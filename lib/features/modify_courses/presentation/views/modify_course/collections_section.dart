@@ -1,11 +1,14 @@
 import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
@@ -15,7 +18,8 @@ import 'package:slides_sync/core/utils/smart_isolate.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
-import 'package:slides_sync/features/modify_courses/domain/usecases/modify_collections_uc/load_preview_images.dart';
+import 'package:slides_sync/features/modify_contents/domain/usecases/content_helper_uc.dart';
+import 'package:slides_sync/features/modify_contents/domain/usecases/load_preview_images.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
@@ -140,18 +144,24 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                                 child: ModCollectionDialog(courseDbId: widget.courseDbId, collection: collection),
                                               );
                                             },
-                                            onTap: () {
-                                              SmartIsolate<Map<String, dynamic>, void, void> isolate = SmartIsolate();
-                                              List<String> courseContentsJsons = [];
-                                              for (int i = 0; i < collection.courseContents.length; i++) {
-                                                courseContentsJsons.add(collection.courseContents[i].toJson());
-                                              }
-                                              isolate.runWithProgress(addPreviewImageTask, {'courseContentsJsons': courseContentsJsons});
+                                            onTap: () async {
                                               AppNavigator.to(context).modifyContentsRoute((
                                                 collection: collection,
                                                 courseDbId: widget.courseDbId,
                                                 courseTitle: (courseCode: "", courseName: "CourseName"),
                                               ));
+
+                                              final RootIsolateToken? rootIsolateToken = ServicesBinding.rootIsolateToken;
+                                              final List<String> nonExistingPreviewCourseContentsJsons =
+                                                  (await ContentHelperUc.resolveImgesWithoutPreview(
+                                                    collection.courseContents,
+                                                  )).map((e) => e.toJson()).toList();
+                                              if (rootIsolateToken == null) return;
+                                              final Map<String, dynamic> args = {
+                                                'courseContentsJsons': nonExistingPreviewCourseContentsJsons,
+                                                'rootIsolateToken': rootIsolateToken,
+                                              };
+                                              compute(addPreviewImageTask, args);
                                             },
                                           ),
                                         );

@@ -53,6 +53,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
           child: CourseCategoriesCard(
             isDarkMode: context.isDarkMode,
             title: collections[index].collectionTitle,
+            contentCount: collections[index].courseContents.length,
             icon: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ClipPath(
