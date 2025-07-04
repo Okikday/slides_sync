@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_courses/domain/usecases/modify_course_uc/modify_course_actions.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
+import 'package:slides_sync/features/modify_courses/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_courses/presentation/views/modify_course/modify_course_header.dart';
@@ -30,16 +32,21 @@ class ModifyCourseView extends ConsumerStatefulWidget {
 }
 
 class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProviderStateMixin {
-  late final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
-  late final StreamProvider<CourseModel?> syncCourseProvider;
+  final StateProvider<CourseModel> modifyCourseProvider = ModifyCourseProviders.modifyCourseProvider;
+  final StreamProvider<CourseModel?> syncCourseProvider = ModifyCourseProviders.syncCourseProvider;
 
   late final ValueNotifier<bool> canPopNotifier;
 
   @override
   void initState() {
     super.initState();
-    modifyCourseProvider = AutoDisposeStateProvider((ref) => widget.courseModel);
-    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final modifyCourseNotifier = ref.read(modifyCourseProvider.notifier);
+      if (modifyCourseNotifier.state != widget.courseModel) {
+        modifyCourseNotifier.update((ref) => widget.courseModel);
+      }
+    });
+    ModifyCourseProviders.setSyncCourseProvider(StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id)));
 
     canPopNotifier = ValueNotifier(true);
   }
@@ -99,12 +106,9 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
 }
 
 class ModifyCourseViewOuterSection extends ConsumerWidget {
-  const ModifyCourseViewOuterSection({
-    super.key,
-    required this.modifyCourseProvider,
-  });
+  const ModifyCourseViewOuterSection({super.key, required this.modifyCourseProvider});
 
-  final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
+  final StateProvider<CourseModel> modifyCourseProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -142,7 +146,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
                 onDelete: () async {
                   CustomDialog.hide(context);
                   await Future.delayed(Durations.medium1);
-    
+
                   if (context.mounted) {
                     CustomDialog.showLoadingDialog(
                       context,
@@ -166,28 +170,28 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
                 currDescription: courseModel.description,
                 modifyCourseProvider: modifyCourseProvider,
               ),
-    
+
           onClickImage: () async {
             if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
               modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
               return;
             }
-    
+
             modifyCourseActions.onClickCourseImage(context, courseModel: courseModel);
           },
-    
+
           onLongPressImage: () async {
             if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
               modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
               return;
             }
-    
+
             modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
           },
         ),
-    
+
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
-    
+
         // BODY
         CollectionsSection(
           courseDbId: courseModel.id,
@@ -209,9 +213,9 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
             AppNavigator.to(context).modifyCollectionsRoute(courseModel);
           },
         ),
-    
+
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-    
+
         // AFTER
         if (courseModel.subCollections.isNotEmpty)
           SliverPadding(

@@ -41,7 +41,7 @@ class CollectionsListView extends ConsumerWidget {
               ));
             },
           ).animate().slideY(
-            begin: double.parse((0.5 * (index + (collections.length / 2) / collections.length)).toStringAsFixed(2)),
+            begin: double.parse((0.2 * (index + (collections.length / 2) / collections.length)).toStringAsFixed(2)),
             end: 0,
             curve: CustomCurves.bouncySpring,
             duration: Durations.extralong4,

@@ -1,7 +1,8 @@
-
+import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/modify_courses/domain/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -56,7 +57,44 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   focusNode: focusNode,
                   onTapOutside: () {},
                   onSubmitted: (text) async {
-                    await modifyCollectionActions.onCreateNewCollection(context, text: text, courseDbId: widget.courseDbId);
+                    // Create new collection
+                    final outcome = await modifyCollectionActions.onCreateNewCollection(
+                      context,
+                      text: text.trim(),
+                      courseDbId: widget.courseDbId,
+                    );
+
+                    // Handle outcome
+                    if (outcome == null) {
+                      if (context.mounted) CustomDialog.hide(context);
+                      if (context.mounted) await UiUtils.showFlushBar(context, msg: "Added $text to Collections!", vibe: FlushbarVibe.success);
+                    } else if (outcome.isEmpty) {
+                      final String message;
+                      if (text.isEmpty) {
+                        message = "Try typing into the Field!";
+                      } else if (text.length < 2) {
+                        message = "Text input is too short!";
+                      } else {
+                        message = "Invalid input!";
+                      }
+                      if (context.mounted) {
+                        await UiUtils.showFlushBar(
+                          context,
+                          msg: message,
+                          flushbarPosition: FlushbarPosition.TOP,
+                          vibe: FlushbarVibe.warning,
+                        );
+                      }
+                    } else {
+                      if (context.mounted) {
+                        await UiUtils.showFlushBar(
+                          context,
+                          msg: outcome,
+                          flushbarPosition: FlushbarPosition.TOP,
+                          vibe: FlushbarVibe.warning,
+                        );
+                      }
+                    }
                   },
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(fontSize: 15),

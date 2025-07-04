@@ -23,7 +23,7 @@ class ModifyCourseActions {
   /// When the user clicks to delete the course, on the Dialog
   Future<void> onDeleteCourse({required int id, required String courseId}) async {
     await CourseRepo.deleteCourseByDbId(id);
-    await FileUtils.deleteAppDirectory(relativePath: "courses/$courseId");
+    await FileUtils.deleteFromAppDirectory(relativePath: "courses/$courseId");
   }
 
   /// When the user Modifies image
@@ -68,7 +68,7 @@ class ModifyCourseActions {
   void onClickAddDescription(
     BuildContext context, {
     required String currDescription,
-    required AutoDisposeStateProvider<CourseModel> modifyCourseProvider,
+    required StateProvider<CourseModel> modifyCourseProvider,
   }) {
     if (currDescription.isNotEmpty) {
       CustomDialog.show(

@@ -78,12 +78,12 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                     child: CustomTextfield(
                       hint: "New collection name",
                       onSubmitted: (text) async {
-                        final bool? result = await mca.renameCollectionAction(
+                        final String? result = await mca.renameCollectionAction(
                           newText: text,
                           courseDbId: widget.courseDbId,
-                          collection: collection,
+                          collectionId: collection.collectionId,
                         );
-                        if (result == true && context.mounted) focusNode.unfocus();
+                        if (result == null && context.mounted) focusNode.unfocus();
                       },
                       inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                       defaultText: widget.collection.collectionTitle,

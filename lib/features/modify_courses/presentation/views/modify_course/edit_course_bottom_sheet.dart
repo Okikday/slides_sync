@@ -10,7 +10,7 @@ import 'package:slides_sync/features/modify_courses/presentation/views/modify_co
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EditCourseBottomSheet extends ConsumerStatefulWidget {
-  final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
+  final StateProvider<CourseModel> modifyCourseProvider;
   final bool isEditingDescription;
   const EditCourseBottomSheet({super.key, required this.modifyCourseProvider, this.isEditingDescription = false});
 

@@ -29,84 +29,62 @@ class ImageUtils {
     int maxHeight = 400,
   }) async {
     try {
-      if (!await inputFile.exists()) {
+      if (!(await inputFile.exists())) {
         return Result.error('Source file does not exist.');
       }
 
       // Generate a new, unique filename for the output
       final Directory docDir = await getApplicationDocumentsDirectory();
-      final Result<File> outFileResult = await flutterImageCompress(
-        docDir: docDir,
-        inputFile: inputFile,
-        outputFormat: outputFormat,
+      // Figure out which extension to write
+      final String srcExt = p.extension(inputFile.path).replaceFirst('.', '').toLowerCase();
+      final String ext = (outputFormat ?? srcExt).toLowerCase();
+      final CompressFormat format = _formatFromExt(ext);
+      String outPath = await _generateNextFilePath(docDir, ext);
+      final lastSeparatorIndex = outPath.lastIndexOf(Platform.pathSeparator);
+      final dirPath = "${outPath.substring(0, lastSeparatorIndex + 1)}cache";
+      outPath = "$dirPath${outPath.substring(lastSeparatorIndex)}";
+
+      // First‐pass compress
+      Uint8List? compressedBytes = await FlutterImageCompress.compressWithFile(
+        inputFile.path,
+        minWidth: maxWidth,
+        minHeight: maxHeight,
         quality: quality,
-        targetMB: targetMB,
-        maxHeight: maxHeight,
-        maxWidth: maxWidth,
+        format: format,
       );
-      return outFileResult;
+      if (compressedBytes == null) {
+        return Result.error('Failed to compress image (first pass).');
+      }
+
+      // If we have a size target, check and do one more pass of quality‐adjustment
+      if (targetMB != null) {
+        double currentMB = compressedBytes.length / (1024 * 1024);
+        if (currentMB > targetMB) {
+          // Calculate a proportional new quality
+          int adjustedQuality = ((quality * (targetMB / currentMB)).floor()).clamp(10, quality);
+
+          final Uint8List? reCompressed = await FlutterImageCompress.compressWithFile(
+            inputFile.path,
+            minWidth: maxWidth,
+            minHeight: maxHeight,
+            quality: adjustedQuality,
+            format: format,
+          );
+          if (reCompressed != null) {
+            compressedBytes = reCompressed;
+          }
+          // (If reCompressed is null, we’ll just stick with first-pass)
+        }
+      }
+
+      await Directory(dirPath).create();
+      // Write out to disk once
+      final File outFile = File(outPath);
+      await outFile.writeAsBytes(compressedBytes, flush: true);
+      return Result.success(outFile);
     } catch (e, st) {
       return Result.error('Compression error: $e\n$st');
     }
-  }
-
-  static Future<Result<File>> flutterImageCompress({
-    required Directory docDir,
-    required File inputFile,
-    String? outputFormat,
-    int quality = 90,
-    double? targetMB,
-    int maxWidth = 400,
-    int maxHeight = 400,
-  }) async {
-    // Figure out which extension to write
-    final String srcExt = p.extension(inputFile.path).replaceFirst('.', '').toLowerCase();
-    final String ext = (outputFormat ?? srcExt).toLowerCase();
-    final CompressFormat format = _formatFromExt(ext);
-    String outPath = await _generateNextFilePath(docDir, ext);
-    final lastSeparatorIndex = outPath.lastIndexOf(Platform.pathSeparator);
-    final dirPath = "${outPath.substring(0, lastSeparatorIndex + 1)}cache";
-    outPath = "$dirPath${outPath.substring(lastSeparatorIndex)}";
-    
-
-    // First‐pass compress
-    Uint8List? compressedBytes = await FlutterImageCompress.compressWithFile(
-      inputFile.path,
-      minWidth: maxWidth,
-      minHeight: maxHeight,
-      quality: quality,
-      format: format,
-    );
-    if (compressedBytes == null) {
-      return Result.error('Failed to compress image (first pass).');
-    }
-
-    // If we have a size target, check and do one more pass of quality‐adjustment
-    if (targetMB != null) {
-      double currentMB = compressedBytes.length / (1024 * 1024);
-      if (currentMB > targetMB) {
-        // Calculate a proportional new quality
-        int adjustedQuality = ((quality * (targetMB / currentMB)).floor()).clamp(10, quality);
-
-        final Uint8List? reCompressed = await FlutterImageCompress.compressWithFile(
-          inputFile.path,
-          minWidth: maxWidth,
-          minHeight: maxHeight,
-          quality: adjustedQuality,
-          format: format,
-        );
-        if (reCompressed != null) {
-          compressedBytes = reCompressed;
-        }
-        // (If reCompressed is null, we’ll just stick with first-pass)
-      }
-    }
-
-    await Directory(dirPath).create();
-    // Write out to disk once
-    final File outFile = File(outPath);
-    await outFile.writeAsBytes(compressedBytes, flush: true);
-    return Result.success(outFile);
   }
 
   /// Turn “jpg”, “jpeg”, “png” or “webp” into the right CompressFormat.

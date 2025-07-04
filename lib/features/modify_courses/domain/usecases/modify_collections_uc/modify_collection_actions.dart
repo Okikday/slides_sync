@@ -1,64 +1,76 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
+import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/routes/routes.dart';
 
 class ModifyCollectionActions {
-  Future<void> onCreateNewCollection(BuildContext context, {required String text, required int courseDbId}) async {
-    if (text.isNotEmpty && text.length > 1 && text.length < 256) {
-      try {
-        final CourseModel? courseModel = await CourseRepo.getCourseByDbId(courseDbId);
-        if (courseModel == null) {
-          if (context.mounted) CustomDialog.hide(context);
-          return;
-        }
-        CourseRepo.addCourse(
-          courseModel.copyWith(
-            subCollections: [
-              CourseSubCollection.create(parentId: courseModel.courseId, collectionTitle: text),
-              ...courseModel.subCollections,
-            ],
-          ),
-        );
-        if (context.mounted) {
-          CustomDialog.hide(context);
-          await UiUtils.showFlushBar(context, msg: "Added $text to Collections");
-        }
-      } catch (e) {
-        log("$e");
-        if (context.mounted) {
-          CustomDialog.hide(context);
-          await UiUtils.showFlushBar(context, msg: "An error occured while adding to collections");
-        }
-      }
+  /// Add collection to course
+  Future<String?> _addCollectionToCourse(int courseDbId, String title) async {
+    final CourseModel? courseModel = await CourseRepo.getCourseByDbId(courseDbId);
+    if (courseModel == null) {
+      return "Couldn't find course!";
     }
+    final newCollection = CourseSubCollection.create(parentId: courseModel.courseId, collectionTitle: title);
+    final bool hasDuplicate =
+        courseModel.subCollections.firstWhereOrNull((e) => e.collectionTitle != newCollection.collectionTitle) != null;
+    if (hasDuplicate) return "Collection title already exists, try using a different name";
+    final List<CourseSubCollection> collections =
+        courseModel.subCollections.where((e) => e.collectionTitle != newCollection.collectionTitle).toList();
+
+    collections.add(newCollection);
+    await CourseRepo.addCourse(courseModel.copyWith(subCollections: collections));
+    collections.clear();
+    return null;
   }
 
-  Future<bool?> renameCollectionAction({required String newText, required int courseDbId, required CourseSubCollection collection}) async {
-    final CourseModel? currCourseModel = await CourseRepo.getCourseByDbId(courseDbId);
-    if (currCourseModel == null) {
-      return null;
-    } else {
-      try {
-        await CourseRepo.addCourse(
-          currCourseModel.copyWith(
-            subCollections: [
-              ...currCourseModel.subCollections.where((cm) => cm.collectionId != collection.collectionId),
-              collection.copyWith(collectionTitle: newText),
-            ],
-          ),
-        );
-        return true;
-      } catch (e) {
-        log("$e");
-        return false;
+  Future<String?> onCreateNewCollection(BuildContext context, {required String text, required int courseDbId}) async {
+    if (text.isNotEmpty && text.length > 1 && text.length < 256) {
+      final Result<String?> createOutcome = await Result.tryRunAsync<String?>(() async => await _addCollectionToCourse(courseDbId, text));
+
+      if (createOutcome.isSuccess && createOutcome.data == null) {
+        return null;
+      } else if (createOutcome.isSuccess) {
+        return createOutcome.data;
+      } else {
+        log("${createOutcome.message}");
+        return 'An error occured while adding to collections';
       }
+    }
+    return '';
+  }
+
+  Future<String?> renameCollectionAction({required String newText, required int courseDbId, required String collectionId}) async {
+    if (newText.isEmpty && newText.length < 2 && newText.length > 256) return "Invalid input!";
+    final CourseModel? currCourseModel = await CourseRepo.getCourseByDbId(courseDbId);
+    if (currCourseModel == null) return "Couldn't find course";
+    final CourseSubCollection? newCollection = currCourseModel.subCollections.firstWhereOrNull((e) => e.collectionId == collectionId);
+    if (newCollection == null) return "Couldn't find collection";
+
+    final Result<String?> renameOutcome = await Result.tryRunAsync<String?>(() async {
+      final bool hasDuplicate =
+          currCourseModel.subCollections.firstWhereOrNull((e) => e.collectionTitle != newCollection.collectionTitle) != null;
+      if (hasDuplicate) return "Try using another title!";
+
+      final newCollections = currCourseModel.subCollections.where((cm) => cm.collectionId != newCollection.collectionId).toList();
+      newCollections.add(newCollection);
+      await CourseRepo.addCourse(currCourseModel.copyWith(subCollections: newCollections));
+      return null;
+    });
+    if (renameOutcome.isSuccess && renameOutcome.data == null) {
+      return null;
+    } else if (renameOutcome.isSuccess) {
+      return renameOutcome.data;
+    } else {
+      log("${renameOutcome.message}");
+      return "An error occured whilst renaming collection!";
     }
   }
 
@@ -69,17 +81,13 @@ class ModifyCollectionActions {
     required CourseSubCollection collection,
   }) async {
     if (newText.isNotEmpty && newText != collection.collectionTitle && newText.length >= 2 && newText.length <= 64) {
-      final outcome = await renameCollectionAction(newText: newText, courseDbId: courseDbId, collection: collection);
+      final String? outcome = await renameCollectionAction(newText: newText, courseDbId: courseDbId, collectionId: collection.collectionId);
       if (context.mounted) CustomDialog.hide(context);
       if (context.mounted) {
-        switch (outcome) {
-          case null:
-            await UiUtils.showFlushBar(context, msg: "Couldn't find collection", vibe: FlushbarVibe.warning);
-
-          case true:
-            await UiUtils.showFlushBar(context, msg: "Updated collection title from ${collection.collectionTitle} to $newText");
-          case false:
-            await UiUtils.showFlushBar(context, msg: "Error renaming collection", vibe: FlushbarVibe.error);
+        if (outcome == null) {
+          await UiUtils.showFlushBar(context, msg: "Successfully renamed collection to $newText", vibe: FlushbarVibe.success);
+        } else {
+          await UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.warning);
         }
         return;
       }
@@ -110,21 +118,27 @@ class ModifyCollectionActions {
         rootNavigatorKey.currentContext?.pop();
         if (context.mounted) await UiUtils.showFlushBar(newContext, msg: "Couldn't find collection");
       } else {
-        try {
-          await FileUtils.deleteAppDirectory(relativePath: collection.absolutePath);
+        final Result<String?> deleteOutcome = await Result.tryRunAsync(() async {
+          await FileUtils.deleteFromAppDirectory(relativePath: collection.absolutePath);
           await CourseRepo.addCourse(
             currCourseModel.copyWith(
               subCollections: currCourseModel.subCollections.where((cm) => cm.collectionId != collection.collectionId).toList(),
             ),
           );
-          rootNavigatorKey.currentContext?.pop();
-
-          if (newContext.mounted) await UiUtils.showFlushBar(newContext, msg: "Successfully removed collection");
-        } catch (e) {
-          log("$e");
-          rootNavigatorKey.currentContext?.pop();
-
-          if (newContext.mounted) await UiUtils.showFlushBar(newContext, msg: "Error deleting collection");
+          return null;
+        });
+        rootNavigatorKey.currentContext?.pop();
+        if (deleteOutcome.isSuccess && deleteOutcome.data == null) {
+          if (newContext.mounted) {
+            await UiUtils.showFlushBar(
+              newContext,
+              msg: "Successfully removed ${collection.collectionTitle} from ${currCourseModel.courseTitle}",
+              vibe: FlushbarVibe.success,
+            );
+          }
+        } else {
+          log("${deleteOutcome.message}");
+          if (newContext.mounted) await UiUtils.showFlushBar(newContext, msg: "Error deleting collection", vibe: FlushbarVibe.error);
         }
       }
     }

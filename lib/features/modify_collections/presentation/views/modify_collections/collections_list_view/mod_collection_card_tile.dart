@@ -28,11 +28,11 @@ class ModCollectionCardTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ModifyingListTile(
-      leadingIcon: BuildImagePathWidget(
+      leading: BuildImagePathWidget(
         fileDetails: FileDetails(),
         fallbackWidget: Icon(Iconsax.document, size: 22, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
       ),
-      trailingIcon: Icon(Iconsax.edit_copy, size: 20),
+      trailing: CustomElevatedButton(backgroundColor:Colors.transparent, contentPadding: EdgeInsets.all(12), onClick: onSelected, child: Icon(Iconsax.edit_copy, size: 20)),
       title: title,
       subtitle:
           "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
@@ -42,7 +42,6 @@ class ModCollectionCardTile extends ConsumerWidget {
       onTapTile: () {
         if (onTap != null) onTap!();
       },
-      onTapTrailing: onSelected,
       onLongPressTile: onSelected,
     );
   }

@@ -15,8 +15,8 @@ import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class AddContentsBottomSheet extends ConsumerStatefulWidget {
-  final CourseSubCollection? collection;
-  const AddContentsBottomSheet({super.key, this.collection});
+  final CourseSubCollection collection;
+  const AddContentsBottomSheet({super.key, required this.collection});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddContentsBottomSheetState();
@@ -48,100 +48,7 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
               bottom: 8,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: context.deviceWidth,
-                  constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
-                  margin: EdgeInsets.only(bottom: context.bottomPadding + context.viewInsets.bottom, left: 24, right: 24),
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  decoration: BoxDecoration(
-                    color: context.scaffoldBackgroundColor,
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ConstantSizing.columnSpacing(4.0),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-                        child: CustomText("What kind of content do you want to add?", fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      // ConstantSizing.columnSpacingSmall,
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            height: 200,
-                            child: CupertinoPicker(
-                              itemExtent: 60,
-                              offAxisFraction: -0.1,
-                              scrollController: fixedExtentScrollController,
-                              onSelectedItemChanged: (index) async {},
-                              children: [
-                                // BuildPlainActionButton(title: "Link", icon: Icon(Iconsax.link, color: context.theme.primaryColor)),
-                                BuildPlainActionButton(
-                                  title: "Auto",
-                                  icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
-                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[0] ?? typeMap[0]!),
-                                ),
-                                BuildPlainActionButton(
-                                  title: "Media",
-                                  icon: Icon(Iconsax.image, color: context.theme.primaryColor),
-                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[1] ?? typeMap[0]!),
-                                ),
-                                BuildPlainActionButton(
-                                  title: "Document",
-                                  icon: Icon(Iconsax.document, color: context.theme.primaryColor),
-                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[2] ?? typeMap[0]!),
-                                ),
-                                BuildPlainActionButton(
-                                  title: "Audio",
-                                  icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
-                                  onTap: () => onClickToAddContent(context, collection: widget.collection, type: typeMap[3] ?? typeMap[0]!),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                            child: Row(
-                              spacing: 8.0,
-                              children: [
-                                Flexible(
-                                  child: CustomElevatedButton(
-                                    backgroundColor: context.theme.cardColor.withAlpha(100),
-                                    pixelHeight: 40,
-                                    child: Row(
-                                      spacing: 4.0,
-                                      children: [Icon(Iconsax.note_add, color: context.theme.cardColor), CustomText("Add note")],
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: CustomElevatedButton(
-                                    backgroundColor: context.theme.cardColor.withAlpha(100),
-                                    pixelHeight: 40,
-                                    child: Row(
-                                      spacing: 4.0,
-                                      children: [Icon(Iconsax.link_circle, color: context.theme.cardColor), CustomText("Add link(s)")],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      // BuildPlainActionButton(title: "Auto", icon: Icon(Iconsax.safe_home), onTap: (){}),
-                      // BuildPlainActionButton(title: "Visual Media", icon: Icon(Iconsax.safe_home), onTap: (){}),
-                      // BuildPlainActionButton(title: "Document", icon: Icon(Iconsax.safe_home), onTap: (){}),
-                      // BuildPlainActionButton(title: "Audio", icon: Icon(Iconsax.safe_home), onTap: (){})
-                    ],
-                  ),
-                ),
+                child: AddContentCardSection(fixedExtentScrollController: fixedExtentScrollController, collection: widget.collection, typeMap: typeMap),
               ),
             ),
           ],
@@ -153,20 +60,129 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
   }
 }
 
-void onClickToAddContent(BuildContext context, {required CourseSubCollection? collection, required ContentType type}) async {
-  if (collection == null) {
-    log("Unable to add contents");
-    await UiUtils.showFlushBar(context, msg: "Unable to add contents", vibe: FlushbarVibe.warning);
-    return;
-  }
-  final result = await AddContentsUc.addToCollection(collection: collection, type: type);
-  if (result.isSuccess) {
-    if (result.data!) {
-      await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "Successfully added course contents!", vibe: FlushbarVibe.success);
-    } else if (!result.data!) {
-      await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "Couldn't complete adding content", vibe: FlushbarVibe.warning);
-    }
-  } else {
-    await UiUtils.showFlushBar(rootNavigatorKey.currentContext!, msg: "An error occured while adding content", vibe: FlushbarVibe.error);
+class AddContentCardSection extends StatelessWidget {
+  const AddContentCardSection({super.key, required this.fixedExtentScrollController, required this.collection, required this.typeMap});
+
+  final FixedExtentScrollController fixedExtentScrollController;
+  final CourseSubCollection collection;
+  final Map<int, ContentType> typeMap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: context.deviceWidth,
+      constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
+      margin: EdgeInsets.only(bottom: context.bottomPadding + context.viewInsets.bottom, left: 24, right: 24),
+      padding: EdgeInsets.only(bottom: 4.0),
+      decoration: BoxDecoration(
+        color: context.scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ConstantSizing.columnSpacing(4.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+            child: CustomText("What kind of content do you want to add?", fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          // ConstantSizing.columnSpacingSmall,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                height: 200,
+                child: CupertinoPicker(
+                  itemExtent: 60,
+                  offAxisFraction: -0.1,
+                  scrollController: fixedExtentScrollController,
+                  onSelectedItemChanged: (index) async {},
+                  children:
+                      [
+                        // BuildPlainActionButton(title: "Link", icon: Icon(Iconsax.link, color: context.theme.primaryColor)),
+                        BuildPlainActionButton(
+                          title: "Auto",
+                          icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
+                          onTap:
+                              () => AddContentsUc.onClickToAddContent(
+                                context,
+                                collection: collection,
+                                type: typeMap[0] ?? typeMap[0]!,
+                              ),
+                        ),
+                        BuildPlainActionButton(
+                          title: "Media",
+                          icon: Icon(Iconsax.image, color: context.theme.primaryColor),
+                          onTap:
+                              () => AddContentsUc.onClickToAddContent(
+                                context,
+                                collection: collection,
+                                type: typeMap[1] ?? typeMap[0]!,
+                              ),
+                        ),
+                        BuildPlainActionButton(
+                          title: "Document",
+                          icon: Icon(Iconsax.document, color: context.theme.primaryColor),
+                          onTap:
+                              () => AddContentsUc.onClickToAddContent(
+                                context,
+                                collection: collection,
+                                type: typeMap[2] ?? typeMap[0]!,
+                              ),
+                        ),
+                        BuildPlainActionButton(
+                          title: "Audio",
+                          icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
+                          onTap:
+                              () => AddContentsUc.onClickToAddContent(
+                                context,
+                                collection: collection,
+                                type: typeMap[3] ?? typeMap[0]!,
+                              ),
+                        ),
+                      ].map((e) => Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: e)).toList(),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                child: Row(
+                  spacing: 8.0,
+                  children: [
+                    Flexible(
+                      child: CustomElevatedButton(
+                        backgroundColor: context.theme.cardColor.withAlpha(100),
+                        pixelHeight: 40,
+                        child: Row(
+                          spacing: 4.0,
+                          children: [Icon(Iconsax.note_add, color: context.theme.cardColor), CustomText("Add note")],
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: CustomElevatedButton(
+                        backgroundColor: context.theme.cardColor.withAlpha(100),
+                        pixelHeight: 40,
+                        child: Row(
+                          spacing: 4.0,
+                          children: [Icon(Iconsax.link_circle, color: context.theme.cardColor), CustomText("Add link(s)")],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          // BuildPlainActionButton(title: "Auto", icon: Icon(Iconsax.safe_home), onTap: (){}),
+          // BuildPlainActionButton(title: "Visual Media", icon: Icon(Iconsax.safe_home), onTap: (){}),
+          // BuildPlainActionButton(title: "Document", icon: Icon(Iconsax.safe_home), onTap: (){}),
+          // BuildPlainActionButton(title: "Audio", icon: Icon(Iconsax.safe_home), onTap: (){})
+        ],
+      ),
+    );
   }
 }

@@ -116,10 +116,10 @@ class ManageCourseDialogCard extends StatelessWidget {
                               title: "Add material",
                               icon: Icon(Iconsax.add_circle, size: 24, color: Colors.deepPurpleAccent),
                               onTap: () {
-                                CustomDialog.hide(context);
-                                CustomDialog.show(context,
-                                barrierColor: Colors.black12,
-                                 child: AddContentsBottomSheet());
+                                // CustomDialog.hide(context);
+                                // CustomDialog.show(context,
+                                // barrierColor: Colors.black12,
+                                //  child: AddContentsBottomSheet());
                               },
                             ),
                           ),

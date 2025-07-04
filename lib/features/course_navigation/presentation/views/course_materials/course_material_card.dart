@@ -37,11 +37,11 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
   @override
   void initState() {
     super.initState();
-    expandAnimationController = AnimationController(vsync: this, duration: Durations.extralong2, reverseDuration: Durations.medium2);
+    expandAnimationController = AnimationController(vsync: this, duration: Durations.extralong2, reverseDuration: Durations.medium1);
     expandAnim = Tween<double>(
       begin: 0,
       end: 1,
-    ).animate(CurvedAnimation(parent: expandAnimationController, curve: CustomCurves.bouncySpring, reverseCurve: CustomCurves.decelerate));
+    ).animate(CurvedAnimation(parent: expandAnimationController, curve: CustomCurves.bouncySpring, reverseCurve: CustomCurves.defaultIosSpring));
   }
 
   @override
@@ -175,7 +175,7 @@ class AnimatedCourseMaterialCardMenu extends StatelessWidget {
           child: FadeTransition(
             opacity: expandAnim,
             child: Padding(
-              padding: EdgeInsets.only(left: context.deviceWidth * 0.2 + ConstantSizing.rowSpacingMedium.width!),
+              padding: EdgeInsets.only(left: context.deviceWidth * 0.2),
               child: Wrap(runAlignment: WrapAlignment.start, spacing: 8.0, runSpacing: 8.0, children: genCardFuncs),
             ),
           ),

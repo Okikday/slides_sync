@@ -16,10 +16,9 @@ import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/smart_isolate.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
-import 'package:slides_sync/features/modify_contents/domain/usecases/content_helper_uc.dart';
-import 'package:slides_sync/features/modify_contents/domain/usecases/load_preview_images.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
@@ -151,17 +150,6 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                                 courseTitle: (courseCode: "", courseName: "CourseName"),
                                               ));
 
-                                              final RootIsolateToken? rootIsolateToken = ServicesBinding.rootIsolateToken;
-                                              final List<String> nonExistingPreviewCourseContentsJsons =
-                                                  (await ContentHelperUc.resolveImgesWithoutPreview(
-                                                    collection.courseContents,
-                                                  )).map((e) => e.toJson()).toList();
-                                              if (rootIsolateToken == null) return;
-                                              final Map<String, dynamic> args = {
-                                                'courseContentsJsons': nonExistingPreviewCourseContentsJsons,
-                                                'rootIsolateToken': rootIsolateToken,
-                                              };
-                                              compute(addPreviewImageTask, args);
                                             },
                                           ),
                                         );

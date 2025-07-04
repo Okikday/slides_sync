@@ -3,24 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyingListTile extends StatelessWidget {
-  final Widget leadingIcon;
-  final Widget trailingIcon;
+  final Widget leading;
+  final Widget? trailing;
   final String title;
   final String subtitle;
   final void Function()? onTapTile;
   final void Function()? onTapLeading;
-  final void Function()? onTapTrailing;
   final void Function()? onLongPressTile;
 
   const ModifyingListTile({
     super.key,
-    required this.leadingIcon,
-    required this.trailingIcon,
+    required this.leading,
+    required this.trailing,
     required this.title,
     required this.subtitle,
     this.onTapTile,
     this.onTapLeading,
-    this.onTapTrailing,
     this.onLongPressTile,
   });
 
@@ -50,33 +48,29 @@ class ModifyingListTile extends StatelessWidget {
                 spacing: ConstantSizing.spaceMedium,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ClipRSuperellipse(
-                    borderRadius: BorderRadius.circular(12),
-                    child: ColoredBox(
+                  Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
                       color: context.theme.primaryColor.withAlpha(80),
-                      child: SizedBox.square(dimension: btnDimension, child: leadingIcon)),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), spreadRadius: 2)],
+                    ),
+                    child: SizedBox.square(dimension: btnDimension, child: leading),
                   ),
+
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(title, fontWeight: FontWeight.bold),
+                        CustomText(title, fontWeight: FontWeight.bold, fontSize: 13.5),
                         ConstantSizing.columnSpacing(4),
                         CustomText(subtitle, fontSize: 12, color: Colors.grey),
                       ],
                     ),
                   ),
 
-                  CustomElevatedButton(
-                    shape: CircleBorder(),
-                    contentPadding: EdgeInsets.all(buttonPadding),
-                    onClick: () {
-                      if (onTapTrailing != null) onTapTrailing!();
-                    },
-                    backgroundColor: Colors.lightBlueAccent.withAlpha(20),
-                    child: trailingIcon,
-                  ),
+                  if (trailing != null) trailing!,
                 ],
               ),
             ),

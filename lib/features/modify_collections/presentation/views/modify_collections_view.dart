@@ -1,4 +1,3 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +8,7 @@ import 'package:slides_sync/features/modify_collections/presentation/views/modif
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_collections/presentation/views/modify_collections/empty_collections_view.dart';
+import 'package:slides_sync/features/modify_courses/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import '../../../../core/utils/ui_utils.dart';
@@ -16,16 +16,16 @@ import '../../../../shared/components/app_bar_container.dart';
 import '../../../../shared/components/app_bar_container_child.dart';
 
 class ModifyCollectionsView extends ConsumerStatefulWidget {
-  final CourseModel courseModel;
+  final int courseDbId;
 
-  const ModifyCollectionsView({super.key, required this.courseModel});
+  const ModifyCollectionsView({super.key, required this.courseDbId});
 
   @override
   ConsumerState createState() => _ModifyCollectionsViewState();
 }
 
 class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
-  late final AutoDisposeStateProvider<CourseModel> modifyCourseProvider;
+  final StateProvider<CourseModel> modifyCourseProvider = ModifyCourseProviders.modifyCourseProvider;
   late final StreamProvider<CourseModel?> syncCourseProvider;
   late final ScrollController scrollController;
   late final AutoDisposeStateProvider<double> scrollOffsetProvider;
@@ -34,8 +34,15 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    modifyCourseProvider = AutoDisposeStateProvider((ref) => widget.courseModel);
-    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseModel.id));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final modifyCourseNotifier = ref.read(modifyCourseProvider.notifier);
+      final CourseModel? course = await CourseRepo.getCourseByDbId(widget.courseDbId);
+      if (course == null) return;
+      if (modifyCourseNotifier.state.lastUpdated != course.lastUpdated) {
+        modifyCourseNotifier.update((ref) => course);
+      }
+    });
+    syncCourseProvider = StreamProvider((ref) => CourseRepo.watchCourseByDbId(widget.courseDbId));
     scrollOffsetProvider = AutoDisposeStateProvider((ref) => 0.0);
     scrollController.addListener(listenToscrollOffsetProvider);
   }
@@ -99,11 +106,7 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
 }
 
 class ModifyCollectionsOuterSection extends StatelessWidget {
-  const ModifyCollectionsOuterSection({
-    super.key,
-    required this.scrollController,
-    required this.courseModel,
-  });
+  const ModifyCollectionsOuterSection({super.key, required this.scrollController, required this.courseModel});
 
   final ScrollController scrollController;
   final CourseModel courseModel;
@@ -114,7 +117,7 @@ class ModifyCollectionsOuterSection extends StatelessWidget {
       controller: scrollController,
       slivers: [
         if (courseModel.subCollections.isNotEmpty) PinnedHeaderSliver(child: CollectionsViewSearchBar()),
-    
+
         if (courseModel.subCollections.isNotEmpty)
           CollectionsListView(courseDbId: courseModel.id, collections: courseModel.subCollections)
         else
@@ -129,7 +132,7 @@ class ModifyCollectionsOuterSection extends StatelessWidget {
             },
           ),
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-    
+
         // ),
       ],
     );

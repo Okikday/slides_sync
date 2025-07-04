@@ -1,24 +1,30 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:pdfx/pdfx.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/create_content/domain/repos/allowed_file_extensions.dart';
+import 'package:slides_sync/features/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class PrepareContentsUc {
-  Future<bool> storeCourseContents(CourseSubCollection collection, List<File> selectedContents) async {
-    final Result<bool?> outcome = await Result.tryRunAsync<bool>(() async {
-      final String pathToStoreAt = collection.absolutePath;
+  Future<String?> storeCourseContents(CourseSubCollection collection, List<File> selectedContents) async {
+    final Result<String?> outcome = await Result.tryRunAsync<String?>(() async {
+      final String dirToStoreAt = collection.absolutePath;
       List<String> potentialPurgePaths = []; // This would be a later list that holds the paths of the purge in case the operation fails
       List<CourseContent> contentList = [];
 
       for (var file in selectedContents) {
-        final storedAt = await FileUtils.storeFile(file: file, folderPath: pathToStoreAt);
+        final storedAt = await FileUtils.storeFile(file: file, folderPath: dirToStoreAt);
+
         potentialPurgePaths.add(file.path);
         final fileName = p.basename(file.path);
         final fileNameWithoutExt = p.basenameWithoutExtension(fileName);
@@ -26,23 +32,30 @@ class PrepareContentsUc {
         final Uint8List fileBytes = await File(storedAt).readAsBytes();
         final hash = sha256.convert(fileBytes).bytes.toString();
 
+        final CourseContentType contentType = getCourseContentType(fileName);
+
         final CourseContent content = CourseContent.create(
           title: fileNameWithoutExt,
-          parentId: pathToStoreAt,
+          parentId: dirToStoreAt,
           path: FileDetails(filePath: storedAt, fileHash: hash),
-          courseContentType: getCourseContentType(fileName),
+          courseContentType: contentType,
+        );
+        await CreateContentPreviewImage.createPreviewImageForContent(
+          storedAt,
+          courseContentType: contentType,
+          genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt, contentId: content.id),
         );
         contentList.add(content);
       }
 
-      /// TODO LATER: Modifications can be made here to check if the collection parentId container a pathSeparator,
+      /// TODO LATER: Modifications can be made here to check if the collection parentId contains a pathSeparator,
       /// which can then be used to determine whether it's right under the CourseModel or not.
       final CourseModel? course = await CourseRepo.getCourseById(collection.parentId.split(Platform.pathSeparator).first);
-      if (course == null) return false;
+      if (course == null) return "Couldn't find course!";
       final CourseSubCollection? getCollection = course.subCollections.firstWhereOrNull(
         (test) => test.collectionId == collection.collectionId && test.parentId == collection.parentId,
       );
-      if (getCollection == null) return false;
+      if (getCollection == null) return "Collection doesn't exist!";
       collection = getCollection;
 
       final existingIds = <String>{for (final c in collection.courseContents) c.id};
@@ -61,10 +74,16 @@ class PrepareContentsUc {
         newCollection,
       ];
       await CourseRepo.addCourse(course.copyWith(subCollections: updatedCollections));
-      return true;
+      return null;
     });
-    if (outcome.isSuccess) return true;
-    return false;
+    if (outcome.isSuccess && outcome.data == null) {
+      return null;
+    } else if (outcome.isSuccess) {
+      return outcome.data;
+    } else {
+      log("${outcome.message}");
+      return "An error occured while storing content!";
+    }
   }
 
   /// Returns the CourseContentType for a file extension or path.

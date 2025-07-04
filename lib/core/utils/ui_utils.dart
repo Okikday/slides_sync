@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
@@ -31,9 +32,11 @@ class UiUtils {
     double barBlur = 4.0,
   }) async {
     final List<Color> colors = _resolveFlushbarVibe(context, vibe);
+    final IconData resolveIconData = Iconsax.info_circle;
 
     await Flushbar(
       message: msg,
+      icon: Icon(resolveIconData),
       messageColor: messageColor ?? colors[0],
       duration: duration,
       dismissDirection: FlushbarDismissDirection.VERTICAL,
@@ -42,6 +45,7 @@ class UiUtils {
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
       borderColor: Colors.grey.withValues(alpha: 0.2),
       boxShadows: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode).boxShadow,
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       margin:
           margin ??
           (flushbarPosition == FlushbarPosition.BOTTOM
@@ -87,9 +91,10 @@ List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   final warningBgColor = warningColor.withOpacity(0.15);
 
   final normalColor = context.isDarkMode ? Colors.white : Colors.black87;
-  final normalBgColor = context.isDarkMode
-      ? const Color(0xFF1E1E2C).withOpacity(0.85) // Darker, muted blue-gray
-      : const Color(0xFFF5F5F7).withOpacity(0.85); // Soft off-white
+  final normalBgColor =
+      context.isDarkMode
+          ? const Color(0xFF1E1E2C).withOpacity(0.85) // Darker, muted blue-gray
+          : const Color(0xFFF5F5F7).withOpacity(0.85); // Soft off-white
 
   switch (vibe) {
     case FlushbarVibe.none:

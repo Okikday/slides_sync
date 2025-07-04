@@ -63,7 +63,7 @@ class CourseMgmtRoutes {
                 type: TransitionType.fade,
                 duration: Durations.medium1,
                 reverseDuration: Durations.medium1,
-                child: ModifyCollectionsView(courseModel: state.extra as CourseModel),
+                child: ModifyCollectionsView(courseDbId: (state.extra as CourseModel).id),
               ),
           routes: [
             //MODIFY CONTENTS VIEW NAVIGATION

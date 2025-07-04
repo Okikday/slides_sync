@@ -21,7 +21,7 @@ class CourseModel {
   final String description;
   final String imageLocationJson;
   final DateTime? createdAt;
-
+  final DateTime? lastUpdated;
   final List<CourseSubCollection> subCollections;
   final List<CourseContent> rootContents;
   final String courseMetadataJson;
@@ -30,6 +30,7 @@ class CourseModel {
     this.courseId = '',
     this.courseTitle = '',
     this.createdAt,
+    this.lastUpdated,
     this.description = '',
     this.imageLocationJson = '{}',
     this.subCollections = const <CourseSubCollection>[],
@@ -51,6 +52,7 @@ class CourseModel {
       courseTitle: courseTitle,
       description: description,
       createdAt: createdAt ?? DateTime.now(),
+      lastUpdated: DateTime.now(),
       imageLocationJson: imageLocation?.toJson() ?? '{}',
       subCollections: subCollections,
       rootContents: rootContents,
@@ -72,6 +74,7 @@ class CourseModel {
       courseId: courseId ?? this.courseId,
       courseTitle: courseTitle ?? this.courseTitle,
       createdAt: createdAt ?? this.createdAt,
+      lastUpdated: DateTime.now(),
       description: description ?? this.description,
       imageLocationJson: imageLocation?.toJson() ?? imageLocationJson,
       subCollections: subCollections ?? List<CourseSubCollection>.from(this.subCollections),
@@ -85,6 +88,7 @@ class CourseModel {
       'id': id,
       'courseId': courseId,
       'createdAt': createdAt?.toIso8601String(),
+      'lastUpdated': lastUpdated?.toIso8601String(),
       'courseTitle': courseTitle,
       'description': description,
       'imageLocationJson': imageLocationJson,
@@ -99,6 +103,7 @@ class CourseModel {
       courseId: map['courseId'],
       courseTitle: map['courseTitle'],
       createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
+      lastUpdated: map['lastUpdated'] == null ? DateTime.now() : DateTime.tryParse(map['lastUpdated'] as String) ?? DateTime.now(),
       description: map['description'],
       imageLocationJson: map['imageLocationJson'] as String? ?? '{}',
       subCollections: List<CourseSubCollection>.from(
@@ -122,6 +127,7 @@ class CourseModel {
           courseId == other.courseId &&
           courseTitle == other.courseTitle &&
           createdAt == other.createdAt &&
+          lastUpdated == other.lastUpdated &&
           description == other.description &&
           imageLocationJson == other.imageLocationJson &&
           const DeepCollectionEquality().equals(subCollections, other.subCollections) &&
@@ -133,6 +139,7 @@ class CourseModel {
     id,
     courseId,
     createdAt,
+    lastUpdated,
     courseTitle,
     description,
     imageLocationJson,
