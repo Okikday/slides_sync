@@ -15,7 +15,7 @@ class ConfirmDeletionDialog extends ConsumerWidget {
   const ConfirmDeletionDialog({
     super.key,
     this.title = "Confirm deletion",
-    this.content = "This is a destructive action.\n\nAre you sure you want to delete?",
+    this.content = "Are you sure you want to delete?",
     this.onCancel,
     required this.onDelete,
     this.onPop,

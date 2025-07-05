@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -20,6 +21,49 @@ class UiUtils {
     );
   }
 
+  /// For showing Custom Loading Dialog in tuned format
+  static void showLoadingDialog(
+    BuildContext context, {
+    String message = "Just a moment...",
+    bool canPop = true,
+    Color? backgroundColor,
+    Color? barrierColor,
+  }) async {
+    await CustomDialog.showLoadingDialog(
+      context,
+      canPop: canPop,
+      msg: message,
+      msgTextColor: context.isDarkMode ? Colors.white : Colors.black,
+      backgroundColor: backgroundColor ?? Colors.transparent,
+      barrierColor: barrierColor ?? Colors.black.withValues(alpha: 0.6),
+      transitionDuration: Durations.medium2,
+    );
+  }
+
+  /// For showing CustomDialog in tuned format
+  static void showCustomDialog(
+    BuildContext context, {
+    required Widget child,
+    bool canPop = true,
+    Duration transitionDuration = Durations.medium2,
+    Duration reverseTransitionDuration = Durations.short2,
+    TransitionType transitionType = TransitionType.cupertinoDialog,
+    Curve? curve,
+    Color? barrierColor,
+  }) async {
+    await CustomDialog.show(
+      context,
+      canPop: canPop,
+      transitionDuration: transitionDuration,
+      reverseTransitionDuration: reverseTransitionDuration,
+      transitionType: TransitionType.cupertinoDialog,
+      curve: curve ?? CustomCurves.defaultIosSpring,
+      barrierColor: barrierColor ?? Colors.black.withAlpha(220),
+      child: child.animate().fadeIn().scaleY(begin: 0.1, end: 1.0, curve: CustomCurves.bouncySpring, duration: Durations.extralong1),
+    );
+  }
+
+  /// For showing flushbar in tuned format
   static Future<dynamic> showFlushBar(
     BuildContext context, {
     required String msg,
@@ -32,11 +76,10 @@ class UiUtils {
     double barBlur = 4.0,
   }) async {
     final List<Color> colors = _resolveFlushbarVibe(context, vibe);
-    final IconData resolveIconData = Iconsax.info_circle;
 
     await Flushbar(
       message: msg,
-      icon: Icon(resolveIconData),
+      icon: Icon(_resolveIconData(vibe)),
       messageColor: messageColor ?? colors[0],
       duration: duration,
       dismissDirection: FlushbarDismissDirection.VERTICAL,
@@ -58,43 +101,35 @@ class UiUtils {
   ///
 }
 
-// /// returns a list of Colors starting with the messageColor, backgroundColor
-// List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
-//   const errorColor = Color(0xfff30d0d);
-//   const successColor = Color(0xff00ff00);
-//   const warningColor = Color(0xFFF46B22);
-//   final normalColor = context.isDarkMode ? Colors.white : Colors.black;
-//   final normalBgColor =
-//       (context.isDarkMode ? AppColors.deepBlue.withValues(alpha: 0.8) : AppColors.lightGray.withValues(alpha: 0.8));
-
-//   switch (vibe) {
-//     case FlushbarVibe.none:
-//       return [normalColor, normalBgColor];
-//     case FlushbarVibe.error:
-//       return [errorColor, errorColor.withValues(alpha: 0.5)];
-//     case FlushbarVibe.success:
-//       return [successColor, successColor.withValues(alpha: 0.5)];
-//     case FlushbarVibe.warning:
-//       return [warningColor, warningColor.withValues(alpha: 0.5)];
-//   }
-// }
+IconData _resolveIconData(FlushbarVibe vibe) {
+  switch (vibe) {
+    case FlushbarVibe.none:
+      return Iconsax.info_circle;
+    case FlushbarVibe.success:
+      return Iconsax.tick_circle;
+    case FlushbarVibe.error:
+      return Icons.error_rounded;
+    case FlushbarVibe.warning:
+      return Iconsax.info_circle;
+  }
+}
 
 List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   // Premium colors with good contrast and subtle backgrounds
   const errorColor = Color(0xFFB00020); // Deep red
-  final errorBgColor = errorColor.withOpacity(0.15);
+  final errorBgColor = errorColor.withValues(alpha: 0.15);
 
   const successColor = Color(0xFF2E7D32); // Rich green
-  final successBgColor = successColor.withOpacity(0.15);
+  final successBgColor = successColor.withValues(alpha: 0.15);
 
   const warningColor = Color(0xFFF9A825); // Warm gold
-  final warningBgColor = warningColor.withOpacity(0.15);
+  final warningBgColor = warningColor.withValues(alpha: 0.15);
 
   final normalColor = context.isDarkMode ? Colors.white : Colors.black87;
   final normalBgColor =
       context.isDarkMode
-          ? const Color(0xFF1E1E2C).withOpacity(0.85) // Darker, muted blue-gray
-          : const Color(0xFFF5F5F7).withOpacity(0.85); // Soft off-white
+          ? const Color(0xFF1E1E2C).withValues(alpha: 0.85) // Darker, muted blue-gray
+          : const Color(0xFFF5F5F7).withValues(alpha: 0.85); // Soft off-white
 
   switch (vibe) {
     case FlushbarVibe.none:

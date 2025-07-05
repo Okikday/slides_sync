@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:isar/isar.dart';
 import 'package:slides_sync/core/models/file_details.dart';
@@ -135,4 +136,10 @@ class CourseContent {
 
   factory CourseContent.fromJson(String json) => CourseContent.fromMap(jsonDecode(json) as Map<String, dynamic>);
   String toJson() => jsonEncode(toMap());
+}
+
+extension CourseContentExtension on CourseContent {
+  String get relativePath => "$parentId${Platform.pathSeparator}$id";
+  String get absolutePath => "courses${Platform.pathSeparator}$relativePath";
+  String get courseId => parentId.substring(0, parentId.indexOf(Platform.pathSeparator).clamp(0, parentId.length));
 }

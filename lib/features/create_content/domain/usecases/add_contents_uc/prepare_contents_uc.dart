@@ -19,6 +19,7 @@ class PrepareContentsUc {
   Future<String?> storeCourseContents(CourseSubCollection collection, List<File> selectedContents) async {
     final Result<String?> outcome = await Result.tryRunAsync<String?>(() async {
       final String dirToStoreAt = collection.absolutePath;
+      final String parentId = collection.relativePath;
       List<String> potentialPurgePaths = []; // This would be a later list that holds the paths of the purge in case the operation fails
       List<CourseContent> contentList = [];
 
@@ -36,7 +37,7 @@ class PrepareContentsUc {
 
         final CourseContent content = CourseContent.create(
           title: fileNameWithoutExt,
-          parentId: dirToStoreAt,
+          parentId: parentId,
           path: FileDetails(filePath: storedAt, fileHash: hash),
           courseContentType: contentType,
         );

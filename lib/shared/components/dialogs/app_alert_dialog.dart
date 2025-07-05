@@ -72,7 +72,7 @@ class AppAlertDialog extends ConsumerWidget {
                   Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
                   ConstantSizing.columnSpacingSmall,
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: CustomText(content, fontSize: 15)),
-                  ConstantSizing.columnSpacingHuge,
+                  ConstantSizing.columnSpacingExtraLarge,
                   Row(
                     spacing: 16.0,
                     children: [

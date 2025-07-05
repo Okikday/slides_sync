@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/features/create_content/presentation/views/add_contents_bottom_sheet.dart';
-import 'package:slides_sync/features/modify_courses/presentation/views/select_to_modify_course_view.dart';
+import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/test/file_manager_page.dart';
