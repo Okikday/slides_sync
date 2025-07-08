@@ -34,12 +34,12 @@ class AddCollectionActionButton extends StatelessWidget {
               : CustomText(
                 "Add a collection",
                 fontWeight: FontWeight.bold,
-                color: context.isDarkMode ? Colors.deepPurple : Colors.deepPurpleAccent,
+                color: context.theme.primaryColor,
               ),
       icon: Icon(
         isScrolled ? Iconsax.arrow_up : Iconsax.add_circle,
         size: 32,
-        color: context.isDarkMode ? Colors.deepPurple : Colors.deepPurpleAccent,
+        color: context.theme.primaryColor,
       ),
     );
   }

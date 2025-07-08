@@ -16,7 +16,7 @@ import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/smart_isolate.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/features/create_all/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -79,7 +79,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
     if (widget.collections.isEmpty) {
       return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        sliver: _buildNewCollectionTile(context.isDarkMode, onTap: widget.onClickNewCollection),
+        sliver: _buildNewCollectionTile(context, onTap: widget.onClickNewCollection),
       );
     }
 
@@ -171,16 +171,16 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   }
 }
 
-Widget _buildNewCollectionTile(bool isDarkMode, {required void Function() onTap}) {
+Widget _buildNewCollectionTile(BuildContext context, {required void Function() onTap}) {
   return SliverToBoxAdapter(
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        overlayColor: WidgetStatePropertyAll(Colors.deepPurple.withAlpha(40)),
+        overlayColor: WidgetStatePropertyAll(context.theme.primaryColor.withAlpha(40)),
         onTap: onTap,
         child: Container(
-          decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
+          decoration: UiStyles.getBlueThemedBoxDecoration(context),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
           child: Row(

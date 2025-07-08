@@ -29,7 +29,7 @@ class PreviewModifyCourseImageDialog extends ConsumerWidget {
                 fileDetails: imagePath.fileDetails,
                 fit: BoxFit.contain,
                 width: dimension,
-                fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
+                fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? context.theme.primaryColor : context.theme.primaryColor),
               ),
             ),
           ],

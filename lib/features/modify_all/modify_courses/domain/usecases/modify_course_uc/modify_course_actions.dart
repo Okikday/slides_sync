@@ -12,7 +12,7 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/features/create_course/domain/usecases/create_course_action.dart';
+import 'package:slides_sync/features/create_all/create_course/domain/usecases/create_course_action.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/modify_course_header/preview_modify_course_image_dialog.dart';
@@ -65,10 +65,7 @@ class ModifyCourseActions {
   /// When user clicks Add Description.
   /// If there's a description, it shows the Description
   /// else, it brings the option to add description
-  void onClickAddDescription(
-    BuildContext context, {
-    required String currDescription,
-  }) {
+  void onClickAddDescription(BuildContext context, {required String currDescription}) {
     if (currDescription.isNotEmpty) {
       CustomDialog.show(
         context,
@@ -111,7 +108,7 @@ class ModifyCourseActions {
 
   /// This picks image from device, shows a loading dialog
   Future<void> pickImageActionRoute(BuildContext context, {required int courseDbId}) async {
-    CustomDialog.showLoadingDialog(context, msg: "Selecting image");
+    UiUtils.showLoadingDialog(context, message: "Selecting image", backgroundColor: Colors.white10, blurSigma: Offset(2, 2));
     ImagePicker imagePicker = ImagePicker();
     final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     if (context.mounted) CustomDialog.hide(context);

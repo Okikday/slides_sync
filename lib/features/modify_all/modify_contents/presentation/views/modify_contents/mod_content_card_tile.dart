@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/features/create_all/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/common_widgets/modifying_list_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
@@ -39,7 +39,7 @@ class ModContentCardTile extends ConsumerWidget {
         fallbackWidget: Icon(
           WidgetHelper.resolveIconData(content.courseContentType),
           size: 22,
-          color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple,
+          color: context.theme.primaryColor,
         ),
       ),
       trailing: PopupMenuTheme(

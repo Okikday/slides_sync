@@ -27,8 +27,8 @@ class CourseDetailsCollectionSection extends StatelessWidget {
     if (collections.isEmpty) {
       return EmptyCollectionsView(
         onClickAddCollection: () async {
-          AppNavigator.to(context).modifyCollectionsRoute(courseModel);
-          await Future.delayed(Durations.short1);
+          // AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+          // await Future.delayed(Durations.short1);
           if (context.mounted) {
             CustomDialog.show(
               context,

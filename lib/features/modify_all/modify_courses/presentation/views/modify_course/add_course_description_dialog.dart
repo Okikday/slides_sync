@@ -58,11 +58,11 @@
 //                   CustomTextfield(
 //                     backgroundColor: Colors.grey.withAlpha(40),
 //                     cursorColor: CustomText("").effectiveStyle(context).color ?? Colors.white,
-//                     selectionHandleColor: Colors.deepPurple,
+//                     selectionHandleColor: context.theme.primaryColor,
 //                     border: OutlineInputBorder(
 //                       borderRadius: BorderRadius.circular(8.0),
 //                       borderSide: BorderSide(
-//                         color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(20),
+//                         color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : context.theme.primaryColor.withAlpha(20),
 //                       ),
 //                     ),
 //                     pixelWidth: context.deviceWidth,
@@ -79,7 +79,7 @@
 //                     textColor: Colors.white,
 //                     textSize: 14,
 //                     pixelHeight: 48,
-//                     backgroundColor: Colors.deepPurple,
+//                     backgroundColor: context.theme.primaryColor,
 //                     onClick: () {
 //                       final String text = textEditingController.text;
 //                       if (text.isEmpty || text.length < 4 || text.length > 1024) return;

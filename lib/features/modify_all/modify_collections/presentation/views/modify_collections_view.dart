@@ -8,7 +8,7 @@ import 'package:slides_sync/features/modify_all/modify_collections/presentation/
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/empty_collections_view.dart';
-import 'package:slides_sync/features/modify_all/modify_courses/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/modify_all/modify_courses/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import '../../../../../core/utils/ui_utils.dart';

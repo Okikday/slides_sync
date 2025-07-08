@@ -44,7 +44,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               counterText: null,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : Colors.deepPurple.withAlpha(40)),
+                borderSide: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : context.theme.primaryColor.withAlpha(40)),
               ),
               pixelWidth: context.deviceWidth,
               minLines: 3,

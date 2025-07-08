@@ -63,7 +63,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
     return AnimatedContainer(
       duration: Durations.extralong4,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode),
+      decoration: UiStyles.getBlueThemedBoxDecoration(context),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: widget.onTapCard,
@@ -82,7 +82,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                     pixelWidth: 64,
                     pixelHeight: 64,
                     borderRadius: 8.0,
-                    backgroundColor: Colors.deepPurple.withAlpha(40),
+                    backgroundColor: context.theme.primaryColor.withAlpha(40),
                     child: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true)),
                   ),
                   // else
@@ -90,10 +90,10 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                   //     backgroundColor: Colors.transparent,
                   //     label: CircleAvatar(
                   //       radius: 13,
-                  //       backgroundColor: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode).color,
+                  //       backgroundColor: UiStyles.getBlueThemedBoxDecoration(context).color,
                   //       child: CircleAvatar(
                   //         radius: 12,
-                  //         backgroundColor: Colors.deepPurple.withAlpha(40),
+                  //         backgroundColor: context.theme.primaryColor.withAlpha(40),
                   //         child: Icon(Iconsax.music, size: 15),
                   //       ),
                   //     ),
@@ -103,7 +103,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                   //       pixelWidth: 72,
                   //       pixelHeight: 72,
                   //       borderRadius: 8.0,
-                  //       backgroundColor: Colors.deepPurple.withAlpha(40),
+                  //       backgroundColor: context.theme.primaryColor.withAlpha(40),
                   //       child: courseMaterialCardModel.previewImage,
                   //     ),
                   //   )
@@ -120,7 +120,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                           borderRadius: BorderRadius.circular(36),
                           value: math.Random().nextDouble(),
                           backgroundColor: Colors.black.withAlpha(40),
-                          color: Colors.deepPurple, //.withAlpha(40)
+                          color: context.theme.primaryColor, //.withAlpha(40)
                         ),
                       ],
                     ),
@@ -161,7 +161,7 @@ class AnimatedCourseMaterialCardMenu extends StatelessWidget {
             scale: expandAnim,
             child: CustomElevatedButton(
               borderRadius: 24,
-              backgroundColor: Colors.deepPurple.withAlpha(40),
+              backgroundColor: context.theme.primaryColor.withAlpha(40),
               onClick: cam[index].onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,

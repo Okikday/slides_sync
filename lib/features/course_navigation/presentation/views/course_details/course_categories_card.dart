@@ -25,7 +25,11 @@ class CourseCategoriesCard extends ConsumerWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
       child: DecoratedBox(
-        decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
+        decoration: BoxDecoration(
+          color: context.theme.colorScheme.onSurface,
+          border: Border.all(color: context.theme.colorScheme.secondary),
+          borderRadius: BorderRadius.circular(12)
+        ),
         child: Padding(
           padding: EdgeInsets.all(16),
 
@@ -38,7 +42,7 @@ class CourseCategoriesCard extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: context.theme.primaryColor.withAlpha(100),
                   shape: BoxShape.circle,
-                  border: Border.fromBorderSide(BorderSide(color: Colors.deepPurpleAccent.withAlpha(40), width: 1.0)),
+                  border: Border.fromBorderSide(BorderSide(color: context.theme.primaryColor.withAlpha(40), width: 1.0)),
                 ),
                 child: icon,
               ),
@@ -49,8 +53,12 @@ class CourseCategoriesCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4.0,
                   children: [
-                    CustomText(title, fontSize: 15),
-                    CustomText("${contentCount == 0 ? "No" : "$contentCount"} ${contentCount == 1 ? "item" : "items"}", fontSize: 12, color: Colors.grey),
+                    CustomText(title, fontSize: 15, color: context.theme.colorScheme.tertiary),
+                    CustomText(
+                      "${contentCount == 0 ? "No" : "$contentCount"} ${contentCount == 1 ? "item" : "items"}",
+                      fontSize: 12,
+                      color: context.theme.colorScheme.onTertiary,
+                    ),
                   ],
                 ),
               ),

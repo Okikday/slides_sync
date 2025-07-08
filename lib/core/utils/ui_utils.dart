@@ -28,6 +28,7 @@ class UiUtils {
     bool canPop = true,
     Color? backgroundColor,
     Color? barrierColor,
+    Offset? blurSigma,
   }) async {
     await CustomDialog.showLoadingDialog(
       context,
@@ -37,6 +38,7 @@ class UiUtils {
       backgroundColor: backgroundColor ?? Colors.transparent,
       barrierColor: barrierColor ?? Colors.black.withValues(alpha: 0.6),
       transitionDuration: Durations.medium2,
+      blurSigma: blurSigma
     );
   }
 
@@ -87,7 +89,7 @@ class UiUtils {
       backgroundColor: backgroundColor ?? colors[1],
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
       borderColor: Colors.grey.withValues(alpha: 0.2),
-      boxShadows: UiStyles.getBlueThemedBoxDecoration(context.isDarkMode).boxShadow,
+      boxShadows: UiStyles.getBlueThemedBoxDecoration(context).boxShadow,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       margin:
           margin ??

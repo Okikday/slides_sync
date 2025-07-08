@@ -55,10 +55,10 @@ class ModifyCourseHeader extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: CustomTextButton(
-                          backgroundColor: Colors.deepPurple.withAlpha(80),
+                          backgroundColor: context.theme.primaryColor.withAlpha(80),
                           pixelHeight: 28,
                           contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+                          child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: context.theme.primaryColor),
                         ),
                       ),
 
@@ -78,7 +78,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                               borderRadius: 4.0,
                               contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                               onClick: onClickAddDescription,
-                              child: CustomText(description.isEmpty ? "Add description" : description, color: Colors.deepPurple),
+                              child: CustomText(description.isEmpty ? "Add description" : description, color: context.theme.primaryColor),
                             ),
                           ),
                         ),
@@ -100,12 +100,12 @@ class ModifyCourseHeader extends ConsumerWidget {
                       onTap: onClickImage,
                       onLongPress: onLongPressImage,
                       child: ColoredBox(
-                        color: Colors.deepPurple.withAlpha(80),
+                        color: context.theme.primaryColor.withAlpha(80),
                         child: SizedBox.square(
                           dimension: 80,
                           child: BuildImagePathWidget(
                             fileDetails: courseFileDetails.fileDetails,
-                            fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? Colors.deepPurpleAccent : Colors.deepPurple),
+                            fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? context.theme.primaryColor : context.theme.primaryColor),
                           ),
                         ),
                       ),

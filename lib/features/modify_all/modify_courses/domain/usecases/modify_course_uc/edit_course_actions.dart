@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/features/modify_all/modify_courses/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/modify_all/modify_courses/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';

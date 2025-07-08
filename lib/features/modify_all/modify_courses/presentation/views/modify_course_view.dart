@@ -12,7 +12,7 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/domain/usecases/modify_course_uc/modify_course_actions.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
-import 'package:slides_sync/features/modify_all/modify_courses/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/modify_all/modify_courses/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/modify_course_header.dart';
@@ -43,7 +43,6 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
         modifyCourseNotifier.update(widget.courseModel);
       }
     });
-    
 
     canPopNotifier = ValueNotifier(true);
   }
@@ -61,14 +60,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
         if (didPop) {
           await Future.delayed(Duration.zero);
           if (context.mounted) {
-            Navigator.push(
-              context,
-              CupertinoSheetRoute(
-                builder: (context) {
-                  return SelectToModifyCourseView();
-                },
-              ),
-            );
+            AppNavigator.to(context).modifyExistingCoursesRoute();
           }
         }
       },
@@ -139,11 +131,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
               ),
             );
           },
-          onClickAddDescription:
-              () => modifyCourseActions.onClickAddDescription(
-                context,
-                currDescription: courseModel.description,
-              ),
+          onClickAddDescription: () => modifyCourseActions.onClickAddDescription(context, currDescription: courseModel.description),
 
           onClickImage: () async {
             if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
@@ -201,10 +189,10 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
                 },
                 borderRadius: 48,
                 pixelHeight: 56,
-                backgroundColor: Colors.deepPurple.withAlpha(80),
+                backgroundColor: context.theme.primaryColor.withAlpha(80),
                 label: "See all collections",
                 textSize: 15,
-                textColor: Colors.deepPurple,
+                textColor: context.theme.primaryColor,
               ),
             ),
           ),

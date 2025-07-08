@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'routes/routes.dart';
-import 'shared/styles/themes.dart';
+import 'shared/styles/theme/themes.dart';
 
 final NotifierProvider<AppThemeDataProvider, ThemeData> appThemeDataProvider = NotifierProvider(AppThemeDataProvider.new);
 

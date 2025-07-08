@@ -31,7 +31,7 @@ class EmptyCollectionsView extends ConsumerWidget {
                 onClick: () {
                   if (onClickAddCollection != null) onClickAddCollection!();
                 },
-                backgroundColor: Colors.deepPurple,
+                backgroundColor: context.theme.primaryColor,
                 borderRadius: 12,
                 pixelHeight: 44,
                 label: "Add a new collection",

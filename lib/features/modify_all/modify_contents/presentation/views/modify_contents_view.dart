@@ -9,7 +9,7 @@ import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/add_contents_fab.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/modify_content_list_view.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/modify_contents_header.dart';
-import 'package:slides_sync/features/modify_all/modify_courses/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/modify_all/modify_courses/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';

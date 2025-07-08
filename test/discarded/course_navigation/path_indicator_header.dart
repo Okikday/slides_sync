@@ -87,7 +87,7 @@
 //                         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
 //                         clipBehavior: Clip.hardEdge,
 //                         decoration: BoxDecoration(
-//                           color: Colors.deepPurple.withValues(alpha: .75),
+//                           color: context.theme.primaryColor.withValues(alpha: .75),
 //                           border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
 //                           borderRadius: BorderRadius.circular(24),
 //                         ),

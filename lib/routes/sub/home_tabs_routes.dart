@@ -8,19 +8,21 @@ class HomeTabsRoutes {
     // HOME ROUTE
     GoRoute(
       path: RoutesStrings.homeView,
-      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, child: MainView(tabIndex: 0)),
+      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, child: const MainView(tabIndex: 0)),
     ),
 
     // LIBRARY ROUTE
     GoRoute(
       path: RoutesStrings.libraryView,
-      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, child: MainView(tabIndex: 1)),
+      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, child: const MainView(tabIndex: 1)),
     ),
 
     // EXPLORE ROUTE
     GoRoute(
       path: RoutesStrings.exploreView,
-      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, child: MainView(tabIndex: 1)),
+      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, child: const MainView(tabIndex: 1)),
     ),
+
+    
   ];
 }

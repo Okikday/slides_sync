@@ -52,7 +52,7 @@ class ConfirmDeletionDialog extends ConsumerWidget {
 Widget _buildDialogButton({
   required String label,
   Color textColor = Colors.white,
-  Color backgroundColor = Colors.deepPurple,
+  Color backgroundColor = Colors.transparent,
   required void Function() onClick,
 }) {
   return CustomElevatedButton(

@@ -18,7 +18,7 @@ class MainViewAnnotatedRegion extends ConsumerWidget {
         statusBarBrightness: brightness,
         statusBarIconBrightness: brightness,
         systemNavigationBarIconBrightness: brightness,
-        systemNavigationBarColor: (isDarkMode ? Color(0xff0e1d27) : Color(0xffd6ebf9)),
+        systemNavigationBarColor: context.theme.cardColor,
       ),
 
       child: child,

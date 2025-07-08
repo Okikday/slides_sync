@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/course_details_header_top.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseDetailsHeader extends ConsumerWidget {
   final CourseModel courseModel;
@@ -28,11 +29,11 @@ class CourseDetailsHeader extends ConsumerWidget {
                   child: CustomElevatedButton(
                     label: "Reading history",
                     // textColor: context.isDarkMode ? Colors.white : Colors.black,
-                    textColor: Colors.deepPurpleAccent,
+                    textColor: context.theme.colorScheme.outline,
                     textSize: 14,
                     borderRadius: 24,
                     pixelHeight: 48,
-                    backgroundColor: Colors.deepPurple.withAlpha(80),
+                    backgroundColor: context.theme.primaryColor.withAlpha(80),
                     onClick: () async {
                       await showModalBottomSheet(
                         context: context,
@@ -54,8 +55,8 @@ class CourseDetailsHeader extends ConsumerWidget {
                   shape: CircleBorder(),
                   pixelHeight: 48,
                   pixelWidth: 48,
-                  backgroundColor: Colors.lightBlueAccent.withAlpha(80),
-                  child: Icon(Icons.share_outlined, size: 20, color: Colors.lightBlue),
+                  backgroundColor: context.theme.colorScheme.secondary.withAlpha(80),
+                  child: Icon(Icons.share_outlined, size: 20, color: context.theme.colorScheme.onSecondary),
                 ),
               ],
             ),

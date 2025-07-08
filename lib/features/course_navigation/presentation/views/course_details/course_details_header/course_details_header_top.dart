@@ -1,11 +1,13 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:material_shapes/material_shapes.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course/course_description_dialog.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseDetailsHeaderTop extends StatelessWidget {
@@ -27,16 +29,26 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: CustomTextButton(
-                    backgroundColor: Colors.deepPurple.withAlpha(80),
+                    backgroundColor: context.theme.primaryColor.withAlpha(80),
                     pixelHeight: 28,
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: CustomText(courseModel.courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+                    child: CustomText(
+                      courseModel.courseCode,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: context.theme.colorScheme.outline,
+                    ),
                   ),
                 ),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0),
-                  child: CustomText(courseModel.courseName, fontSize: 16, fontWeight: FontWeight.bold),
+                  child: CustomText(
+                    courseModel.courseName,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: context.theme.colorScheme.tertiary,
+                  ),
                 ),
               ),
               Flexible(
@@ -65,7 +77,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                         },
                         child: CustomText(
                           courseModel.description.isEmpty ? "No description" : courseModel.description,
-                          color: Colors.deepPurpleAccent,
+                          color: context.theme.colorScheme.outline,
                         ),
                       ),
                     ),
@@ -80,7 +92,25 @@ class CourseDetailsHeaderTop extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: AnimatedShapeSection(courseModel: courseModel),
+          child: Builder(
+            builder: (context) {
+              final shapes = materialShapes;
+              shapes.shuffle();
+              final shape = shapes.first.shape;
+              return MaterialShapedWidget(
+                shape: shape,
+                size: Size(120, 120),
+                child: CustomShapeWaveFilledWidget(
+                  progress: 0.56,
+                  textStyle: TextStyle(fontWeight: FontWeight.bold, color: context.theme.primaryColor),
+                  backgroundWidget: BuildImagePathWidget(
+                    fileDetails: courseModel.imageLocationJson.fileDetails,
+                    fallbackWidget: const SizedBox(),
+                  ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),
+                ),
+              );
+            },
+          ),
         ),
 
         // Padding(
@@ -99,10 +129,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
 }
 
 class AnimatedShapeSection extends StatelessWidget {
-  const AnimatedShapeSection({
-    super.key,
-    required this.courseModel,
-  });
+  const AnimatedShapeSection({super.key, required this.courseModel});
 
   final CourseModel courseModel;
 
@@ -114,7 +141,7 @@ class AnimatedShapeSection extends StatelessWidget {
       delayedDuration: const Duration(milliseconds: 5000),
       child: CustomShapeWaveFilledWidget(
         progress: 0.56,
-        textStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+        textStyle: TextStyle(fontWeight: FontWeight.bold, color: context.theme.primaryColor),
         backgroundWidget: BuildImagePathWidget(
           fileDetails: courseModel.imageLocationJson.fileDetails,
           fallbackWidget: const SizedBox(),

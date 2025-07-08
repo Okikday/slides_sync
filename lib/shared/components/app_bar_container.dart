@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
+export 'app_bar_container_child.dart';
+
 class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
   final Color? scaffoldBgColor;
   final EdgeInsets? padding;

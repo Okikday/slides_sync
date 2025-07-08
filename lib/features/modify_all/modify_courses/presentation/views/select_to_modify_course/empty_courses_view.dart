@@ -1,7 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:slides_sync/features/create_course/presentation/views/create_course_view.dart';
+import 'package:slides_sync/features/create_all/create_course/presentation/views/create_course_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EmptyCoursesView extends StatelessWidget {

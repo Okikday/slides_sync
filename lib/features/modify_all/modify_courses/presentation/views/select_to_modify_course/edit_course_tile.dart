@@ -40,13 +40,13 @@ class EditCourseTile extends ConsumerWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 90, maxHeight: 140),
-        decoration: UiStyles.getBlueThemedBoxDecoration(isDarkMode),
+        decoration: UiStyles.getBlueThemedBoxDecoration(context),
         child: Row(
           children: [
             ClipOval(
               // borderRadius: BorderRadius.circular(13),
               child: ColoredBox(
-                color: Colors.deepPurple.withAlpha(80),
+                color: context.theme.primaryColor.withAlpha(80),
                 child: Padding(
                   padding: EdgeInsets.all(2),
                   child: ClipOval(
@@ -73,7 +73,7 @@ class EditCourseTile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // CustomText("This is a Content."),
-                      CustomText("$categoriesCount items", fontSize: 12, color: context.isDarkMode ? Colors.grey : Colors.deepPurple),
+                      CustomText("$categoriesCount items", fontSize: 12, color: context.isDarkMode ? Colors.grey : context.theme.primaryColor),
                     ],
                   ),
                 ],
@@ -92,10 +92,10 @@ class EditCourseTile extends ConsumerWidget {
                     selectionState.isSelecting && !selectionState.selected
                         ? Colors.grey
                         : (selectionState.isSelecting && selectionState.selected
-                            ? Colors.deepPurple
+                            ? context.theme.primaryColor
                             :
                             // (isDarkMode ? Colors.white : Colors.black)
-                            Colors.deepPurpleAccent),
+                            context.theme.primaryColor),
                 size: 26,
               ),
             ).animate().scale(begin: Offset(0, 0), end: Offset(1, 1), curve: CustomCurves.bouncySpring, duration: Durations.extralong4),

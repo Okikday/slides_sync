@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class ContentListTile extends ConsumerWidget {
@@ -29,8 +30,8 @@ class ContentListTile extends ConsumerWidget {
     this.onLongTapTile,
   });
 
-  static Color _resolveLevelColor(int? level) {
-    return level == 0 ? Colors.red : (level == 1 ? Colors.orange : (level == 2 ? Colors.green : Colors.deepPurple));
+  static Color _resolveLevelColor(BuildContext context, int? level) {
+    return level == 0 ? Colors.red : (level == 1 ? Colors.orange : (level == 2 ? Colors.green : context.theme.primaryColor));
   }
 
   @override
@@ -58,7 +59,7 @@ class ContentListTile extends ConsumerWidget {
                 label: CircleAvatar(
                     radius: 10.5,
                     backgroundColor: isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray,
-                    child: Icon(Iconsax.star_1, size: 16, color: Colors.deepPurple,)),
+                    child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor,)),
                 offset:  Offset(0, -2),
                 child: CustomElevatedButton(
                   onClick: () {
@@ -121,7 +122,7 @@ class ContentListTile extends ConsumerWidget {
                       top: 0,
                       bottom: 0,
                       child: IgnorePointer(
-                        child: CircularProgressIndicator(value: progress, strokeCap: StrokeCap.round, color: _resolveLevelColor(level)),
+                        child: CircularProgressIndicator(value: progress, strokeCap: StrokeCap.round, color: _resolveLevelColor(context, level)),
                       ),
                     ),
                 ],

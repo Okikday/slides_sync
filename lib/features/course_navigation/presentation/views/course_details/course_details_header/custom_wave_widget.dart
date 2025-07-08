@@ -1,6 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -86,7 +87,7 @@ class CustomWaveWidget extends ConsumerWidget {
     }
     return WaveWidget(
       config: CustomConfig(
-        colors: [Colors.deepPurple.withAlpha(50), Colors.deepPurple.withAlpha(80)],
+        colors: [context.theme.primaryColor.withAlpha(50), context.theme.primaryColor.withAlpha(80)],
         durations: [5000, 4000],
         heightPercentages: [fill - 0.01, fill + 0.01],
       ),

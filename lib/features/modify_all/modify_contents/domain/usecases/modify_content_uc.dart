@@ -7,7 +7,6 @@ import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/routes/routes.dart';
 
@@ -29,7 +28,6 @@ class ModifyContentUc {
   }
 
   Future<String?> _deleteContentAction(CourseContent content, {int? courseDbId, required String collectionId}) async {
-    log("${content.courseId}");
     final CourseModel? course;
     if (courseDbId == null) {
       course = await CourseRepo.getCourseById(content.courseId);

@@ -94,8 +94,8 @@ class AppAlertDialog extends ConsumerWidget {
                             label: "Confirm",
                             textSize: 14,
                             pixelHeight: 44,
-                            textColor: Colors.deepPurpleAccent,
-                            backgroundColor: Colors.deepPurple.withAlpha(80),
+                            textColor: context.theme.primaryColor,
+                            backgroundColor: context.theme.primaryColor.withAlpha(80),
                             borderRadius: ConstantSizing.borderRadiusCircle,
                             onClick: () {
                               if (onConfirm != null) onConfirm!();

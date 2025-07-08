@@ -1,6 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import 'component_widgets.dart';
 
@@ -32,7 +33,7 @@ class AppBarContainerChild extends ConsumerWidget {
       type: MaterialType.transparency,
       shape: LinearBorder(
         bottom: LinearBorderEdge(),
-        side: BorderSide(color: isDarkMode ? Colors.lightBlueAccent.withAlpha(60) : Colors.grey.withAlpha(40)),
+        side: BorderSide(color: context.theme.colorScheme.secondary),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -51,11 +52,11 @@ class AppBarContainerChild extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 2.5,
                           children: [
-                            CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+                            CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, color: context.theme.colorScheme.tertiary,),
                             CustomText(subtitle!, fontSize: 12, color: Colors.grey, overflow: TextOverflow.ellipsis, style: subtitleStyle),
                           ],
                         )
-                        : CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, style: titleStyle,),
+                        : CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, style: titleStyle, color: context.theme.colorScheme.tertiary),
               ),
               if (trailing != null) trailing!,
             ],

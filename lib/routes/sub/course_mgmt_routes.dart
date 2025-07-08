@@ -5,13 +5,14 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections_view.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents_view.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course_view.dart';
+import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/shared/strings/routes_strings.dart';
 
-import '../../features/create_course/presentation/views/create_course_view.dart';
+import '../../features/create_all/create_course/presentation/views/create_course_view.dart';
 
 class CourseMgmtRoutes {
-  static List<GoRoute> route = //COURSE MGMT NAVIGATION
+  static List<GoRoute> routes = //COURSE MGMT NAVIGATION
       [
     //CREATE COURSE VIEW NAVIGATION
     GoRoute(
@@ -27,19 +28,19 @@ class CourseMgmtRoutes {
           ),
     ),
 
-    // // SELECT TO MODIFY COURSE VIEW NAVIGATION
-    // GoRoute(
-    //   path: RoutesStrings.selectToModifyCourseView,
-    //   pageBuilder:
-    //       (context, state) => PageAnimation.buildCustomTransitionPage(
-    //         state.pageKey,
-    //         type: TransitionType.rightToLeftWithFade,
-    //         duration: Durations.extralong1,
-    //         reverseDuration: Durations.medium1,
-    //         curve: CustomCurves.defaultIosSpring,
-    //         child: SelectToModifyCourseView(),
-    //       ),
-    // ),
+    // SELECT TO MODIFY COURSE VIEW NAVIGATION
+    GoRoute(
+      path: RoutesStrings.selectToModifyCourseView,
+      pageBuilder:
+          (context, state) => PageAnimation.buildCustomTransitionPage(
+            state.pageKey,
+            type: TransitionType.rightToLeftWithFade,
+            duration: Durations.extralong1,
+            reverseDuration: Durations.medium1,
+            curve: CustomCurves.defaultIosSpring,
+            child: SelectToModifyCourseView(),
+          ),
+    ),
 
     //MODIFY COURSE VIEW NAVIGATION
     GoRoute(

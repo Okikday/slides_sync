@@ -5,42 +5,64 @@ import 'package:flutter/physics.dart';
 import 'package:material_shapes/material_shapes.dart';
 
 final List<({RoundedPolygon shape, String title})> materialShapes = [
-    (shape: MaterialShapes.circle, title: 'Circle'),
-    (shape: MaterialShapes.square, title: 'Square'),
-    (shape: MaterialShapes.slanted, title: 'Slanted'),
-    (shape: MaterialShapes.arch, title: 'Arch'),
-    (shape: MaterialShapes.semiCircle, title: 'Semicircle'),
-    (shape: MaterialShapes.oval, title: 'Oval'),
-    (shape: MaterialShapes.pill, title: 'Pill'),
-    (shape: MaterialShapes.triangle, title: 'Triangle'),
-    (shape: MaterialShapes.arrow, title: 'Arrow'),
-    (shape: MaterialShapes.fan, title: 'Fan'),
-    (shape: MaterialShapes.diamond, title: 'Diamond'),
-    (shape: MaterialShapes.clamShell, title: 'Clammshell'),
-    (shape: MaterialShapes.pentagon, title: 'Pentagon'),
-    (shape: MaterialShapes.gem, title: 'Gem'),
-    (shape: MaterialShapes.verySunny, title: 'Very sunny'),
-    (shape: MaterialShapes.sunny, title: 'Sunny'),
-    (shape: MaterialShapes.cookie4Sided, title: '4-sided cookie'),
-    (shape: MaterialShapes.cookie6Sided, title: '6-sided cookie'),
-    (shape: MaterialShapes.cookie7Sided, title: '8-sided cookie'),
-    (shape: MaterialShapes.cookie9Sided, title: '9-sided cookie'),
-    (shape: MaterialShapes.cookie12Sided, title: '12-sided cookie'),
-    (shape: MaterialShapes.clover4Leaf, title: '4-leaf clover'),
-    (shape: MaterialShapes.clover8Leaf, title: '8-leaf clover'),
-    (shape: MaterialShapes.burst, title: 'Burst'),
-    (shape: MaterialShapes.softBurst, title: 'Soft burst'),
-    (shape: MaterialShapes.boom, title: 'Boom'),
-    (shape: MaterialShapes.softBoom, title: 'Soft boom'),
-    (shape: MaterialShapes.puffyDiamond, title: 'Puffy diamond'),
-    (shape: MaterialShapes.puffy, title: 'Puffy'),
-    (shape: MaterialShapes.flower, title: 'Flower'),
-    (shape: MaterialShapes.ghostish, title: 'Ghost-ish'),
-    (shape: MaterialShapes.pixelCircle, title: 'Pixel circle'),
-    (shape: MaterialShapes.pixelTriangle, title: 'Pixel triangle'),
-    (shape: MaterialShapes.bun, title: 'Bun'),
-    // (shape: MaterialShapes.heart, title: 'Heart'),
-  ];
+  (shape: MaterialShapes.circle, title: 'Circle'),
+  (shape: MaterialShapes.square, title: 'Square'),
+  (shape: MaterialShapes.slanted, title: 'Slanted'),
+  (shape: MaterialShapes.arch, title: 'Arch'),
+  (shape: MaterialShapes.semiCircle, title: 'Semicircle'),
+  (shape: MaterialShapes.oval, title: 'Oval'),
+  (shape: MaterialShapes.pill, title: 'Pill'),
+  (shape: MaterialShapes.triangle, title: 'Triangle'),
+  (shape: MaterialShapes.arrow, title: 'Arrow'),
+  (shape: MaterialShapes.fan, title: 'Fan'),
+  (shape: MaterialShapes.diamond, title: 'Diamond'),
+  (shape: MaterialShapes.clamShell, title: 'Clammshell'),
+  (shape: MaterialShapes.pentagon, title: 'Pentagon'),
+  (shape: MaterialShapes.gem, title: 'Gem'),
+  (shape: MaterialShapes.verySunny, title: 'Very sunny'),
+  (shape: MaterialShapes.sunny, title: 'Sunny'),
+  (shape: MaterialShapes.cookie4Sided, title: '4-sided cookie'),
+  (shape: MaterialShapes.cookie6Sided, title: '6-sided cookie'),
+  (shape: MaterialShapes.cookie7Sided, title: '8-sided cookie'),
+  (shape: MaterialShapes.cookie9Sided, title: '9-sided cookie'),
+  (shape: MaterialShapes.cookie12Sided, title: '12-sided cookie'),
+  (shape: MaterialShapes.clover4Leaf, title: '4-leaf clover'),
+  (shape: MaterialShapes.clover8Leaf, title: '8-leaf clover'),
+  (shape: MaterialShapes.burst, title: 'Burst'),
+  (shape: MaterialShapes.softBurst, title: 'Soft burst'),
+  (shape: MaterialShapes.boom, title: 'Boom'),
+  (shape: MaterialShapes.softBoom, title: 'Soft boom'),
+  (shape: MaterialShapes.puffyDiamond, title: 'Puffy diamond'),
+  (shape: MaterialShapes.puffy, title: 'Puffy'),
+  (shape: MaterialShapes.flower, title: 'Flower'),
+  (shape: MaterialShapes.ghostish, title: 'Ghost-ish'),
+  (shape: MaterialShapes.pixelCircle, title: 'Pixel circle'),
+  (shape: MaterialShapes.pixelTriangle, title: 'Pixel triangle'),
+  (shape: MaterialShapes.bun, title: 'Bun'),
+  // (shape: MaterialShapes.heart, title: 'Heart'),
+];
+
+class MaterialShapedWidget extends StatelessWidget {
+  final RoundedPolygon shape;
+  final Size size;
+  final Widget? child;
+  const MaterialShapedWidget({super.key, required this.shape, required this.size, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final path = shape.toPath();
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: size.width, maxHeight: size.height),
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: ClipPath(
+          clipper: _MorphClipper(path: path, size: size),
+          child: child ?? Container(color: const Color(0xFF201D23), child: const SizedBox.expand()),
+        ),
+      ),
+    );
+  }
+}
 
 class AnimatedShape extends StatefulWidget {
   final Size size;

@@ -36,8 +36,8 @@ class ModifyContentListView extends StatelessWidget {
                 final outcome = await mcu.onDeleteContent(contentList[index], collectionId: collectionId);
                 if (context.mounted) {
                   if (outcome == null) {
-                    UiUtils.showFlushBar(context, msg: "Successfully added course!", vibe: FlushbarVibe.success);
-                  } else if (outcome.contains("error")) {
+                    UiUtils.showFlushBar(context, msg: "Successfully removed content!", vibe: FlushbarVibe.success);
+                  } else if (outcome.toLowerCase().contains("error")) {
                     UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.error);
                   } else {
                     UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.warning);

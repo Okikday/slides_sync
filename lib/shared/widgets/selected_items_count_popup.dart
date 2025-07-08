@@ -3,6 +3,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class SelectedItemsCountPopUp extends ConsumerWidget {
   final int? selectedItemsCount;
@@ -17,7 +18,7 @@ class SelectedItemsCountPopUp extends ConsumerWidget {
       margin: EdgeInsets.symmetric(horizontal: 16.0,),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: Colors.deepPurple.withValues(alpha: .4),
+        color: context.theme.primaryColor.withValues(alpha: .4),
         border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
         borderRadius: BorderRadius.circular(24),
       ),

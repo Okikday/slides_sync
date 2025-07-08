@@ -101,12 +101,13 @@ class ModifyCollectionActions {
     final BuildContext? newContext = rootNavigatorKey.currentContext;
 
     if (newContext != null) {
-      CustomDialog.showLoadingDialog(
+      UiUtils.showLoadingDialog(
         newContext,
         canPop: true,
-        msg: "Deleting collection",
+        message: "Deleting collection",
         barrierColor: Colors.black.withValues(alpha: 0.6),
-        transitionDuration: Durations.medium2,
+        backgroundColor: Colors.red.shade100,
+        blurSigma: Offset(2, 2),
       );
 
       final CourseModel? currCourseModel = await CourseRepo.getCourseByDbId(courseDbId);

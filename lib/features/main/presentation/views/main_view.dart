@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
 import 'package:slides_sync/features/main/presentation/views/main_view/main_view_annotated_region.dart';
-import 'package:slides_sync/features/tab_home/presentation/views/home_tab_view/home_drawer.dart';
-import 'package:slides_sync/features/tab_library/presentation/views/library_tab_view.dart';
-import 'package:slides_sync/features/tab_explore/presentation/views/explore_tab_view.dart';
-import 'package:slides_sync/features/tab_library/presentation/views/sub/library_floating_action_button.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_drawer.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view.dart';
+import 'package:slides_sync/features/all_tabs/tab_explore/presentation/views/explore_tab_view.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/sub/library_floating_action_button.dart';
 
-import '../../../tab_home/presentation/views/home_tab_view.dart';
-import '../../../tab_home/presentation/views/home_tab_view/home_bottom_nav_bar.dart';
+import '../../../all_tabs/tab_home/presentation/views/home_tab_view.dart';
+import 'main_view/bottom_nav_bar.dart';
 
 class MainView extends ConsumerStatefulWidget {
   final int tabIndex;
@@ -49,7 +49,7 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
         child: Scaffold(
           extendBody: true,
           extendBodyBehindAppBar: true,
-          bottomNavigationBar: HomeBottomNavBar(
+          bottomNavigationBar: BottomNavBar(
             onTap: (index) {
               if (index != ref.read(mainTabViewIndexProvider.notifier).state) {
                 ref.read(mainTabViewIndexProvider.notifier).update((cb) => index);
@@ -59,7 +59,7 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
           ),
 
           drawer: HomeDrawer(),
-
+          
           body: PageView(
             controller: pageController,
             onPageChanged: (index) {
