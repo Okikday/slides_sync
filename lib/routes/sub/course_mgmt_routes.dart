@@ -7,7 +7,7 @@ import 'package:slides_sync/features/modify_all/modify_contents/presentation/vie
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course_view.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
-import 'package:slides_sync/shared/strings/routes_strings.dart';
+import 'package:slides_sync/routes/routes_strings.dart';
 
 import '../../features/create_all/create_course/presentation/views/create_course_view.dart';
 

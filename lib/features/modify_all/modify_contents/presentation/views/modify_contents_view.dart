@@ -48,7 +48,7 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
             context.isDarkMode,
             title: widget.record.collection.collectionTitle,
             subtitle: "Collection",
-            subtitleStyle: TextStyle(fontSize: 12, color: Colors.lightBlueAccent.withAlpha(150)),
+            subtitleStyle: TextStyle(fontSize: 12, color: context.theme.colorScheme.outline,),
           ),
         ),
 

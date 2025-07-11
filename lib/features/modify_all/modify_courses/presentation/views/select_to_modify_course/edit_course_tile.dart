@@ -11,7 +11,6 @@ import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 class EditCourseTile extends ConsumerWidget {
   const EditCourseTile({
     super.key,
-    required this.isDarkMode,
     required this.courseName,
     required this.courseCode,
     required this.categoriesCount,
@@ -20,7 +19,6 @@ class EditCourseTile extends ConsumerWidget {
     required this.onTap,
     required this.onSelected,
   });
-  final bool isDarkMode;
   final String courseName;
   final String courseCode;
   final int categoriesCount;
@@ -61,11 +59,17 @@ class EditCourseTile extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (courseCode.isNotEmpty) CustomText(courseCode, fontSize: 12),
+                  if (courseCode.isNotEmpty) CustomTextButton(
+                    backgroundColor: context.theme.primaryColor.withAlpha(80),
+                    pixelHeight: 24,
+                    borderRadius: 12,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: context.theme.colorScheme.outline),
+                  ),
 
                   if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(2),
 
-                  Flexible(child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold)),
+                  Flexible(child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary)),
 
                   ConstantSizing.columnSpacing(2.0),
 
@@ -73,7 +77,7 @@ class EditCourseTile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // CustomText("This is a Content."),
-                      CustomText("$categoriesCount items", fontSize: 12, color: context.isDarkMode ? Colors.grey : context.theme.primaryColor),
+                      CustomText("$categoriesCount items", fontSize: 12, color: context.theme.colorScheme.onTertiary),
                     ],
                   ),
                 ],
@@ -94,7 +98,6 @@ class EditCourseTile extends ConsumerWidget {
                         : (selectionState.isSelecting && selectionState.selected
                             ? context.theme.primaryColor
                             :
-                            // (isDarkMode ? Colors.white : Colors.black)
                             context.theme.primaryColor),
                 size: 26,
               ),

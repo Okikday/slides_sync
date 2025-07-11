@@ -31,38 +31,41 @@ class ModContentCardTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ModifyingListTile(
-      leading: BuildImagePathWidget(
-        fileDetails: FileDetails(
-          filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath, contentId: content.id),
+    return Padding(
+      padding: EdgeInsets.only(bottom: context.hPadding7),
+      child: ModifyingListTile(
+        leading: BuildImagePathWidget(
+          fileDetails: FileDetails(
+            filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath, contentId: content.id),
+          ),
+          fallbackWidget: Icon(WidgetHelper.resolveIconData(content.courseContentType), size: 22, color: context.theme.primaryColor),
         ),
-        fallbackWidget: Icon(
-          WidgetHelper.resolveIconData(content.courseContentType),
-          size: 22,
-          color: context.theme.primaryColor,
+        trailing: PopupMenuTheme(
+          data: PopupMenuThemeData(
+            color: context.scaffoldBackgroundColor.withValues(alpha: 0.95),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
+            shadowColor: Colors.white.withAlpha(10),
+          ),
+          child: CircleAvatar(
+            backgroundColor: context.theme.colorScheme.onSurface,
+            child: PopupMenuButton<int>(
+              tooltip: "Show options",
+              clipBehavior: Clip.hardEdge,
+              menuPadding: EdgeInsets.zero,
+              icon: Icon(Iconsax.more_copy, color: context.theme.colorScheme.onTertiary),
+              onSelected: (value) => actions[value].onTap(),
+              itemBuilder: (context) {
+                return List<PopupMenuItem<int>>.generate(actions.length, (index) {
+                  final a = actions[index];
+                  return PopupMenuItem(value: index, child: PopupMenuItemChild(title: a.title, iconData: a.iconData));
+                });
+              },
+            ),
+          ),
         ),
+        title: content.title,
+        subtitle: content.courseContentType.name.substring(0, 1).toUpperCase() + content.courseContentType.name.substring(1),
       ),
-      trailing: PopupMenuTheme(
-        data: PopupMenuThemeData(
-          color: context.scaffoldBackgroundColor.withValues(alpha: 0.95),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
-          shadowColor: Colors.white.withAlpha(10),
-        ),
-        child: PopupMenuButton<int>(
-          clipBehavior: Clip.hardEdge,
-          menuPadding: EdgeInsets.zero,
-          icon: Icon(Iconsax.more_copy),
-          onSelected: (value)  => actions[value].onTap(),
-          itemBuilder: (context) {
-            return List<PopupMenuItem<int>>.generate(actions.length, (index) {
-              final a = actions[index];
-              return PopupMenuItem(value: index, child: PopupMenuItemChild(title: a.title, iconData: a.iconData));
-            });
-          },
-        ),
-      ),
-      title: content.title,
-      subtitle: content.courseContentType.name.substring(0, 1).toUpperCase() + content.courseContentType.name.substring(1),
     );
   }
 }
@@ -74,6 +77,6 @@ class PopupMenuItemChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.min, spacing: 8, children: [Icon(iconData), CustomText(title), ConstantSizing.rowSpacingSmall]);
+    return Row(mainAxisSize: MainAxisSize.min, spacing: 8, children: [Icon(iconData, color: context.theme.colorScheme.onTertiary,), CustomText(title, color: context.theme.colorScheme.tertiary,), ConstantSizing.rowSpacingSmall]);
   }
 }

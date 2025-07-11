@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ComponentWidgets {
   static backButton(BuildContext context, {Color? backgroundColor, void Function()? onPressed}) {
-    backgroundColor ??= Colors.lightBlueAccent.withAlpha(40);
+    backgroundColor ??= context.theme.colorScheme.onSurface;
     return IconButton(
+      color: context.theme.colorScheme.onTertiary,
       onPressed: () {
         if(onPressed == null){
           context.pop();

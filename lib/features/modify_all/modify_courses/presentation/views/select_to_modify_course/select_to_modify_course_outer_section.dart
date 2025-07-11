@@ -66,7 +66,6 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
                 return Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   child: EditCourseTile(
-                    isDarkMode: isDarkMode,
                     courseName: courseModel.courseName,
                     courseCode: courseModel.courseCode,
                     categoriesCount: courseModel.subCollections.length,

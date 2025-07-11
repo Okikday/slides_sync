@@ -8,7 +8,7 @@ import 'package:slides_sync/features/settings/presentation/views/settings_view.d
 import 'package:slides_sync/routes/sub/course_mgmt_routes.dart';
 import 'package:slides_sync/routes/sub/course_nav_routes.dart';
 import 'package:slides_sync/routes/sub/home_tabs_routes.dart';
-import 'package:slides_sync/shared/strings/routes_strings.dart';
+import 'package:slides_sync/routes/routes_strings.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -35,7 +35,9 @@ class Routes {
       // SETTINGS ROUTE
     GoRoute(
       path: RoutesStrings.settingsView,
-      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, type: TransitionType.scaleFromLeftCenter, child: const SettingsView()),
+      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, type: TransitionType.scaleFromLeftCenter, duration: Durations.extralong1,
+            reverseDuration: Durations.medium1,
+            curve: CustomCurves.defaultIosSpring, child: const SettingsView()),
     ),
     ],
   );

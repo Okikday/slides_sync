@@ -36,7 +36,6 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Color? currThemeColor = CustomText("").effectiveStyle(context).color;
     var divider = Divider(color: Colors.blueGrey.withAlpha(40), height: 0);
     return Material(
       type: MaterialType.transparency,
@@ -86,7 +85,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                     height: 80,
                                     margin: EdgeInsets.only(left: 12),
                                     decoration: BoxDecoration(
-                                      color: Colors.lightBlueAccent.withAlpha(40),
+                                      color: context.theme.colorScheme.onSecondary.withAlpha(40),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: BuildImagePathWidget(fileDetails: FileDetails()),
@@ -96,16 +95,16 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         CustomElevatedButton(
-                                          backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                                          backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
                                           shape: CircleBorder(),
                                           contentPadding: EdgeInsets.all(12),
-                                          child: Icon(Iconsax.star_copy, size: 26, color: currThemeColor),
+                                          child: Icon(Iconsax.star_copy, size: 26, color: context.theme.colorScheme.onTertiary),
                                         ),
                                         CustomElevatedButton(
-                                          backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                                          backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
                                           shape: CircleBorder(),
                                           contentPadding: EdgeInsets.all(12),
-                                          child: Icon(Iconsax.note_add_copy, size: 26, color: currThemeColor),
+                                          child: Icon(Iconsax.note_add_copy, size: 26, color: context.theme.colorScheme.onTertiary),
                                         ),
                                       ],
                                     ),
@@ -123,9 +122,9 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CustomText(widget.recentDialogModel.title, fontSize: 17, fontWeight: FontWeight.bold),
+                                    CustomText(widget.recentDialogModel.title, fontSize: 17, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
                                     ConstantSizing.columnSpacingSmall,
-                                    CustomText("Short detail", fontSize: 12.0, color: Colors.grey),
+                                    CustomText("Short detail", fontSize: 12.0, color: context.theme.colorScheme.onTertiary),
                                   ],
                                 ),
                               ),
@@ -147,14 +146,14 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      CustomText("Description", fontSize: 15, fontWeight: FontWeight.bold),
+                                      CustomText("Description", fontSize: 15, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
                                       ConstantSizing.columnSpacingSmall,
                                       CustomText(
                                         widget.recentDialogModel.description
                                             .substring(0, widget.recentDialogModel.description.length.clamp(0, 128))
                                             .padRight(3, "."),
                                         fontSize: 13,
-                                        color: Colors.grey,
+                                        color: context.theme.colorScheme.onTertiary,
                                       ),
                                     ],
                                   ),
@@ -171,8 +170,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
       
                                 BuildPlainActionButton(
                                   title: "Continue reading",
-                                  icon: Icon(Iconsax.play_copy, size: 24, color: currThemeColor),
-                                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                                  icon: Icon(Iconsax.play_copy, size: 24,),
+                                  textStyle: TextStyle(fontSize: 16,),
                                   onTap: () {},
                                 ),
       
@@ -180,8 +179,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
       
                                 BuildPlainActionButton(
                                   title: "Share",
-                                  icon: Icon(Icons.share_outlined, size: 24, color: currThemeColor),
-                                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                                  icon: Icon(Icons.share_outlined, size: 24,),
+                                  textStyle: TextStyle(fontSize: 16,),
                                   onTap: () {},
                                 ),
       
@@ -190,7 +189,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                 BuildPlainActionButton(
                                   title: "Remove from recents",
                                   icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                                  textStyle: TextStyle(fontSize: 16,),
                                   onTap: () {},
                                 ),
       

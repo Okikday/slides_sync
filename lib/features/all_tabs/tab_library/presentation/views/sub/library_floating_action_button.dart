@@ -33,7 +33,7 @@ class LibraryFloatingActionButton extends ConsumerWidget {
       child: ClipRSuperellipse(
         borderRadius: BorderRadius.circular(16.0),
         child: ColoredBox(
-          color: context.theme.primaryColor,
+          color: context.theme.colorScheme.primary,
           child: SizedBox(width: 51, height: 51, child: Icon(Iconsax.setting_4, color: context.theme.colorScheme.tertiary)),
         ),
       ),

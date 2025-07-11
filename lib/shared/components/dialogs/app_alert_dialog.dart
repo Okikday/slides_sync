@@ -51,7 +51,7 @@ class AppAlertDialog extends ConsumerWidget {
                 border: Border.all(width: 1, color: Colors.lightBlueAccent.withAlpha(25)),
                 boxShadow: [
                   BoxShadow(
-                    color: backgroundColor ?? (context.isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20)),
+                    color: backgroundColor ?? context.theme.colorScheme.secondary,
                     blurRadius: 8,
                     offset: Offset(0, 0),
                     blurStyle: BlurStyle.inner,
@@ -66,12 +66,12 @@ class AppAlertDialog extends ConsumerWidget {
                   ConstantSizing.columnSpacingSmall,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(child: CustomText(title, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center)),
+                    child: Center(child: CustomText(title, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center, color: context.theme.colorScheme.tertiary,)),
                   ),
                   ConstantSizing.columnSpacingSmall,
                   Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
                   ConstantSizing.columnSpacingSmall,
-                  Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: CustomText(content, fontSize: 15)),
+                  Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: CustomText(content, fontSize: 15, color: context.theme.colorScheme.tertiary,)),
                   ConstantSizing.columnSpacingExtraLarge,
                   Row(
                     spacing: 16.0,

@@ -27,7 +27,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
           child: Row(
             children: [
-              Expanded(child: CustomText("Collections", fontSize: 18, fontWeight: FontWeight.bold)),
+              Expanded(child: CustomText("Collections", fontSize: 18, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary)),
 
              if(onClickAddIcon != null) CustomElevatedButton(
                 contentPadding: EdgeInsets.all(12),

@@ -18,8 +18,8 @@ class InputCourseTitleField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomTextfield(
       controller: courseNameController,
-      backgroundColor: Colors.grey.withAlpha(40),
-      cursorColor: CustomText("").effectiveStyle(context).color ?? Colors.white,
+      backgroundColor: context.theme.colorScheme.onSurface,
+      cursorColor: context.theme.colorScheme.tertiary,
       selectionHandleColor: context.theme.primaryColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
@@ -29,7 +29,7 @@ class InputCourseTitleField extends ConsumerWidget {
       pixelHeight: 60,
       inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
       hint: "Enter course title",
-      inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
+      inputTextStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
       onTapOutside: () {},
       autoDispose: false,
       suffixIcon: CustomElevatedButton(

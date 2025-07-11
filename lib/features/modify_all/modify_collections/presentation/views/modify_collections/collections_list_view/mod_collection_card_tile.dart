@@ -27,22 +27,25 @@ class ModCollectionCardTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ModifyingListTile(
-      leading: BuildImagePathWidget(
-        fileDetails: FileDetails(),
-        fallbackWidget: Icon(Iconsax.document, size: 22, color: context.theme.primaryColor),
+    return Padding(
+      padding: EdgeInsets.only(bottom: context.hPadding7),
+      child: ModifyingListTile(
+        leading: BuildImagePathWidget(
+          fileDetails: FileDetails(),
+          fallbackWidget: Icon(Iconsax.document, size: 22, color: context.theme.primaryColor),
+        ),
+        trailing: CustomElevatedButton(backgroundColor:Colors.transparent, contentPadding: EdgeInsets.all(12), onClick: onSelected, child: Icon(Iconsax.edit_copy, size: 20)),
+        title: title,
+        subtitle:
+            "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
+            "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
+            "${contentCount == 0 ? 'No items' : "$contentCount items"}",
+      
+        onTapTile: () {
+          if (onTap != null) onTap!();
+        },
+        onLongPressTile: onSelected,
       ),
-      trailing: CustomElevatedButton(backgroundColor:Colors.transparent, contentPadding: EdgeInsets.all(12), onClick: onSelected, child: Icon(Iconsax.edit_copy, size: 20)),
-      title: title,
-      subtitle:
-          "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
-          "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
-          "${contentCount == 0 ? 'No items' : "$contentCount items"}",
-
-      onTapTile: () {
-        if (onTap != null) onTap!();
-      },
-      onLongPressTile: onSelected,
     );
   }
 }

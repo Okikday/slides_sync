@@ -36,7 +36,7 @@ class EmptyCollectionsView extends ConsumerWidget {
                 pixelHeight: 44,
                 label: "Add a new collection",
                 textSize: 15,
-                textColor: Colors.white,
+                textColor: context.theme.colorScheme.tertiary,
               ),
             ),
           ],

@@ -50,7 +50,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   spacing: 8.0,
                   children: [
-                    ConstantSizing.columnSpacingMedium,
+                    ConstantSizing.columnSpacingSmall,
                     if (courseCode.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
@@ -65,7 +65,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                     Flexible(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold),
+                        child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,),
                       ),
                     ),
                     Flexible(
@@ -126,9 +126,9 @@ class ModifyCourseHeader extends ConsumerWidget {
                   child: CustomElevatedButton(
                     label: "Edit course",
                     onClick: onClickEditCourse,
-                    textColor: Colors.lightBlueAccent,
+                    textColor: context.theme.colorScheme.outline,
                     textSize: 14,
-                    backgroundColor: Colors.lightBlueAccent.withAlpha(50),
+                    backgroundColor: context.theme.colorScheme.outlineVariant,
                     pixelHeight: 48,
                     borderRadius: 48,
                   ),

@@ -27,12 +27,12 @@ class CollectionsViewSearchBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                     child: CustomTextfield(
                       hint: "Search Collections",
-                      inputTextStyle: TextStyle(fontSize: 15),
-                      backgroundColor: context.isDarkMode ? AppColors.darkBlue : Colors.black,
+                      inputTextStyle: TextStyle(fontSize: 15, color: context.theme.colorScheme.tertiary),
+                      backgroundColor: context.theme.colorScheme.onSurface,
                       border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.zero),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 12.0, right: 10.0, top: 12.0, bottom: 12.0),
-                        child: Icon(Iconsax.search_normal_copy, size: 20, color: context.isDarkMode ? Colors.white : Colors.white),
+                        child: Icon(Iconsax.search_normal_copy, size: 20, color: context.theme.colorScheme.tertiary),
                       ),
                     ),
                   ),
@@ -41,8 +41,8 @@ class CollectionsViewSearchBar extends StatelessWidget {
                 CustomElevatedButton(
                   pixelHeight: 48,
                   shape: CircleBorder(),
-                  backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                  child: Icon(Iconsax.filter_copy, size: 20),
+                  backgroundColor: context.theme.colorScheme.outlineVariant,
+                  child: Icon(Iconsax.filter_copy, size: 20, color: context.theme.colorScheme.outline),
                 ),
               ],
             ),

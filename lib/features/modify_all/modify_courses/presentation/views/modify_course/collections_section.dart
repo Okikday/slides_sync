@@ -137,9 +137,6 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                             onSelected: () {
                                               CustomDialog.show(
                                                 context,
-                                                blurSigma: Offset(3, 3),
-                                                barrierColor: Colors.black.withAlpha(150),
-                                                curve: CustomCurves.defaultIosSpring,
                                                 child: ModCollectionDialog(courseDbId: widget.courseDbId, collection: collection),
                                               );
                                             },
@@ -184,7 +181,7 @@ Widget _buildNewCollectionTile(BuildContext context, {required void Function() o
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
           child: Row(
-            children: [Icon(Iconsax.add_circle, size: 30), ConstantSizing.rowSpacingMedium, Expanded(child: CustomText("New Collection"))],
+            children: [Icon(Iconsax.add_circle, size: 30), ConstantSizing.rowSpacingMedium, Expanded(child: CustomText("New Collection", color: context.theme.colorScheme.onTertiary,))],
           ),
         ),
       ),

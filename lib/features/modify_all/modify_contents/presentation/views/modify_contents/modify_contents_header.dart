@@ -32,27 +32,33 @@ class ModifyContentsHeader extends StatelessWidget {
                     children: [
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
-                        backgroundColor: Colors.lightBlue.withAlpha(40),
+                        backgroundColor: context.theme.colorScheme.onSurface,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding7),
                         borderRadius: ConstantSizing.borderRadiusCircle,
-                        child: CustomText("Select"),
+                        child: CustomText("Select", color: context.theme.colorScheme.onTertiary),
                       ),
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
-                        backgroundColor: Colors.lightBlue.withAlpha(40),
+                        backgroundColor: context.theme.colorScheme.onSurface,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding6),
                         borderRadius: ConstantSizing.borderRadiusCircle,
-                        child: Row(spacing: padding2, children: [Icon(Icons.keyboard_arrow_down, size: 22), CustomText("Filter")]),
+                        child: Row(
+                          spacing: padding2,
+                          children: [
+                            Icon(Icons.keyboard_arrow_down, size: 22, color: context.theme.colorScheme.onTertiary),
+                            CustomText("Filter", color: context.theme.colorScheme.onTertiary),
+                          ],
+                        ),
                       ),
 
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
                         pixelWidth: btnDimension,
                         shape: CircleBorder(),
-                        backgroundColor: Colors.lightBlue.withAlpha(40),
+                        backgroundColor: context.theme.colorScheme.onSurface,
                         contentPadding: EdgeInsets.all(padding4),
                         borderRadius: ConstantSizing.borderRadiusCircle,
-                        child: Icon(Iconsax.search_normal_copy),
+                        child: Icon(Iconsax.search_normal_copy, color: context.theme.colorScheme.onTertiary),
                       ),
                     ],
                   ),

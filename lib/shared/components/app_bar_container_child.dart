@@ -33,7 +33,7 @@ class AppBarContainerChild extends ConsumerWidget {
       type: MaterialType.transparency,
       shape: LinearBorder(
         bottom: LinearBorderEdge(),
-        side: BorderSide(color: context.theme.colorScheme.secondary),
+        side: BorderSide(color: context.theme.colorScheme.onSecondary.withAlpha(80)),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -53,11 +53,12 @@ class AppBarContainerChild extends ConsumerWidget {
                           spacing: 2.5,
                           children: [
                             CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, color: context.theme.colorScheme.tertiary,),
-                            CustomText(subtitle!, fontSize: 12, color: Colors.grey, overflow: TextOverflow.ellipsis, style: subtitleStyle),
+                            CustomText(subtitle!, fontSize: 12, color: context.theme.colorScheme.onTertiary, overflow: TextOverflow.ellipsis, style: subtitleStyle),
                           ],
                         )
                         : CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, style: titleStyle, color: context.theme.colorScheme.tertiary),
               ),
+              if(trailing == null) ConstantSizing.rowSpacingMedium,
               if (trailing != null) trailing!,
             ],
           ),

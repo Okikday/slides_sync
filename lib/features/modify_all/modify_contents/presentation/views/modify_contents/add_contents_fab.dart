@@ -18,13 +18,15 @@ class AddContentsFAB extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton(
       onPressed: () {
-        CustomDialog.show(
-          context,
-          transitionDuration: Durations.short1,
-          reverseTransitionDuration: Durations.short1,
-          blurSigma: Offset(2, 2),
-          child: AddContentsBottomSheet(collection: collection),
-        );
+        // CustomDialog.show(
+        //   context,
+        //   transitionDuration: Durations.short1,
+        //   reverseTransitionDuration: Durations.short1,
+        //   barrierColor: Colors.black38,
+        //   child: AddContentsBottomSheet(collection: collection),
+        // );
+
+        CustomDialog.show(context, child: Container(width: 100, height: 100, color: Colors.amber));
       },
       shape: CircleBorder(),
       child: Icon(Icons.add, color: Colors.white),

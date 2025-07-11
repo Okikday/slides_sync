@@ -27,23 +27,23 @@ class ModifyingListTile extends StatelessWidget {
     final buttonPadding = context.hPadding5;
     final btnDimension = context.defaultBtnDimension;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: buttonPadding),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: ColoredBox(
-          // color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
-          color: context.theme.canvasColor,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: CustomElevatedButton(
-              onClick: onTapTile,
-              onLongClick: onLongPressTile,
-              borderRadius: 12,
-
-              contentPadding: EdgeInsets.all(buttonPadding),
-              // backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
-              backgroundColor: context.theme.canvasColor,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: ColoredBox(
+        // color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
+        color: context.theme.canvasColor,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: CustomElevatedButton(
+            onClick: onTapTile,
+            onLongClick: onLongPressTile,
+            borderRadius: 12,
+    
+            contentPadding: EdgeInsets.all(buttonPadding),
+            // backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
+            backgroundColor: context.theme.canvasColor,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 120),
               child: Row(
                 spacing: ConstantSizing.spaceMedium,
                 mainAxisSize: MainAxisSize.min,
@@ -52,24 +52,24 @@ class ModifyingListTile extends StatelessWidget {
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                       color: context.theme.primaryColor.withAlpha(80),
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), spreadRadius: 2)],
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), spreadRadius: 1)],
                     ),
                     child: SizedBox.square(dimension: btnDimension, child: leading),
                   ),
-
+                  
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(title, fontWeight: FontWeight.bold, fontSize: 13.5),
+                        CustomText(title, fontWeight: FontWeight.bold, fontSize: 13.5, color: context.theme.colorScheme.tertiary, overflow: TextOverflow.fade,),
                         ConstantSizing.columnSpacing(4),
-                        CustomText(subtitle, fontSize: 12, color: Colors.grey),
+                        CustomText(subtitle, fontSize: 12, color: context.theme.colorScheme.onTertiary),
                       ],
                     ),
                   ),
-
+                  
                   if (trailing != null) trailing!,
                 ],
               ),

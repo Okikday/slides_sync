@@ -53,11 +53,10 @@ class ModifyCollectionActions {
     );
     if (newCollection == null) return "Couldn't find collection!";
     if (newCollection.collectionTitle == newText) return "Collection title already exists, try using a different name";
-
     final Result<String?> renameOutcome = await Result.tryRunAsync<String?>(() async {
       final newCollections = currCourseModel.subCollections.where((cm) => cm.collectionId != newCollection.collectionId).toList();
-      newCollections.add(newCollection);
-      await CourseRepo.addCourse(currCourseModel.copyWith(subCollections: newCollections));
+
+      await CourseRepo.addCourse(currCourseModel.copyWith(subCollections: [...newCollections, newCollection.copyWith(collectionTitle: newText)]));
       return null;
     });
     if (renameOutcome.isSuccess && renameOutcome.data == null) {
@@ -76,7 +75,7 @@ class ModifyCollectionActions {
     required int courseDbId,
     required CourseSubCollection collection,
   }) async {
-    if (newText.isNotEmpty && newText != collection.collectionTitle && newText.length >= 2 && newText.length <= 64) {
+    if (newText.isNotEmpty && newText != collection.collectionTitle && newText.length >= 2 && newText.length < 256) {
       final String? outcome = await renameCollectionAction(newText: newText, courseDbId: courseDbId, collectionId: collection.collectionId);
       if (context.mounted) CustomDialog.hide(context);
       if (context.mounted) {

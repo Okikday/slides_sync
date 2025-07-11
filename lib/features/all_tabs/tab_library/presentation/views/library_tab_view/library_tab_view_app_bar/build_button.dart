@@ -12,10 +12,10 @@ class BuildButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomElevatedButton(
       contentPadding: EdgeInsets.all(12),
-      backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+      backgroundColor: context.theme.colorScheme.onSurface,
       shape: CircleBorder(),
       onClick: onTap,
-      child: Icon(iconData, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
+      child: Icon(iconData, size: 20, color: context.theme.colorScheme.tertiary),
     );
   }
 }

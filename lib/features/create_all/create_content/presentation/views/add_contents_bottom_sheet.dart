@@ -38,7 +38,7 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
 
   @override
   Widget build(BuildContext context) {
-    final Map<int, ContentType> typeMap = {0: ContentType.auto, 1: ContentType.media, 2: ContentType.document, 3: ContentType.audio};
+    
     return Stack(
           children: [
             Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
@@ -48,27 +48,30 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
               bottom: 8,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: AddContentCardSection(fixedExtentScrollController: fixedExtentScrollController, collection: widget.collection, typeMap: typeMap),
+                child: AddContentCardSection(
+                  fixedExtentScrollController: fixedExtentScrollController,
+                  collection: widget.collection,
+                ),
               ),
             ),
           ],
         )
         .animate()
-        .flipV(begin: -.2, end: 0, duration: Durations.medium4, curve: CustomCurves.bouncySpring)
-        .scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.medium4, curve: CustomCurves.bouncySpring)
+        .scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.short4, curve: CustomCurves.decelerate)
+        .blurXY(end: 0, begin: 8, duration: Durations.medium1, curve: CustomCurves.decelerate)
         .fadeIn();
   }
 }
 
 class AddContentCardSection extends StatelessWidget {
-  const AddContentCardSection({super.key, required this.fixedExtentScrollController, required this.collection, required this.typeMap});
+  const AddContentCardSection({super.key, required this.fixedExtentScrollController, required this.collection});
 
   final FixedExtentScrollController fixedExtentScrollController;
   final CourseSubCollection collection;
-  final Map<int, ContentType> typeMap;
 
   @override
   Widget build(BuildContext context) {
+    final Map<int, ContentType> typeMap = {0: ContentType.auto, 1: ContentType.image, 2: ContentType.document};
     return Container(
       width: context.deviceWidth,
       constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
@@ -86,7 +89,12 @@ class AddContentCardSection extends StatelessWidget {
           ConstantSizing.columnSpacing(4.0),
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-            child: CustomText("What kind of content do you want to add?", fontSize: 16, fontWeight: FontWeight.bold),
+            child: CustomText(
+              "What kind of content do you want to add?",
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: context.theme.colorScheme.tertiary,
+            ),
           ),
           // ConstantSizing.columnSpacingSmall,
           Column(
@@ -101,46 +109,22 @@ class AddContentCardSection extends StatelessWidget {
                   onSelectedItemChanged: (index) async {},
                   children:
                       [
-                        // BuildPlainActionButton(title: "Link", icon: Icon(Iconsax.link, color: context.theme.primaryColor)),
-                        BuildPlainActionButton(
-                          title: "Auto",
-                          icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
-                          onTap:
-                              () => AddContentsUc.onClickToAddContent(
-                                context,
-                                collection: collection,
-                                type: typeMap[0] ?? typeMap[0]!,
-                              ),
-                        ),
-                        BuildPlainActionButton(
-                          title: "Media",
-                          icon: Icon(Iconsax.image, color: context.theme.primaryColor),
-                          onTap:
-                              () => AddContentsUc.onClickToAddContent(
-                                context,
-                                collection: collection,
-                                type: typeMap[1] ?? typeMap[0]!,
-                              ),
-                        ),
                         BuildPlainActionButton(
                           title: "Document",
                           icon: Icon(Iconsax.document, color: context.theme.primaryColor),
-                          onTap:
-                              () => AddContentsUc.onClickToAddContent(
-                                context,
-                                collection: collection,
-                                type: typeMap[2] ?? typeMap[0]!,
-                              ),
+                          onTap: () => AddContentsUc.onClickToAddContent(context, collection: collection, type: typeMap[2] ?? typeMap[0]!),
                         ),
+
                         BuildPlainActionButton(
-                          title: "Audio",
+                          title: "Auto",
                           icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
-                          onTap:
-                              () => AddContentsUc.onClickToAddContent(
-                                context,
-                                collection: collection,
-                                type: typeMap[3] ?? typeMap[0]!,
-                              ),
+                          onTap: () => AddContentsUc.onClickToAddContent(context, collection: collection, type: typeMap[0] ?? typeMap[0]!),
+                        ),
+
+                        BuildPlainActionButton(
+                          title: "Image",
+                          icon: Icon(Iconsax.image, color: context.theme.primaryColor),
+                          onTap: () => AddContentsUc.onClickToAddContent(context, collection: collection, type: typeMap[1] ?? typeMap[0]!),
                         ),
                       ].map((e) => Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: e)).toList(),
                 ),
@@ -153,21 +137,27 @@ class AddContentCardSection extends StatelessWidget {
                   children: [
                     Flexible(
                       child: CustomElevatedButton(
-                        backgroundColor: context.theme.cardColor.withAlpha(100),
+                        backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(80),
                         pixelHeight: 40,
                         child: Row(
                           spacing: 4.0,
-                          children: [Icon(Iconsax.note_add, color: context.theme.cardColor), CustomText("Add note")],
+                          children: [
+                            Icon(Iconsax.note_add, color: context.theme.colorScheme.onTertiary),
+                            CustomText("Add note", color: context.theme.colorScheme.onSecondary),
+                          ],
                         ),
                       ),
                     ),
                     Flexible(
                       child: CustomElevatedButton(
-                        backgroundColor: context.theme.cardColor.withAlpha(100),
+                        backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(80),
                         pixelHeight: 40,
                         child: Row(
                           spacing: 4.0,
-                          children: [Icon(Iconsax.link_circle, color: context.theme.cardColor), CustomText("Add link(s)")],
+                          children: [
+                            Icon(Iconsax.link_circle, color: context.theme.colorScheme.onTertiary),
+                            CustomText("Add link", color: context.theme.colorScheme.onSecondary),
+                          ],
                         ),
                       ),
                     ),

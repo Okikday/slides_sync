@@ -23,8 +23,8 @@ class InputCourseCodeField extends ConsumerWidget {
               alignment: Alignment.centerRight,
               child: CustomTextfield(
                 controller: courseCodeController,
-                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
-                cursorColor: CustomText("").effectiveStyle(context).color ?? Colors.white,
+                backgroundColor: context.theme.colorScheme.onSurface,
+                cursorColor: context.theme.colorScheme.tertiary,
                 selectionHandleColor: context.theme.primaryColor,
                 autoDispose: false,
                 border: OutlineInputBorder(
@@ -36,7 +36,7 @@ class InputCourseCodeField extends ConsumerWidget {
                 pixelHeight: 60,
                 inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                 hint: "Optional course code",
-                inputTextStyle: CustomText("", fontSize: 16).effectiveStyle(context),
+                inputTextStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
               ),
             ),
         

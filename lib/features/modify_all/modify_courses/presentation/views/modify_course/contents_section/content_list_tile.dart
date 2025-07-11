@@ -86,10 +86,10 @@ class ContentListTile extends ConsumerWidget {
                     children: [
                       ConstrainedBox(
                         constraints: BoxConstraints(maxHeight: 30),
-                        child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, height: 1.0),
+                        child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary, height: 1.0),
                       ),
-                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: AppColors.textSecondary)),
-                      if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13,),
+                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: context.theme.colorScheme.onTertiary)),
+                      if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13, color: context.theme.colorScheme.tertiary,),
                     ],
                   ),
                 ),
@@ -111,8 +111,8 @@ class ContentListTile extends ConsumerWidget {
                     },
                     child:
                     progress == null
-                        ? Icon(Iconsax.arrow_right_2_copy, color: Colors.white, size: 26)
-                        : CustomText("${(progress! * 100).truncate()}%", fontSize: 11, fontWeight: FontWeight.bold, color: Colors.white),
+                        ? Icon(Iconsax.arrow_right_2_copy, color: context.theme.colorScheme.tertiary, size: 26)
+                        : CustomText("${(progress! * 100).truncate()}%", fontSize: 11, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
                   ),
 
                   if (progress != null)

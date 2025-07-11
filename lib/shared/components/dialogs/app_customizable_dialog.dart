@@ -52,7 +52,7 @@ class AppCustomizableDialog extends ConsumerWidget {
             decoration: BoxDecoration(
               color: backgroundColor ?? context.scaffoldBackgroundColor.withValues(alpha: 0.9),
               borderRadius: BorderRadius.circular(16.0),
-              border: Border.all(width: 1, color: Colors.lightBlueAccent.withAlpha(25)),
+              border: Border.all(width: 1, color: context.theme.colorScheme.secondary.withAlpha(40)),
               boxShadow: [
                 BoxShadow(
                   color: (context.isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20)),

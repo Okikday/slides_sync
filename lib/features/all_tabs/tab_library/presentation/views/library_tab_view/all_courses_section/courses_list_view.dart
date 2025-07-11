@@ -76,7 +76,7 @@ class CoursesListView extends ConsumerWidget {
                                             : context.deviceHeight * 0.025,
                                     fontWeight: FontWeight.bold,
                                     textAlign: TextAlign.center,
-                                    color: context.isDarkMode ? context.theme.cardColor : context.theme.primaryColor,
+                                    color: context.theme.colorScheme.onTertiary,
                                   ),
                                 ),
                       ),

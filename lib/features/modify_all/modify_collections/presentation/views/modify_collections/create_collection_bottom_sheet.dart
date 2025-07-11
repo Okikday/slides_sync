@@ -97,7 +97,8 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                     }
                   },
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                  inputTextStyle: TextStyle(fontSize: 15),
+                  inputTextStyle: TextStyle(fontSize: 15, color: context.theme.colorScheme.tertiary),
+                  cursorColor: context.theme.primaryColor,
                   backgroundColor: Colors.transparent,
                   border: UnderlineInputBorder(borderSide: BorderSide(color: context.theme.primaryColor)),
                   // alwaysShowSuffixIcon: true,

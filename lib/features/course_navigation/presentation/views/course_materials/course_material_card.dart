@@ -113,7 +113,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(courseContent.title, fontSize: 13),
+                        CustomText(courseContent.title, fontSize: 13, color: context.theme.colorScheme.tertiary),
                         ConstantSizing.columnSpacingMedium,
                         LinearProgressIndicator(
                           minHeight: 8,
@@ -165,7 +165,7 @@ class AnimatedCourseMaterialCardMenu extends StatelessWidget {
               onClick: cam[index].onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [Icon(cam[index].icon), ConstantSizing.rowSpacingSmall, CustomText(cam[index].label)],
+                children: [Icon(cam[index].icon), ConstantSizing.rowSpacingSmall, CustomText(cam[index].label, color: context.theme.colorScheme.tertiary)],
               ),
             ),
           );

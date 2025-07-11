@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
-import 'package:slides_sync/shared/strings/routes_strings.dart';
+import 'package:slides_sync/routes/routes_strings.dart';
 
 class CourseNavRoutes {
   static List<GoRoute> routes = [

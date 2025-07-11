@@ -20,7 +20,7 @@ class LoadingView extends StatelessWidget {
             ConstantSizing.columnSpacingMedium,
             CircleAvatar(
               radius: 35,
-              backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+              backgroundColor: context.theme.colorScheme.onSurface,
               child: Lottie.asset(IconStrings.instance.loadingSpinner),
             ).animate().scale(begin: Offset(0.6, 0.6), end: Offset(1, 1), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
             ConstantSizing.columnSpacingMedium,

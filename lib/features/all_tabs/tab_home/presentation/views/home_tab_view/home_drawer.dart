@@ -17,24 +17,24 @@ class HomeDrawer extends ConsumerWidget {
         child: Column(
           children: [
             ConstantSizing.columnSpacing(kToolbarHeight + 24),
-            CircleAvatar(radius: 40, backgroundColor: AppColors.arsenic, child: Icon(Iconsax.user, color: Colors.white30,),),
+            CircleAvatar(radius: 40, backgroundColor: context.theme.colorScheme.onSurface, child: Icon(Iconsax.user, color: context.theme.colorScheme.onTertiary,),),
             ConstantSizing.columnSpacingMedium,
-            CustomText("Username", color: Colors.white,),
+            CustomText("Username", color: context.theme.colorScheme.tertiary,),
             ConstantSizing.columnSpacingSmall,
-            CustomText("Some description", color: Colors.grey),
+            CustomText("Some description", color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.6),),
 
             ConstantSizing.columnSpacingExtraLarge,
 
-            ListTile(leading: Icon(Iconsax.profile_tick), title: CustomText("Profile", color: Colors.white)),
-            ListTile(leading: Icon(Iconsax.bookmark), title: CustomText("Bookmarks", color: Colors.white)),
+            ListTile(leading: Icon(Iconsax.profile_tick, color: context.theme.colorScheme.onTertiary,), title: CustomText("Profile", color: context.theme.colorScheme.tertiary)),
+            ListTile(leading: Icon(Iconsax.bookmark, color: context.theme.colorScheme.onTertiary,), title: CustomText("Bookmarks", color: context.theme.colorScheme.tertiary)),
             ListTile(
-              leading: Icon(Iconsax.setting),
-              title: CustomText("Settings", color: Colors.white),
+              leading: Icon(Iconsax.setting, color: context.theme.colorScheme.onTertiary,),
+              title: CustomText("Settings", color: context.theme.colorScheme.tertiary),
               onTap: () {
                 AppNavigator.to(context).settingsRoute();
               },
             ),
-            ListTile(leading: Icon(Iconsax.information_copy), title: CustomText("Help", color: Colors.white)),
+            ListTile(leading: Icon(Iconsax.information_copy, color: context.theme.colorScheme.onTertiary,), title: CustomText("Help", color: context.theme.colorScheme.tertiary)),
           ],
         ),
       ),

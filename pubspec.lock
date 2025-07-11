@@ -245,10 +245,10 @@ packages:
     dependency: "direct main"
     description:
       name: custom_widgets_toolkit
-      sha256: "3982da73c9e411e3224e1535a6babdb3eb47c853263073eadfc5a685078dfae8"
+      sha256: "13114a158250be61d2aa25509902a21143af73804461a04a7000703efb01d269"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.71"
+    version: "0.0.72"
   dart_style:
     dependency: transitive
     description:

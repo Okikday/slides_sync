@@ -46,7 +46,7 @@ class EditCourseActions {
       child: AppAlertDialog(
         title: "Confirm exit",
         content: "Are you sure you want to exit without saving?",
-        backgroundColor: context.isDarkMode ? AppColors.darkBlue.withAlpha(200) : null,
+        backgroundColor: context.scaffoldBackgroundColor,
         onCancel: () {
           CustomDialog.hide(context);
         },

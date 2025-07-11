@@ -8,7 +8,7 @@ import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 class AppThemeDataProvider extends Notifier<ThemeData> {
   @override
   ThemeData build() {
-    return resolveThemeData(defaultAppThemeModels[7]);
+    return resolveThemeData(defaultAppThemeModels[0]);
   }
 
   void update([ThemeData? newThemeData]) {

@@ -119,7 +119,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     spacing: 6.0,
                                     children: [
-                                      CustomText("Course title", fontSize: 13),
+                                      CustomText("Course title", fontSize: 13, color: context.theme.colorScheme.tertiary,),
                                       InputCourseTitleField(
                                         courseNameController: courseNameTextController,
                                         isCourseCodeFieldVisible: isCourseCodeFieldVisible,
@@ -179,7 +179,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                               },
                           contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                           label: "Update details",
-                          textColor: Colors.white,
+                          textColor: context.theme.colorScheme.tertiary,
                           textSize: 15,
                           pixelHeight: 48,
                           backgroundColor: context.theme.primaryColor,

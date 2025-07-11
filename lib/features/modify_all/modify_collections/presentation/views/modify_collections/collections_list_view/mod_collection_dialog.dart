@@ -46,7 +46,6 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final Color? currThemeColor = CustomText("").effectiveStyle(context).color;
     var divider = Divider(color: Colors.blueGrey.withAlpha(40), height: 0);
     final collection = widget.collection;
     final mca = ModifyCollectionActions();
@@ -62,16 +61,15 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 24),
+              padding: const EdgeInsets.only(left: 4.0, right: 20),
               child: Row(
                 spacing: 16.0,
                 children: [
                   Container(
                     width: 80,
                     height: 80,
-
                     margin: EdgeInsets.only(left: 12),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.lightBlueAccent.withAlpha(40)),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.outlineVariant),
                     child: BuildImagePathWidget(fileDetails: FileDetails()),
                   ),
                   Expanded(
@@ -91,7 +89,9 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                       focusNode: focusNode,
                       autoDispose: false,
                       inputTextStyle: TextStyle(color: Colors.white),
-                      backgroundColor: Colors.lightBlueAccent.withAlpha(80),
+                      backgroundColor: context.theme.colorScheme.onSecondary,
+                      cursorColor: context.theme.primaryColor,
+                      
                     ),
                   ),
                 ],
@@ -107,8 +107,8 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
                 BuildPlainActionButton(
                   title: "Select",
-                  icon: Icon(Iconsax.tick_circle_copy, size: 24, color: currThemeColor),
-                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                  icon: Icon(Iconsax.tick_circle_copy, size: 24, color: context.theme.colorScheme.tertiary),
+                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
                   onTap: () {},
                 ),
 
@@ -116,8 +116,8 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
                 BuildPlainActionButton(
                   title: "View content",
-                  icon: Icon(Iconsax.play_copy, size: 24, color: currThemeColor),
-                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                  icon: Icon(Iconsax.play_copy, size: 24, color: context.theme.colorScheme.tertiary),
+                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
                   onTap: () {},
                 ),
 
@@ -125,8 +125,8 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
                 BuildPlainActionButton(
                   title: "Share",
-                  icon: Icon(Icons.share_outlined, size: 24, color: currThemeColor),
-                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                  icon: Icon(Icons.share_outlined, size: 24, color: context.theme.colorScheme.tertiary),
+                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
                   onTap: () {},
                 ),
 
@@ -135,7 +135,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 BuildPlainActionButton(
                   title: "Delete",
                   icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                  textStyle: TextStyle(fontSize: 16, color: currThemeColor),
+                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
                   onTap: () async {
                     if (context.mounted) {
                       CustomDialog.hide(context);
@@ -182,6 +182,6 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
           ],
         ),
       ),
-    ).animate().scaleY(begin: 0.1, end: 1.0, curve: CustomCurves.bouncySpring, duration: Durations.extralong1);
+    ).animate().fadeIn().scaleY(begin: 0.4, end: 1.0, curve: CustomCurves.defaultIosSpring, duration: Durations.medium3);
   }
 }
