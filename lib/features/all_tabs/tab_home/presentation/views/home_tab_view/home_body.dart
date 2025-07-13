@@ -37,7 +37,7 @@ class HomeBody extends ConsumerWidget {
         else
           SliverToBoxAdapter(child: BuildDashboardCarouselSection()),
 
-        SliverToBoxAdapter(child: ConstantSizing.columnSpacingExtraLarge),
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
 
         // Recents Section Header
         // Won't show up if the recent courses is empty

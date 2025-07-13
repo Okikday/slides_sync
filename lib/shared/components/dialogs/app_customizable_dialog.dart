@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -16,7 +17,7 @@ class AppCustomizableDialog extends ConsumerWidget {
   final void Function()? onPop;
   const AppCustomizableDialog({
     super.key,
-    this.blurSigma,
+    this.blurSigma = const Offset(4, 4),
     this.leading,
     this.alignment = Alignment.center,
     required this.child,
@@ -50,12 +51,12 @@ class AppCustomizableDialog extends ConsumerWidget {
             clipBehavior: Clip.hardEdge,
             constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
             decoration: BoxDecoration(
-              color: backgroundColor ?? context.scaffoldBackgroundColor.withValues(alpha: 0.9),
+              color: backgroundColor ?? context.scaffoldBackgroundColor.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(16.0),
               border: Border.all(width: 1, color: context.theme.colorScheme.secondary.withAlpha(40)),
               boxShadow: [
                 BoxShadow(
-                  color: (context.isDarkMode ? Colors.lightBlueAccent.withAlpha(25) : Colors.black.withAlpha(20)),
+                  color: context.theme.colorScheme.secondary.withAlpha(40),
                   blurRadius: 8,
                   offset: Offset(0, 0),
                   blurStyle: BlurStyle.inner,

@@ -25,7 +25,7 @@ class RecentsSectionHeader extends ConsumerWidget {
             CustomTextButton(
               label: "See all",
               textColor: context.theme.colorScheme.onTertiary.withValues(alpha: 0.6),
-              textSize: 16,
+              textSize: 15,
               onClick: onClickSeeAll,
             ),
           ],

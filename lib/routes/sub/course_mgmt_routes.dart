@@ -73,9 +73,10 @@ class CourseMgmtRoutes {
               pageBuilder: (context, state) {
                 return PageAnimation.buildCustomTransitionPage(
                   state.pageKey,
-                  type: TransitionType.fade,
-                  duration: Durations.medium1,
+                  type: TransitionType.rightToLeftWithFade,
+                  duration: Durations.extralong1,
                   reverseDuration: Durations.medium1,
+                  curve: CustomCurves.defaultIosSpring,
                   child: ModifyContentsView(record: state.extra as ContentRecord<int, CourseSubCollection, CourseTitleRecord>),
                 );
               },

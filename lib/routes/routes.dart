@@ -33,12 +33,18 @@ class Routes {
       ...CourseNavRoutes.routes,
 
       // SETTINGS ROUTE
-    GoRoute(
-      path: RoutesStrings.settingsView,
-      pageBuilder: (context, state) => PageAnimation.buildCustomTransitionPage(state.pageKey, type: TransitionType.scaleFromLeftCenter, duration: Durations.extralong1,
-            reverseDuration: Durations.medium1,
-            curve: CustomCurves.defaultIosSpring, child: const SettingsView()),
-    ),
+      GoRoute(
+        path: RoutesStrings.settingsView,
+        pageBuilder:
+            (context, state) => PageAnimation.buildCustomTransitionPage(
+              state.pageKey,
+              type: TransitionType.scaleFromLeftCenter,
+              duration: Durations.extralong1,
+              reverseDuration: Durations.medium1,
+              curve: CustomCurves.defaultIosSpring,
+              child: const SettingsView(),
+            ),
+      ),
     ],
   );
 }

@@ -95,7 +95,7 @@ class CourseSubCollection {
       collectionId: map['collectionId'] as String,
       parentId: map['parentId'] as String,
       collectionTitle: map['collectionTitle'] as String,
-      courseContents: List<CourseContent>.from((map['courseContents'] as List<String>).map((e) => CourseContent.fromJson(e)).toList()),
+      courseContents: List<CourseContent>.from((map['courseContents']).map((e) => CourseContent.fromJson(e)).toList()),
       createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
       description: map['description'] as String? ?? '',
       imageLocationJson: map['imageLocationJson'] as String? ?? '{}',

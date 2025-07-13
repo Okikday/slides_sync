@@ -21,7 +21,7 @@ class BuildImagePathWidget extends ConsumerStatefulWidget {
   const BuildImagePathWidget({
     super.key,
     required this.fileDetails,
-    this.fallbackWidget = const Icon(Iconsax.document, color: Colors.grey,),
+    this.fallbackWidget = const Icon(Iconsax.document),
     this.fit = BoxFit.cover,
     this.width,
     this.height,

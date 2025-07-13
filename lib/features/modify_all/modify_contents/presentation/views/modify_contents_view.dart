@@ -6,7 +6,9 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/add_contents_fab.dart';
+import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/empty_contents_view.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/modify_content_list_view.dart';
 import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents/modify_contents_header.dart';
 import 'package:slides_sync/features/modify_all/modify_courses/presentation/providers/modify_course_providers.dart';
@@ -29,7 +31,6 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     // ref.listen(syncCourseProvider, syncCourseWithStorage);
@@ -48,17 +49,19 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
             context.isDarkMode,
             title: widget.record.collection.collectionTitle,
             subtitle: "Collection",
-            subtitleStyle: TextStyle(fontSize: 12, color: context.theme.colorScheme.outline,),
+            subtitleStyle: TextStyle(fontSize: 12, color: context.theme.colorScheme.outline),
           ),
         ),
 
         floatingActionButton: AddContentsFAB(collection: widget.record.collection),
 
-        body: ModifyContentsOuterSection(record: (
-                collection: stateCollection ?? widget.record.collection,
-                courseDbId: widget.record.courseDbId,
-                courseTitle: widget.record.courseTitle,
-              ) ),
+        body: ModifyContentsOuterSection(
+          record: (
+            collection: stateCollection ?? widget.record.collection,
+            courseDbId: widget.record.courseDbId,
+            courseTitle: widget.record.courseTitle,
+          ),
+        ),
       ),
     );
   }
@@ -72,12 +75,16 @@ class ModifyContentsOuterSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
       slivers: [
-        ModifyContentsHeader(),
+        ModifyContentsHeader(onSelect: () {}, onClickFilter: () {}, onSearch: () {}),
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
-        ModifyContentListView(
-          collectionId: record.collection.collectionId,
-          courseDbId: record.courseDbId,
-          contentList: record.collection.courseContents),
+        if (record.collection.courseContents.isEmpty)
+          EmptyContentsView(collection: record.collection,)
+        else
+          ModifyContentListView(
+            collectionId: record.collection.collectionId,
+            courseDbId: record.courseDbId,
+            contentList: record.collection.courseContents,
+          ),
 
         SliverToBoxAdapter(child: ConstantSizing.columnSpacing(context.bottomPadding)),
       ],

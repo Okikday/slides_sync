@@ -56,7 +56,9 @@ class ModifyCollectionActions {
     final Result<String?> renameOutcome = await Result.tryRunAsync<String?>(() async {
       final newCollections = currCourseModel.subCollections.where((cm) => cm.collectionId != newCollection.collectionId).toList();
 
-      await CourseRepo.addCourse(currCourseModel.copyWith(subCollections: [...newCollections, newCollection.copyWith(collectionTitle: newText)]));
+      await CourseRepo.addCourse(
+        currCourseModel.copyWith(subCollections: [...newCollections, newCollection.copyWith(collectionTitle: newText)]),
+      );
       return null;
     });
     if (renameOutcome.isSuccess && renameOutcome.data == null) {
@@ -105,7 +107,7 @@ class ModifyCollectionActions {
         canPop: true,
         message: "Deleting collection",
         barrierColor: Colors.black.withValues(alpha: 0.6),
-        backgroundColor: Colors.red.shade100,
+        backgroundColor: Colors.red.withAlpha(20),
         blurSigma: Offset(2, 2),
       );
 

@@ -36,17 +36,22 @@ class HomeDashBoard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           width: 2,
-          color: context.theme.colorScheme.secondary,
+          color: context.theme.colorScheme.primary.withAlpha(20),
         ),
-        boxShadow: [BoxShadow(color: Colors.black12)],
+        boxShadow: [BoxShadow(color: context.theme.colorScheme.primary.withAlpha(20), blurRadius: 4, spreadRadius: 2)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: FittedBox(child: CustomText(courseName, fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,)),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: FittedBox(child: CustomText(courseName, fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,)),
+              ),
+            ),
           ),
           if (detail.isNotEmpty) ConstantSizing.columnSpacingSmall,
           if (detail.isNotEmpty)
@@ -73,72 +78,70 @@ class HomeDashBoard extends ConsumerWidget {
           // ),
           ConstantSizing.columnSpacingLarge,
 
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              spacing: 10,
-              children: [
-                Expanded(
-                  child: CustomElevatedButton(
-                    pixelHeight: 48,
-                    elevation: 100,
-                    borderRadius: 12,
-                    backgroundColor: context.theme.colorScheme.surface,
-                    child: CustomText(
-                      completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
-                      fontSize: 15,
-                      color: context.theme.primaryColor,
-                    ),
-                    onClick: () {
-                      if (onReadingBtnTapped != null) onReadingBtnTapped!();
-                    },
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            spacing: 10,
+            children: [
+              Expanded(
+                child: CustomElevatedButton(
+                  pixelHeight: 48,
+                  elevation: 100,
+                  borderRadius: 12,
+                  backgroundColor: context.theme.colorScheme.surface,
+                  child: CustomText(
+                    completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
+                    fontSize: 15,
+                    color: context.theme.primaryColor,
                   ),
+                  onClick: () {
+                    if (onReadingBtnTapped != null) onReadingBtnTapped!();
+                  },
                 ),
-
-                ConstantSizing.rowSpacing(4),
-
-                Stack(
-                  children: [
-                    CustomElevatedButton(
-                      pixelWidth: 46,
-                      pixelHeight: 46,
-                      contentPadding: EdgeInsets.zero,
-                      shape: CircleBorder(),
-                      backgroundColor: context.theme.colorScheme.surface,
-                      onClick: () {},
-                      child: CustomText(
-                        "50%",
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                        color: context.theme.colorScheme.tertiary,
-                      ),
+              ),
+          
+              ConstantSizing.rowSpacing(4),
+          
+              Stack(
+                children: [
+                  CustomElevatedButton(
+                    pixelWidth: 46,
+                    pixelHeight: 46,
+                    contentPadding: EdgeInsets.zero,
+                    shape: CircleBorder(),
+                    backgroundColor: context.theme.colorScheme.surface,
+                    onClick: () {},
+                    child: CustomText(
+                      "50%",
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: context.theme.colorScheme.tertiary,
                     ),
-
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      child: IgnorePointer(
-                        child: CircularProgressIndicator(value: 0.5, strokeCap: StrokeCap.round, color: context.theme.primaryColor),
-                      ),
+                  ),
+          
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    child: IgnorePointer(
+                      child: CircularProgressIndicator(value: 0.5, strokeCap: StrokeCap.round, color: context.theme.primaryColor),
                     ),
-                  ],
-                ),
-                // CustomElevatedButton(
-                //   pixelHeight: 48,
-                //   pixelWidth: 48,
-                //   borderRadius: 12,
-                //   elevation: 10,
-                //   overlayColor: Colors.white.withAlpha(50),
-                //   backgroundColor: context.isDarkMode ? context.theme.primaryColor.withAlpha(160) : Colors.black,
-                //   onClick: () {
-                //     if (onShareTapped != null) onShareTapped!();
-                //   },
-                //   child: Icon(Icons.share_rounded, color: Colors.white),
-                // ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              // CustomElevatedButton(
+              //   pixelHeight: 48,
+              //   pixelWidth: 48,
+              //   borderRadius: 12,
+              //   elevation: 10,
+              //   overlayColor: Colors.white.withAlpha(50),
+              //   backgroundColor: context.isDarkMode ? context.theme.primaryColor.withAlpha(160) : Colors.black,
+              //   onClick: () {
+              //     if (onShareTapped != null) onShareTapped!();
+              //   },
+              //   child: Icon(Icons.share_rounded, color: Colors.white),
+              // ),
+            ],
           ),
         ],
       ),

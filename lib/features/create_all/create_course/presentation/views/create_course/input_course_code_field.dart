@@ -52,7 +52,7 @@ class InputCourseCodeField extends ConsumerWidget {
                     decoration: BoxDecoration(color: Colors.grey.withAlpha(40), borderRadius: BorderRadius.circular(12)),
                   ),
                   Container(
-                    width: context.deviceWidth - 48 - 200,
+                    width: (context.deviceWidth - 48 - 200).clamp(80, context.deviceWidth),
                     height: 4,
                     decoration: BoxDecoration(color: Colors.grey.withAlpha(40), borderRadius: BorderRadius.circular(12)),
                   ),

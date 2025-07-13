@@ -36,7 +36,7 @@ class UiUtils {
       msg: message,
       msgTextColor: context.isDarkMode ? Colors.white : Colors.black,
       backgroundColor: backgroundColor ?? Colors.transparent,
-      barrierColor: barrierColor ?? Colors.black.withValues(alpha: 0.6),
+      barrierColor: barrierColor ?? Colors.black.withAlpha(140),
       transitionDuration: Durations.medium2,
       blurSigma: blurSigma
     );
@@ -60,7 +60,7 @@ class UiUtils {
       reverseTransitionDuration: reverseTransitionDuration,
       transitionType: TransitionType.cupertinoDialog,
       curve: curve ?? CustomCurves.defaultIosSpring,
-      barrierColor: barrierColor ?? Colors.black.withAlpha(220),
+      barrierColor: barrierColor ?? Colors.black.withAlpha(120),
       child: child.animate().fadeIn().scaleY(begin: 0.1, end: 1.0, curve: CustomCurves.bouncySpring, duration: Durations.extralong1),
     );
   }

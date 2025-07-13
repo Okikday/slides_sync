@@ -1,4 +1,3 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_sub_collection.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/domain/usecases/modify_collections_uc/modify_collection_actions.dart';
@@ -46,12 +46,12 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var divider = Divider(color: Colors.blueGrey.withAlpha(40), height: 0);
+    var divider = Divider(color: context.theme.colorScheme.secondary.withAlpha(40), height: 0);
     final collection = widget.collection;
     final mca = ModifyCollectionActions();
     return AppCustomizableDialog(
       blurSigma: Offset(4, 4),
-      backgroundColor: context.scaffoldBackgroundColor.withAlpha(180),
+      backgroundColor: context.scaffoldBackgroundColor.withValues(alpha: 0.5),
       onPop: () async {
         final newText = textEditingController.text;
         await mca.onRenameCollection(context, newText: newText, courseDbId: widget.courseDbId, collection: collection);
@@ -60,44 +60,58 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
         physics: BouncingScrollPhysics(),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 4.0, right: 20),
-              child: Row(
-                spacing: 16.0,
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 12),
                     decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.outlineVariant),
                     child: BuildImagePathWidget(fileDetails: FileDetails()),
                   ),
-                  Expanded(
-                    child: CustomTextfield(
-                      hint: "New collection name",
-                      onSubmitted: (text) async {
-                        final String? result = await mca.renameCollectionAction(
-                          newText: text,
-                          courseDbId: widget.courseDbId,
-                          collectionId: collection.collectionId,
-                        );
-                        if (result == null && context.mounted) focusNode.unfocus();
-                      },
-                      inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                      defaultText: widget.collection.collectionTitle,
-                      controller: textEditingController,
-                      focusNode: focusNode,
-                      autoDispose: false,
-                      inputTextStyle: TextStyle(color: Colors.white),
-                      backgroundColor: context.theme.colorScheme.onSecondary,
-                      cursorColor: context.theme.primaryColor,
-                      
+                ),
+                ConstantSizing.rowSpacingMedium,
+
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 4,),
+                    child: CustomText(
+                      collection.collectionTitle,
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.bold,
+                      color: context.theme.colorScheme.tertiary,
                     ),
                   ),
-                ],
-              ),
+                ),
+                
+                ConstantSizing.rowSpacingMedium,
+              ],
             ),
 
+            // Expanded(
+            //   child: CustomTextfield(
+            //     hint: "New collection name",
+            //     // onSubmitted: (text) async {
+            //     //   final String? result = await mca.renameCollectionAction(
+            //     //     newText: text,
+            //     //     courseDbId: widget.courseDbId,
+            //     //     collectionId: collection.collectionId,
+            //     //   );
+            //     //   if (result == null && context.mounted) focusNode.unfocus();
+            //     // },
+            //     inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+            //     defaultText: widget.collection.collectionTitle,
+            //     controller: textEditingController,
+            //     focusNode: focusNode,
+            //     autoDispose: false,
+            //     inputTextStyle: TextStyle(color: Colors.white),
+            //     backgroundColor: context.theme.colorScheme.onSecondary,
+            //     cursorColor: context.theme.primaryColor,
+
+            //   ),
+            // ),
             ConstantSizing.columnSpacingMedium,
 
             Column(
@@ -106,8 +120,9 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 divider,
 
                 BuildPlainActionButton(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   title: "Select",
-                  icon: Icon(Iconsax.tick_circle_copy, size: 24, color: context.theme.colorScheme.tertiary),
+                  icon: Icon(Iconsax.tick_circle_copy, size: 24, color: context.theme.colorScheme.onTertiary),
                   textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
                   onTap: () {},
                 ),
@@ -115,17 +130,26 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 divider,
 
                 BuildPlainActionButton(
-                  title: "View content",
-                  icon: Icon(Iconsax.play_copy, size: 24, color: context.theme.colorScheme.tertiary),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  title: "View contents",
+                  icon: Icon(Iconsax.forward_copy, size: 24, color: context.theme.colorScheme.onTertiary),
                   textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
-                  onTap: () {},
+                  onTap: () {
+                    CustomDialog.hide(context);
+                    AppNavigator.to(context).modifyContentsRoute((
+                      collection: collection,
+                      courseDbId: widget.courseDbId,
+                      courseTitle: (courseCode: "", courseName: "CourseName"),
+                    ));
+                  },
                 ),
 
                 divider,
 
                 BuildPlainActionButton(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   title: "Share",
-                  icon: Icon(Icons.share_outlined, size: 24, color: context.theme.colorScheme.tertiary),
+                  icon: Icon(Icons.share_outlined, size: 24, color: context.theme.colorScheme.onTertiary),
                   textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
                   onTap: () {},
                 ),
@@ -133,6 +157,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 divider,
 
                 BuildPlainActionButton(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   title: "Delete",
                   icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
                   textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
@@ -162,11 +187,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                             }
                           },
                           onCancel: () {
-                            if (context.mounted) {
-                              CustomDialog.hide(context);
-                            } else {
-                              rootNavigatorKey.currentContext?.pop();
-                            }
+                            rootNavigatorKey.currentContext?.pop();
                           },
                           onDelete: () async {
                             await mca.onDeleteCollection(context, courseDbId: widget.courseDbId, collection: collection);
@@ -182,6 +203,12 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
           ],
         ),
       ),
-    ).animate().fadeIn().scaleY(begin: 0.4, end: 1.0, curve: CustomCurves.defaultIosSpring, duration: Durations.medium3);
+    ).animate().fadeIn().scaleXY(
+      begin: 0.4,
+      end: 1,
+      alignment: Alignment.topRight,
+      duration: Durations.extralong1,
+      curve: CustomCurves.defaultIosSpring,
+    );
   }
 }

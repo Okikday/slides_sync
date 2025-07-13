@@ -47,7 +47,8 @@ class SettingsView extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Iconsax.sun),
-                          Column(
+                          Expanded(
+                            child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             spacing: 2,
@@ -59,6 +60,7 @@ class SettingsView extends ConsumerWidget {
                                 color: context.isDarkMode ? AppColors.altLightGray : Colors.black54,
                               ),
                             ],
+                          ),
                           ),
 
                           CustomElevatedButton(

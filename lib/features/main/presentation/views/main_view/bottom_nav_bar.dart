@@ -15,22 +15,30 @@ class BottomNavBar extends ConsumerWidget {
     final bool isScrolled = ref.watch(isMainScrolledProvider);
     final int currentIndex = ref.watch(mainTabViewIndexProvider);
 
-    return ClipRSuperellipse(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: isScrolled ? 8 : 0, sigmaY: isScrolled ? 8 : 0),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: currentIndex,
-          selectedItemColor: context.theme.primaryColor,
-          onTap: (index) => onTap(index),
-          backgroundColor: isScrolled ? context.theme.cardColor.withValues(alpha: 0.4) : context.theme.cardColor,
-          elevation: 48,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
-            BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library holding all your courses"),
-            BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore courses"),
-          ],
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      padding: EdgeInsets.fromLTRB(8, 0, 8, context.bottomPadding + 8),
+      decoration: BoxDecoration(
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha(20), blurRadius: kBottomNavigationBarHeight / 2, spreadRadius: 4)],
+      ),
+      child: ClipRSuperellipse(
+        borderRadius: BorderRadius.circular(kBottomNavigationBarHeight),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: currentIndex,
+            unselectedItemColor: context.theme.colorScheme.onTertiary,
+            selectedItemColor: context.theme.primaryColor,
+            onTap: (index) => onTap(index),
+            backgroundColor: isScrolled ? context.theme.cardColor.withValues(alpha: 0.4) : context.theme.cardColor.withValues(alpha: 0.6),
+            elevation: 48,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
+              BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library holding all your courses"),
+              BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore courses"),
+            ],
+          ),
         ),
       ),
     );

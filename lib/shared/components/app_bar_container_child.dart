@@ -33,7 +33,7 @@ class AppBarContainerChild extends ConsumerWidget {
       type: MaterialType.transparency,
       shape: LinearBorder(
         bottom: LinearBorderEdge(),
-        side: BorderSide(color: context.theme.colorScheme.onSecondary.withAlpha(80)),
+        side: BorderSide(color: context.theme.colorScheme.onSecondary.withAlpha(30)),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),

@@ -5,7 +5,10 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyContentsHeader extends StatelessWidget {
-  const ModifyContentsHeader({super.key});
+  final void Function() onSelect;
+  final void Function() onClickFilter;
+  final void Function() onSearch;
+  const ModifyContentsHeader({super.key, required this.onSelect, required this.onClickFilter, required this.onSearch});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,7 @@ class ModifyContentsHeader extends StatelessWidget {
                         backgroundColor: context.theme.colorScheme.onSurface,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding7),
                         borderRadius: ConstantSizing.borderRadiusCircle,
+                        onClick: onSelect,
                         child: CustomText("Select", color: context.theme.colorScheme.onTertiary),
                       ),
                       CustomElevatedButton(
@@ -42,6 +46,7 @@ class ModifyContentsHeader extends StatelessWidget {
                         backgroundColor: context.theme.colorScheme.onSurface,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding6),
                         borderRadius: ConstantSizing.borderRadiusCircle,
+                        onClick: onClickFilter,
                         child: Row(
                           spacing: padding2,
                           children: [
@@ -58,6 +63,7 @@ class ModifyContentsHeader extends StatelessWidget {
                         backgroundColor: context.theme.colorScheme.onSurface,
                         contentPadding: EdgeInsets.all(padding4),
                         borderRadius: ConstantSizing.borderRadiusCircle,
+                        onClick: onSearch,
                         child: Icon(Iconsax.search_normal_copy, color: context.theme.colorScheme.onTertiary),
                       ),
                     ],

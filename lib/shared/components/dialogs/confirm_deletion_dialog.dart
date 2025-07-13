@@ -1,8 +1,9 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
+import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -26,7 +27,8 @@ class ConfirmDeletionDialog extends ConsumerWidget {
     return AppAlertDialog(
       title: title,
       content: content,
-      backgroundColor: context.isDarkMode ? AppColors.darkBlue.withAlpha(200) : null,
+
+      backgroundColor: context.scaffoldBackgroundColor.withValues(alpha: 0.5),
       onPop: onPop,
       actions: [
         _buildDialogButton(
@@ -44,7 +46,14 @@ class ConfirmDeletionDialog extends ConsumerWidget {
 
         _buildDialogButton(label: "Delete", textColor: Colors.red, backgroundColor: Colors.red.withAlpha(40), onClick: onDelete),
       ],
+    ).animate().fadeIn().scaleY(
+      begin: 0.5,
+      end: 1,
+      alignment: Alignment.bottomCenter,
+      duration: Durations.extralong1,
+      curve: CustomCurves.defaultIosSpring,
     );
+    
   }
 }
 

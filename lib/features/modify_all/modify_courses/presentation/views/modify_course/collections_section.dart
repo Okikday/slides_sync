@@ -15,6 +15,7 @@ import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/smart_isolate.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/create_all/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
@@ -135,7 +136,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                             title: widget.collections[index].collectionTitle,
                                             contentCount: widget.collections[index].courseContents.length,
                                             onSelected: () {
-                                              CustomDialog.show(
+                                              UiUtils.showCustomDialog(
                                                 context,
                                                 child: ModCollectionDialog(courseDbId: widget.courseDbId, collection: collection),
                                               );

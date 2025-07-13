@@ -1,6 +1,8 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class AppAlertDialog extends ConsumerWidget {
@@ -24,92 +26,69 @@ class AppAlertDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: () {
-              if (onPop == null) {
-                CustomDialog.hide(context);
-                return;
-              }
-              onPop!();
-            },
-          ),
-        ),
-        Positioned(
-          left: 24,
-          right: 24,
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: context.scaffoldBackgroundColor.withValues(alpha: 0.9),
-                borderRadius: BorderRadius.circular(16.0),
-                border: Border.all(width: 1, color: Colors.lightBlueAccent.withAlpha(25)),
-                boxShadow: [
-                  BoxShadow(
-                    color: backgroundColor ?? context.theme.colorScheme.secondary,
-                    blurRadius: 8,
-                    offset: Offset(0, 0),
-                    blurStyle: BlurStyle.inner,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ConstantSizing.columnSpacingSmall,
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(child: CustomText(title, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center, color: context.theme.colorScheme.tertiary,)),
-                  ),
-                  ConstantSizing.columnSpacingSmall,
-                  Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
-                  ConstantSizing.columnSpacingSmall,
-                  Padding(padding: const EdgeInsets.symmetric(horizontal: 12), child: CustomText(content, fontSize: 15, color: context.theme.colorScheme.tertiary,)),
-                  ConstantSizing.columnSpacingExtraLarge,
-                  Row(
-                    spacing: 16.0,
-                    children: [
-                      ...actions.map((e) => Flexible(child: e)),
-                      if (actions.isEmpty)
-                        ...[
-                          CustomElevatedButton(
-                            label: "Cancel",
-                            textSize: 14,
-                            pixelHeight: 44,
-                            textColor: Colors.red,
-                            backgroundColor: Colors.red.withAlpha(40),
-                            borderRadius: ConstantSizing.borderRadiusCircle,
-                            onClick: () {
-                              if (onCancel != null) onCancel!();
-                            },
-                          ),
-                          CustomElevatedButton(
-                            label: "Confirm",
-                            textSize: 14,
-                            pixelHeight: 44,
-                            textColor: context.theme.primaryColor,
-                            backgroundColor: context.theme.primaryColor.withAlpha(80),
-                            borderRadius: ConstantSizing.borderRadiusCircle,
-                            onClick: () {
-                              if (onConfirm != null) onConfirm!();
-                            },
-                          ),
-                        ].map((e) => Flexible(child: e)),
-                    ],
-                  ),
-                ],
+    return AppCustomizableDialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ConstantSizing.columnSpacingSmall,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Center(
+              child: CustomText(
+                title,
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+                textAlign: TextAlign.center,
+                color: context.theme.colorScheme.tertiary,
               ),
             ),
           ),
-        ),
-      ],
+          ConstantSizing.columnSpacingSmall,
+          Divider(color: context.theme.colorScheme.secondary.withAlpha(40)),
+          ConstantSizing.columnSpacingSmall,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: CustomText(content, fontSize: 14.5, color: context.theme.colorScheme.tertiary),
+          ),
+          ConstantSizing.columnSpacingExtraLarge,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              spacing: 16.0,
+              children: [
+                ...actions.map((e) => Flexible(child: e)),
+                if (actions.isEmpty)
+                  ...[
+                    CustomElevatedButton(
+                      label: "Cancel",
+                      textSize: 14,
+                      pixelHeight: 44,
+                      textColor: Colors.red,
+                      backgroundColor: Colors.red.withAlpha(40),
+                      borderRadius: ConstantSizing.borderRadiusCircle,
+                      onClick: () {
+                        if (onCancel != null) onCancel!();
+                      },
+                    ),
+                    CustomElevatedButton(
+                      label: "Confirm",
+                      textSize: 14,
+                      pixelHeight: 44,
+                      textColor: context.theme.primaryColor,
+                      backgroundColor: context.theme.primaryColor.withAlpha(80),
+                      borderRadius: ConstantSizing.borderRadiusCircle,
+                      onClick: () {
+                        if (onConfirm != null) onConfirm!();
+                      },
+                    ),
+                  ].map((e) => Flexible(child: e)),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
+
   }
 }

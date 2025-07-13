@@ -57,8 +57,7 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
           ],
         )
         .animate()
-        .scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.short4, curve: CustomCurves.decelerate)
-        .blurXY(end: 0, begin: 8, duration: Durations.medium1, curve: CustomCurves.decelerate)
+        .scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.extralong2, curve: CustomCurves.bouncySpring)
         .fadeIn();
   }
 }
@@ -139,6 +138,7 @@ class AddContentCardSection extends StatelessWidget {
                       child: CustomElevatedButton(
                         backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(80),
                         pixelHeight: 40,
+                        borderRadius: 16,
                         child: Row(
                           spacing: 4.0,
                           children: [
@@ -152,6 +152,7 @@ class AddContentCardSection extends StatelessWidget {
                       child: CustomElevatedButton(
                         backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(80),
                         pixelHeight: 40,
+                        borderRadius: 16,
                         child: Row(
                           spacing: 4.0,
                           children: [

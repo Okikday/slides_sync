@@ -90,19 +90,18 @@ class ManageCourseDialogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = context.deviceWidth;
-    final height = context.deviceHeight;
-    var divider = Divider(color: Colors.blueGrey.withAlpha(40), height: 4);
+    var divider = Divider(color: context.theme.colorScheme.secondary.withAlpha(40).withAlpha(40), height: 4);
     return SingleChildScrollView(
       child:
           Container(
-                width: width - (rightPad + 32),
-                height: width > height ? height * 0.5 : height * 0.3,
-                constraints: BoxConstraints(maxHeight: 400, maxWidth: 400),
+                width: width - (rightPad + 20),
+                
+                constraints: BoxConstraints(maxHeight: 200, maxWidth: 300),
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   color: context.theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                  border: Border.fromBorderSide(BorderSide(color: context.theme.primaryColor.withAlpha(100), width: 0)),
+                  border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(40), width: 0)),
                 ),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),

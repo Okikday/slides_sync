@@ -5,10 +5,13 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/features/create_all/create_content/domain/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseMaterialCard extends ConsumerStatefulWidget {
   final CourseContent courseContent;
@@ -38,10 +41,9 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
   void initState() {
     super.initState();
     expandAnimationController = AnimationController(vsync: this, duration: Durations.extralong2, reverseDuration: Durations.medium1);
-    expandAnim = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(parent: expandAnimationController, curve: CustomCurves.bouncySpring, reverseCurve: CustomCurves.defaultIosSpring));
+    expandAnim = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: expandAnimationController, curve: CustomCurves.bouncySpring, reverseCurve: CustomCurves.defaultIosSpring),
+    );
   }
 
   @override
@@ -76,14 +78,24 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // if (courseContent.path.isEmpty)
-                  CustomElevatedButton(
-                    onClick: () {},
-                    pixelWidth: 64,
-                    pixelHeight: 64,
-                    borderRadius: 8.0,
-                    backgroundColor: context.theme.primaryColor.withAlpha(40),
-                    child: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true)),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: context.theme.primaryColor.withAlpha(40),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
+                    ),
+                    child: BuildImagePathWidget(
+                      fileDetails: FileDetails(
+                        filePath: CreateContentPreviewImage.genPreviewImagePath(
+                          filePath: courseContent.path.filePath,
+                          contentId: courseContent.id,
+                        ),
+                      ),
+                      fallbackWidget: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true)),
+                    ),
                   ),
                   // else
                   //   Badge(
@@ -165,7 +177,11 @@ class AnimatedCourseMaterialCardMenu extends StatelessWidget {
               onClick: cam[index].onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [Icon(cam[index].icon), ConstantSizing.rowSpacingSmall, CustomText(cam[index].label, color: context.theme.colorScheme.tertiary)],
+                children: [
+                  Icon(cam[index].icon),
+                  ConstantSizing.rowSpacingSmall,
+                  CustomText(cam[index].label, color: context.theme.colorScheme.tertiary),
+                ],
               ),
             ),
           );

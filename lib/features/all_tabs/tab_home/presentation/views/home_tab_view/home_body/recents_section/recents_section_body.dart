@@ -50,42 +50,34 @@ class RecentsSectionBody extends ConsumerWidget {
         itemCount: DummySlides.dummySlides.length,
       
         itemBuilder: (context, index) {
-          return Heroine(
-            tag: "recents_list_tile$index",
-            spring: Spring.snappy.copyWith(durationSeconds: 0.4),
-      
-            child: Material(
-              type: MaterialType.transparency,
-              child: RecentListTile(
-                isDarkMode: context.isDarkMode,
-                tilePadding: context.hPadding5,
-                dataModel: RecentListTileModel(
-                  title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
-                  subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
-                  // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
-                  progressLevel: ProgressLevel.neutral,
-                  isStarred: false,
-                  progress: DummySlides.dummySlides[index]['progress'] as double?,
-                  onLongTapTile: () {
-                    CustomDialog.show(
-                      context,
-                      canPop: true,
-                      blurSigma: Offset(2.0, 2.0),
-                      transitionType: TransitionType.fade,
-                      barrierColor: Colors.black.withValues(alpha: 0.5),
-                      transitionDuration: Duration(milliseconds: 500),
-                      child: RecentDialog(
-                        heroTag: "recents_list_tile$index",
-                        recentDialogModel: RecentDialogModel(
-                          isStarred: false,
-                          title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
-                          description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+          return RecentListTile(
+            isDarkMode: context.isDarkMode,
+            tilePadding: context.hPadding5,
+            dataModel: RecentListTileModel(
+              title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+              subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
+              // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+              progressLevel: ProgressLevel.neutral,
+              isStarred: false,
+              progress: DummySlides.dummySlides[index]['progress'] as double?,
+              onLongTapTile: () {
+                CustomDialog.show(
+                  context,
+                  canPop: true,
+                  blurSigma: Offset(2.0, 2.0),
+                  transitionType: TransitionType.levelFromCenterWithFade,
+                  barrierColor: Colors.black.withValues(alpha: 0.5),
+                  transitionDuration: Durations.short4,
+                  reverseTransitionDuration: Durations.short4,
+                  child: RecentDialog(
+                    recentDialogModel: RecentDialogModel(
+                      isStarred: false,
+                      title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+                      description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },

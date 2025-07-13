@@ -14,5 +14,4 @@ void main() async {
   await IsarData.initialize(collectionSchemas: isarSchemas);
 
   runApp(ProviderScope(child: const App()));
-
 }

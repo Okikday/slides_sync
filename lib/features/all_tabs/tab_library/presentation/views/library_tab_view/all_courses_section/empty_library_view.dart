@@ -7,8 +7,15 @@ import 'package:slides_sync/features/create_all/create_course/presentation/views
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
+// class SimpleActionModel {
+//   final String title;
+//   final void Function() onTap;
+
+//   SimpleActionModel({required this.title, required this.onTap});
+// }
+
 class EmptyLibraryView extends ConsumerWidget {
-  const EmptyLibraryView({super.key});
+  const EmptyLibraryView({super.key, });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +42,7 @@ class EmptyLibraryView extends ConsumerWidget {
                   ),
                 );
               },
-              backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+              backgroundColor: context.theme.colorScheme.secondary,
               borderRadius: 12,
               pixelHeight: 44,
               label: "Create your course",
