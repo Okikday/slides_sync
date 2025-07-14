@@ -52,6 +52,7 @@ class UiUtils {
     TransitionType transitionType = TransitionType.cupertinoDialog,
     Curve? curve,
     Color? barrierColor,
+    Offset? blurSigma,
   }) async {
     await CustomDialog.show(
       context,
@@ -60,7 +61,8 @@ class UiUtils {
       reverseTransitionDuration: reverseTransitionDuration,
       transitionType: TransitionType.cupertinoDialog,
       curve: curve ?? CustomCurves.defaultIosSpring,
-      barrierColor: barrierColor ?? Colors.black.withAlpha(120),
+      barrierColor: barrierColor ?? Colors.black.withAlpha(140),
+      blurSigma: blurSigma,
       child: child.animate().fadeIn().scaleY(begin: 0.1, end: 1.0, curve: CustomCurves.bouncySpring, duration: Durations.extralong1),
     );
   }

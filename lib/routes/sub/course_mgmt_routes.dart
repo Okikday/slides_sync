@@ -2,14 +2,14 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/modify_all/modify_collections/presentation/views/modify_collections_view.dart';
-import 'package:slides_sync/features/modify_all/modify_contents/presentation/views/modify_contents_view.dart';
-import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/modify_course_view.dart';
-import 'package:slides_sync/features/modify_all/modify_courses/presentation/views/select_to_modify_course_view.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections_view.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/modify_contents_view.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course_view.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/routes/routes_strings.dart';
 
-import '../../features/create_all/create_course/presentation/views/create_course_view.dart';
+import '../../features/manage_all/manage_course/presentation/views/create_course_view.dart';
 
 class CourseMgmtRoutes {
   static List<GoRoute> routes = //COURSE MGMT NAVIGATION
