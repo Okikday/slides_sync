@@ -58,7 +58,7 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
                 if (context.mounted) CustomDialog.hide(context);
               },
               elevation: 8.0,
-              backgroundColor: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(40) : Colors.lightBlueAccent.withAlpha(80),
+              backgroundColor: context.isDarkMode ? context.theme.colorScheme.secondary.withAlpha(40) : context.theme.colorScheme.secondary.withAlpha(80),
               shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(18)),
               child: ClipRSuperellipse(
                 borderRadius: BorderRadius.circular(16.0),

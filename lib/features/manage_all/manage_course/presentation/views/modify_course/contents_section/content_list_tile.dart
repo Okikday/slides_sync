@@ -42,7 +42,7 @@ class ContentListTile extends ConsumerWidget {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), ),
         child: CustomElevatedButton(
           backgroundColor: (isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray),
-          overlayColor: Colors.lightBlueAccent.withAlpha(50),
+          overlayColor: context.theme.colorScheme.secondary.withAlpha(50),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           borderRadius: 12,
           onClick: () {
@@ -68,7 +68,7 @@ class ContentListTile extends ConsumerWidget {
                   pixelHeight: 48,
                   pixelWidth: 48,
                   borderRadius: 12,
-                  backgroundColor: Colors.lightBlueAccent.withAlpha(100),
+                  backgroundColor: context.theme.colorScheme.secondary.withAlpha(100),
                   child: Icon(Iconsax.document_1, size: 26),
                 ),
               ),
@@ -105,7 +105,7 @@ class ContentListTile extends ConsumerWidget {
                     contentPadding: EdgeInsets.zero,
                     shape: CircleBorder(),
                     backgroundColor: Colors.transparent,
-                    overlayColor: Colors.lightBlueAccent.withAlpha(50),
+                    overlayColor: context.theme.colorScheme.secondary.withAlpha(50),
                     onClick: () {
                       if (onTapPlay != null) onTapPlay!();
                     },

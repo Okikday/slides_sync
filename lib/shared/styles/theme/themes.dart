@@ -26,7 +26,7 @@ class AppThemeDataProvider extends Notifier<ThemeData> {
 //     primaryColor: AppColors.primary,
 //     scaffoldBackgroundColor: AppColors.background,
 //     fontFamily: "Nunito",
-//     splashColor: Colors.lightBlueAccent.withAlpha(10),
+//     splashColor: context.theme.secondary.withAlpha(10),
 //     appBarTheme: const AppBarTheme(
 //       backgroundColor: AppColors.background,
 //       elevation: 0,
@@ -43,7 +43,7 @@ class AppThemeDataProvider extends Notifier<ThemeData> {
 
 //     scaffoldBackgroundColor: AppColors.darkBackground,
 //     fontFamily: "Nunito",
-//     splashColor: Colors.lightBlueAccent.withAlpha(10),
+//     splashColor: context.theme.secondary.withAlpha(10),
 //     appBarTheme: const AppBarTheme(
 //       backgroundColor: AppColors.darkBackground,
 //       elevation: 0,

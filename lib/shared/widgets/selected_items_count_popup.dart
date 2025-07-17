@@ -19,7 +19,7 @@ class SelectedItemsCountPopUp extends ConsumerWidget {
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         color: context.theme.primaryColor.withValues(alpha: .4),
-        border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
+        border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(20))),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
@@ -27,7 +27,7 @@ class SelectedItemsCountPopUp extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 4.0,
         children: [
-          Icon(Iconsax.check, size: 18, color: Colors.lightBlueAccent.withAlpha(80)),
+          Icon(Iconsax.check, size: 18, color: context.theme.colorScheme.secondary.withAlpha(80)),
          if(selectedItemsCount != null) CustomText('$selectedItemsCount ${selectedItemsCount! <= 1 ? "item" : "items"} selected!'),
         ],
       ),

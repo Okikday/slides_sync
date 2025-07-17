@@ -66,7 +66,7 @@ class CoursesListView extends ConsumerWidget {
                         padding: const EdgeInsets.all(8.0),
                         child:
                             courseModel.courseCode.isEmpty
-                                ? Icon(Iconsax.document_1)
+                                ? Icon(Iconsax.document_1, color: context.theme.colorScheme.primary,)
                                 : Center(
                                   child: CustomText(
                                     courseModel.courseCode.substring(0, courseModel.courseCode.length.clamp(0, 8)),
@@ -76,7 +76,7 @@ class CoursesListView extends ConsumerWidget {
                                             : context.deviceHeight * 0.025,
                                     fontWeight: FontWeight.bold,
                                     textAlign: TextAlign.center,
-                                    color: context.theme.colorScheme.onTertiary,
+                                    color: context.theme.colorScheme.primary,
                                   ),
                                 ),
                       ),

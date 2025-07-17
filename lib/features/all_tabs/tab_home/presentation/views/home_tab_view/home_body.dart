@@ -6,6 +6,7 @@ import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_body.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_header.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/build_dashboard_carousel_section.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class HomeBody extends ConsumerWidget {
   final ScrollController? scrollController;
@@ -41,12 +42,29 @@ class HomeBody extends ConsumerWidget {
 
         // Recents Section Header
         // Won't show up if the recent courses is empty
-        RecentsSectionHeader(onClickSeeAll: () {}),
+        RecentsSectionHeader(
+          onClickSeeAll: () {
+            Navigator.push(
+              context,
+              PageAnimation.pageRouteBuilder(
+                Scaffold(body: Center(child: CustomText("No recent reads", color: context.theme.colorScheme.tertiary))),
+                type: TransitionType.levelFromRightCenterWithFade,
+                duration: Durations.extralong1,
+                curve: CustomCurves.defaultIosSpring
+              ),
+            );
+          },
+        ),
 
         // Recents Section Body
         RecentsSectionBody(
           recentCourses: [
-            CourseContent.create(parentId: 'lol', title: "Context Free Grammar", path: FileDetails(), courseContentType: CourseContentType.image),
+            CourseContent.create(
+              parentId: 'lol',
+              title: "Context Free Grammar",
+              path: FileDetails(),
+              courseContentType: CourseContentType.image,
+            ),
           ],
         ),
       ],

@@ -18,49 +18,49 @@ class CourseDetailsHeader extends ConsumerWidget {
 
           CourseDetailsHeaderTop(courseModel: courseModel),
 
-          ConstantSizing.columnSpacingLarge,
+          ConstantSizing.columnSpacingMedium,
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              spacing: 8.0,
-              children: [
-                Expanded(
-                  child: CustomElevatedButton(
-                    label: "Reading history",
-                    // textColor: context.isDarkMode ? Colors.white : Colors.black,
-                    textColor: context.theme.colorScheme.outline,
-                    textSize: 14,
-                    borderRadius: 24,
-                    pixelHeight: 48,
-                    backgroundColor: context.theme.primaryColor.withAlpha(80),
-                    onClick: () async {
-                      await showModalBottomSheet(
-                        context: context,
-                        enableDrag: true,
-                        showDragHandle: true,
-                        builder: (context) {
-                          return DraggableScrollableSheet(
-                            builder: (context, scrollController) {
-                              return Container();
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16),
+          //   child: Row(
+          //     spacing: 8.0,
+          //     children: [
+          //       Expanded(
+          //         child: CustomElevatedButton(
+          //           label: "Reading history",
+          //           // textColor: context.isDarkMode ? Colors.white : Colors.black,
+          //           textColor: context.theme.colorScheme.outline,
+          //           textSize: 14,
+          //           borderRadius: 24,
+          //           pixelHeight: 48,
+          //           backgroundColor: context.theme.primaryColor.withAlpha(80),
+          //           onClick: () async {
+          //             await showModalBottomSheet(
+          //               context: context,
+          //               enableDrag: true,
+          //               showDragHandle: true,
+          //               builder: (context) {
+          //                 return DraggableScrollableSheet(
+          //                   builder: (context, scrollController) {
+          //                     return Container();
+          //                   },
+          //                 );
+          //               },
+          //             );
+          //           },
+          //         ),
+          //       ),
 
-                CustomElevatedButton(
-                  shape: CircleBorder(),
-                  pixelHeight: 48,
-                  pixelWidth: 48,
-                  backgroundColor: context.theme.colorScheme.secondary.withAlpha(80),
-                  child: Icon(Icons.share_outlined, size: 20, color: context.theme.colorScheme.onSecondary),
-                ),
-              ],
-            ),
-          ),
+          //       CustomElevatedButton(
+          //         shape: CircleBorder(),
+          //         pixelHeight: 48,
+          //         pixelWidth: 48,
+          //         backgroundColor: context.theme.colorScheme.secondary.withAlpha(80),
+          //         child: Icon(Icons.share_outlined, size: 20, color: context.theme.colorScheme.onSecondary),
+          //       ),
+          //     ],
+          //   ),
+          // ),
 
           ConstantSizing.columnSpacingLarge,
         ],

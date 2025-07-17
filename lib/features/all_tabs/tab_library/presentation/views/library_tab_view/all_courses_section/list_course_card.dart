@@ -39,10 +39,9 @@ class ListCourseCard extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
         decoration: BoxDecoration(
-          color: context.theme.cardColor,
+          color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(width: 2, color: context.theme.colorScheme.outline.withValues(alpha: 0.05)),
-          
+          border: Border.all(width: 2, color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
         ),
         child: Row(
           children: [
@@ -55,21 +54,13 @@ class ListCourseCard extends ConsumerWidget {
                 child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor),
               ),
               offset: Offset(0, -2),
-              child: ClipRSuperellipse(
-                borderRadius: BorderRadius.circular(13),
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: context.theme.colorScheme.outlineVariant,
-                  ),
-                  child: ClipRSuperellipse(
-                    borderRadius: BorderRadius.circular(12),
-                    child: SizedBox.square(
-                      dimension: context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16,
-                      child: courseImageWidget,
-                    ),
-                  ),
+              child: Container(
+                padding: EdgeInsets.all(2),
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(color: context.theme.colorScheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+                child: SizedBox.square(
+                  dimension: context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16,
+                  child: courseImageWidget,
                 ),
               ),
             ),
@@ -80,7 +71,7 @@ class ListCourseCard extends ConsumerWidget {
                 children: [
                   if (courseCode.isNotEmpty && hasImage)
                     Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
+                      padding: const EdgeInsets.only(left: 6.0),
                       child: CustomTextButton(
                         backgroundColor: context.theme.primaryColor.withAlpha(80),
                         pixelHeight: 24,
@@ -94,18 +85,18 @@ class ListCourseCard extends ConsumerWidget {
 
                   Flexible(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
                     ),
                   ),
 
-                  ConstantSizing.columnSpacingSmall,
+                  ConstantSizing.columnSpacing(4.0),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomText(
-                      "${categoriesCount < 1 ? "No" : categoriesCount} categories",
-                      fontSize: 12,
+                      "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "category" : "categories"}",
+                      fontSize: 11,
                       color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.8),
                     ),
                   ),
@@ -123,7 +114,7 @@ class ListCourseCard extends ConsumerWidget {
                     contentPadding: EdgeInsets.zero,
                     shape: CircleBorder(),
                     backgroundColor: context.theme.colorScheme.surface,
-                    overlayColor: Colors.lightBlueAccent.withAlpha(50),
+                    overlayColor: context.theme.colorScheme.secondary.withAlpha(50),
                     onClick: () {},
                     child: CustomText(
                       "64%",
@@ -143,7 +134,7 @@ class ListCourseCard extends ConsumerWidget {
                         value: 0.64,
                         strokeCap: StrokeCap.round,
                         color: context.theme.primaryColor,
-                        backgroundColor: context.theme.colorScheme.onSurface
+                        backgroundColor: context.theme.colorScheme.onSurface,
                       ),
                     ),
                   ),

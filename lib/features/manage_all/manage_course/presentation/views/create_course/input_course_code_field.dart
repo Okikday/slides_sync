@@ -29,7 +29,7 @@ class InputCourseCodeField extends ConsumerWidget {
                 autoDispose: false,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : context.theme.primaryColor.withAlpha(20)),
+                  borderSide: BorderSide(color: context.isDarkMode ? context.theme.colorScheme.secondary.withAlpha(80) : context.theme.primaryColor.withAlpha(20)),
                 ),
                 onTapOutside: () {},
                 constraints: BoxConstraints(maxWidth: 200),

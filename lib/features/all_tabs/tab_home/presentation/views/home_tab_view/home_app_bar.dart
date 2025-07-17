@@ -29,7 +29,10 @@ class HomeAppBar extends ConsumerWidget {
       forceMaterialTransparency: true,
       surfaceTintColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: isScrolled ? context.theme.cardColor : Theme.of(context).scaffoldBackgroundColor,
+        statusBarColor:
+            isScrolled
+                ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()
+                : context.theme.scaffoldBackgroundColor,
         statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
         statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
@@ -41,10 +44,19 @@ class HomeAppBar extends ConsumerWidget {
           },
           child: Material(
             type: MaterialType.transparency,
-            shape: isScrolled ? LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: Colors.blueAccent.withAlpha(40))) : null,
+            shape:
+                isScrolled
+                    ? LinearBorder(
+                      bottom: LinearBorderEdge(),
+                      side: BorderSide(color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
+                    )
+                    : null,
             child:
                 isScrolled
-                    ? AnimatedContainer(duration: Durations.medium3, color: context.theme.cardColor)
+                    ? AnimatedContainer(
+                      duration: Durations.medium3,
+                      color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor(),
+                    )
                     : ColoredBox(color: Theme.of(context).scaffoldBackgroundColor),
           ),
         ),
@@ -69,21 +81,21 @@ class HomeAppBar extends ConsumerWidget {
                       pixelWidth: context.defaultBtnDimension,
                       overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
                       contentPadding: EdgeInsets.zero,
-                      backgroundColor: isScrolled ? context.theme.colorScheme.onSecondary.withAlpha(40) : context.theme.colorScheme.tertiary.withAlpha(100),
+                      backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.11).toColor(),
                       shape: CircleBorder(),
                       child: Icon(
-                        Iconsax.menu_1,
+                        Iconsax.menu_1_copy,
                         color: isScrolled ? context.theme.colorScheme.tertiary : context.theme.colorScheme.onTertiary,
                         size: context.defaultBtnDimension * 0.5,
                       ),
                     ),
-                    
+
                     ConstantSizing.rowSpacingMedium,
                     Expanded(child: CustomText(title, fontSize: 17, fontWeight: FontWeight.bold, color: context.theme.colorScheme.primary)),
-                    
+
                     // CustomElevatedButton(
                     //   shape: CircleBorder(),
-                    //   backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                    //   backgroundColor: context.theme.secondary.withAlpha(40),
                     //   overlayColor: context.theme.primaryColor.withAlpha(20),
                     //   onClick: onToggleFullScreen,
                     //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : context.theme.primaryColor),
@@ -92,7 +104,7 @@ class HomeAppBar extends ConsumerWidget {
                       onClick: onClickNotification,
                       overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
                       shape: CircleBorder(),
-                      backgroundColor: AppColors.altLightGray.withAlpha(100),
+                      backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
                       child: Badge(
                         backgroundColor: Colors.transparent,
                         offset: Offset(-1, -1),
@@ -105,7 +117,11 @@ class HomeAppBar extends ConsumerWidget {
                         //     child: CustomText("5", color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
                         //   ),
                         // ),
-                        child: Icon(Iconsax.notification, color: context.isDarkMode && isScrolled ? Colors.white : context.theme.colorScheme.onTertiary, size: 24),
+                        child: Icon(
+                          Iconsax.notification,
+                          color: context.isDarkMode && isScrolled ? Colors.white : context.theme.colorScheme.onTertiary,
+                          size: 24,
+                        ),
                       ),
                     ),
                   ],

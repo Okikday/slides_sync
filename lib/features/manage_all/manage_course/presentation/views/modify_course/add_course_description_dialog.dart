@@ -62,7 +62,7 @@
 //                     border: OutlineInputBorder(
 //                       borderRadius: BorderRadius.circular(8.0),
 //                       borderSide: BorderSide(
-//                         color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : context.theme.primaryColor.withAlpha(20),
+//                         color: context.isDarkMode ? context.theme.secondary.withAlpha(80) : context.theme.primaryColor.withAlpha(20),
 //                       ),
 //                     ),
 //                     pixelWidth: context.deviceWidth,

@@ -23,7 +23,7 @@ class InputCourseTitleField extends ConsumerWidget {
       selectionHandleColor: context.theme.primaryColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: context.isDarkMode ? Colors.lightBlueAccent.withAlpha(80) : context.theme.primaryColor.withAlpha(20)),
+        borderSide: BorderSide(color: context.isDarkMode ? context.theme.colorScheme.secondary.withAlpha(80) : context.theme.primaryColor.withAlpha(20)),
       ),
       pixelWidth: context.deviceWidth,
       pixelHeight: 60,

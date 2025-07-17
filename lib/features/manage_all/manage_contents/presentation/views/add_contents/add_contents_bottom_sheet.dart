@@ -79,7 +79,7 @@ class AddContentCardSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
+        border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(20))),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

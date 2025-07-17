@@ -17,10 +17,9 @@ class _CourseMaterialsOuterSectionState extends ConsumerState<CourseMaterialsOut
 
   final List<CourseMaterialCardActionModel> simList = [
     CourseMaterialCardActionModel(label: 'Open', icon: Iconsax.document, onTap: () {}),
-    CourseMaterialCardActionModel(label: 'Bookmark', icon: Iconsax.bookmark, onTap: () {}),
     CourseMaterialCardActionModel(label: 'Share', icon: Iconsax.share, onTap: () {}),
     CourseMaterialCardActionModel(label: 'Details', icon: Iconsax.info_circle, onTap: () {}),
-    CourseMaterialCardActionModel(label: 'Remove', icon: Iconsax.trash, onTap: () {}),
+    CourseMaterialCardActionModel(label: 'Add to favorites', icon: Iconsax.star, onTap: () {}),
   ];
 
   @override

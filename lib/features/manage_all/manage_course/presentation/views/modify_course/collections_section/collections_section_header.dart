@@ -31,7 +31,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
 
              if(onClickAddIcon != null) CustomElevatedButton(
                 contentPadding: EdgeInsets.all(12),
-                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
                 shape: CircleBorder(),
                 child: Icon(Iconsax.add_circle_copy, size: 20, color: context.isDarkMode ? Colors.white : Colors.black),
               ),
@@ -39,7 +39,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
 
               // CustomElevatedButton(
               //   contentPadding: EdgeInsets.all(12),
-              //   backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+              //   backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
               //   shape: CircleBorder(),
               //   onClick: onTapGridToggle,
               //   child: Icon(

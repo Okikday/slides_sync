@@ -25,8 +25,8 @@ class RecentListTile extends ConsumerWidget {
     return Padding(
       padding: EdgeInsets.only(top: 12, left: 8, right: 8),
       child: CustomElevatedButton(
-        backgroundColor: context.theme.cardColor,
-        overlayColor: Colors.lightBlueAccent.withAlpha(50),
+        backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
+        overlayColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor(),
         contentPadding: EdgeInsets.all(tilePadding),
         borderRadius: 12,
         onClick: () {
@@ -53,7 +53,7 @@ class RecentListTile extends ConsumerWidget {
                 pixelHeight: 48,
                 pixelWidth: 48,
                 borderRadius: 12,
-                backgroundColor: context.theme.colorScheme.outlineVariant,
+                backgroundColor: context.theme.primaryColor.withValues(alpha: 0.1),
                 child: Icon(Iconsax.document_1, size: 26, color: context.theme.primaryColor),
               ),
             ),
@@ -104,7 +104,7 @@ class RecentListTile extends ConsumerWidget {
                   contentPadding: EdgeInsets.zero,
                   shape: CircleBorder(),
                   backgroundColor: context.theme.colorScheme.surface,
-                  overlayColor: Colors.lightBlueAccent.withAlpha(50),
+                  overlayColor: context.theme.colorScheme.secondary.withAlpha(50),
                   onClick: () {
                     if (dataModel.onTapPlay != null) dataModel.onTapPlay!();
                   },

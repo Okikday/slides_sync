@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 enum FlushbarVibe { none, error, success, warning }
@@ -129,11 +128,14 @@ List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   const warningColor = Color(0xFFF9A825); // Warm gold
   final warningBgColor = warningColor.withValues(alpha: 0.15);
 
-  final normalColor = context.isDarkMode ? Colors.white : Colors.black87;
-  final normalBgColor =
-      context.isDarkMode
-          ? const Color(0xFF1E1E2C).withValues(alpha: 0.85) // Darker, muted blue-gray
-          : const Color(0xFFF5F5F7).withValues(alpha: 0.85); // Soft off-white
+  // final normalColor = context.isDarkMode ? Colors.white : Colors.black87;
+  // final normalBgColor =
+  //     context.isDarkMode
+  //         ? const Color(0xFF1E1E2C).withValues(alpha: 0.85) // Darker, muted blue-gray
+  //         : const Color(0xFFF5F5F7).withValues(alpha: 0.85); // Soft off-white
+
+    final normalColor = context.theme.colorScheme.onPrimary;
+  final normalBgColor = context.theme.colorScheme.primary.withValues(alpha: 0.6);
 
   switch (vibe) {
     case FlushbarVibe.none:

@@ -37,7 +37,7 @@ class EmptyCoursesView extends StatelessWidget {
                     ),
                   );
                 },
-                backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+                backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
                 borderRadius: 12,
                 pixelHeight: 44,
                 label: "Create your course",

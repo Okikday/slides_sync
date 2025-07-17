@@ -72,7 +72,7 @@ class AppActionDialog extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               BuildPlainActionButton(title: action.title, icon: action.icon, onTap: action.onTap),
-              Divider(color: Colors.lightBlueAccent.withAlpha(20), height: 0),
+              Divider(color: context.theme.colorScheme.secondary.withAlpha(20), height: 0),
             ],
           );
         },

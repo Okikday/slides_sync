@@ -31,8 +31,11 @@ class BottomNavBar extends ConsumerWidget {
             unselectedItemColor: context.theme.colorScheme.onTertiary,
             selectedItemColor: context.theme.primaryColor,
             onTap: (index) => onTap(index),
-            backgroundColor: isScrolled ? context.theme.cardColor.withValues(alpha: 0.4) : context.theme.cardColor.withValues(alpha: 0.6),
-            elevation: 48,
+            backgroundColor:
+                isScrolled
+                    ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor().withValues(alpha: 0.2)
+                    : HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor().withValues(alpha: 0.8),
+            elevation: 12,
             items: [
               BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
               BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library holding all your courses"),

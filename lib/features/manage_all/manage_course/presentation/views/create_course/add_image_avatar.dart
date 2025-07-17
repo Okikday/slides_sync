@@ -22,7 +22,7 @@ class AddImageAvatar extends ConsumerWidget {
           width: imgRadius,
           height: imgRadius,
           clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.lightBlueAccent.withAlpha(40)),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.secondary.withAlpha(40)),
           child: InkWell(
             customBorder: CircleBorder(),
             onTap: () async {

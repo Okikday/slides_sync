@@ -91,7 +91,7 @@ class CustomWaveWidget extends ConsumerWidget {
         durations: [5000, 4000],
         heightPercentages: [fill - 0.01, fill + 0.01],
       ),
-      backgroundColor: Colors.lightBlueAccent.withAlpha(40),
+      backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
       size: Size(double.infinity, double.infinity),
       waveAmplitude: 10,
     );

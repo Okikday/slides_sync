@@ -88,7 +88,7 @@
 //                         clipBehavior: Clip.hardEdge,
 //                         decoration: BoxDecoration(
 //                           color: context.theme.primaryColor.withValues(alpha: .75),
-//                           border: Border.fromBorderSide(BorderSide(color: Colors.lightBlueAccent.withAlpha(20))),
+//                           border: Border.fromBorderSide(BorderSide(color: context.theme.secondary.withAlpha(20))),
 //                           borderRadius: BorderRadius.circular(24),
 //                         ),
 //                         child: BackdropFilter(
@@ -97,7 +97,7 @@
 //                             mainAxisSize: MainAxisSize.min,
 //                             spacing: 4.0,
 //                             children: [
-//                               Icon(Iconsax.check, size: 18, color: Colors.lightBlueAccent.withAlpha(80)),
+//                               Icon(Iconsax.check, size: 18, color: context.theme.secondary.withAlpha(80)),
 //                               CustomText('$selectedItemsCount items selected!'),
 //                             ],
 //                           ),
@@ -119,7 +119,7 @@
 //                       ),
 //                       CustomElevatedButton(
 //                         shape: CircleBorder(),
-//                         backgroundColor: Colors.lightBlueAccent.withValues(alpha: 0.5),
+//                         backgroundColor: context.theme.secondary.withValues(alpha: 0.5),
 //                         child: Icon(Iconsax.add_circle),
 //                         onClick: () {},
 //                       ),

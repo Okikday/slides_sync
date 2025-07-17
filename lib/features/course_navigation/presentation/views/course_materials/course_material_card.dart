@@ -140,7 +140,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                   ConstantSizing.rowSpacingMedium,
                   IconButton(
                     onPressed: () {},
-                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.lightBlueAccent.withAlpha(15))),
+                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(context.theme.colorScheme.secondary.withAlpha(15))),
                     icon: Icon(Iconsax.arrow_circle_right),
                   ),
                 ],

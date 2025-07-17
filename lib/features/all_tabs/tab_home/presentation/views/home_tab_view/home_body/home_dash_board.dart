@@ -32,13 +32,10 @@ class HomeDashBoard extends ConsumerWidget {
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
       margin: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
       decoration: BoxDecoration(
-        color: context.theme.colorScheme.onSurface,
+        color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          width: 2,
-          color: context.theme.colorScheme.primary.withAlpha(20),
-        ),
-        boxShadow: [BoxShadow(color: context.theme.colorScheme.primary.withAlpha(20), blurRadius: 4, spreadRadius: 2)],
+        border: Border.all(width: 2, color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
+        // boxShadow: [BoxShadow(color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(), blurRadius: 4, spreadRadius: 2)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,13 +46,14 @@ class HomeDashBoard extends ConsumerWidget {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: FittedBox(child: CustomText(courseName, fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,)),
+                child: FittedBox(
+                  child: CustomText(courseName, fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
+                ),
               ),
             ),
           ),
           if (detail.isNotEmpty) ConstantSizing.columnSpacingSmall,
-          if (detail.isNotEmpty)
-            CustomText(detail, fontSize: 13, color: context.theme.colorScheme.onTertiary),
+          if (detail.isNotEmpty) CustomText(detail, fontSize: 13, color: context.theme.colorScheme.onTertiary),
           ConstantSizing.columnSpacingSmall,
 
           // Row(
@@ -87,20 +85,20 @@ class HomeDashBoard extends ConsumerWidget {
                   pixelHeight: 48,
                   elevation: 100,
                   borderRadius: 12,
-                  backgroundColor: context.theme.colorScheme.surface,
+                  overlayColor: context.theme.colorScheme.onPrimary.withAlpha(20),
+                  backgroundColor: context.theme.colorScheme.primary,
                   child: CustomText(
                     completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
                     fontSize: 15,
-                    color: context.theme.primaryColor,
+                    color: context.theme.colorScheme.tertiary,
                   ),
                   onClick: () {
                     if (onReadingBtnTapped != null) onReadingBtnTapped!();
                   },
                 ),
               ),
-          
-              ConstantSizing.rowSpacing(4),
-          
+
+              // ConstantSizing.rowSpacing(4),
               Stack(
                 children: [
                   CustomElevatedButton(
@@ -110,14 +108,9 @@ class HomeDashBoard extends ConsumerWidget {
                     shape: CircleBorder(),
                     backgroundColor: context.theme.colorScheme.surface,
                     onClick: () {},
-                    child: CustomText(
-                      "50%",
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: context.theme.colorScheme.tertiary,
-                    ),
+                    child: CustomText("50%", fontSize: 11, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
                   ),
-          
+
                   Positioned(
                     left: 0,
                     right: 0,

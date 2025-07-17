@@ -10,7 +10,7 @@ class UiStyles {
       border: Border.all(width: 2, color: context.theme.colorScheme.secondary),
       // boxShadow: [
       //   BoxShadow(
-      //     color: isDarkMode ? Colors.black.withAlpha(50) : Colors.lightBlueAccent.withAlpha(25),
+      //     color: isDarkMode ? Colors.black.withAlpha(50) : context.theme.secondary.withAlpha(25),
       //     blurRadius: 8,
       //     offset: Offset(0, 0),
       //     blurStyle: BlurStyle.inner,
