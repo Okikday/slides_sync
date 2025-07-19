@@ -47,10 +47,10 @@ class ConfirmDeletionDialog extends ConsumerWidget {
         _buildDialogButton(label: "Delete", textColor: Colors.red, backgroundColor: Colors.red.withAlpha(40), onClick: onDelete),
       ],
     ).animate().fadeIn().scaleY(
-      begin: 0.5,
+      begin: 0.2,
       end: 1,
       alignment: Alignment.bottomCenter,
-      duration: Durations.extralong1,
+      duration: Duration(milliseconds: 500),
       curve: CustomCurves.defaultIosSpring,
     );
     

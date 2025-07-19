@@ -25,8 +25,8 @@ class RecentListTile extends ConsumerWidget {
     return Padding(
       padding: EdgeInsets.only(top: 12, left: 8, right: 8),
       child: CustomElevatedButton(
-        backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
-        overlayColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor(),
+        backgroundColor: context.isDarkMode ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor() : HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.9).toColor(),
+        overlayColor: context.theme.colorScheme.secondary,
         contentPadding: EdgeInsets.all(tilePadding),
         borderRadius: 12,
         onClick: () {
@@ -42,7 +42,7 @@ class RecentListTile extends ConsumerWidget {
               isLabelVisible: dataModel.isStarred,
               label: CircleAvatar(
                 radius: 10.5,
-                backgroundColor: isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray,
+                backgroundColor: Color(0xff0e1d27),
                 child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor),
               ),
               offset: Offset(0, -2),

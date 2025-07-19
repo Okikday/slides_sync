@@ -31,7 +31,7 @@ class SettingsView extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
           child: ListView(
             children: [
-              CustomText("Appearance", color: AppColors.altLightGray),
+              CustomText("Appearance", color: context.theme.colorScheme.onTertiary),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -42,7 +42,7 @@ class SettingsView extends ConsumerWidget {
                 trailing: CustomElevatedButton(
                   label: "Change",
                   backgroundColor: context.theme.colorScheme.secondary,
-                  textColor: context.isDarkMode ? AppColors.lightGray : Colors.black54,
+                  textColor: Color(0xff0e1d27),
                   textSize: 14,
                   onClick: () {
                     CustomDialog.show(context, barrierColor: Colors.black26, blurSigma: Offset(2, 2), child: SettingsAppearanceDialog());
@@ -61,7 +61,7 @@ class SettingsView extends ConsumerWidget {
 
               ConstantSizing.columnSpacingLarge,
 
-              CustomText("Technical", color: AppColors.altLightGray),
+              CustomText("Technical", color: context.theme.colorScheme.onTertiary),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -74,7 +74,7 @@ class SettingsView extends ConsumerWidget {
 
               ConstantSizing.columnSpacingLarge,
 
-              CustomText("Language", color: AppColors.altLightGray),
+              CustomText("Language", color: context.theme.colorScheme.onTertiary),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -116,7 +116,7 @@ class SettingsCard extends StatelessWidget {
                     children: [
                       CustomText(title, color: context.theme.colorScheme.tertiary),
                       if (content != null)
-                        CustomText(content!, fontSize: 11, color: context.isDarkMode ? AppColors.altLightGray : Colors.black54),
+                        CustomText(content!, fontSize: 11, color: context.theme.colorScheme.onTertiary),
                     ],
                   ),
                 ),

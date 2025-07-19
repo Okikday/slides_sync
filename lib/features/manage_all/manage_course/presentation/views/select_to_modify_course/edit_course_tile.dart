@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
@@ -38,7 +39,9 @@ class EditCourseTile extends ConsumerWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 90, maxHeight: 140),
-        decoration: UiStyles.getBlueThemedBoxDecoration(context),
+        decoration: BoxDecoration(
+          color: AppColors.bgBlendColor(context, .88, .12)
+        ),
         child: Row(
           children: [
             ClipOval(

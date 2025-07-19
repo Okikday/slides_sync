@@ -5,6 +5,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class AppCustomizableDialog extends ConsumerWidget {
   final Widget? leading;
@@ -53,16 +54,8 @@ class AppCustomizableDialog extends ConsumerWidget {
             decoration: BoxDecoration(
               color: backgroundColor ?? context.scaffoldBackgroundColor.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(16.0),
-              border: Border.all(width: 1, color: context.theme.colorScheme.secondary.withAlpha(40)),
-              boxShadow: [
-                BoxShadow(
-                  color: context.theme.colorScheme.secondary.withAlpha(40),
-                  blurRadius: 8,
-                  offset: Offset(0, 0),
-                  blurStyle: BlurStyle.inner,
-                  spreadRadius: 2,
-                ),
-              ],
+              border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .86, .14)),
+              
             ),
             padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
             child:

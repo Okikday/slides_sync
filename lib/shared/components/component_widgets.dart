@@ -14,7 +14,7 @@ class ComponentWidgets {
         }
         onPressed();
       },
-      icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: Colors.grey),
+      icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: context.theme.colorScheme.onTertiary),
       style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(backgroundColor)),
     );
   }

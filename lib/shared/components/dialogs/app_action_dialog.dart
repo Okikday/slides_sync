@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class AppActionDialogModel {
   final String title;
@@ -25,6 +26,7 @@ class AppActionDialog extends ConsumerWidget {
   final Offset? blurSigma;
   final Color? backgroundColor;
   final List<AppActionDialogModel> actions;
+  final void Function()? onPop;
   const AppActionDialog({
     super.key,
     this.title = "Title",
@@ -33,28 +35,31 @@ class AppActionDialog extends ConsumerWidget {
     this.alignment,
     this.leading,
     required this.actions,
+    this.onPop,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final divider = Divider(color: AppColors.bgBlendColor(context), height: 0);
     return AppCustomizableDialog(
       blurSigma: blurSigma,
       backgroundColor: backgroundColor,
       alignment: alignment ?? Alignment.center,
+      onPop: onPop,
       leading: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children:
             leading != null
-                ? [leading!, Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40), height: 0)]
+                ? [leading!, divider]
                 : [
                   ConstantSizing.columnSpacingSmall,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(child: CustomText(title!, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center)),
+                    child: Center(child: CustomText(title!, color: context.theme.colorScheme.tertiary, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center)),
                   ),
                   ConstantSizing.columnSpacingSmall,
-                  Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40), height: 0),
+                  divider,
                 ],
       ),
       child: ListView.builder(
@@ -70,10 +75,7 @@ class AppActionDialog extends ConsumerWidget {
 
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              BuildPlainActionButton(title: action.title, icon: action.icon, onTap: action.onTap),
-              Divider(color: context.theme.colorScheme.secondary.withAlpha(20), height: 0),
-            ],
+            children: [BuildPlainActionButton(title: action.title, icon: action.icon, onTap: action.onTap), divider],
           );
         },
       ),
@@ -106,7 +108,10 @@ class BuildPlainActionButton extends ConsumerWidget {
       backgroundColor: backgroundColor ?? Colors.transparent,
       contentPadding: contentPadding,
       onClick: onTap,
-      child: Row(spacing: 12.0, children: [icon, Expanded(child: CustomText(title, color: context.theme.colorScheme.tertiary, style: textStyle))]),
+      child: Row(
+        spacing: 12.0,
+        children: [icon, Expanded(child: CustomText(title, color: context.theme.colorScheme.tertiary, style: textStyle))],
+      ),
     );
   }
 }

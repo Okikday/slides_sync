@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 import 'component_widgets.dart';
 
@@ -31,10 +32,7 @@ class AppBarContainerChild extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Material(
       type: MaterialType.transparency,
-      shape: LinearBorder(
-        bottom: LinearBorderEdge(),
-        side: BorderSide(color: context.theme.colorScheme.onSecondary.withAlpha(30)),
-      ),
+      shape: LinearBorder(bottom: LinearBorderEdge(), side: BorderSide(color: AppColors.bgBlendColor(context, .89, .11))),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: Tooltip(
@@ -42,8 +40,12 @@ class AppBarContainerChild extends ConsumerWidget {
           message: tooltipMessage ?? title,
           child: Row(
             children: [
-              ComponentWidgets.backButton(context, onPressed: onBackButtonClicked),
-              ConstantSizing.rowSpacingMedium,
+              ComponentWidgets.backButton(
+                context,
+                backgroundColor: AppColors.bgBlendColor(context, .89, .11),
+                onPressed: onBackButtonClicked,
+              ),
+              ConstantSizing.rowSpacing(8),
               Expanded(
                 child:
                     (subtitle != null || (subtitle != null && subtitle!.isNotEmpty))
@@ -52,13 +54,32 @@ class AppBarContainerChild extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 2.5,
                           children: [
-                            CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, color: context.theme.colorScheme.tertiary,),
-                            CustomText(subtitle!, fontSize: 12, color: context.theme.colorScheme.onTertiary, overflow: TextOverflow.ellipsis, style: subtitleStyle),
+                            CustomText(
+                              title,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              color: context.theme.colorScheme.tertiary,
+                            ),
+                            CustomText(
+                              subtitle!,
+                              fontSize: 12,
+                              color: context.theme.colorScheme.onTertiary,
+                              overflow: TextOverflow.ellipsis,
+                              style: subtitleStyle,
+                            ),
                           ],
                         )
-                        : CustomText(title, fontSize: 17.5, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis, style: titleStyle, color: context.theme.colorScheme.tertiary),
+                        : CustomText(
+                          title,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                          style: titleStyle,
+                          color: context.theme.colorScheme.tertiary,
+                        ),
               ),
-              if(trailing == null) ConstantSizing.rowSpacingMedium,
+              if (trailing == null) ConstantSizing.rowSpacingMedium,
               if (trailing != null) trailing!,
             ],
           ),

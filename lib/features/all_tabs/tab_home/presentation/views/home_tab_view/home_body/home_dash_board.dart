@@ -1,7 +1,6 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -32,9 +31,9 @@ class HomeDashBoard extends ConsumerWidget {
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
       margin: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
       decoration: BoxDecoration(
-        color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
+        color: AppColors.bgBlendColor(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(width: 2, color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
+        border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
         // boxShadow: [BoxShadow(color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(), blurRadius: 4, spreadRadius: 2)],
       ),
       child: Column(

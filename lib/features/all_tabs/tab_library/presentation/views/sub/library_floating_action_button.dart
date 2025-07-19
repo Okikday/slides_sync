@@ -5,6 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/sub/manage_course_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class LibraryFloatingActionButton extends ConsumerWidget {
   const LibraryFloatingActionButton({super.key});
@@ -34,7 +35,7 @@ class LibraryFloatingActionButton extends ConsumerWidget {
         borderRadius: BorderRadius.circular(16.0),
         child: ColoredBox(
           color: context.theme.colorScheme.primary,
-          child: SizedBox(width: 51, height: 51, child: Icon(Iconsax.setting_4, color: context.theme.colorScheme.tertiary)),
+          child: SizedBox(width: 51, height: 51, child: Icon(Iconsax.setting_4, color: AppColors.lightenColor(context.theme.colorScheme.primary, 0.98))),
         ),
       ),
     );

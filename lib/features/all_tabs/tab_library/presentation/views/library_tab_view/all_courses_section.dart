@@ -1,16 +1,21 @@
 import 'dart:developer';
 
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/expand_card_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/providers/course_provider.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/is_list_view_notifier.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_grid_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_list_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 
 class AllCoursesSection extends ConsumerStatefulWidget {
@@ -22,10 +27,11 @@ class AllCoursesSection extends ConsumerStatefulWidget {
   ConsumerState createState() => _AllCoursesSectionState();
 }
 
-class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
+class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with AutomaticKeepAliveClientMixin {
   late final StateProviderFamily<bool, int> scaleClickProviderFamily;
   late final StateProvider<bool> isCourseClickedProvider;
   late final StreamProvider<List<CourseModel>> watchAllcoursesProvider;
+  late final StateProvider<TapDownDetails?> longPressDetailsProvider;
 
   @override
   void initState() {
@@ -33,6 +39,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
     scaleClickProviderFamily = StateProviderFamily((ref, index) => false);
     isCourseClickedProvider = StateProvider((ref) => false);
     watchAllcoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
+    longPressDetailsProvider = StateProvider<TapDownDetails?>((ref) => null);
   }
 
   void onTap(CourseModel course) async {
@@ -46,8 +53,27 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
     if (mounted) isCourseClickedNotifier.update((cb) => false);
   }
 
+  void onLongPress(CourseModel course) {
+    final Offset? tapPosition = ref.read(longPressDetailsProvider.notifier).state?.globalPosition;
+    if (tapPosition == null) return;
+    CustomDialog.show(
+      context,
+      blurSigma: Offset(2, 2),
+      barrierColor: Colors.black26,
+      child: ExpandCardDialog(
+        tapPosition: tapPosition,
+        course: course,
+        onOpen: () {
+          CustomDialog.hide(context);
+          onTap(course);
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
     final AsyncValue<bool> asyncIsListView = ref.watch(widget.isListViewAsyncProvider);
     final isListView = asyncIsListView.value ?? false;
@@ -59,9 +85,21 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
         }
 
         if (isListView) {
-          return CoursesListView(scaleClickProviderFamily: scaleClickProviderFamily, data: data, onTap: (index) => onTap(data[index]));
+          return CoursesListView(
+            scaleClickProviderFamily: scaleClickProviderFamily,
+            longPressTapDetailsProvider: longPressDetailsProvider,
+            data: data,
+            onTap: (index) => onTap(data[index]),
+            onLongPress: (index) => onLongPress(data[index]),
+          );
         } else {
-          return CoursesGridView(scaleClickProviderFamily: scaleClickProviderFamily, data: data, onTap: (index) => onTap(data[index]));
+          return CoursesGridView(
+            scaleClickProviderFamily: scaleClickProviderFamily,
+            longPressTapDetailsProvider: longPressDetailsProvider,
+            data: data,
+            onTap: (index) => onTap(data[index]),
+            onLongPress: (index) => onLongPress(data[index]),
+          );
         }
       },
       error: (error, st) {
@@ -73,4 +111,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

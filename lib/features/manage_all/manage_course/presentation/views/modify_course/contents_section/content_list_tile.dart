@@ -41,7 +41,7 @@ class ContentListTile extends ConsumerWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), ),
         child: CustomElevatedButton(
-          backgroundColor: (isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray),
+          backgroundColor: context.theme.cardColor,
           overlayColor: context.theme.colorScheme.secondary.withAlpha(50),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           borderRadius: 12,
@@ -58,7 +58,7 @@ class ContentListTile extends ConsumerWidget {
                 isLabelVisible: isStarred,
                 label: CircleAvatar(
                     radius: 10.5,
-                    backgroundColor: isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray,
+                    backgroundColor: context.theme.cardColor,
                     child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor,)),
                 offset:  Offset(0, -2),
                 child: CustomElevatedButton(

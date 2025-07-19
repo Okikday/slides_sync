@@ -5,6 +5,7 @@ import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
@@ -55,7 +56,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: CustomTextButton(
-                          backgroundColor: context.theme.primaryColor.withAlpha(80),
+                          backgroundColor: context.theme.primaryColor.withAlpha(60),
                           pixelHeight: 28,
                           contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                           child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: context.theme.primaryColor),
@@ -100,7 +101,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                       onTap: onClickImage,
                       onLongPress: onLongPressImage,
                       child: ColoredBox(
-                        color: context.theme.primaryColor.withAlpha(80),
+                        color: context.theme.primaryColor.withAlpha(60),
                         child: SizedBox.square(
                           dimension: 80,
                           child: BuildImagePathWidget(
@@ -126,9 +127,9 @@ class ModifyCourseHeader extends ConsumerWidget {
                   child: CustomElevatedButton(
                     label: "Edit course",
                     onClick: onClickEditCourse,
-                    textColor: context.theme.colorScheme.outline,
+                    textColor: context.theme.colorScheme.primary,
                     textSize: 14,
-                    backgroundColor: context.theme.colorScheme.outlineVariant,
+                    backgroundColor: context.theme.primaryColor.withAlpha(60),
                     pixelHeight: 48,
                     borderRadius: 48,
                   ),

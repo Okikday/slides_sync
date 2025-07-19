@@ -5,6 +5,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
+
 class FileManagerPage extends StatefulWidget {
   const FileManagerPage({super.key});
 
@@ -76,7 +78,7 @@ class _FileManagerPageState extends State<FileManagerPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('File Manager: $dirName'),
+          title: Text('File Manager: $dirName', style: TextStyle(color: context.theme.colorScheme.tertiary)),
           leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
@@ -97,7 +99,7 @@ class _FileManagerPageState extends State<FileManagerPage> {
             _loading
                 ? Center(child: CircularProgressIndicator())
                 : _entries.isEmpty
-                ? Center(child: Text('Empty'))
+                ? Center(child: Text('Empty', style: TextStyle(color: context.theme.colorScheme.tertiary)))
                 : ListView.separated(
                   itemCount: _entries.length,
                   separatorBuilder: (_, __) => Divider(height: 1),
@@ -115,8 +117,8 @@ class _FileManagerPageState extends State<FileManagerPage> {
 
                         return ListTile(
                           leading: Icon(isDir ? Icons.folder : Icons.insert_drive_file),
-                          title: Text(name),
-                          subtitle: Text(isDir ? modified : '$modified • $size', style: TextStyle(fontSize: 12)),
+                          title: Text(name, style: TextStyle(color: context.theme.colorScheme.tertiary)),
+                          subtitle: Text(isDir ? modified : '$modified • $size', style: TextStyle(fontSize: 12, color: context.theme.colorScheme.tertiary)),
                           onTap: isDir ? () => _listDir(ent) : null,
                           onLongPress:
                               isDir

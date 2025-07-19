@@ -19,41 +19,6 @@ class AppThemeDataProvider extends Notifier<ThemeData> {
   }
 }
 
-// // Default Twilight Academia
-// class AppThemes {
-//   static final ThemeData lightTheme = ThemeData(
-//     brightness: Brightness.light,
-//     primaryColor: AppColors.primary,
-//     scaffoldBackgroundColor: AppColors.background,
-//     fontFamily: "Nunito",
-//     splashColor: context.theme.secondary.withAlpha(10),
-//     appBarTheme: const AppBarTheme(
-//       backgroundColor: AppColors.background,
-//       elevation: 0,
-//       iconTheme: IconThemeData(color: AppColors.lightGray),
-//     ),
-//     floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.primary),
-//     iconTheme: IconThemeData(color: Colors.white),
-//     cardColor: AppColors.secondary,
-//   );
-
-//   static final ThemeData darkTheme = ThemeData(
-//     brightness: Brightness.dark,
-//     primaryColor: AppColors.primaryDark,
-
-//     scaffoldBackgroundColor: AppColors.darkBackground,
-//     fontFamily: "Nunito",
-//     splashColor: context.theme.secondary.withAlpha(10),
-//     appBarTheme: const AppBarTheme(
-//       backgroundColor: AppColors.darkBackground,
-//       elevation: 0,
-//       iconTheme: IconThemeData(color: AppColors.lightGray),
-//     ),
-//     floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: AppColors.primaryDark),
-//     iconTheme: IconThemeData(color: Colors.white),
-//     cardColor: AppColors.secondaryDark,
-//   );
-// }
 
 ThemeData resolveThemeData(AppThemeModel theme) {
   return ThemeData(
@@ -65,18 +30,16 @@ ThemeData resolveThemeData(AppThemeModel theme) {
       brightness: theme.brightness,
       primary: theme.primaryColor,
       onPrimary: theme.textPrimaryColor,
-      secondary: theme.secondaryColor.withValues(alpha: 0.1),
-      onSecondary: theme.secondaryColor,
+      secondary: theme.accentColor.withValues(alpha: 0.1),
+      onSecondary: theme.accentColor,
       error: Colors.red.withValues(alpha: 0.2),
       onError: Colors.red,
-      outline: theme.accentColor,
-      outlineVariant: theme.accentColor.withValues(alpha: 0.2),
       surface: theme.backgroundColor,
       onSurface: theme.onBackgroundColor,
       tertiary: theme.textPrimaryColor,
       onTertiary: theme.textSecondaryColor,
     ),
-    splashColor: theme.secondaryColor.withAlpha(10),
+    splashColor: theme.accentColor.withAlpha(10),
     appBarTheme: AppBarTheme(
       backgroundColor: theme.backgroundColor,
       elevation: 0,

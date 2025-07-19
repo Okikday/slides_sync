@@ -12,11 +12,20 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CoursesListView extends ConsumerWidget {
-  const CoursesListView({super.key, required this.scaleClickProviderFamily, required this.data, required this.onTap});
+  const CoursesListView({
+    super.key,
+    required this.scaleClickProviderFamily,
+    required this.longPressTapDetailsProvider,
+    required this.data,
+    required this.onTap,
+    required this.onLongPress,
+  });
 
   final StateProviderFamily<bool, int> scaleClickProviderFamily;
+  final StateProvider<TapDownDetails?> longPressTapDetailsProvider;
   final List<CourseModel> data;
   final void Function(int index) onTap;
+  final void Function(int index) onLongPress;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,6 +36,7 @@ class CoursesListView extends ConsumerWidget {
           final StateProvider<bool> provider = scaleClickProviderFamily(index);
           final CourseModel courseModel = data[index];
           updateScaleClickProvider(bool newValue) => ref.read(provider.notifier).update((cb) => newValue);
+          updateTapDownDetailsProvider(TapDownDetails det) => ref.read(longPressTapDetailsProvider.notifier).update((state) => det);
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -41,6 +51,7 @@ class CoursesListView extends ConsumerWidget {
                   overlayColor: WidgetStatePropertyAll(Colors.white.withAlpha(80)),
                   onTapDown: (details) {
                     log("Detected tap down...");
+                    if (!ref.read(provider.notifier).state) updateTapDownDetailsProvider(details);
                     updateScaleClickProvider(true);
                   },
                   onTapCancel: () {
@@ -52,6 +63,10 @@ class CoursesListView extends ConsumerWidget {
                     await Future.delayed(Durations.short2);
                     updateScaleClickProvider(false);
                   },
+                  onLongPress: () {
+                    log("Long press...");
+                    onLongPress(index);
+                  },
                   onTap: () => onTap(index),
                   child: ListCourseCard(
                     isDarkMode: context.isDarkMode,
@@ -59,6 +74,7 @@ class CoursesListView extends ConsumerWidget {
                     courseName: courseModel.courseName,
                     hasImage: courseModel.imageLocationJson.fileDetails.containsFilePath,
                     categoriesCount: courseModel.subCollections.length,
+                    onTapIcon: () => onLongPress(index),
                     progress: 0.0,
                     courseImageWidget: BuildImagePathWidget(
                       fileDetails: courseModel.imageLocationJson.fileDetails,
@@ -66,7 +82,7 @@ class CoursesListView extends ConsumerWidget {
                         padding: const EdgeInsets.all(8.0),
                         child:
                             courseModel.courseCode.isEmpty
-                                ? Icon(Iconsax.document_1, color: context.theme.colorScheme.primary,)
+                                ? Icon(Iconsax.document_1, color: context.theme.colorScheme.primary)
                                 : Center(
                                   child: CustomText(
                                     courseModel.courseCode.substring(0, courseModel.courseCode.length.clamp(0, 8)),

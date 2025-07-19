@@ -46,163 +46,112 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    var divider = Divider(color: context.theme.colorScheme.secondary.withAlpha(40), height: 0);
     final collection = widget.collection;
     final mca = ModifyCollectionActions();
-    return AppCustomizableDialog(
+    return AppActionDialog(
       blurSigma: Offset(4, 4),
       backgroundColor: context.scaffoldBackgroundColor.withValues(alpha: 0.5),
       onPop: () async {
         final newText = textEditingController.text;
         await mca.onRenameCollection(context, newText: newText, courseDbId: widget.courseDbId, collection: collection);
       },
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
+      leading: Padding(
+        padding: const EdgeInsets.only(bottom: ConstantSizing.spaceMedium),
+        child: Row(
           children: [
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 4.0),
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 12),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.outlineVariant),
-                    child: BuildImagePathWidget(fileDetails: FileDetails()),
-                  ),
-                ),
-                ConstantSizing.rowSpacingMedium,
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 4,),
-                    child: CustomText(
-                      collection.collectionTitle,
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.bold,
-                      color: context.theme.colorScheme.tertiary,
-                    ),
-                  ),
-                ),
-                
-                ConstantSizing.rowSpacingMedium,
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 4.0),
+              child: Container(
+                padding: EdgeInsets.all(16),
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: 12),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.outlineVariant),
+                child: BuildImagePathWidget(fileDetails: FileDetails()),
+              ),
             ),
-
-            // Expanded(
-            //   child: CustomTextfield(
-            //     hint: "New collection name",
-            //     // onSubmitted: (text) async {
-            //     //   final String? result = await mca.renameCollectionAction(
-            //     //     newText: text,
-            //     //     courseDbId: widget.courseDbId,
-            //     //     collectionId: collection.collectionId,
-            //     //   );
-            //     //   if (result == null && context.mounted) focusNode.unfocus();
-            //     // },
-            //     inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-            //     defaultText: widget.collection.collectionTitle,
-            //     controller: textEditingController,
-            //     focusNode: focusNode,
-            //     autoDispose: false,
-            //     inputTextStyle: TextStyle(color: Colors.white),
-            //     backgroundColor: context.theme.colorScheme.onSecondary,
-            //     cursorColor: context.theme.primaryColor,
-
-            //   ),
-            // ),
-            ConstantSizing.columnSpacingMedium,
-
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                divider,
-
-                BuildPlainActionButton(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  title: "Select",
-                  icon: Icon(Iconsax.tick_circle_copy, size: 24, color: context.theme.colorScheme.onTertiary),
-                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
-                  onTap: () {},
+            ConstantSizing.rowSpacingMedium,
+        
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: CustomText(
+                  collection.collectionTitle,
+                  fontSize: 14.5,
+                  fontWeight: FontWeight.bold,
+                  color: context.theme.colorScheme.tertiary,
                 ),
+              ),
+            ),
+        
+            ConstantSizing.rowSpacingMedium,
+          ],
+        ),
+      ),
+      actions: [
+        AppActionDialogModel(
+          title: "Select",
+          icon: Icon(Iconsax.tick_circle_copy, size: 24, color: context.theme.colorScheme.onTertiary),
+          onTap: () {},
+        ),
 
-                divider,
+        AppActionDialogModel(
+          title: "View contents",
+          icon: Icon(Iconsax.forward_copy, size: 24, color: context.theme.colorScheme.onTertiary),
+          onTap: () {
+            CustomDialog.hide(context);
+            AppNavigator.to(context).modifyContentsRoute((
+              collection: collection,
+              courseDbId: widget.courseDbId,
+              courseTitle: (courseCode: "", courseName: "CourseName"),
+            ));
+          },
+        ),
 
-                BuildPlainActionButton(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  title: "View contents",
-                  icon: Icon(Iconsax.forward_copy, size: 24, color: context.theme.colorScheme.onTertiary),
-                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
-                  onTap: () {
-                    CustomDialog.hide(context);
-                    AppNavigator.to(context).modifyContentsRoute((
-                      collection: collection,
-                      courseDbId: widget.courseDbId,
-                      courseTitle: (courseCode: "", courseName: "CourseName"),
-                    ));
-                  },
-                ),
+        AppActionDialogModel(
+          title: "Share",
+          icon: Icon(Icons.share_outlined, size: 24, color: context.theme.colorScheme.onTertiary),
+          onTap: () {},
+        ),
+        AppActionDialogModel(
+          title: "Delete",
+          icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
+          onTap: () async {
+            if (context.mounted) {
+              CustomDialog.hide(context);
+            } else {
+              rootNavigatorKey.currentContext?.pop();
+            }
 
-                divider,
-
-                BuildPlainActionButton(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  title: "Share",
-                  icon: Icon(Icons.share_outlined, size: 24, color: context.theme.colorScheme.onTertiary),
-                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
-                  onTap: () {},
-                ),
-
-                divider,
-
-                BuildPlainActionButton(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  title: "Delete",
-                  icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                  textStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
-                  onTap: () async {
+            if (context.mounted) {
+              CustomDialog.show(
+                context,
+                canPop: true,
+                barrierColor: Colors.black.withValues(alpha: 0.6),
+                transitionType: TransitionType.cupertinoDialog,
+                transitionDuration: Durations.medium2,
+                child: ConfirmDeletionDialog(
+                  content:
+                      "This will delete \"${collection.collectionTitle}\"."
+                      "\n\nAre you sure you want to delete this course?",
+                  onPop: () {
                     if (context.mounted) {
                       CustomDialog.hide(context);
                     } else {
                       rootNavigatorKey.currentContext?.pop();
                     }
-
-                    if (context.mounted) {
-                      CustomDialog.show(
-                        context,
-                        canPop: true,
-                        barrierColor: Colors.black.withValues(alpha: 0.6),
-                        transitionType: TransitionType.cupertinoDialog,
-                        transitionDuration: Durations.medium2,
-                        child: ConfirmDeletionDialog(
-                          content:
-                              "This will delete \"${collection.collectionTitle}\"."
-                              "\n\nAre you sure you want to delete this course?",
-                          onPop: () {
-                            if (context.mounted) {
-                              CustomDialog.hide(context);
-                            } else {
-                              rootNavigatorKey.currentContext?.pop();
-                            }
-                          },
-                          onCancel: () {
-                            rootNavigatorKey.currentContext?.pop();
-                          },
-                          onDelete: () async {
-                            await mca.onDeleteCollection(context, courseDbId: widget.courseDbId, collection: collection);
-                          },
-                        ),
-                      );
-                    }
+                  },
+                  onCancel: () {
+                    rootNavigatorKey.currentContext?.pop();
+                  },
+                  onDelete: () async {
+                    await mca.onDeleteCollection(context, courseDbId: widget.courseDbId, collection: collection);
                   },
                 ),
-                divider,
-              ],
-            ),
-          ],
+              );
+            }
+          },
         ),
-      ),
+      ],
     ).animate().fadeIn().scaleXY(
       begin: 0.4,
       end: 1,

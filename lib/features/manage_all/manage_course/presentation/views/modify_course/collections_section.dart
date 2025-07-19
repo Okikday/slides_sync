@@ -21,6 +21,7 @@ import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_con
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
@@ -178,7 +179,9 @@ Widget _buildNewCollectionTile(BuildContext context, {required void Function() o
         overlayColor: WidgetStatePropertyAll(context.theme.primaryColor.withAlpha(40)),
         onTap: onTap,
         child: Container(
-          decoration: UiStyles.getBlueThemedBoxDecoration(context),
+          decoration: BoxDecoration(
+            color: AppColors.bgBlendColor(context, .88, .12)
+          ),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
           child: Row(

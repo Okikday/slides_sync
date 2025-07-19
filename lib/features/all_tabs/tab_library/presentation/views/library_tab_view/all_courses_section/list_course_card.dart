@@ -17,6 +17,7 @@ class ListCourseCard extends ConsumerWidget {
     this.isStarred = false,
     required this.hasImage,
     this.courseImageWidget,
+    required this.onTapIcon
   });
 
   final String courseCode;
@@ -28,6 +29,7 @@ class ListCourseCard extends ConsumerWidget {
   final bool isStarred;
   final bool hasImage;
   final Widget? courseImageWidget;
+  final void Function() onTapIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,28 +41,35 @@ class ListCourseCard extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
         decoration: BoxDecoration(
-          color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
+          color: AppColors.bgBlendColor(context),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(width: 2, color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
+          border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
         ),
         child: Row(
           children: [
-            Badge(
-              isLabelVisible: isStarred,
-              backgroundColor: Colors.transparent,
-              label: CircleAvatar(
-                radius: 10.5,
-                backgroundColor: isDarkMode ? Color(0xff0e1d27) : AppColors.lightGray,
-                child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor),
-              ),
-              offset: Offset(0, -2),
-              child: Container(
-                padding: EdgeInsets.all(2),
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(color: context.theme.colorScheme.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
-                child: SizedBox.square(
-                  dimension: context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16,
-                  child: courseImageWidget,
+            InkWell(
+              customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              onTap: onTapIcon,
+              child: Badge(
+                isLabelVisible: isStarred,
+                backgroundColor: Colors.transparent,
+                label: CircleAvatar(
+                  radius: 10.5,
+                  backgroundColor: Color(0xff0e1d27),
+                  child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor),
+                ),
+                offset: Offset(0, -2),
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: context.theme.colorScheme.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: SizedBox.square(
+                    dimension: context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16,
+                    child: courseImageWidget,
+                  ),
                 ),
               ),
             ),

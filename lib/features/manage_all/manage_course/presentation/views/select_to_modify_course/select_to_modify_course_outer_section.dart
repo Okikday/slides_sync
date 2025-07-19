@@ -53,7 +53,6 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
           PinnedHeaderSliver(child: SelectedItemsCountPopUp(selectedItemsCount: selectedCoursesIdMap.values.where((v) => v).length)),
         asyncStreamedCourses.when(
           data: (data) {
-            final isDarkMode = context.isDarkMode;
 
             if (data.isEmpty) {
               return EmptyCoursesView();

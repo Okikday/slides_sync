@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 
 class GridCourseCard extends ConsumerWidget {
   const GridCourseCard({
@@ -16,6 +15,7 @@ class GridCourseCard extends ConsumerWidget {
     this.dotColor = Colors.transparent,
     this.courseImageWidget,
     required this.dimension,
+    required this.onTapIcon
   });
 
   final String courseCode;
@@ -26,6 +26,7 @@ class GridCourseCard extends ConsumerWidget {
   final Color dotColor;
   final Widget? courseImageWidget;
   final double dimension;
+  final void Function() onTapIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,30 +35,35 @@ class GridCourseCard extends ConsumerWidget {
       label: CircleAvatar(radius: 5, backgroundColor: dotColor),
       offset: Offset(-12, 12),
       child: Container(
+        clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-          color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
+          color: AppColors.bgBlendColor(context),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(width: 2, color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
+          border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 10, bottom: 8),
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+                padding: const EdgeInsets.fromLTRB(8, 0, 6, 6),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: dimension / 2 - 3,
-                      backgroundColor: context.theme.cardColor.withAlpha(80),
-                      child: ClipOval(
-                        child: CircleAvatar(
-                          radius: dimension / 2 - 4,
-                          backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor(),
-                          child: SizedBox.square(dimension: dimension - 8, child: courseImageWidget),
+                    InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: onTapIcon,
+                      child: CircleAvatar(
+                        radius: dimension / 2 - 3,
+                        backgroundColor: context.theme.cardColor.withAlpha(80),
+                        child: ClipOval(
+                          child: CircleAvatar(
+                            radius: dimension / 2 - 4,
+                            backgroundColor: AppColors.bgBlendColor(context, .88, .12),
+                            child: SizedBox.square(dimension: dimension - 8, child: courseImageWidget),
+                          ),
                         ),
                       ),
                     ),
@@ -68,10 +74,13 @@ class GridCourseCard extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: CustomTextButton(
-                              backgroundColor: context.theme.primaryColor.withAlpha(40),
+                              backgroundColor: AppColors.lightenColor(
+                                context.theme.primaryColor.withAlpha(40),
+                                context.isDarkMode ? 0.75 : 0.25,
+                              ),
                               pixelHeight: 24,
-                              borderRadius: 6,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                              borderRadius: 8,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
                               child: CustomText(
                                 courseCode,
                                 fontSize: 12,
@@ -94,6 +103,7 @@ class GridCourseCard extends ConsumerWidget {
                       courseName,
                       overflow: TextOverflow.fade,
                       fontWeight: FontWeight.bold,
+                      fontSize: 13.5,
                       color: context.theme.colorScheme.tertiary,
                     ),
                   ),
@@ -102,14 +112,15 @@ class GridCourseCard extends ConsumerWidget {
 
               ConstantSizing.columnSpacing(4.0),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: CustomText(
-                  "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
-                  fontSize: 12,
-                  color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.8),
+              if (categoriesCount > 0)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: CustomText(
+                    "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
+                    fontSize: 12,
+                    color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.8),
+                  ),
                 ),
-              ),
 
               ConstantSizing.columnSpacing(14),
 
@@ -121,9 +132,9 @@ class GridCourseCard extends ConsumerWidget {
                     Expanded(
                       child: LinearProgressIndicator(
                         minHeight: 12,
-                        borderRadius: BorderRadius.circular(36),
+                        borderRadius: BorderRadius.circular(16),
                         value: (progress).clamp(0.1, 1.0),
-                        backgroundColor: Colors.black.withAlpha(40),
+                        backgroundColor: AppColors.bgBlendColor(context, .87, 0.13),
                         color: context.theme.primaryColor, //.withAlpha(40)
                       ),
                     ),

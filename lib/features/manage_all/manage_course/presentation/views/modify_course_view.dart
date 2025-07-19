@@ -55,32 +55,22 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) async {
-        if (didPop) {
-          await Future.delayed(Duration.zero);
-          if (context.mounted) {
-            AppNavigator.to(context).modifyExistingCoursesRoute();
-          }
-        }
-      },
-      child: AnnotatedRegion(
-        value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
-        child: Scaffold(
-          appBar: AppBarContainer(
-            appBarHeight: kToolbarHeight + 12,
-            padding: EdgeInsets.zero,
-
-            child: AppBarContainerChild(
-              context.isDarkMode,
-              title: 'Modify Course',
-              // onBackButtonClicked: () async {
-              //   context.pop();
-              // },
-            ),
+    return AnnotatedRegion(
+      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
+      child: Scaffold(
+        appBar: AppBarContainer(
+          appBarHeight: kToolbarHeight + 12,
+          padding: EdgeInsets.zero,
+    
+          child: AppBarContainerChild(
+            context.isDarkMode,
+            title: 'Modify Course',
+            // onBackButtonClicked: () async {
+            //   context.pop();
+            // },
           ),
-          body: ModifyCourseViewOuterSection(),
         ),
+        body: ModifyCourseViewOuterSection(),
       ),
     );
   }
@@ -189,10 +179,10 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
                 },
                 borderRadius: 48,
                 pixelHeight: 56,
-                backgroundColor: context.theme.colorScheme.outlineVariant,
+                backgroundColor: context.theme.colorScheme.primary.withAlpha(60),
                 label: "See all collections",
                 textSize: 15,
-                textColor: context.theme.colorScheme.outline,
+                textColor: context.theme.colorScheme.primary,
               ),
             ),
           ),

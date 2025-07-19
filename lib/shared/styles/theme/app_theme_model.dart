@@ -7,7 +7,6 @@ import 'package:slides_sync/core/utils/theme_utils.dart';
 class AppThemeModel {
   final String title;
   final Color primaryColor;
-  final Color secondaryColor;
   final Color accentColor;
   final Color textPrimaryColor;
   final Color textSecondaryColor;
@@ -20,7 +19,6 @@ class AppThemeModel {
   const AppThemeModel({
     required this.title,
     required this.primaryColor,
-    required this.secondaryColor,
     required this.accentColor,
     required this.textPrimaryColor,
     required this.textSecondaryColor,
@@ -34,7 +32,6 @@ class AppThemeModel {
   AppThemeModel copyWith({
     String? title,
     Color? primaryColor,
-    Color? secondaryColor,
     Color? accentColor,
     Color? textPrimaryColor,
     Color? textSecondaryColor,
@@ -47,7 +44,6 @@ class AppThemeModel {
     return AppThemeModel(
       title: title ?? this.title,
       primaryColor: primaryColor ?? this.primaryColor,
-      secondaryColor: secondaryColor ?? this.secondaryColor,
       accentColor: accentColor ?? this.accentColor,
       textPrimaryColor: textPrimaryColor ?? this.textPrimaryColor,
       textSecondaryColor: textSecondaryColor ?? this.textSecondaryColor,
@@ -63,7 +59,6 @@ class AppThemeModel {
     return <String, dynamic>{
       'title': title,
       'primaryColor': ThemeUtils.colorToHex(primaryColor),
-      'secondaryColor': ThemeUtils.colorToHex(secondaryColor),
       'accentColor': ThemeUtils.colorToHex(accentColor),
       'textPrimaryColor': ThemeUtils.colorToHex(textPrimaryColor),
       'textSecondaryColor': ThemeUtils.colorToHex(textSecondaryColor),
@@ -79,7 +74,6 @@ class AppThemeModel {
     return AppThemeModel(
       title: map['title'] as String? ?? '',
       primaryColor: ThemeUtils.hexToColor(map['primaryColor']),
-      secondaryColor: ThemeUtils.hexToColor(map['secondaryColor']),
       accentColor: ThemeUtils.hexToColor(map['accentColor']),
       textPrimaryColor: ThemeUtils.hexToColor(map['textPrimaryColor']),
       textSecondaryColor: ThemeUtils.hexToColor(map['textSecondaryColor']),
@@ -101,7 +95,6 @@ class AppThemeModel {
 
     return other.title == title &&
         other.primaryColor == primaryColor &&
-        other.secondaryColor == secondaryColor &&
         other.accentColor == accentColor &&
         other.textPrimaryColor == textPrimaryColor &&
         other.textSecondaryColor == textSecondaryColor &&
@@ -116,7 +109,6 @@ class AppThemeModel {
   int get hashCode {
     return title.hashCode ^
         primaryColor.hashCode ^
-        secondaryColor.hashCode ^
         accentColor.hashCode ^
         textPrimaryColor.hashCode ^
         textSecondaryColor.hashCode ^

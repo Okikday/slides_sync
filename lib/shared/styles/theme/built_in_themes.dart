@@ -135,7 +135,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Twilight Academia (Dark)",
     primaryColor: Colors.deepPurpleAccent,
-    secondaryColor: Colors.lightBlueAccent,
     accentColor: Colors.deepPurpleAccent,
     textPrimaryColor: Colors.white,
     textSecondaryColor: Color(0xFFC5C5C5),
@@ -150,7 +149,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Twilight Academia (Light)",
     primaryColor: Colors.deepPurple,
-    secondaryColor: Colors.indigoAccent,
     accentColor: Colors.deepPurpleAccent,
     textPrimaryColor: Color(0xFF0B1014),
     textSecondaryColor: Color(0xFF4B4B4B),
@@ -165,7 +163,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Monochrome Minimal (Dark)",
     primaryColor: Color(0xFFE0E0E0),
-    secondaryColor: Color(0xFFBDBDBD),
     accentColor: Color(0xFF9E9E9E),
     textPrimaryColor: Colors.white,
     textSecondaryColor: Color(0xFFB0B0B0),
@@ -180,7 +177,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Monochrome Minimal (Light)",
     primaryColor: Color(0xFF212121),
-    secondaryColor: Color(0xFF424242),
     accentColor: Color(0xFF757575),
     textPrimaryColor: Color(0xFF212121),
     textSecondaryColor: Color(0xFF616161),
@@ -195,7 +191,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Rose Milk (Dark)",
     primaryColor: Color(0xFFB66E80),
-    secondaryColor: Color(0xFF8A4F52),
     accentColor: Color(0xFFFFAEBE),
     textPrimaryColor: Colors.white,
     textSecondaryColor: Color(0xFFDEC7CA),
@@ -210,7 +205,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Rose Milk (Light)",
     primaryColor: Color(0xFFFFAEBE),
-    secondaryColor: Color(0xFFFFD5DC),
     accentColor: Color(0xFFB66E80),
     textPrimaryColor: Color(0xFF3D3D3D),
     textSecondaryColor: Color(0xFF7F7F7F),
@@ -225,7 +219,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Ocean Cream (Dark)",
     primaryColor: Color(0xFF84A59D),
-    secondaryColor: Color(0xFF1A2B2F),
     accentColor: Color(0xFF7FDBDA),
     textPrimaryColor: Colors.white,
     textSecondaryColor: Color(0xFFB6D2CD),
@@ -240,7 +233,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Ocean Cream (Light)",
     primaryColor: Color(0xFF7FDBDA),
-    secondaryColor: Color(0xFFDFF6F3),
     accentColor: Color(0xFF84A59D),
     textPrimaryColor: Color(0xFF1A2B2F),
     textSecondaryColor: Color(0xFF6C8B88),
@@ -255,7 +247,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Antiflash White (Light)",
     primaryColor: Color(0xFFB0B7BC), // subtle gray-blue
-    secondaryColor: Color(0xFFD9DEE1), // lighter gray
     accentColor: Color(0xFF7A8C99), // muted blue-gray
     textPrimaryColor: Color(0xFF1A1A1A), // very dark gray for text
     textSecondaryColor: Color(0xFF5A5A5A), // medium gray
@@ -270,7 +261,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Antiflash White (Dark)",
     primaryColor: Color(0xFF7A8C99), // muted blue-gray
-    secondaryColor: Color(0xFF5A5A5A), // medium gray
     accentColor: Color(0xFFB0B7BC), // subtle gray-blue
     textPrimaryColor: Colors.white,
     textSecondaryColor: Color(0xFFB0B7BC),
@@ -285,7 +275,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Premium Gold (Light)",
     primaryColor: Color(0xFFFFD700), // Gold
-    secondaryColor: Color(0xFFFFF8DC), // Cornsilk (light cream)
     accentColor: Color(0xFFFFB700), // Darker gold accent
     textPrimaryColor: Color(0xFF3E2F00), // Dark brownish for contrast
     textSecondaryColor: Color(0xFF7A6B00), // Medium brown
@@ -300,7 +289,6 @@ List<AppThemeModel> defaultAppThemeModels = [
   AppThemeModel(
     title: "Premium Gold (Dark)",
     primaryColor: Color(0xFFFFB700), // Darker gold
-    secondaryColor: Color(0xFF3E2F00), // Dark brown
     accentColor: Color(0xFFFFD700), // Bright gold accent
     textPrimaryColor: Colors.white,
     textSecondaryColor: Color(0xFFFFE066), // Soft gold text

@@ -10,6 +10,7 @@ import 'package:slides_sync/data/models/course_model/course_model.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
@@ -65,7 +66,10 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
     return AnimatedContainer(
       duration: Durations.extralong4,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: UiStyles.getBlueThemedBoxDecoration(context),
+      decoration: BoxDecoration(
+        color: AppColors.bgBlendColor(context, .88, .12),
+        borderRadius: BorderRadius.circular(12)
+      ),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: widget.onTapCard,
@@ -74,7 +78,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: [ 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

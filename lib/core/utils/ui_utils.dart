@@ -90,7 +90,6 @@ class UiUtils {
       backgroundColor: backgroundColor ?? colors[1],
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
       borderColor: Colors.grey.withValues(alpha: 0.2),
-      boxShadows: UiStyles.getBlueThemedBoxDecoration(context).boxShadow,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       margin:
           margin ??

@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class AppAlertDialog extends ConsumerWidget {
   final String title;
@@ -27,6 +28,7 @@ class AppAlertDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppCustomizableDialog(
+      backgroundColor: backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +47,7 @@ class AppAlertDialog extends ConsumerWidget {
             ),
           ),
           ConstantSizing.columnSpacingSmall,
-          Divider(color: context.theme.colorScheme.secondary.withAlpha(40)),
+          Divider(color: AppColors.bgBlendColor(context)),
           ConstantSizing.columnSpacingSmall,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,8 +33,8 @@ class HomeAppBar extends ConsumerWidget {
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor:
             isScrolled
-                ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()
-                : context.theme.scaffoldBackgroundColor,
+                ? AppColors.bgBlendColor(context)
+                : context.scaffoldBackgroundColor,
         statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
         statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
@@ -48,16 +50,18 @@ class HomeAppBar extends ConsumerWidget {
                 isScrolled
                     ? LinearBorder(
                       bottom: LinearBorderEdge(),
-                      side: BorderSide(color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor()),
+                      side: BorderSide(color: AppColors.bgBlendColor(context, .88, .12)),
                     )
                     : null,
             child:
                 isScrolled
                     ? AnimatedContainer(
                       duration: Durations.medium3,
-                      color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.12).toColor(),
+                      clipBehavior: Clip.hardEdge,
+                      color: AppColors.bgBlendColor(context).withValues(alpha: 0.94),
+                      child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), child: const SizedBox.expand(),),
                     )
-                    : ColoredBox(color: Theme.of(context).scaffoldBackgroundColor),
+                    : ColoredBox(color: context.scaffoldBackgroundColor),
           ),
         ),
         // collapseMode: CollapseMode.pin,
@@ -81,7 +85,7 @@ class HomeAppBar extends ConsumerWidget {
                       pixelWidth: context.defaultBtnDimension,
                       overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
                       contentPadding: EdgeInsets.zero,
-                      backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.11).toColor(),
+                      backgroundColor: AppColors.bgBlendColor(context, .85, .11),
                       shape: CircleBorder(),
                       child: Icon(
                         Iconsax.menu_1_copy,
@@ -104,7 +108,7 @@ class HomeAppBar extends ConsumerWidget {
                       onClick: onClickNotification,
                       overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
                       shape: CircleBorder(),
-                      backgroundColor: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(),
+                      backgroundColor: AppColors.bgBlendColor(context, .86, isScrolled ? 0.11 : 0.1),
                       child: Badge(
                         backgroundColor: Colors.transparent,
                         offset: Offset(-1, -1),
@@ -119,7 +123,7 @@ class HomeAppBar extends ConsumerWidget {
                         // ),
                         child: Icon(
                           Iconsax.notification,
-                          color: context.isDarkMode && isScrolled ? Colors.white : context.theme.colorScheme.onTertiary,
+                          color: context.isDarkMode && isScrolled ? context.theme.colorScheme.tertiary : context.theme.colorScheme.onTertiary,
                           size: 24,
                         ),
                       ),

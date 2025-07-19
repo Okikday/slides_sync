@@ -153,3 +153,8 @@ extension CourseModelExtension on CourseModel {
   String get courseName => CourseFormatter.separateCodeFromTitle(courseTitle).courseName;
   String get courseCode => CourseFormatter.separateCodeFromTitle(courseTitle).courseCode;
 }
+
+extension StringExtension on String{
+  String get courseName => CourseFormatter.separateCodeFromTitle(this).courseName;
+  String get courseCode => CourseFormatter.separateCodeFromTitle(this).courseCode;
+}

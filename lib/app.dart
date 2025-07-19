@@ -15,12 +15,14 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    log("Build Material App");
+    final theme = ref.watch(appThemeDataProvider);
+
+    log("MaterialApp rebuilt");
     return MaterialApp.router(
       title: "SlideSync",
       routerConfig: Routes.mainRouter,
       debugShowCheckedModeBanner: false,
-      theme: ref.watch(appThemeDataProvider)
+      theme: theme,
     );
   }
 }
