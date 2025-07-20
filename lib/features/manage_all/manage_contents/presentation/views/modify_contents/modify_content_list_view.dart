@@ -4,11 +4,10 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/modify_contents/mod_content_card_tile.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/modify_content_uc.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/modify_contents_action.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyContentListView extends StatelessWidget {
@@ -19,7 +18,7 @@ class ModifyContentListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mcu = ModifyContentUc();
+    final mcu = ModifyContentsAction();
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: context.hPadding7),
       sliver: SliverList.builder(

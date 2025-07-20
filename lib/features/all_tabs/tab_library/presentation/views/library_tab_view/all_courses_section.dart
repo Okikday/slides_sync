@@ -4,10 +4,8 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/expand_card_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/providers/course_provider.dart';
@@ -15,7 +13,6 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_grid_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_list_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
-import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 
 class AllCoursesSection extends ConsumerStatefulWidget {
@@ -30,7 +27,7 @@ class AllCoursesSection extends ConsumerStatefulWidget {
 class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with AutomaticKeepAliveClientMixin {
   late final StateProviderFamily<bool, int> scaleClickProviderFamily;
   late final StateProvider<bool> isCourseClickedProvider;
-  late final StreamProvider<List<CourseModel>> watchAllcoursesProvider;
+  late final StreamProvider<List<Course>> watchAllcoursesProvider;
   late final StateProvider<TapDownDetails?> longPressDetailsProvider;
 
   @override
@@ -42,7 +39,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
     longPressDetailsProvider = StateProvider<TapDownDetails?>((ref) => null);
   }
 
-  void onTap(CourseModel course) async {
+  void onTap(Course course) async {
     final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
     if (isCourseClickedNotifier.state) return;
     isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
@@ -53,7 +50,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
     if (mounted) isCourseClickedNotifier.update((cb) => false);
   }
 
-  void onLongPress(CourseModel course) {
+  void onLongPress(Course course) {
     final Offset? tapPosition = ref.read(longPressDetailsProvider.notifier).state?.globalPosition;
     if (tapPosition == null) return;
     CustomDialog.show(
@@ -74,12 +71,12 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final AsyncValue<List<CourseModel>> streamedCourses = ref.watch(watchAllcoursesProvider);
+    final AsyncValue<List<Course>> streamedCourses = ref.watch(watchAllcoursesProvider);
     final AsyncValue<bool> asyncIsListView = ref.watch(widget.isListViewAsyncProvider);
     final isListView = asyncIsListView.value ?? false;
 
     return streamedCourses.when(
-      data: (List<CourseModel> data) {
+      data: (List<Course> data) {
         if (data.isEmpty) {
           return EmptyLibraryView();
         }

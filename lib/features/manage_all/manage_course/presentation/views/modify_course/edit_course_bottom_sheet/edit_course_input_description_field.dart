@@ -1,19 +1,19 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EditCourseInputDescriptionField extends ConsumerWidget {
   const EditCourseInputDescriptionField({
     super.key,
     required this.descriptionTextController,
-    required this.courseModel,
+    required this.course,
     required this.descriptionFocusNode,
   });
 
   final TextEditingController descriptionTextController;
-  final CourseModel courseModel;
+  final Course course;
   final FocusNode? descriptionFocusNode;
 
   @override
@@ -30,7 +30,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
             child: CustomTextfield(
               ontap: () {
                 final descriptionText = descriptionTextController.text;
-                if (descriptionText == courseModel.description) {
+                if (descriptionText == course.description) {
                   descriptionTextController.selection = TextSelection(baseOffset: 0, extentOffset: descriptionText.length);
                 }
               },

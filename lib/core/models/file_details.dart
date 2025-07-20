@@ -4,22 +4,20 @@ import 'dart:convert';
 class FileDetails {
   final String urlPath;
   final String filePath;
-  final String fileHash;
-  FileDetails({this.urlPath = '', this.filePath = '', this.fileHash = ''});
+  FileDetails({this.urlPath = '', this.filePath = ''});
 
   bool get containsFilePath => urlPath.isNotEmpty || filePath.isNotEmpty;
-  bool get containsfileHash => fileHash.isNotEmpty;
 
-  FileDetails copyWith({String? urlPath, String? filePath, String? fileHash}) {
-    return FileDetails(urlPath: urlPath ?? this.urlPath, filePath: filePath ?? this.filePath, fileHash: fileHash ?? this.fileHash);
+  FileDetails copyWith({String? urlPath, String? filePath}) {
+    return FileDetails(urlPath: urlPath ?? this.urlPath, filePath: filePath ?? this.filePath);
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{'urlPath': urlPath, 'filePath': filePath, 'fileHash': fileHash};
+    return <String, dynamic>{'urlPath': urlPath, 'filePath': filePath};
   }
 
   factory FileDetails.fromMap(Map<String, dynamic> map) {
-    return FileDetails(urlPath: map['urlPath'] as String? ?? '', filePath: map['filePath'] as String? ?? '', fileHash: map['fileHash'] as String? ?? '');
+    return FileDetails(urlPath: map['urlPath'] as String? ?? '', filePath: map['filePath'] as String? ?? '');
   }
 
   String toJson() => json.encode(toMap());
@@ -27,18 +25,18 @@ class FileDetails {
   factory FileDetails.fromJson(String source) => FileDetails.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'FileDetails(urlPath: $urlPath, filePath: $filePath, fileHash: $fileHash)';
+  String toString() => 'FileDetails(urlPath: $urlPath, filePath: $filePath)';
 
   @override
   bool operator ==(covariant FileDetails other) {
     if (identical(this, other)) return true;
 
-    return other.urlPath == urlPath && other.filePath == filePath && other.fileHash == fileHash;
+    return other.urlPath == urlPath && other.filePath == filePath;
   }
 
 
   @override
-  int get hashCode => urlPath.hashCode ^ filePath.hashCode ^ fileHash.hashCode;
+  int get hashCode => urlPath.hashCode ^ filePath.hashCode;
 }
 
 extension FileDetailsStringExtension on String {
@@ -47,7 +45,5 @@ extension FileDetailsStringExtension on String {
   bool get containsAnyFilePath => containsFilePath;
   String get filePath => fileDetails.filePath;
   String get urlPath => fileDetails.urlPath;
-
-  bool sameFile(FileDetails fileDet) => fileDet.fileHash == fileDetails.fileHash;
   
 }

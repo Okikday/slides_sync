@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/manage_all/manage_course/usecases/modify_course_uc/edit_course_actions.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/edit_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_code_field.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_title_field.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
@@ -41,12 +41,12 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
   }
 
   void initPostFrame() {
-    final readCourseModel = ref.watch(ModifyCourseProviders.modifyCourseProvider);
-    courseNameTextController.text = readCourseModel.courseName;
-    if (readCourseModel.courseCode.isNotEmpty) courseCodeController.text = readCourseModel.courseCode;
+    final readCourse = ref.watch(ModifyCourseProviders.modifyCourseProvider);
+    courseNameTextController.text = readCourse.courseName;
+    if (readCourse.courseCode.isNotEmpty) courseCodeController.text = readCourse.courseCode;
 
-    if (readCourseModel.description.isNotEmpty) {
-      descriptionTextController.text = readCourseModel.description;
+    if (readCourse.description.isNotEmpty) {
+      descriptionTextController.text = readCourse.description;
       descriptionTextController.selection = TextSelection(baseOffset: 0, extentOffset: descriptionTextController.text.length);
     }
     if (widget.isEditingDescription) descriptionFocusNode.requestFocus();
@@ -59,7 +59,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final CourseModel courseModel = ref.watch(ModifyCourseProviders.modifyCourseProvider);
+    final Course course = ref.watch(ModifyCourseProviders.modifyCourseProvider);
     final editCourseActions = EditCourseActions();
 
     final double bottomPadding = MediaQuery.paddingOf(context).bottom;
@@ -107,7 +107,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                 PinnedHeaderSliver(
                                   child: ColoredBox(
                                     color: context.scaffoldBackgroundColor,
-                                    child: CustomText("Edit Course", fontSize: 18, color: context.theme.primaryColor, fontWeight: FontWeight.bold),
+                                    child: CustomText("Edit course", fontSize: 18, color: context.theme.primaryColor, fontWeight: FontWeight.bold),
                                   ),
                                 ),
 
@@ -119,7 +119,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     spacing: 6.0,
                                     children: [
-                                      CustomText("Course title", fontSize: 13, color: context.theme.colorScheme.tertiary,),
+                                      CustomText("course title", fontSize: 13, color: context.theme.colorScheme.tertiary,),
                                       InputCourseTitleField(
                                         courseNameController: courseNameTextController,
                                         isCourseCodeFieldVisible: isCourseCodeFieldVisible,
@@ -137,7 +137,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
                                 EditCourseInputDescriptionField(
                                   descriptionTextController: descriptionTextController,
-                                  courseModel: courseModel,
+                                  course: course,
                                   descriptionFocusNode: widget.isEditingDescription ? descriptionFocusNode : null,
                                 ),
 
@@ -182,7 +182,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                           textColor: context.theme.colorScheme.tertiary,
                           textSize: 15,
                           pixelHeight: 48,
-                          backgroundColor: context.theme.primaryColor,
+                          backgroundColor: context.theme.colorScheme.primary,
                           borderRadius: 48,
                         ),
                       ),

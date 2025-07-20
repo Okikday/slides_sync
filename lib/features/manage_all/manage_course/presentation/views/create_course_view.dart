@@ -9,7 +9,6 @@ import 'package:slides_sync/features/manage_all/manage_course/presentation/views
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_code_field.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_title_field.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CreateCourseView extends ConsumerStatefulWidget {

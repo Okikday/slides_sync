@@ -64,7 +64,7 @@ class ListCourseCard extends ConsumerWidget {
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: context.theme.colorScheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: SizedBox.square(
                     dimension: context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16,
@@ -80,14 +80,22 @@ class ListCourseCard extends ConsumerWidget {
                 children: [
                   if (courseCode.isNotEmpty && hasImage)
                     Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
+                      padding: const EdgeInsets.only(left: 12.0),
                       child: CustomTextButton(
-                        backgroundColor: context.theme.primaryColor.withAlpha(80),
-                        pixelHeight: 24,
-                        borderRadius: 12,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 7.0),
-                        child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: context.theme.colorScheme.outline),
-                      ),
+                              backgroundColor: AppColors.lightenColor(
+                                context.theme.primaryColor.withAlpha(40),
+                                context.isDarkMode ? 0.75 : 0.25,
+                              ),
+                              pixelHeight: 24,
+                              borderRadius: 8,
+                              contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
+                              child: CustomText(
+                                courseCode,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: context.theme.primaryColor.withAlpha(200),
+                              ),
+                            ),
                     ),
 
                   if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(6.0),

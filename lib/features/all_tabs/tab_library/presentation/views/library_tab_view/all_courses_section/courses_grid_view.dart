@@ -4,10 +4,9 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/grid_course_card.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
@@ -24,7 +23,7 @@ class CoursesGridView extends ConsumerWidget {
 
   final StateProviderFamily<bool, int> scaleClickProviderFamily;
   final StateProvider<TapDownDetails?> longPressTapDetailsProvider;
-  final List<CourseModel> data;
+  final List<Course> data;
   final void Function(int index) onTap;
   final void Function(int index) onLongPress;
 
@@ -42,7 +41,7 @@ class CoursesGridView extends ConsumerWidget {
         ),
         delegate: SliverChildBuilderDelegate(childCount: data.length, (context, index) {
           final StateProvider<bool> provider = scaleClickProviderFamily(index);
-          final CourseModel courseModel = data[index];
+          final Course course = data[index];
           updateScaleClickProvider(bool newValue) => ref.read(provider.notifier).update((cb) => newValue);
           updateTapDownDetailsProvider(TapDownDetails det) => ref.read(longPressTapDetailsProvider.notifier).update((state) => det);
           return AnimatedScale(
@@ -76,13 +75,13 @@ class CoursesGridView extends ConsumerWidget {
                 child: GridCourseCard(
                   isDarkMode: isDarkMode,
                   dimension: dimension,
-                  courseCode: courseModel.courseCode,
-                  courseName: courseModel.courseName,
-                  categoriesCount: courseModel.subCollections.length,
+                  courseCode: course.courseCode,
+                  courseName: course.courseName,
+                  categoriesCount: course.collections.length,
                   onTapIcon: () => onLongPress(index),
                   progress: 0.0,
                   courseImageWidget: BuildImagePathWidget(
-                    fileDetails: courseModel.imageLocationJson.fileDetails,
+                    fileDetails: course.imageLocationJson.fileDetails,
                     fallbackWidget: Icon(Iconsax.document_1, size: 16, color: isDarkMode ? Colors.white : Colors.black),
                   ),
                 ),

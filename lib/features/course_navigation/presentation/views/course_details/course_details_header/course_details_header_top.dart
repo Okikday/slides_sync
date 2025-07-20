@@ -1,9 +1,8 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:material_shapes/material_shapes.dart';
 import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
@@ -11,9 +10,9 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseDetailsHeaderTop extends StatelessWidget {
-  const CourseDetailsHeaderTop({super.key, required this.courseModel});
+  const CourseDetailsHeaderTop({super.key, required this.course});
 
-  final CourseModel courseModel;
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: 8.0,
             children: [
-              if (courseModel.courseCode.isNotEmpty)
+              if (course.courseCode.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: CustomTextButton(
@@ -33,7 +32,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                     pixelHeight: 28,
                     contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                     child: CustomText(
-                      courseModel.courseCode,
+                      course.courseCode,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: context.theme.colorScheme.outline,
@@ -44,7 +43,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: CustomText(
-                    courseModel.courseName,
+                    course.courseName,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: context.theme.colorScheme.tertiary,
@@ -61,7 +60,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                         borderRadius: 4.0,
                         contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                         onClick: () {
-                          if (courseModel.description.isNotEmpty) {
+                          if (course.description.isNotEmpty) {
                             CustomDialog.show(
                               context,
                               canPop: true,
@@ -70,13 +69,13 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                               curve: CustomCurves.defaultIosSpring,
                               barrierColor: Colors.black.withAlpha(100),
                               child: CourseDescriptionDialog(
-                                description: courseModel.description,
+                                description: course.description,
                               ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
                             );
                           }
                         },
                         child: CustomText(
-                          courseModel.description.isEmpty ? "No description" : courseModel.description,
+                          course.description.isEmpty ? "No description" : course.description,
                           color: context.theme.colorScheme.outline,
                         ),
                       ),
@@ -104,7 +103,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                   progress: 0.56,
                   textStyle: TextStyle(fontWeight: FontWeight.bold, color: context.theme.primaryColor),
                   backgroundWidget: BuildImagePathWidget(
-                    fileDetails: courseModel.imageLocationJson.fileDetails,
+                    fileDetails: course.imageLocationJson.fileDetails,
                     fallbackWidget: const SizedBox(),
                   ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),
                 ),
@@ -118,7 +117,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
         //   child: StarWaveFilledProgressWidget(
         //     progress: 0.56,
         //     backgroundWidget: BuildImagePathWidget(fileDetails:
-        //       courseModel.imageLocationJson.fileDetails,
+        //       course.imageLocationJson.fileDetails,
         //       fallbackWidget: const SizedBox(),
         //     ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),
         //   ),
@@ -129,9 +128,9 @@ class CourseDetailsHeaderTop extends StatelessWidget {
 }
 
 class AnimatedShapeSection extends StatelessWidget {
-  const AnimatedShapeSection({super.key, required this.courseModel});
+  const AnimatedShapeSection({super.key, required this.course});
 
-  final CourseModel courseModel;
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +142,7 @@ class AnimatedShapeSection extends StatelessWidget {
         progress: 0.56,
         textStyle: TextStyle(fontWeight: FontWeight.bold, color: context.theme.primaryColor),
         backgroundWidget: BuildImagePathWidget(
-          fileDetails: courseModel.imageLocationJson.fileDetails,
+          fileDetails: course.imageLocationJson.fileDetails,
           fallbackWidget: const SizedBox(),
         ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),
       ),

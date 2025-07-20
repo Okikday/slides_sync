@@ -98,7 +98,7 @@ class BuildPlainActionButton extends ConsumerWidget {
     this.onTap,
     this.backgroundColor,
     this.textStyle,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
   });
 
   @override

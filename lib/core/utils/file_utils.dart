@@ -72,7 +72,7 @@ class FileUtils {
 
   /// Deletes [relativePath] under the selected [base] directory.
   /// e.g. if base==documents and relativePath=="foo/bar",
-  /// this will delete <appDocDir>/foo/bar recursively.
+  /// this will delete `appDocDir`/foo/bar recursively.
   static Future<bool> deleteFromAppDirectory({required String relativePath, AppDirType base = AppDirType.documents}) async {
     try {
       Directory baseDir;
@@ -97,7 +97,7 @@ class FileUtils {
       }
       return true;
     } catch (e) {
-      print('deleteAppDirectory error: $e');
+      log('deleteAppDirectory error: $e');
       return false;
     }
   }

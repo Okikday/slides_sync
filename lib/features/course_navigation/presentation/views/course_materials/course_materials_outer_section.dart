@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_material_card.dart';
 
 class CourseMaterialsOuterSection extends ConsumerStatefulWidget {
-  final CourseSubCollection collection;
+  final CourseCollection collection;
   const CourseMaterialsOuterSection({super.key, required this.collection});
 
   @override
@@ -30,13 +30,14 @@ class _CourseMaterialsOuterSectionState extends ConsumerState<CourseMaterialsOut
 
   @override
   Widget build(BuildContext context) {
+    final courseContents = widget.collection.contents.toList();
     return ListView.builder(
       padding: EdgeInsets.only(top: 8),
       physics: BouncingScrollPhysics(),
-      itemCount: widget.collection.courseContents.length,
+      itemCount: courseContents.length,
       itemBuilder: (context, index) {
         return CourseMaterialCard(
-          courseContent: widget.collection.courseContents[index],
+          courseContent: courseContents[index],
           courseMaterialCardActionModels: simList,
           isCourseMaterialCardExpandedProvider: isCourseMaterialCardExpandedFamily(index),
           onTapCard: () {

@@ -5,13 +5,12 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class EditCourseActions {
   /// Logic to check if the inputs are valid
@@ -81,10 +80,10 @@ class EditCourseActions {
       return;
     }
     final String courseTitle = CourseFormatter.joinCodeToTitle(courseCode, courseName);
-    final CourseModel currCourseModel = modifyCourseProvider.value;
-    final CourseModel updatedCourseModel = currCourseModel.copyWith(courseTitle: courseTitle, description: description);
-    modifyCourseProvider.update(updatedCourseModel);
-    await CourseRepo.addCourse(updatedCourseModel);
+    final Course currCourse = modifyCourseProvider.value;
+    final Course updatedCourse = currCourse.copyWith(courseTitle: courseTitle, description: description);
+    modifyCourseProvider.update(updatedCourse);
+    await CourseRepo.addCourse(updatedCourse);
     canExitProvider.update((cb) => true);
     if (context.mounted) Navigator.pop(context);
   }

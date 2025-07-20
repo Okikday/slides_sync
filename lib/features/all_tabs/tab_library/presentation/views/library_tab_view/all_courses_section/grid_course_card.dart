@@ -83,7 +83,7 @@ class GridCourseCard extends ConsumerWidget {
                               contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
                               child: CustomText(
                                 courseCode,
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.bold,
                                 color: context.theme.primaryColor.withAlpha(200),
                               ),

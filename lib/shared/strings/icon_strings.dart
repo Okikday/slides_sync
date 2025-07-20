@@ -2,7 +2,7 @@ class IconStrings {
   static final IconStrings instance = IconStrings._instance();
   IconStrings._instance();
 
-  static const String _iconPrefix = "assets/icons/";
+  // static const String _iconPrefix = "assets/icons/";
   static const String _animIconPrefix = "assets/icons/animated_jsons/";
 
   // static String _withIconPrefix(String name) => "$_iconPrefix$name";

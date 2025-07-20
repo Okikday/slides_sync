@@ -6,7 +6,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_list_tile_model.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class RecentListTile extends ConsumerWidget {
   final bool isDarkMode;

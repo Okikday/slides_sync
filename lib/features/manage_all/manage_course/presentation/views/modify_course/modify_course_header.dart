@@ -93,21 +93,25 @@ class ModifyCourseHeader extends ConsumerWidget {
                 tag: "PreviewModifyCourseImageDialog => $courseFileDetails",
                 placeholderBuilder: (context, heroSize, child) => child,
                 spring: Spring.snappy,
-                child: ClipOval(
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.transparent,
-                    child: GestureDetector(
-                      onTap: onClickImage,
-                      onLongPress: onLongPressImage,
-                      child: ColoredBox(
-                        color: context.theme.primaryColor.withAlpha(60),
-                        child: SizedBox.square(
-                          dimension: 80,
-                          child: BuildImagePathWidget(
-                            fileDetails: courseFileDetails.fileDetails,
-                            fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? context.theme.primaryColor : context.theme.primaryColor),
-                          ),
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                    BoxShadow(color: Colors.white12, offset: Offset(1, 1), blurRadius: 3, spreadRadius: 2),
+                    BoxShadow(color: Colors.black12, offset: Offset(-1, -1), blurRadius: 3, spreadRadius: 2),
+                    BoxShadow(color: AppColors.lightenColor(context.theme.primaryColor.withValues(alpha: 0.2), 0.6), spreadRadius: 2, blurRadius: 3)
+                  ]),
+                  child: GestureDetector(
+                    onTap: onClickImage,
+                    onLongPress: onLongPressImage,
+                    child: ColoredBox(
+                      color: context.theme.primaryColor.withAlpha(60),
+                      child: SizedBox.square(
+                        dimension: 80,
+                        child: BuildImagePathWidget(
+                          fileDetails: courseFileDetails.fileDetails,
+                          fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? context.theme.primaryColor : context.theme.primaryColor),
                         ),
                       ),
                     ),

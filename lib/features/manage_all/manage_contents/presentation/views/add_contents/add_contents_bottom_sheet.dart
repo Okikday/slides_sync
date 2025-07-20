@@ -3,19 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:developer';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:isar/isar.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/add_contents_uc.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/select_contents_uc.dart';
-import 'package:slides_sync/routes/routes.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/add_contents_actions.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class AddContentsBottomSheet extends ConsumerStatefulWidget {
-  final CourseSubCollection collection;
+  final CourseCollection collection;
   const AddContentsBottomSheet({super.key, required this.collection});
 
   @override
@@ -66,11 +61,11 @@ class AddContentCardSection extends StatelessWidget {
   const AddContentCardSection({super.key, required this.fixedExtentScrollController, required this.collection});
 
   final FixedExtentScrollController fixedExtentScrollController;
-  final CourseSubCollection collection;
+  final CourseCollection collection;
 
   @override
   Widget build(BuildContext context) {
-    final Map<int, ContentType> typeMap = {0: ContentType.auto, 1: ContentType.image, 2: ContentType.document};
+    final Map<int, CourseContentType> typeMap = {0: CourseContentType.unknown, 1: CourseContentType.image, 2: CourseContentType.document};
     return Container(
       width: context.deviceWidth,
       constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
@@ -111,19 +106,19 @@ class AddContentCardSection extends StatelessWidget {
                         BuildPlainActionButton(
                           title: "Document",
                           icon: Icon(Iconsax.document, color: context.theme.primaryColor),
-                          onTap: () => AddContentsUc.onClickToAddContent(context, collection: collection, type: typeMap[2] ?? typeMap[0]!),
+                          onTap: () => AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[2] ?? typeMap[0]!),
                         ),
 
                         BuildPlainActionButton(
                           title: "Auto",
                           icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
-                          onTap: () => AddContentsUc.onClickToAddContent(context, collection: collection, type: typeMap[0] ?? typeMap[0]!),
+                          onTap: () => AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[0] ?? typeMap[0]!),
                         ),
 
                         BuildPlainActionButton(
                           title: "Image",
                           icon: Icon(Iconsax.image, color: context.theme.primaryColor),
-                          onTap: () => AddContentsUc.onClickToAddContent(context, collection: collection, type: typeMap[1] ?? typeMap[0]!),
+                          onTap: () => AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[1] ?? typeMap[0]!),
                         ),
                       ].map((e) => Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: e)).toList(),
                 ),

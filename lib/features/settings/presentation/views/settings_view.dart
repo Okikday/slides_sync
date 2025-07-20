@@ -6,10 +6,8 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 import 'package:slides_sync/shared/styles/theme/themes.dart';
 

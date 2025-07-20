@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/routes/routes_strings.dart';
 
@@ -16,19 +16,19 @@ class AppNavigator {
 
   void _pushAsReplacement(String location, {Object? extra}) => context.go(location, extra: extra);
 
-  void courseDetailsRoute(CourseModel courseModel) =>
+  void courseDetailsRoute(Course course) =>
       _isPushedAsReplacement
-          ? _pushAsReplacement(RoutesStrings.courseDetailsView, extra: courseModel)
-          : _push(RoutesStrings.courseDetailsView, extra: courseModel);
+          ? _pushAsReplacement(RoutesStrings.courseDetailsView, extra: course)
+          : _push(RoutesStrings.courseDetailsView, extra: course);
 
   void createCourseRoute() {
     final route = RoutesStrings.createCourseView;
     _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
   }
 
-  void modifyCourseRoute(CourseModel courseModel) {
+  void modifyCourseRoute(Course course) {
     final route = RoutesStrings.modifyCourseView;
-    _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: course) : _push(route, extra: course);
   }
 
   void modifyExistingCoursesRoute() {
@@ -36,9 +36,9 @@ class AppNavigator {
     _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
   }
 
-  void modifyCollectionsRoute(CourseModel courseModel) {
+  void modifyCollectionsRoute(Course course) {
     final route = "${RoutesStrings.modifyCourseView}/${RoutesStrings.modifyCollectionsView}";
-    _isPushedAsReplacement ? _pushAsReplacement(route, extra: courseModel) : _push(route, extra: courseModel);
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: course) : _push(route, extra: course);
   }
 
   void modifyContentsRoute(ContentRecord record) {

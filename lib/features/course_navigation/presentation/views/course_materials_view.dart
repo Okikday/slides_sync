@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_materials_outer_section.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-import 'course_materials/course_material_card.dart';
 
 class CourseMaterialsView extends ConsumerStatefulWidget {
-  final CourseSubCollection collection;
+  final CourseCollection collection;
   const CourseMaterialsView({super.key, required this.collection});
 
   @override

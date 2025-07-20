@@ -1,22 +1,21 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/course_details_header_top.dart';
-import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseDetailsHeader extends ConsumerWidget {
-  final CourseModel courseModel;
-  const CourseDetailsHeader({super.key, required this.courseModel});
+  final Course course;
+  const CourseDetailsHeader({super.key, required this.course});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
-          ConstantSizing.columnSpacingMedium,
+          ConstantSizing.columnSpacing(kToolbarHeight + 12),
 
-          CourseDetailsHeaderTop(courseModel: courseModel),
+          CourseDetailsHeaderTop(course: course),
 
           ConstantSizing.columnSpacingMedium,
 

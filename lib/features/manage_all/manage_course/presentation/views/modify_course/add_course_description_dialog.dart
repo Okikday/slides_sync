@@ -10,7 +10,7 @@
 // class AddCourseDescriptionDialog extends ConsumerStatefulWidget {
   
 //   final String title;
-//   final NotifierProvider<ModifyCourseModelNotifier, CourseModel> courseProvider;
+//   final NotifierProvider<ModifyCourseNotifier, Course> courseProvider;
 
 //   const AddCourseDescriptionDialog({super.key,  required this.title, required this.courseProvider});
 
@@ -83,8 +83,8 @@
 //                     onClick: () {
 //                       final String text = textEditingController.text;
 //                       if (text.isEmpty || text.length < 4 || text.length > 1024) return;
-//                       final CourseModel currentCourseModel = ref.watch(widget.courseProvider);
-//                       ref.read(widget.courseProvider.notifier).update(currentCourseModel.copyWith(description: text));
+//                       final Course currentCourse = ref.watch(widget.courseProvider);
+//                       ref.read(widget.courseProvider.notifier).update(currentCourse.copyWith(description: text));
 //                       CustomDialog.hide(context);
 //                     },
 //                   ),

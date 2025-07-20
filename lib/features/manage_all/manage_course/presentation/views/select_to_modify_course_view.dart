@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course/select_to_modify_course_outer_section.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class SelectToModifyCourseView extends ConsumerStatefulWidget {

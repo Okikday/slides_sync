@@ -1,61 +1,108 @@
+import 'dart:developer';
+
 import 'package:isar/isar.dart';
 import 'package:slides_sync/core/data/isar_data/isar_data.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 
 class CourseRepo {
-  static final IsarData<CourseModel> isarData = IsarData.instance<CourseModel>();
+  static final IsarData<Course> _isarData = IsarData.instance<Course>();
+  static Future<Isar> get _isar async => await _isarData.isarFuture;
 
-  static Future<QueryBuilder<CourseModel, CourseModel, QAfterFilterCondition>> _queryById(String courseId) async {
-    return (await isarData.query<CourseModel>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
+  static Future<QueryBuilder<Course, Course, QAfterFilterCondition>> _queryById(String courseId) async {
+    return (await _isarData.query<Course>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
   }
 
-  static Future<void> deleteCourseByDbId(int dbId) async => await isarData.deleteById(dbId);
+  static Future<void> deleteCourseByDbId(int dbId) async => await _isarData.deleteById(dbId);
 
-  static Future<CourseModel?> getCourseByDbId(int dbId) => isarData.getById(dbId);
+  static Future<Course?> getCourseByDbId(int dbId) => _isarData.getById(dbId);
 
-  static Stream<CourseModel?> watchCourseByDbId(int dbId) => isarData.watchById(dbId);
+  static Stream<Course?> watchCourseByDbId(int dbId) => _isarData.watchById(dbId);
 
-  static Future<int> addCourse(CourseModel course) async => await isarData.store(course);
+  static Future<int> addCourse(Course course) async => await _isarData.store(course);
 
-  static Future<List<int>> addMultipleCourses(List<CourseModel> courses) async => await isarData.storeAll(courses);
+  static Future<List<int>> addMultipleCourses(List<Course> courses) async => await _isarData.storeAll(courses);
 
-  static Future<List<CourseModel>> getAllCourses() async => isarData.getAll();
+  static Future<List<Course>> getAllCourses() async => _isarData.getAll();
 
-  static Stream<List<CourseModel>> watchAllCourses() => isarData.watchAll();
+  static Stream<List<Course>> watchAllCourses() => _isarData.watchAll();
 
-  static Future<Stream<List<CourseModel>>> watchAllCoursesLazily() async => await isarData.watchAllLazily();
+  static Future<Stream<List<Course>>> watchAllCoursesLazily() async => await _isarData.watchAllLazily();
 
-  // static Future<PageResponse<CourseModel>> fetchPagedCourses({required int page, required int limit}) async {
-  //   final offset = page * limit;
-  //   log("Resolved offset in fetching: $offset");
-
-  //   final isar = await isarData.isarFuture;
-  //   final items = await isar.courseModels.where().offset(offset).limit(limit).findAll();
-
-  //   // null = last page reached
-  //   final nextPageKey = items.length < limit ? null : page + 1;
-
-  //   return PageResponse(items: items, nextPageKey: nextPageKey);
-  // }
-
-  static Future<CourseModel?> getCourseById(String courseId) async {
-    final idQuery = await _queryById(courseId);
-    return await idQuery.findFirst();
+  static Future<Course?> getCourseById(String courseId) async {
+    return await (await _isar).courses.filter().courseIdEqualTo(courseId).findFirst();
   }
 
-  static Stream<CourseModel?> watchCourseById(String courseId) async* {
-    final idQuery = await _queryById(courseId);
-    yield* idQuery.watch(fireImmediately: true).map((list) => list.firstOrNull);
+  static Stream<Course?> watchCourseById(String courseId) async* {
+    yield* (await _isar).courses.filter().courseIdEqualTo(courseId).watch(fireImmediately: true).map((list) => list.firstOrNull);
   }
 
-  static Future<CourseModel?> deleteCourseById(String courseId) async {
-    final isar = await isarData.isarFuture;
-
-    return await isar.writeTxn<CourseModel?>(() async {
-      final idQuery = await _queryById(courseId);
-      final CourseModel? course = await idQuery.findFirst();
-      if (course != null) await idQuery.deleteFirst();
+  static Future<Course?> deleteCourseById(String courseId) async {
+    final isar = await _isar;
+    final Course? course = await getCourseById(courseId);
+    return await isar.writeTxn<Course?>(() async {
+      if (course != null) {
+        final idQuery = await _queryById(courseId);
+        await idQuery.deleteFirst();
+      }
       return course;
     });
+  }
+
+  static Future<bool> addCollection(CourseCollection collection) async {
+    try {
+      if (collection.parentId.isEmpty) return false;
+      final Course? course = await getCourseById(collection.parentId);
+      if (course == null) return false;
+
+      final isar = (await _isar);
+
+      await course.collections.load();
+      await isar.writeTxn(() async {
+        await isar.courseCollections.put(collection);
+        course.collections.add(collection);
+        await isar.courses.put(course);
+        await course.collections.save();
+      });
+      return true;
+    } catch (e) {
+      log("$e");
+      return false;
+    }
+  }
+
+  static Future<bool> deleteCollection(CourseCollection collection) async {
+    try {
+      if (collection.collectionId.isEmpty) return false;
+      final Course? course = await getCourseById(collection.parentId);
+      if (course == null) return false;
+      final isar = (await _isar);
+
+      await course.collections.load();
+      await isar.writeTxn(() async {
+        if (!(await isar.courseCollections.delete(collection.id))) {
+          await isar.courseCollections.filter().collectionIdEqualTo(collection.collectionId).deleteFirst();
+        }
+        course.collections.remove(collection);
+        await isar.courses.put(course);
+        await course.collections.save();
+      });
+      return true;
+    } catch (e) {
+      log("$e");
+      return false;
+    }
+  }
+
+  static Future<String?> addCollectionNoDuplicateTitle(CourseCollection collection) async {
+    final CourseCollection? duplicate =
+        await ((await _isar).courseCollections
+            .filter()
+            .collectionTitleEqualTo(collection.collectionTitle)
+            .parentIdEqualTo(collection.parentId)
+            .findFirst());
+    if (duplicate != null) return "Collection title already exists, try using a different name";
+    final bool result = await addCollection(collection);
+    if (result) return null;
+    return "An error occured while adding collection";
   }
 }

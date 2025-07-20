@@ -8,7 +8,6 @@ import 'package:slides_sync/features/main/presentation/views/main_view/main_view
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_drawer.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_explore/presentation/views/explore_tab_view.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/sub/library_floating_action_button.dart';
 
 import '../../../all_tabs/tab_home/presentation/views/home_tab_view.dart';
 import 'main_view/bottom_nav_bar.dart';
@@ -68,7 +67,6 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
             children: [HomeTabView(), LibraryTabView(), ExploreTabView()],
           ),
 
-          floatingActionButton: LibraryFloatingActionButton(),
         ),
       ),
     );

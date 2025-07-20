@@ -1,34 +1,21 @@
-import 'dart:developer';
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
-import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/core/utils/file_utils.dart';
-import 'package:slides_sync/core/utils/image_utils.dart';
-import 'package:slides_sync/core/utils/result.dart';
-import 'package:slides_sync/core/utils/smart_isolate.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
 /// COLLECTION SECTION
 class CollectionsSection extends ConsumerStatefulWidget {
   final int courseDbId;
-  final List<CourseSubCollection> collections;
+  final List<CourseCollection> collections;
   final void Function() onClickNewCollection;
   const CollectionsSection({super.key, required this.courseDbId, required this.collections, required this.onClickNewCollection});
 
@@ -135,7 +122,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                           quarterTurns: 0,
                                           child: ModCollectionCardTile(
                                             title: widget.collections[index].collectionTitle,
-                                            contentCount: widget.collections[index].courseContents.length,
+                                            contentCount: widget.collections[index].contents.length,
                                             onSelected: () {
                                               UiUtils.showCustomDialog(
                                                 context,
@@ -148,7 +135,6 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                                 courseDbId: widget.courseDbId,
                                                 courseTitle: (courseCode: "", courseName: "CourseName"),
                                               ));
-
                                             },
                                           ),
                                         );
@@ -179,13 +165,15 @@ Widget _buildNewCollectionTile(BuildContext context, {required void Function() o
         overlayColor: WidgetStatePropertyAll(context.theme.primaryColor.withAlpha(40)),
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.bgBlendColor(context, .88, .12)
-          ),
+          decoration: BoxDecoration(color: AppColors.bgBlendColor(context, .88, .12), borderRadius: BorderRadius.circular(12)),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
           child: Row(
-            children: [Icon(Iconsax.add_circle, size: 30), ConstantSizing.rowSpacingMedium, Expanded(child: CustomText("New Collection", color: context.theme.colorScheme.onTertiary,))],
+            children: [
+              Icon(Iconsax.add_circle, size: 30),
+              ConstantSizing.rowSpacingMedium,
+              Expanded(child: CustomText("New Collection", color: context.theme.colorScheme.onTertiary)),
+            ],
           ),
         ),
       ),

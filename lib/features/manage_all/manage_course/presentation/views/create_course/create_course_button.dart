@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_action.dart';
 import 'package:slides_sync/routes/routes.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -61,7 +61,7 @@ class CreateCourseButton extends ConsumerWidget {
 
           final String? courseImagePath = ref.read(courseImagePathProvider.notifier).state;
 
-          final Result<CourseModel> createCourseOutcome = await createCourseAction(
+          final Result<Course> createCourseOutcome = await CreateCourseAction().createCourseAction(
             courseName: courseName,
             courseCode: courseCode,
             courseImagePath: courseImagePath,

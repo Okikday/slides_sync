@@ -1,120 +1,92 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:isar/isar.dart';
+
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
-import 'package:uuid/uuid.dart';
 
 export 'course_content_type.dart';
 
 part 'course_content.g.dart';
 
-@embedded
+@collection
 class CourseContent {
-  final String id;
-  final String parentId;
-  final String title;
+  Id id = Isar.autoIncrement;
+
+  /// Holds the hash of the content basically
+  @Index()
+  late String contentHash; 
+
+  late String parentId;
+  late String title;
 
   /// appended with type before path/link e.g. "file:anonymous.jpg" or "link:https://image.jpg"
-  final String path;
-  final DateTime? createdAt;
-  final String description;
+  late String path;
 
-  /// appended with type before path/link e.g. "file:anonymous.jpg" or "link:https://image.jpg"
-  // final String fileDetails;
-  @enumerated
-  final CourseContentType courseContentType;
-  //udilv
-  final String metadataJson;
+  DateTime? createdAt;
+  late String description;
 
-  CourseContent({
-    this.id = '',
-    this.parentId = '',
-    this.title = '',
-    this.createdAt,
-    this.path = '',
-    this.description = '',
-    // this.fileDetails = '{}',
-    this.courseContentType = CourseContentType.unknown,
-    this.metadataJson = '{}',
-  });
+  @Enumerated(EnumType.ordinal)
+  late CourseContentType courseContentType;
+
+  late String metadataJson;
+
+  CourseContent();
 
   factory CourseContent.create({
-    required String title,
+    required String contentHash,
     required String parentId,
+    required String title,
     required FileDetails path,
     DateTime? createdAt,
     required CourseContentType courseContentType,
-    String description = "",
-    String? metadataJson,
+    String description = '',
+    String metadataJson = '{}',
   }) {
-    return CourseContent(
-      id: const Uuid().v4(), // generate a unique id
-      parentId: parentId,
-      title: title,
-      createdAt: createdAt ?? DateTime.now(),
-      path: path.toJson(),
-      description: description,
-      courseContentType: courseContentType,
-      metadataJson: metadataJson ?? '{}',
-    );
+    final content = CourseContent()
+    ..contentHash = contentHash
+    ..parentId = parentId
+    ..title = title
+    ..path = path.toJson()
+    ..createdAt = createdAt ?? DateTime.now()
+    ..courseContentType = courseContentType
+    ..description = description
+    ..metadataJson = metadataJson;
+    return content;
   }
 
-  CourseContent copyWith({
-    String? id,
+   CourseContent copyWith({
+    required String contentHash,
     String? parentId,
     String? title,
+    FileDetails? path,
     DateTime? createdAt,
-    String? path,
     String? description,
     CourseContentType? courseContentType,
     String? metadataJson,
   }) {
-    return CourseContent(
-      id: id ?? this.id,
-      parentId: parentId ?? this.parentId,
-      title: title ?? this.title,
-      createdAt: createdAt ?? this.createdAt,
-      path: path ?? this.path,
-      description: description ?? this.description,
-      courseContentType: courseContentType ?? this.courseContentType,
-      metadataJson: metadataJson ?? this.metadataJson,
-    );
+    return CourseContent()
+      ..id = id
+      ..contentHash = contentHash
+      ..parentId = parentId ?? this.parentId
+      ..title = title ?? this.title
+      ..path = path?.toJson() ?? this.path
+      ..createdAt = createdAt ?? this.createdAt
+      ..description = description ?? this.description
+      ..courseContentType = courseContentType ?? this.courseContentType
+      ..metadataJson = metadataJson ?? this.metadataJson;
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CourseContent &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          parentId == other.parentId &&
-          title == other.title &&
-          createdAt == other.createdAt &&
-          path == other.path &&
-          description == other.description &&
-          courseContentType == other.courseContentType &&
-          metadataJson == other.metadataJson;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      parentId.hashCode ^
-      title.hashCode ^
-      createdAt.hashCode ^
-      path.hashCode ^
-      description.hashCode ^
-      courseContentType.hashCode ^
-      metadataJson.hashCode;
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'contentHash': contentHash,
       'parentId': parentId,
       'title': title,
-      'createdAt': createdAt?.toIso8601String(),
       'path': path,
+      'createdAt': createdAt?.toIso8601String(),
       'description': description,
       'courseContentType': courseContentType.index,
       'metadataJson': metadataJson,
@@ -122,24 +94,55 @@ class CourseContent {
   }
 
   factory CourseContent.fromMap(Map<String, dynamic> map) {
-    return CourseContent(
-      id: map['id'] as String,
-      parentId: map['parentId'] as String,
-      title: map['title'] as String,
-      createdAt: map['createdAt'] == null ? DateTime.now() : DateTime.tryParse(map['createdAt'] as String) ?? DateTime.now(),
-      path: map['path'] as String,
-      description: map['description'] as String,
-      courseContentType: CourseContentType.values[map['courseContentType'] as int],
-      metadataJson: map['metadataJson'] as String,
-    );
+    final content = CourseContent();
+    content.id = map['id'] ?? Isar.autoIncrement;
+    content.contentHash = map['contentHash'] ?? '';
+    content.parentId = map['parentId'] ?? '';
+    content.title = map['title'] ?? '';
+    content.path = map['path'] ?? '';
+    content.createdAt = map['createdAt'] != null ? DateTime.tryParse(map['createdAt']) : null;
+    content.description = map['description'] ?? '';
+    content.courseContentType = CourseContentType.values[map['courseContentType'] ?? 0];
+    content.metadataJson = map['metadataJson'] ?? '{}';
+    return content;
   }
 
-  factory CourseContent.fromJson(String json) => CourseContent.fromMap(jsonDecode(json) as Map<String, dynamic>);
   String toJson() => jsonEncode(toMap());
+
+  factory CourseContent.fromJson(String source) => CourseContent.fromMap(jsonDecode(source));
+
+  @override
+  bool operator ==(covariant CourseContent other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.contentHash == contentHash &&
+      other.parentId == parentId &&
+      other.title == title &&
+      other.path == path &&
+      other.createdAt == createdAt &&
+      other.description == description &&
+      other.courseContentType == courseContentType &&
+      other.metadataJson == metadataJson;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      contentHash.hashCode ^
+      parentId.hashCode ^
+      title.hashCode ^
+      path.hashCode ^
+      createdAt.hashCode ^
+      description.hashCode ^
+      courseContentType.hashCode ^
+      metadataJson.hashCode;
+  }
 }
 
 extension CourseContentExtension on CourseContent {
   String get relativePath => "$parentId${Platform.pathSeparator}$id";
   String get absolutePath => "courses${Platform.pathSeparator}$relativePath";
-  String get courseId => parentId.substring(0, parentId.indexOf(Platform.pathSeparator).clamp(0, parentId.length));
+  String get collectionId => parentId;
 }

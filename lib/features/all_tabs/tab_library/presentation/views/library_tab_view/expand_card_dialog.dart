@@ -1,14 +1,12 @@
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -17,7 +15,7 @@ import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 class ExpandCardDialog extends ConsumerStatefulWidget {
   final Size? widgetSize;
   final Offset tapPosition;
-  final CourseModel course;
+  final Course course;
   final void Function() onOpen;
 
   const ExpandCardDialog({super.key, this.widgetSize, required this.tapPosition, required this.course, required this.onOpen});
@@ -111,7 +109,7 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     decoration: BoxDecoration(color: AppColors.bgBlendColor(context, .86, .14), borderRadius: BorderRadius.circular(4)),
                     child: CustomText(
-                      widget.course.subCollections.length.toString(),
+                      widget.course.collections.length.toString(),
                       fontSize: 12,
                       color: context.theme.colorScheme.onTertiary,
                     ),
@@ -211,9 +209,9 @@ Offset repositionOffset({required Size screenSize, required Size widgetSize, req
 
 Alignment calculateAnimationAlignment({required Size screenSize, required Size widgetSize, required Offset tapPosition}) {
   final bool fitsRight = tapPosition.dx + widgetSize.width <= screenSize.width;
-  final bool fitsLeft = tapPosition.dx - widgetSize.width >= 0;
+  // final bool fitsLeft = tapPosition.dx - widgetSize.width >= 0;
   final bool fitsBelow = tapPosition.dy + widgetSize.height <= screenSize.height;
-  final bool fitsAbove = tapPosition.dy - widgetSize.height >= 0;
+  // final bool fitsAbove = tapPosition.dy - widgetSize.height >= 0;
 
   final double horizontalAlignment = fitsRight ? -1.0 : 1.0;
 

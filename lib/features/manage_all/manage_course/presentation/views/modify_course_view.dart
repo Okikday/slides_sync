@@ -1,6 +1,6 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,24 +8,21 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/features/manage_all/manage_course/usecases/modify_course_uc/modify_course_actions.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/modify_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/modify_course_header.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/app_bar_container_child.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 /// VIEW
 class ModifyCourseView extends ConsumerStatefulWidget {
-  final CourseModel courseModel;
-  const ModifyCourseView({super.key, required this.courseModel});
+  final Course course;
+  const ModifyCourseView({super.key, required this.course});
 
   @override
   ConsumerState createState() => _ModifyCourseState();
@@ -39,8 +36,8 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final modifyCourseNotifier = ref.read(ModifyCourseProviders.modifyCourseProvider.notifier);
-      if (modifyCourseNotifier.value != widget.courseModel) {
-        modifyCourseNotifier.update(widget.courseModel);
+      if (modifyCourseNotifier.value != widget.course) {
+        modifyCourseNotifier.update(widget.course);
       }
     });
 
@@ -64,7 +61,7 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
     
           child: AppBarContainerChild(
             context.isDarkMode,
-            title: 'Modify Course',
+            title: 'Modify course',
             // onBackButtonClicked: () async {
             //   context.pop();
             // },
@@ -81,16 +78,16 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final CourseModel courseModel = ref.watch(ModifyCourseProviders.modifyCourseProvider);
+    final Course course = ref.watch(ModifyCourseProviders.modifyCourseProvider);
     final ModifyCourseActions modifyCourseActions = ModifyCourseActions();
     return CustomScrollView(
       slivers: [
         // HEADER
         ModifyCourseHeader(
-          title: courseModel.courseName,
-          description: courseModel.description.trim(),
-          courseCode: courseModel.courseCode.trim(),
-          courseFileDetails: courseModel.imageLocationJson,
+          title: course.courseName,
+          description: course.description.trim(),
+          courseCode: course.courseCode.trim(),
+          courseFileDetails: course.imageLocationJson,
           onClickEditCourse: () async {
             await showModalBottomSheet(
               context: context,
@@ -113,7 +110,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
                   if (context.mounted) {
                     UiUtils.showLoadingDialog(context, message: "Deleting course...");
                   }
-                  await modifyCourseActions.onDeleteCourse(id: courseModel.id, courseId: courseModel.courseId);
+                  await modifyCourseActions.onDeleteCourse(id: course.id, courseId: course.courseId);
                   if (context.mounted) CustomDialog.hide(context);
                   if (context.mounted) context.pop();
                   if (context.mounted) UiUtils.showFlushBar(context, msg: "Successfully deleted course");
@@ -121,24 +118,24 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
               ),
             );
           },
-          onClickAddDescription: () => modifyCourseActions.onClickAddDescription(context, currDescription: courseModel.description),
+          onClickAddDescription: () => modifyCourseActions.onClickAddDescription(context, currDescription: course.description),
 
           onClickImage: () async {
-            if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
-              modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
+            if (!course.imageLocationJson.fileDetails.containsFilePath) {
+              modifyCourseActions.pickImageActionRoute(context, courseDbId: course.id);
               return;
             }
 
-            modifyCourseActions.onClickCourseImage(context, courseModel: courseModel);
+            modifyCourseActions.onClickCourseImage(context, course: course);
           },
 
           onLongPressImage: () async {
-            if (!courseModel.imageLocationJson.fileDetails.containsFilePath) {
-              modifyCourseActions.pickImageActionRoute(context, courseDbId: courseModel.id);
+            if (!course.imageLocationJson.fileDetails.containsFilePath) {
+              modifyCourseActions.pickImageActionRoute(context, courseDbId: course.id);
               return;
             }
 
-            modifyCourseActions.previewImageActionRoute(context, courseImagePath: courseModel.imageLocationJson);
+            modifyCourseActions.previewImageActionRoute(context, courseImagePath: course.imageLocationJson);
           },
         ),
 
@@ -146,36 +143,36 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
 
         // BODY
         CollectionsSection(
-          courseDbId: courseModel.id,
-          collections: courseModel.subCollections,
+          courseDbId: course.id,
+          collections: course.collections.toList(),
           onClickNewCollection: () {
-            if (courseModel.subCollections.isEmpty) {
+            if (course.collections.isEmpty) {
               CustomDialog.show(
                 context,
                 canPop: true,
                 barrierColor: Colors.black.withAlpha(150),
-                child: CreateCollectionBottomSheet(courseDbId: courseModel.id),
+                child: CreateCollectionBottomSheet(courseDbId: course.id),
               ).then((value) {
-                if (courseModel.subCollections.isNotEmpty) {
-                  if (context.mounted) AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+                if (course.collections.isNotEmpty) {
+                  if (context.mounted) AppNavigator.to(context).modifyCollectionsRoute(course);
                 }
               });
               return;
             }
-            AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+            AppNavigator.to(context).modifyCollectionsRoute(course);
           },
         ),
 
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
         // AFTER
-        if (courseModel.subCollections.isNotEmpty)
+        if (course.collections.isNotEmpty)
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             sliver: SliverToBoxAdapter(
               child: CustomElevatedButton(
                 onClick: () {
-                  AppNavigator.to(context).modifyCollectionsRoute(courseModel);
+                  AppNavigator.to(context).modifyCollectionsRoute(course);
                 },
                 borderRadius: 48,
                 pixelHeight: 56,

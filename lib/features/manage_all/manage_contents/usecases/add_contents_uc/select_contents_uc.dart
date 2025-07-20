@@ -3,30 +3,32 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 
-enum ContentType { audio, auto, document, image, link, media, video }
+
 
 /// Use this class to pick various content types and copy them into the app's cache directory.
 class SelectContentsUc {
-  const SelectContentsUc([CourseSubCollection? collection]);
+  const SelectContentsUc([CourseCollection? collection]);
+
   /// Picks files based on the [type] and returns a list of cached [File]s.
-  Future<List<File>?> referToAddContents(ContentType type) async {
+  Future<List<File>?> referToAddContents(CourseContentType type) async {
     switch (type) {
-      case ContentType.auto:
+      case CourseContentType.unknown:
         return await _selectFiles();
 
-      case ContentType.document:
+      case CourseContentType.document:
         return await _selectDocuments();
 
-      case ContentType.image:
+      case CourseContentType.image:
         return await _selectImages();
 
-      case ContentType.video:
+      case CourseContentType.video:
         return await _selectVideos();
 
-      case ContentType.audio:
+      case CourseContentType.audio:
         return await _selectAudios();
+
 
       default:
         return null;
@@ -83,6 +85,4 @@ class SelectContentsUc {
     }
     return saved;
   }
-
-
 }

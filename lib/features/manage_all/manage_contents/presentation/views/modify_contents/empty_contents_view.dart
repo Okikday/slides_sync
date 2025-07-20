@@ -2,13 +2,13 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_sub_collection.dart';
+import 'package:slides_sync/data/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_contents_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 
 class EmptyContentsView extends ConsumerWidget {
-  final CourseSubCollection collection;
+  final CourseCollection collection;
   const EmptyContentsView({super.key, required this.collection});
 
   @override

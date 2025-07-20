@@ -4,9 +4,8 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course/empty_courses_view.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course/edit_course_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -30,7 +29,7 @@ class SelectToModifyCourseOuterSection extends ConsumerStatefulWidget {
 }
 
 class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModifyCourseOuterSection> {
-  late final StreamProvider<List<CourseModel>> streamedCoursesProvider;
+  late final StreamProvider<List<Course>> streamedCoursesProvider;
   @override
   void initState() {
     super.initState();
@@ -44,7 +43,7 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
 
   @override
   Widget build(BuildContext context) {
-    final AsyncValue<List<CourseModel>> asyncStreamedCourses = ref.watch(streamedCoursesProvider);
+    final AsyncValue<List<Course>> asyncStreamedCourses = ref.watch(streamedCoursesProvider);
     final selectedCoursesIdMap = widget.selectedCoursesIdMap;
 
     return CustomScrollView(
@@ -61,26 +60,26 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
             return SliverList.builder(
               itemCount: data.length,
               itemBuilder: (context, index) {
-                final courseModel = data[index];
+                final course = data[index];
                 return Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
                   child: EditCourseTile(
-                    courseName: courseModel.courseName,
-                    courseCode: courseModel.courseCode,
-                    categoriesCount: courseModel.subCollections.length,
+                    courseName: course.courseName,
+                    courseCode: course.courseCode,
+                    categoriesCount: course.collections.length,
                     selectionState: (
-                      selected: selectedCoursesIdMap.isNotEmpty && selectedCoursesIdMap[courseModel.id] == true,
+                      selected: selectedCoursesIdMap.isNotEmpty && selectedCoursesIdMap[course.id] == true,
                       isSelecting: widget.isSelecting,
                     ),
-                    syncImagePath: courseModel.imageLocationJson,
+                    syncImagePath: course.imageLocationJson,
                     onTap: () {
                       if (widget.isSelecting) {
                         final selectedCoursesIdNotifier = ref.read(widget.selectedCoursesIdProvider.notifier);
-                        if (selectedCoursesIdNotifier.state[courseModel.id] == null) {
-                          selectedCoursesIdNotifier.update((cb) => {...selectedCoursesIdMap, courseModel.id: true});
+                        if (selectedCoursesIdNotifier.state[course.id] == null) {
+                          selectedCoursesIdNotifier.update((cb) => {...selectedCoursesIdMap, course.id: true});
                         } else {
                           selectedCoursesIdNotifier.update(
-                            (cb) => {...selectedCoursesIdMap, courseModel.id: !selectedCoursesIdNotifier.state[courseModel.id]!},
+                            (cb) => {...selectedCoursesIdMap, course.id: !selectedCoursesIdNotifier.state[course.id]!},
                           );
                         }
                         if (!selectedCoursesIdNotifier.state.containsValue(true)) {
@@ -90,17 +89,17 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
                       }
                       Navigator.of(context).pop();
 
-                      // ref.read(ModifyCourseProviders.modifyCourseProvider.notifier).update(courseModel);
-                      AppNavigator.to(context).modifyCourseRoute(courseModel);
+                      // ref.read(ModifyCourseProviders.modifyCourseProvider.notifier).update(course);
+                      AppNavigator.to(context).modifyCourseRoute(course);
                     },
                     onSelected: () {
                       log("Selection");
                       final selectedCoursesIdNotifier = ref.read(widget.selectedCoursesIdProvider.notifier);
-                      if (selectedCoursesIdNotifier.state[courseModel.id] == null) {
-                        selectedCoursesIdNotifier.update((cb) => {...selectedCoursesIdMap, courseModel.id: true});
+                      if (selectedCoursesIdNotifier.state[course.id] == null) {
+                        selectedCoursesIdNotifier.update((cb) => {...selectedCoursesIdMap, course.id: true});
                       } else {
                         selectedCoursesIdNotifier.update(
-                          (cb) => {...selectedCoursesIdMap, courseModel.id: !selectedCoursesIdNotifier.state[courseModel.id]!},
+                          (cb) => {...selectedCoursesIdMap, course.id: !selectedCoursesIdNotifier.state[course.id]!},
                         );
                       }
                       if (!selectedCoursesIdNotifier.state.containsValue(true)) {

@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/external/ui_styles.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseMaterialCard extends ConsumerStatefulWidget {
@@ -62,7 +61,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
 
     log("Build Course Material Card");
 
-    final courseContent = widget.courseContent;
+    final CourseContent courseContent = widget.courseContent;
     return AnimatedContainer(
       duration: Durations.extralong4,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -95,7 +94,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                       fileDetails: FileDetails(
                         filePath: CreateContentPreviewImage.genPreviewImagePath(
                           filePath: courseContent.path.filePath,
-                          contentId: courseContent.id,
+                          contentId: courseContent.contentHash,
                         ),
                       ),
                       fallbackWidget: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true)),

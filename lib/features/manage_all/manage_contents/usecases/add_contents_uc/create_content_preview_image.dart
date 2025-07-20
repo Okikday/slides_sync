@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path/path.dart' as p;
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -79,7 +77,7 @@ class CreateContentPreviewImage {
         final String path = fileDetailsFromJson(content.path).filePath;
         final bool fileExists = await File(path).exists();
         if (fileExists) {
-          final genPreviewPathRecord = genPreviewImagePathRecord(filePath: path, contentId: content.id);
+          final genPreviewPathRecord = genPreviewImagePathRecord(filePath: path, contentId: content.contentHash);
           final previewPath = genPreviewPathRecord.previewPath;
 
           final bool previewExists = await File(previewPath).exists();
@@ -108,7 +106,7 @@ class CreateContentPreviewImage {
   static Future<List<CourseContent>> filterContentsWithoutPreview(List<CourseContent> courseContents) async {
     final List<CourseContent> nonExistingPreviewCourseContents = [];
     for (final content in courseContents) {
-      final String previewPath = genPreviewImagePath(filePath: content.path.filePath, contentId: content.id);
+      final String previewPath = genPreviewImagePath(filePath: content.path.filePath, contentId: content.contentHash);
       if (previewPath.isEmpty) continue;
       if (!(await File(previewPath).exists())) {
         nonExistingPreviewCourseContents.add(content);

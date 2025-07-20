@@ -64,7 +64,7 @@ class AppBarContainerChild extends ConsumerWidget {
                             CustomText(
                               subtitle!,
                               fontSize: 12,
-                              color: context.theme.colorScheme.onTertiary,
+                              color: AppColors.bgBlendColor(context, .6, .4),
                               overflow: TextOverflow.ellipsis,
                               style: subtitleStyle,
                             ),

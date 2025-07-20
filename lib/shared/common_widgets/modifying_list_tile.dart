@@ -1,6 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class ModifyingListTile extends StatelessWidget {
   final Widget leading;
@@ -31,17 +32,17 @@ class ModifyingListTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: ColoredBox(
         // color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
-        color: context.theme.canvasColor,
+        color: AppColors.bgBlendColor(context),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: CustomElevatedButton(
             onClick: onTapTile,
             onLongClick: onLongPressTile,
             borderRadius: 12,
-    
+
             contentPadding: EdgeInsets.all(buttonPadding),
             // backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
-            backgroundColor: context.theme.canvasColor,
+            backgroundColor: AppColors.bgBlendColor(context, .89, .11),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 120),
               child: Row(
@@ -51,25 +52,30 @@ class ModifyingListTile extends StatelessWidget {
                   Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      color: context.theme.primaryColor.withAlpha(80),
+                      color: AppColors.lightenColor(AppColors.primary(context).withValues(alpha: 0.2), context.isDarkMode ? 0.6 : 0.4),
                       borderRadius: BorderRadius.circular(10),
-                      boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), spreadRadius: 1)],
                     ),
                     child: SizedBox.square(dimension: btnDimension, child: leading),
                   ),
-                  
+
                   Expanded(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(title, fontWeight: FontWeight.bold, fontSize: 13.5, color: context.theme.colorScheme.tertiary, overflow: TextOverflow.fade,),
+                        CustomText(
+                          title,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13.5,
+                          color: context.theme.colorScheme.tertiary,
+                          overflow: TextOverflow.fade,
+                        ),
                         ConstantSizing.columnSpacing(4),
                         CustomText(subtitle, fontSize: 12, color: context.theme.colorScheme.onTertiary),
                       ],
                     ),
                   ),
-                  
+
                   if (trailing != null) trailing!,
                 ],
               ),

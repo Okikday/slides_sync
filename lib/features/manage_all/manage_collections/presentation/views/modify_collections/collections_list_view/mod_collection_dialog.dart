@@ -6,19 +6,18 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/data/models/course_model/course_model.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_sub_collection.dart';
+import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/data/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
-import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ModCollectionDialog extends ConsumerStatefulWidget {
   final int courseDbId;
-  final CourseSubCollection collection;
+  final CourseCollection collection;
 
   const ModCollectionDialog({super.key, required this.courseDbId, required this.collection});
 
@@ -144,7 +143,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                     rootNavigatorKey.currentContext?.pop();
                   },
                   onDelete: () async {
-                    await mca.onDeleteCollection(context, courseDbId: widget.courseDbId, collection: collection);
+                    await mca.onDeleteCollection(context, collection: collection);
                   },
                 ),
               );
