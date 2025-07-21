@@ -49,4 +49,9 @@ class CourseContentRepo {
       return collection;
     });
   }
+
+  /// Gets Duplicate Coursecontents, or contents with same hash
+  static Future<List<CourseContent>> getAllDuplicatesByHash(String contentHash) async {
+    return await (await _isar).courseContents.filter().contentHashEqualTo(contentHash).findAll();
+  }
 }

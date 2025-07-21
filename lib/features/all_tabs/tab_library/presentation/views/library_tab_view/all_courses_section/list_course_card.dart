@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class ListCourseCard extends ConsumerWidget {
@@ -44,6 +45,12 @@ class ListCourseCard extends ConsumerWidget {
           color: AppColors.bgBlendColor(context),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
+        //   image: DecorationImage(
+        //   image: AssetImage(AssetStrings.instance.bookSparkleTransparentBg),
+        //   opacity: 0.05,
+        //   fit: BoxFit.cover,
+        //   colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+        // ),
         ),
         child: Row(
           children: [

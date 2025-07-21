@@ -8,6 +8,7 @@ class AppColors {
   static Color primaryText(BuildContext context) => context.theme.colorScheme.tertiary;
   static Color secondaryText(BuildContext context) => context.theme.colorScheme.onTertiary;
   static Color cardColor(BuildContext context) => bgBlendColor(context);
+  static Color backgroundColor(BuildContext context) => context.theme.scaffoldBackgroundColor;
 
   static Color bgBlendColor(BuildContext context, [double? value, double? darkValue]) {
     final bgColor = context.theme.scaffoldBackgroundColor;

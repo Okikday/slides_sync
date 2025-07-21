@@ -10,12 +10,19 @@ enum FlushbarVibe { none, error, success, warning }
 
 class UiUtils {
   /// For getting repititive SystemOverlayStyle
-  static SystemUiOverlayStyle getSystemUiOverlayStyle(Color scaffoldBackgroundColor, bool isDarkMode) {
+  static SystemUiOverlayStyle getSystemUiOverlayStyle(
+    Color scaffoldBackgroundColor,
+    bool isDarkMode, {
+    Color? statusBarColor,
+    Brightness? statusBarIconBrightness,
+    Color? systemNavigatorBarColor,
+    Brightness? systemNavigatorBarIconBrightness,
+  }) {
     return SystemUiOverlayStyle(
-      systemNavigationBarColor: scaffoldBackgroundColor,
-      statusBarColor: scaffoldBackgroundColor,
-      statusBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
-      systemNavigationBarIconBrightness: isDarkMode ? Brightness.light : Brightness.dark,
+      systemNavigationBarColor: systemNavigatorBarColor ?? scaffoldBackgroundColor,
+      statusBarColor: statusBarColor ?? scaffoldBackgroundColor,
+      statusBarIconBrightness: statusBarIconBrightness ?? (isDarkMode ? Brightness.light : Brightness.dark),
+      systemNavigationBarIconBrightness: systemNavigatorBarIconBrightness ?? (isDarkMode ? Brightness.light : Brightness.dark),
     );
   }
 
@@ -36,7 +43,7 @@ class UiUtils {
       backgroundColor: backgroundColor ?? Colors.transparent,
       barrierColor: barrierColor ?? Colors.black.withAlpha(140),
       transitionDuration: Durations.medium2,
-      blurSigma: blurSigma
+      blurSigma: blurSigma,
     );
   }
 
@@ -132,7 +139,7 @@ List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   //         ? const Color(0xFF1E1E2C).withValues(alpha: 0.85) // Darker, muted blue-gray
   //         : const Color(0xFFF5F5F7).withValues(alpha: 0.85); // Soft off-white
 
-    final normalColor = context.theme.colorScheme.onPrimary;
+  final normalColor = context.theme.colorScheme.onPrimary;
   final normalBgColor = context.theme.colorScheme.primary.withValues(alpha: 0.6);
 
   switch (vibe) {

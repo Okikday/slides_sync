@@ -1,7 +1,7 @@
 class DummySlides{
   static final List<Map<String, dynamic>> dummySlides = [
     {
-      "title": "Context Free Grammar",
+      "title": "Design tricks",
       "subtitle": "Slide 4 (23 pages)",
       "extraContent": "This is an additional content",
       "progress": 0.23

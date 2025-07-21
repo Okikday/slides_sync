@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeDashBoard extends ConsumerWidget {
@@ -13,6 +14,7 @@ class HomeDashBoard extends ConsumerWidget {
     this.completed,
     this.onReadingBtnTapped,
     this.onShareTapped,
+    this.isFirst
   });
 
   final String courseName;
@@ -22,6 +24,8 @@ class HomeDashBoard extends ConsumerWidget {
   final void Function()? onReadingBtnTapped;
   final void Function()? onShareTapped;
 
+  final bool? isFirst;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
@@ -29,11 +33,17 @@ class HomeDashBoard extends ConsumerWidget {
       width: context.deviceWidth,
       clipBehavior: Clip.hardEdge,
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
-      margin: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium),
+      margin: const EdgeInsets.symmetric(horizontal: 6),
       decoration: BoxDecoration(
         color: AppColors.bgBlendColor(context),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
+        image: DecorationImage(
+          image: AssetImage(AssetStrings.instance.bookSparkleTransparentBg),
+          fit: BoxFit.cover,
+          opacity: 0.03,
+          colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+        ),
         // boxShadow: [BoxShadow(color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(), blurRadius: 4, spreadRadius: 2)],
       ),
       child: Column(

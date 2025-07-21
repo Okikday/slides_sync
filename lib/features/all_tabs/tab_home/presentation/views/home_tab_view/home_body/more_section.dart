@@ -1,0 +1,71 @@
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/strings/asset_strings.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
+
+class MoreSection extends ConsumerWidget {
+  const MoreSection({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+      margin: EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: AppColors.bgBlendColor(context, .9, .1),
+        borderRadius: BorderRadius.circular(24),
+        image: DecorationImage(
+          image: AssetImage(AssetStrings.instance.zigzagWavy),
+          fit: BoxFit.cover,
+          opacity: 0.02,
+          colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+        ),
+      ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: 50, maxHeight: 100),
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.zero,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 12.0),
+              child: MoreSectionOption(title: "Favorites", iconData: Iconsax.heart_copy),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: MoreSectionOption(title: "Bookmarks", iconData: Iconsax.menu_copy),
+            ),
+
+            Padding(padding: const EdgeInsets.symmetric(horizontal: 12.0), child: MoreSectionOption(title: "", iconData: Iconsax.add_copy)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MoreSectionOption extends ConsumerWidget {
+  final String title;
+  final IconData iconData;
+  const MoreSectionOption({super.key, required this.title, required this.iconData});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 6.0,
+      children: [
+        CircleAvatar(
+          radius: 24,
+          backgroundColor: AppColors.bgBlendColor(context, .86, .14),
+          child: Icon(iconData, color: AppColors.secondaryText(context)),
+        ),
+        CustomText(title, color: AppColors.primaryText(context), fontSize: 12),
+      ],
+    );
+  }
+}

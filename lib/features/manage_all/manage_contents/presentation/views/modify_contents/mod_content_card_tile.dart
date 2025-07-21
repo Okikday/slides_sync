@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,7 @@ class ModContentCardTile extends ConsumerWidget {
       padding: EdgeInsets.only(bottom: context.hPadding7),
       child: ModifyingListTile(
         leading: BuildImagePathWidget(
-          fileDetails: FileDetails(
-            filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath, contentId: content.contentHash),
-          ),
+          fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath)),
           fallbackWidget: Icon(WidgetHelper.resolveIconData(content.courseContentType), size: 22, color: context.theme.primaryColor),
         ),
         trailing: PopupMenuTheme(
@@ -76,6 +75,14 @@ class PopupMenuItemChild extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.min, spacing: 8, children: [Icon(iconData, color: context.theme.colorScheme.onTertiary,), CustomText(title, color: context.theme.colorScheme.tertiary,), ConstantSizing.rowSpacingSmall]);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 8,
+      children: [
+        Icon(iconData, color: context.theme.colorScheme.onTertiary),
+        CustomText(title, color: context.theme.colorScheme.tertiary),
+        ConstantSizing.rowSpacingSmall,
+      ],
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class CourseCategoriesCard extends ConsumerWidget {
   final bool isDarkMode;
@@ -25,8 +26,8 @@ class CourseCategoriesCard extends ConsumerWidget {
       onTap: onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: context.theme.colorScheme.onSurface,
-          border: Border.all(color: context.theme.colorScheme.secondary),
+          color: context.scaffoldBackgroundColor.withValues(alpha: 0.6),
+          border: Border.all(color: AppColors.bgBlendColor(context)),
           borderRadius: BorderRadius.circular(12)
         ),
         child: Padding(
@@ -38,10 +39,11 @@ class CourseCategoriesCard extends ConsumerWidget {
                 width: 40,
                 height: 40,
                 clipBehavior: Clip.hardEdge,
+                padding: EdgeInsets.all(1),
                 decoration: BoxDecoration(
-                  color: context.theme.primaryColor.withAlpha(100),
+                  color: AppColors.primary(context).withValues(alpha: 0.1),
                   shape: BoxShape.circle,
-                  border: Border.fromBorderSide(BorderSide(color: context.theme.primaryColor.withAlpha(40), width: 1.0)),
+                  border: Border.fromBorderSide(BorderSide(color: AppColors.primary(context).withAlpha(40), width: 1.0)),
                 ),
                 child: icon,
               ),

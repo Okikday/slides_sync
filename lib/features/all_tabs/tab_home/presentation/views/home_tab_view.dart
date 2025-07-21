@@ -6,6 +6,9 @@ import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_t
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/sub/home_inner_scroll_view_for_desktop.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/sub/home_outer_scroll_view.dart';
 import 'package:slides_sync/shared/helpers/device_helper.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/strings/asset_strings.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 
 class HomeTabView extends ConsumerStatefulWidget {

@@ -15,7 +15,7 @@ export 'dart:io';
 enum AppDirType { documents, appSupport, temporary, cache }
 
 class FileUtils {
-  static Future<String> _storeToApplicationsDocumentsDirectory(File file, String folderPath) async {
+  static Future<String> _storeToApplicationsDocumentsDirectory(File file, String folderPath, String? newFileName) async {
     final Directory baseDir = await getApplicationDocumentsDirectory();
     final String fileName = p.basename(file.path);
     final String targetDirPath = p.join(baseDir.path, folderPath);
@@ -25,15 +25,15 @@ class FileUtils {
       await targetDir.create(recursive: true);
     }
 
-    final String newPath = getUniqueFilePath(targetDirPath, fileName);
+    final String newPath = getUniqueFilePath(targetDirPath, newFileName ?? fileName);
     await file.copy(newPath);
     return newPath;
   }
 
   /// This stores File to App's Document Directory.
   /// Returns the path it's stored to.
-  static Future<String> storeFile({required File file, String folderPath = ''}) async {
-    return await _storeToApplicationsDocumentsDirectory(file, folderPath);
+  static Future<String> storeFile({required File file, String folderPath = '', String? newFileName}) async {
+    return await _storeToApplicationsDocumentsDirectory(file, folderPath, newFileName);
   }
 
   static String getUniqueFilePath(String dirPath, String fileName) {

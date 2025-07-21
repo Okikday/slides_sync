@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:isar/isar.dart';
@@ -17,7 +18,7 @@ class CourseContent {
 
   /// Holds the hash of the content basically
   @Index()
-  late String contentHash; 
+  late String contentHash;
 
   late String parentId;
   late String title;
@@ -45,19 +46,20 @@ class CourseContent {
     String description = '',
     String metadataJson = '{}',
   }) {
-    final content = CourseContent()
-    ..contentHash = contentHash
-    ..parentId = parentId
-    ..title = title
-    ..path = path.toJson()
-    ..createdAt = createdAt ?? DateTime.now()
-    ..courseContentType = courseContentType
-    ..description = description
-    ..metadataJson = metadataJson;
+    final content =
+        CourseContent()
+          ..contentHash = contentHash
+          ..parentId = parentId
+          ..title = title
+          ..path = path.toJson()
+          ..createdAt = createdAt ?? DateTime.now()
+          ..courseContentType = courseContentType
+          ..description = description
+          ..metadataJson = metadataJson;
     return content;
   }
 
-   CourseContent copyWith({
+  CourseContent copyWith({
     required String contentHash,
     String? parentId,
     String? title,
@@ -114,30 +116,29 @@ class CourseContent {
   @override
   bool operator ==(covariant CourseContent other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.contentHash == contentHash &&
-      other.parentId == parentId &&
-      other.title == title &&
-      other.path == path &&
-      other.createdAt == createdAt &&
-      other.description == description &&
-      other.courseContentType == courseContentType &&
-      other.metadataJson == metadataJson;
+
+    return other.id == id &&
+        other.contentHash == contentHash &&
+        other.parentId == parentId &&
+        other.title == title &&
+        other.path == path &&
+        other.createdAt == createdAt &&
+        other.description == description &&
+        other.courseContentType == courseContentType &&
+        other.metadataJson == metadataJson;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      contentHash.hashCode ^
-      parentId.hashCode ^
-      title.hashCode ^
-      path.hashCode ^
-      createdAt.hashCode ^
-      description.hashCode ^
-      courseContentType.hashCode ^
-      metadataJson.hashCode;
+        contentHash.hashCode ^
+        parentId.hashCode ^
+        title.hashCode ^
+        path.hashCode ^
+        createdAt.hashCode ^
+        description.hashCode ^
+        courseContentType.hashCode ^
+        metadataJson.hashCode;
   }
 }
 

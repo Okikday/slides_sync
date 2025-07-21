@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_list_tile_model.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 
 class RecentListTile extends ConsumerWidget {
@@ -22,9 +23,10 @@ class RecentListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: EdgeInsets.only(top: 12, left: 8, right: 8),
+      padding: EdgeInsets.only(top: 0, left: 8, right: 8),
       child: CustomElevatedButton(
-        backgroundColor: context.isDarkMode ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor() : HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.9).toColor(),
+        backgroundColor: Colors.transparent,
+        // backgroundColor: context.isDarkMode ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor() : HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.9).toColor(),
         overlayColor: context.theme.colorScheme.secondary,
         contentPadding: EdgeInsets.all(tilePadding),
         borderRadius: 12,
@@ -51,9 +53,9 @@ class RecentListTile extends ConsumerWidget {
                 },
                 pixelHeight: 48,
                 pixelWidth: 48,
-                borderRadius: 12,
-                backgroundColor: context.theme.primaryColor.withValues(alpha: 0.1),
-                child: Icon(Iconsax.document_1, size: 26, color: context.theme.primaryColor),
+                shape: CircleBorder(),
+                backgroundColor: AppColors.primary(context).withValues(alpha: 0.1),
+                child: Icon(Iconsax.document_1, size: 26, color: AppColors.primary(context)),
               ),
             ),
 
@@ -98,8 +100,8 @@ class RecentListTile extends ConsumerWidget {
             Stack(
               children: [
                 CustomElevatedButton(
-                  pixelWidth: 46,
-                  pixelHeight: 46,
+                  pixelWidth: 40,
+                  pixelHeight: 40,
                   contentPadding: EdgeInsets.zero,
                   shape: CircleBorder(),
                   backgroundColor: context.theme.colorScheme.surface,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +11,7 @@ import 'package:slides_sync/features/course_navigation/presentation/views/course
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class CourseDetailsView extends ConsumerStatefulWidget {
   final Course course;
@@ -34,13 +37,25 @@ class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
   Widget build(BuildContext context) {
     // final deviceHeight = context.deviceHeight;
     // final deviceWidth = context.deviceWidth;
+    final topGradColor = AppColors.bgBlendColor(context, .8, .2);
+    final firstStop = 1 - ((kToolbarHeight * 2 + context.topPadding) / context.deviceHeight);
 
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
+      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode, statusBarColor: Colors.transparent,),
       child: Scaffold(
         extendBody: true,
-        
-        body: CourseDetailsOuterSection(),
+
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              stops: [double.parse(firstStop.toStringAsFixed(2)), 1],
+              colors: [AppColors.backgroundColor(context), topGradColor],
+            ),
+          ),
+          child: CourseDetailsOuterSection(),
+        ),
       ),
     );
   }
@@ -56,18 +71,18 @@ class CourseDetailsOuterSection extends ConsumerWidget {
       slivers: [
         CourseDetailsHeader(course: course),
 
-        if (course.collections.isNotEmpty)
-          PinnedHeaderSliver(
-            child: ColoredBox(
-              color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: CustomText("Collections", fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
-              ),
-            ),
-          ),
+        // if (course.collections.isNotEmpty)
+        //   PinnedHeaderSliver(
+        //     child: ColoredBox(
+        //       color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
+        //       child: Padding(
+        //         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        //         child: CustomText("Collections", fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
+        //       ),
+        //     ),
+        //   ),
 
-        SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
+        // SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
 
         CourseDetailsCollectionSection(course: course),
 

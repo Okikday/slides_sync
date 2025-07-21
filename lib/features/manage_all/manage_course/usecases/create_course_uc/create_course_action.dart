@@ -13,9 +13,9 @@ class CreateCourseAction {
     final Result<Course?> createCourseOutcome = await Result.tryRunAsync<Course>(() async {
       Course course = Course.create(courseTitle: CourseFormatter.joinCodeToTitle(courseCode, courseName));
 
-      final String? newPath = await compressCourseImageAsFile(courseImagePath, folderPath: "courses/${course.courseId}");
-      if (newPath != null) {
-        course = course.copyWith(imageLocationJson: FileDetails(filePath: newPath).toJson());
+      final String? previewImgPath = await compressCourseImageAsFile(courseImagePath, folderPath: "courses/${course.courseId}");
+      if (previewImgPath != null) {
+        course = course.copyWith(imageLocationJson: FileDetails(filePath: previewImgPath).toJson());
       }
 
       await CourseRepo.addCourse(course);
@@ -34,9 +34,9 @@ class CreateCourseAction {
     if (courseImagePath != null && courseImagePath.isNotEmpty) {
       final Result<File> result = await ImageUtils.compressImage(inputFile: File(courseImagePath), targetMB: 0.1, outputFormat: 'png');
       if (result.isSuccess) {
-        final String path = await FileUtils.storeFile(file: result.data!, folderPath: folderPath);
+        final String output = await FileUtils.storeFile(file: result.data!, folderPath: folderPath);
         await result.data?.delete();
-        return path;
+        return output;
       }
       log("Tried compress Image. \nResult: ${result.status}");
     }

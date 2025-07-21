@@ -6,7 +6,9 @@ import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
+import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseDetailsHeaderTop extends StatelessWidget {
@@ -17,28 +19,38 @@ class CourseDetailsHeaderTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            spacing: 8.0,
             children: [
-              if (course.courseCode.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: CustomTextButton(
-                    backgroundColor: context.theme.primaryColor.withAlpha(80),
-                    pixelHeight: 28,
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: CustomText(
-                      course.courseCode,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: context.theme.colorScheme.outline,
-                    ),
-                  ),
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Row(
+                  spacing: 8,
+                  children: [
+                    ComponentWidgets.backButton(context, backgroundColor: AppColors.bgBlendColor(context, .8, .2)),
+
+                    if (course.courseCode.isNotEmpty)
+                      CustomTextButton(
+                        backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
+                        pixelHeight: 28,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+                        child: CustomText(
+                          course.courseCode,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: context.theme.primaryColor,
+                        ),
+                      ),
+                  ],
                 ),
+              ),
+
+              ConstantSizing.columnSpacing(16),
+
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0),
@@ -50,11 +62,13 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                   ),
                 ),
               ),
+              ConstantSizing.columnSpacingSmall,
+
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 80),
+                    constraints: BoxConstraints(maxHeight: 60),
                     child: SingleChildScrollView(
                       child: CustomTextButton(
                         borderRadius: 4.0,
@@ -76,7 +90,7 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                         },
                         child: CustomText(
                           course.description.isEmpty ? "No description" : course.description,
-                          color: context.theme.colorScheme.outline,
+                          color: AppColors.bgBlendColor(context, .7, .3),
                         ),
                       ),
                     ),
@@ -87,10 +101,10 @@ class CourseDetailsHeaderTop extends StatelessWidget {
           ),
         ),
 
-        ConstantSizing.rowSpacingLarge,
+        ConstantSizing.rowSpacingMedium,
 
         Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+          padding: const EdgeInsets.only(right: 12.0, top: 10),
           child: Builder(
             builder: (context) {
               final shapes = materialShapes;

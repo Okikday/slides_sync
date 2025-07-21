@@ -94,7 +94,6 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                       fileDetails: FileDetails(
                         filePath: CreateContentPreviewImage.genPreviewImagePath(
                           filePath: courseContent.path.filePath,
-                          contentId: courseContent.contentHash,
                         ),
                       ),
                       fallbackWidget: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true)),

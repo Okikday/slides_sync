@@ -152,7 +152,7 @@ List<AppThemeModel> defaultAppThemeModels = [
     accentColor: Colors.deepPurpleAccent,
     textPrimaryColor: Color(0xFF0B1014),
     textSecondaryColor: Color(0xFF4B4B4B),
-    backgroundColor: Colors.white,
+    backgroundColor: Color(0xfff5f5f5),
     onBackgroundColor: Color(0xFFF0EDF6),
     cardColor: Color(0xFFF6F2FF),
     fontFamily: "nunito",

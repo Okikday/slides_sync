@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:path/path.dart' as p;
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -14,6 +15,7 @@ class CreateContentPreviewImage {
   static Future<String?> _createForTypeImage(String path, PreviewImagePathRecord previewPathRecord) async {
     log("Creating preview for Type Image");
     final Result<File> result = await ImageUtils.compressImage(inputFile: File(path), targetMB: 0.05, outputFormat: 'png');
+    
     if (result.isSuccess) {
       final String cachePath = result.data!.path;
       await Directory(previewPathRecord.previewDirPath).create();
@@ -44,10 +46,9 @@ class CreateContentPreviewImage {
     return;
   }
 
-  static String genPreviewImagePath({required String filePath, required String contentId}) =>
-      genPreviewImagePathRecord(filePath: filePath, contentId: contentId).previewPath;
+  static String genPreviewImagePath({required String filePath}) => genPreviewImagePathRecord(filePath: filePath).previewPath;
 
-  static PreviewImagePathRecord genPreviewImagePathRecord({required String filePath, required String contentId}) {
+  static PreviewImagePathRecord genPreviewImagePathRecord({required String filePath}) {
     final int lastIndexOfPathSep = filePath.lastIndexOf(Platform.pathSeparator);
     if (lastIndexOfPathSep == -1) {
       return (previewPath: '', previewDirPath: '');
@@ -56,7 +57,7 @@ class CreateContentPreviewImage {
       final previewDirPath =
           "${filePath.substring(0, lastIndexOfPathSep.clamp(0, filePath.length))}$sep"
           "preview_images";
-      final previewPath = "$previewDirPath$sep$contentId";
+      final previewPath = "$previewDirPath$sep${p.basenameWithoutExtension(filePath)}";
       return (previewPath: previewPath, previewDirPath: previewDirPath);
     }
   }
@@ -77,7 +78,7 @@ class CreateContentPreviewImage {
         final String path = fileDetailsFromJson(content.path).filePath;
         final bool fileExists = await File(path).exists();
         if (fileExists) {
-          final genPreviewPathRecord = genPreviewImagePathRecord(filePath: path, contentId: content.contentHash);
+          final genPreviewPathRecord = genPreviewImagePathRecord(filePath: path);
           final previewPath = genPreviewPathRecord.previewPath;
 
           final bool previewExists = await File(previewPath).exists();
@@ -106,7 +107,7 @@ class CreateContentPreviewImage {
   static Future<List<CourseContent>> filterContentsWithoutPreview(List<CourseContent> courseContents) async {
     final List<CourseContent> nonExistingPreviewCourseContents = [];
     for (final content in courseContents) {
-      final String previewPath = genPreviewImagePath(filePath: content.path.filePath, contentId: content.contentHash);
+      final String previewPath = genPreviewImagePath(filePath: content.path.filePath);
       if (previewPath.isEmpty) continue;
       if (!(await File(previewPath).exists())) {
         nonExistingPreviewCourseContents.add(content);

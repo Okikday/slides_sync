@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class GridCourseCard extends ConsumerWidget {
@@ -40,6 +41,11 @@ class GridCourseCard extends ConsumerWidget {
           color: AppColors.bgBlendColor(context),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
+          image: DecorationImage(
+          image: AssetImage(AssetStrings.instance.bookSparkleTransparentBg),
+          opacity: 0.05,
+          colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+        ),
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 8, bottom: 8),

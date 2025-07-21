@@ -38,24 +38,32 @@ class CreateContentUc {
         final CourseContent? sameHashedContent = await CourseContentRepo.getByHash(hash);
         final CourseContentType contentType = checkContentType(fileName);
 
-        CourseContent content = CourseContent.create(
-          contentHash: hash,
-          title: fileNameWithoutExt,
-          parentId: collection.collectionId,
-          path: FileDetails(),
-          courseContentType: contentType,
-        );
         if (sameHashedContent != null) {
-          content = content.copyWith(contentHash: content.contentHash, createdAt: DateTime.now(), path: sameHashedContent.path.fileDetails);
+          final CourseContent content = CourseContent.create(
+            contentHash: hash,
+            title: fileNameWithoutExt,
+            parentId: collection.collectionId,
+            path: sameHashedContent.path.fileDetails,
+            courseContentType: contentType,
+          );
           contentList.add(content);
           continue;
         } else {
-          final String storedAt = await FileUtils.storeFile(file: file, folderPath: dirToStoreAt);
-          content.copyWith(contentHash: content.contentHash, path: FileDetails(filePath: storedAt));
-          await CreateContentPreviewImage.createPreviewImageForContent(
-            storedAt,
+          final File storedAt = File(
+            await FileUtils.storeFile(file: file, folderPath: dirToStoreAt, newFileName: p.setExtension(hash, p.extension(file.path))),
+          );
+
+          final CourseContent content = CourseContent.create(
+            contentHash: hash,
+            title: fileNameWithoutExt,
+            parentId: collection.collectionId,
+            path: FileDetails(filePath: storedAt.path),
             courseContentType: contentType,
-            genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt, contentId: content.contentHash),
+          );
+          await CreateContentPreviewImage.createPreviewImageForContent(
+            storedAt.path,
+            courseContentType: contentType,
+            genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt.path),
           );
           contentList.add(content);
         }

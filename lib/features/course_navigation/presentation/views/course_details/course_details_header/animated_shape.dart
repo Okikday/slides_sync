@@ -36,8 +36,8 @@ final List<({RoundedPolygon shape, String title})> materialShapes = [
   (shape: MaterialShapes.puffy, title: 'Puffy'),
   (shape: MaterialShapes.flower, title: 'Flower'),
   (shape: MaterialShapes.ghostish, title: 'Ghost-ish'),
-  (shape: MaterialShapes.pixelCircle, title: 'Pixel circle'),
-  (shape: MaterialShapes.pixelTriangle, title: 'Pixel triangle'),
+  // (shape: MaterialShapes.pixelCircle, title: 'Pixel circle'),
+  // (shape: MaterialShapes.pixelTriangle, title: 'Pixel triangle'),
   (shape: MaterialShapes.bun, title: 'Bun'),
   // (shape: MaterialShapes.heart, title: 'Heart'),
 ];

@@ -5,8 +5,10 @@ import 'package:lottie/lottie.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
+import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 import '../../../../../../../../test/dummy_slides.dart';
 import '../../../../viewmodels/recent_list_tile_model.dart';
@@ -43,44 +45,40 @@ class RecentsSectionBody extends ConsumerWidget {
     }
 
 
-    return SliverPadding(
-      padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight),
-      sliver: SliverList.builder(
-        itemCount: DummySlides.dummySlides.length,
-      
-        itemBuilder: (context, index) {
-          return RecentListTile(
-            isDarkMode: context.isDarkMode,
-            tilePadding: context.hPadding5,
-            dataModel: RecentListTileModel(
-              title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
-              subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
-              // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
-              progressLevel: ProgressLevel.neutral,
-              isStarred: false,
-              progress: DummySlides.dummySlides[index]['progress'] as double?,
-              onLongTapTile: () {
-                CustomDialog.show(
-                  context,
-                  canPop: true,
-                  blurSigma: Offset(2.0, 2.0),
-                  transitionType: TransitionType.levelFromCenterWithFade,
-                  barrierColor: Colors.black.withValues(alpha: 0.5),
-                  transitionDuration: Durations.short4,
-                  reverseTransitionDuration: Durations.short4,
-                  child: RecentDialog(
-                    recentDialogModel: RecentDialogModel(
-                      isStarred: false,
-                      title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
-                      description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
-                    ),
+    return SliverList.builder(
+      itemCount: DummySlides.dummySlides.length,
+      itemBuilder: (context, index) {
+        return RecentListTile(
+          isDarkMode: context.isDarkMode,
+          tilePadding: context.hPadding5,
+          dataModel: RecentListTileModel(
+            title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+            subtitle: DummySlides.dummySlides[index]['subtitle'] as String? ?? "No subtitle",
+            // extraContent: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
+            progressLevel: ProgressLevel.neutral,
+            isStarred: false,
+            progress: DummySlides.dummySlides[index]['progress'] as double?,
+            onLongTapTile: () {
+              CustomDialog.show(
+                context,
+                canPop: true,
+                blurSigma: Offset(2.0, 2.0),
+                transitionType: TransitionType.levelFromCenterWithFade,
+                barrierColor: Colors.black.withValues(alpha: 0.5),
+                transitionDuration: Durations.short4,
+                reverseTransitionDuration: Durations.short4,
+                child: RecentDialog(
+                  recentDialogModel: RecentDialogModel(
+                    isStarred: false,
+                    title: DummySlides.dummySlides[index]['title'] as String? ?? "No title",
+                    description: DummySlides.dummySlides[index]['extraContent'] as String? ?? "",
                   ),
-                );
-              },
-            ),
-          );
-        },
-      ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
