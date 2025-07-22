@@ -53,7 +53,6 @@ dependencies:
   another_flushbar: 1.12.30
 
 
-  isar: ^3.1.0+1
   isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.5
 
@@ -92,6 +91,7 @@ dependencies:
   intl: any
   crypto: ^3.0.6
   google_fonts: ^6.2.1
+  isar: ^3.1.0+1
 
 flutter_native_splash:
   android: true

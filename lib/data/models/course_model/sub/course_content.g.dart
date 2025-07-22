@@ -22,39 +22,49 @@ const CourseContentSchema = CollectionSchema(
       name: r'contentHash',
       type: IsarType.string,
     ),
-    r'courseContentType': PropertySchema(
+    r'contentId': PropertySchema(
       id: 1,
+      name: r'contentId',
+      type: IsarType.string,
+    ),
+    r'courseContentType': PropertySchema(
+      id: 2,
       name: r'courseContentType',
       type: IsarType.byte,
       enumMap: _CourseContentcourseContentTypeEnumValueMap,
     ),
     r'createdAt': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'description': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'description',
       type: IsarType.string,
     ),
+    r'hashCode': PropertySchema(
+      id: 5,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
     r'metadataJson': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'metadataJson',
       type: IsarType.string,
     ),
     r'parentId': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'parentId',
       type: IsarType.string,
     ),
     r'path': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'path',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'title',
       type: IsarType.string,
     )
@@ -77,6 +87,19 @@ const CourseContentSchema = CollectionSchema(
           caseSensitive: true,
         )
       ],
+    ),
+    r'contentId': IndexSchema(
+      id: -332487537278013663,
+      name: r'contentId',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'contentId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
     )
   },
   links: {},
@@ -94,6 +117,7 @@ int _courseContentEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.contentHash.length * 3;
+  bytesCount += 3 + object.contentId.length * 3;
   bytesCount += 3 + object.description.length * 3;
   bytesCount += 3 + object.metadataJson.length * 3;
   bytesCount += 3 + object.parentId.length * 3;
@@ -109,13 +133,15 @@ void _courseContentSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.contentHash);
-  writer.writeByte(offsets[1], object.courseContentType.index);
-  writer.writeDateTime(offsets[2], object.createdAt);
-  writer.writeString(offsets[3], object.description);
-  writer.writeString(offsets[4], object.metadataJson);
-  writer.writeString(offsets[5], object.parentId);
-  writer.writeString(offsets[6], object.path);
-  writer.writeString(offsets[7], object.title);
+  writer.writeString(offsets[1], object.contentId);
+  writer.writeByte(offsets[2], object.courseContentType.index);
+  writer.writeDateTime(offsets[3], object.createdAt);
+  writer.writeString(offsets[4], object.description);
+  writer.writeLong(offsets[5], object.hashCode);
+  writer.writeString(offsets[6], object.metadataJson);
+  writer.writeString(offsets[7], object.parentId);
+  writer.writeString(offsets[8], object.path);
+  writer.writeString(offsets[9], object.title);
 }
 
 CourseContent _courseContentDeserialize(
@@ -126,16 +152,17 @@ CourseContent _courseContentDeserialize(
 ) {
   final object = CourseContent();
   object.contentHash = reader.readString(offsets[0]);
+  object.contentId = reader.readString(offsets[1]);
   object.courseContentType = _CourseContentcourseContentTypeValueEnumMap[
-          reader.readByteOrNull(offsets[1])] ??
+          reader.readByteOrNull(offsets[2])] ??
       CourseContentType.unknown;
-  object.createdAt = reader.readDateTimeOrNull(offsets[2]);
-  object.description = reader.readString(offsets[3]);
+  object.createdAt = reader.readDateTimeOrNull(offsets[3]);
+  object.description = reader.readString(offsets[4]);
   object.id = id;
-  object.metadataJson = reader.readString(offsets[4]);
-  object.parentId = reader.readString(offsets[5]);
-  object.path = reader.readString(offsets[6]);
-  object.title = reader.readString(offsets[7]);
+  object.metadataJson = reader.readString(offsets[6]);
+  object.parentId = reader.readString(offsets[7]);
+  object.path = reader.readString(offsets[8]);
+  object.title = reader.readString(offsets[9]);
   return object;
 }
 
@@ -149,20 +176,24 @@ P _courseContentDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
+      return (reader.readString(offset)) as P;
+    case 2:
       return (_CourseContentcourseContentTypeValueEnumMap[
               reader.readByteOrNull(offset)] ??
           CourseContentType.unknown) as P;
-    case 2:
-      return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readString(offset)) as P;
+    case 9:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -325,6 +356,51 @@ extension CourseContentQueryWhere
       }
     });
   }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterWhereClause>
+      contentIdEqualTo(String contentId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'contentId',
+        value: [contentId],
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterWhereClause>
+      contentIdNotEqualTo(String contentId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'contentId',
+              lower: [],
+              upper: [contentId],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'contentId',
+              lower: [contentId],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'contentId',
+              lower: [contentId],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'contentId',
+              lower: [],
+              upper: [contentId],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
 }
 
 extension CourseContentQueryFilter
@@ -460,6 +536,142 @@ extension CourseContentQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'contentHash',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'contentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'contentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'contentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'contentId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'contentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'contentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'contentId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'contentId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'contentId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      contentIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'contentId',
         value: '',
       ));
     });
@@ -727,6 +939,62 @@ extension CourseContentQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'description',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      hashCodeEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -1350,6 +1618,19 @@ extension CourseContentQuerySortBy
     });
   }
 
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy> sortByContentId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'contentId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      sortByContentIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'contentId', Sort.desc);
+    });
+  }
+
   QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
       sortByCourseContentType() {
     return QueryBuilder.apply(this, (query) {
@@ -1387,6 +1668,19 @@ extension CourseContentQuerySortBy
       sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -1457,6 +1751,19 @@ extension CourseContentQuerySortThenBy
     });
   }
 
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy> thenByContentId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'contentId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      thenByContentIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'contentId', Sort.desc);
+    });
+  }
+
   QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
       thenByCourseContentType() {
     return QueryBuilder.apply(this, (query) {
@@ -1494,6 +1801,19 @@ extension CourseContentQuerySortThenBy
       thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -1570,6 +1890,13 @@ extension CourseContentQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CourseContent, CourseContent, QDistinct> distinctByContentId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'contentId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<CourseContent, CourseContent, QDistinct>
       distinctByCourseContentType() {
     return QueryBuilder.apply(this, (query) {
@@ -1587,6 +1914,12 @@ extension CourseContentQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
     });
   }
 
@@ -1633,6 +1966,12 @@ extension CourseContentQueryProperty
     });
   }
 
+  QueryBuilder<CourseContent, String, QQueryOperations> contentIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'contentId');
+    });
+  }
+
   QueryBuilder<CourseContent, CourseContentType, QQueryOperations>
       courseContentTypeProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1649,6 +1988,12 @@ extension CourseContentQueryProperty
   QueryBuilder<CourseContent, String, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
+    });
+  }
+
+  QueryBuilder<CourseContent, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 

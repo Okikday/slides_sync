@@ -112,8 +112,7 @@ class CourseCollection {
         other.description == description &&
         other.createdAt == createdAt &&
         other.imageLocationJson == imageLocationJson &&
-        other.collectionMetadataJson == collectionMetadataJson &&
-        const ListEquality().equals(other.contents.toList(), contents.toList());
+        other.collectionMetadataJson == collectionMetadataJson;
   }
 
   @override
@@ -125,8 +124,7 @@ class CourseCollection {
         description.hashCode ^
         createdAt.hashCode ^
         imageLocationJson.hashCode ^
-        collectionMetadataJson.hashCode ^
-        const ListEquality().hash(contents.toList());
+        collectionMetadataJson.hashCode;
   }
 }
 

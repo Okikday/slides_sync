@@ -4,7 +4,7 @@ import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 
 class CourseContentRepo {
   static final IsarData<CourseContent> _isarData = IsarData.instance<CourseContent>();
-  static Future<Isar> get _isar async => await _isarData.isarFuture;
+  static Future<Isar> get _isar async => await IsarData.isarFuture;
 
   static Future<QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>> _queryById(String contentHash) async {
     return (await _isarData.query<CourseContent>((q) => q.idGreaterThan(0))).filter().contentHashEqualTo(contentHash);

@@ -109,8 +109,7 @@ class Course {
         other.courseTitle == courseTitle &&
         other.description == description &&
         other.createdAt == createdAt &&
-        other.lastUpdated == lastUpdated &&
-        const ListEquality().equals(other.collections.toList(), collections.toList());
+        other.lastUpdated == lastUpdated;
   }
 
   @override
@@ -121,8 +120,7 @@ class Course {
         description.hashCode ^
         createdAt.hashCode ^
         lastUpdated.hashCode ^
-        collections.hashCode ^
-        const ListEquality().hash(collections.toList());
+        collections.hashCode;
   }
 
   @override

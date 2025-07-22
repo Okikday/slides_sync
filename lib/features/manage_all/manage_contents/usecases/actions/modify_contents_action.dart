@@ -11,7 +11,7 @@ class ModifyContentsAction {
       UiUtils.showLoadingDialog(rootNavigatorKey.currentContext!, message: "Deleting content...");
     }
     final Result<String?> delOutcome = await Result.tryRunAsync(
-      () async => await ModifyContentUc().deleteContentAction(content, collectionId: collectionId, courseDbId: courseDbId),
+      () async => await ModifyContentUc().deleteContentAction(content),
     );
     Navigator.pop(rootNavigatorKey.currentContext!);
 

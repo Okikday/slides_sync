@@ -13,6 +13,7 @@ import 'package:slides_sync/data/repos/course_collection_repo.dart';
 import 'package:slides_sync/data/repos/course_content_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/repos/allowed_file_extensions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateContentUc {
   static CourseCollection collectionFromJson(String source) => CourseCollection.fromJson(source);
@@ -49,12 +50,14 @@ class CreateContentUc {
           contentList.add(content);
           continue;
         } else {
+          final String contentId = const Uuid().v4();
           final File storedAt = File(
-            await FileUtils.storeFile(file: file, folderPath: dirToStoreAt, newFileName: p.setExtension(hash, p.extension(file.path))),
+            await FileUtils.storeFile(file: file, folderPath: dirToStoreAt, newFileName: p.setExtension(contentId, p.extension(file.path))),
           );
 
           final CourseContent content = CourseContent.create(
             contentHash: hash,
+            contentId: contentId,
             title: fileNameWithoutExt,
             parentId: collection.collectionId,
             path: FileDetails(filePath: storedAt.path),

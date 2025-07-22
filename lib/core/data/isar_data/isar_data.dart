@@ -31,7 +31,7 @@ class IsarData<T> {
   }
 
   /// Get the opened Isar instance (internal use)
-  Future<Isar> get isarFuture async => await _openDb!;
+  static Future<Isar> get isarFuture async => await _openDb!;
 
   /// Store or update a single object.
   Future<int> store(T object) async {

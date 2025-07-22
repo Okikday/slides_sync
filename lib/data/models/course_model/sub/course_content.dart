@@ -7,6 +7,7 @@ import 'package:isar/isar.dart';
 
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
+import 'package:uuid/uuid.dart';
 
 export 'course_content_type.dart';
 
@@ -19,6 +20,9 @@ class CourseContent {
   /// Holds the hash of the content basically
   @Index()
   late String contentHash;
+
+  @Index()
+  late String contentId;
 
   late String parentId;
   late String title;
@@ -38,6 +42,7 @@ class CourseContent {
 
   factory CourseContent.create({
     required String contentHash,
+    String? contentId,
     required String parentId,
     required String title,
     required FileDetails path,
@@ -49,6 +54,7 @@ class CourseContent {
     final content =
         CourseContent()
           ..contentHash = contentHash
+          ..contentId = contentId ?? const Uuid().v4()
           ..parentId = parentId
           ..title = title
           ..path = path.toJson()
@@ -85,6 +91,7 @@ class CourseContent {
     return {
       'id': id,
       'contentHash': contentHash,
+      'contentId': contentId,
       'parentId': parentId,
       'title': title,
       'path': path,
@@ -99,6 +106,7 @@ class CourseContent {
     final content = CourseContent();
     content.id = map['id'] ?? Isar.autoIncrement;
     content.contentHash = map['contentHash'] ?? '';
+    content.contentId = map['contentId'] ?? '';
     content.parentId = map['parentId'] ?? '';
     content.title = map['title'] ?? '';
     content.path = map['path'] ?? '';
@@ -119,6 +127,7 @@ class CourseContent {
 
     return other.id == id &&
         other.contentHash == contentHash &&
+        other.contentId == contentId &&
         other.parentId == parentId &&
         other.title == title &&
         other.path == path &&
@@ -132,6 +141,7 @@ class CourseContent {
   int get hashCode {
     return id.hashCode ^
         contentHash.hashCode ^
+        contentId.hashCode ^
         parentId.hashCode ^
         title.hashCode ^
         path.hashCode ^

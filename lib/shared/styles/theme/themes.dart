@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 
@@ -19,13 +20,21 @@ class AppThemeDataProvider extends Notifier<ThemeData> {
   }
 }
 
-
 ThemeData resolveThemeData(AppThemeModel theme) {
+  TextTheme? textTheme;
+  try {
+    final res = GoogleFonts.getTextTheme(theme.fontFamily ?? '');
+    textTheme = res;
+  } catch (e) {
+    log("Unable to load font");
+  }
   return ThemeData(
     brightness: theme.brightness,
     primaryColor: theme.primaryColor,
     scaffoldBackgroundColor: theme.backgroundColor,
     canvasColor: theme.cardColor,
+    textTheme: textTheme,
+    fontFamily: "Nunito",
     colorScheme: ColorScheme(
       brightness: theme.brightness,
       primary: theme.primaryColor,
@@ -48,6 +57,6 @@ ThemeData resolveThemeData(AppThemeModel theme) {
     floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: theme.primaryColor),
     iconTheme: IconThemeData(color: theme.textPrimaryColor),
     cardColor: theme.cardColor,
-    fontFamily: "Nunito",
+    
   );
 }

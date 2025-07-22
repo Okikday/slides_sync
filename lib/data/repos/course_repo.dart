@@ -6,7 +6,7 @@ import 'package:slides_sync/data/models/course_model/course.dart';
 
 class CourseRepo {
   static final IsarData<Course> _isarData = IsarData.instance<Course>();
-  static Future<Isar> get _isar async => await _isarData.isarFuture;
+  static Future<Isar> get _isar async => await IsarData.isarFuture;
 
   static Future<QueryBuilder<Course, Course, QAfterFilterCondition>> _queryById(String courseId) async {
     return (await _isarData.query<Course>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
@@ -54,14 +54,15 @@ class CourseRepo {
       final Course? course = await getCourseById(collection.parentId);
       if (course == null) return false;
 
-      final isar = (await _isar);
+      final Isar isar = (await _isar);
 
       await course.collections.load();
+      
       await isar.writeTxn(() async {
         await isar.courseCollections.put(collection);
         course.collections.add(collection);
-        await isar.courses.put(course);
         await course.collections.save();
+        await isar.courses.put(course);
       });
       return true;
     } catch (e) {
@@ -75,16 +76,19 @@ class CourseRepo {
       if (collection.collectionId.isEmpty) return false;
       final Course? course = await getCourseById(collection.parentId);
       if (course == null) return false;
+      
       final isar = (await _isar);
 
       await course.collections.load();
+      
       await isar.writeTxn(() async {
         if (!(await isar.courseCollections.delete(collection.id))) {
           await isar.courseCollections.filter().collectionIdEqualTo(collection.collectionId).deleteFirst();
         }
         course.collections.remove(collection);
-        await isar.courses.put(course);
+        
         await course.collections.save();
+        await isar.courses.put(course);
       });
       return true;
     } catch (e) {
@@ -94,8 +98,9 @@ class CourseRepo {
   }
 
   static Future<String?> addCollectionNoDuplicateTitle(CourseCollection collection) async {
+    final isar = (await _isar);
     final CourseCollection? duplicate =
-        await ((await _isar).courseCollections
+        await (isar.courseCollections
             .filter()
             .collectionTitleEqualTo(collection.collectionTitle)
             .parentIdEqualTo(collection.parentId)

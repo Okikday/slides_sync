@@ -6,7 +6,7 @@ import 'package:slides_sync/data/repos/course_content_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
 
 class ModifyContentUc {
-  Future<String?> deleteContentAction(CourseContent content, {int? courseDbId, required String collectionId}) async {
+  Future<String?> deleteContentAction(CourseContent content) async {
     await CourseCollectionRepo.deleteContent(content);
     final CourseContent? sameHashedContent = await CourseContentRepo.getByHash(content.contentHash);
     if (sameHashedContent == null) {
@@ -17,7 +17,9 @@ class ModifyContentUc {
     return null;
   }
 
-  
+  // Future<String?> renameContentAction(CourseContent content){
+
+  // }
 
   // Future<String?> deleteContentsInIsolate() {
   //   log("Hello");

@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app.dart';
+import 'package:slides_sync/core/data/hive_data/hive_data.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
@@ -113,8 +114,7 @@ class SettingsCard extends StatelessWidget {
                     spacing: 2,
                     children: [
                       CustomText(title, color: context.theme.colorScheme.tertiary),
-                      if (content != null)
-                        CustomText(content!, fontSize: 11, color: context.theme.colorScheme.onTertiary),
+                      if (content != null) CustomText(content!, fontSize: 11, color: context.theme.colorScheme.onTertiary),
                     ],
                   ),
                 ),
@@ -139,52 +139,30 @@ class SettingsAppearanceDialog extends ConsumerWidget {
       leading: Center(child: CustomText("Adjust Theme", color: context.theme.colorScheme.tertiary)),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SizedBox(
-          width: context.deviceWidth,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ConstantSizing.columnSpacingSmall,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ConstantSizing.columnSpacingSmall,
 
-                  for (int i = 0; i < defaultAppThemeModels.length ~/ 2; i++)
-                    () {
-                      final light = defaultAppThemeModels[i * 2];
-                      final dark = defaultAppThemeModels[i * 2 + 1];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            CustomElevatedButton(
-                              label: light.title,
-                              backgroundColor: context.theme.cardColor,
-                              textColor: context.theme.colorScheme.tertiary,
-                              onClick: () {
-                                ref.read(appThemeDataProvider.notifier).update(resolveThemeData(light));
-                              },
-                            ),
-
-                            ConstantSizing.rowSpacing(24),
-
-                            CustomElevatedButton(
-                              label: dark.title,
-                              backgroundColor: context.theme.cardColor,
-                              textColor: context.theme.colorScheme.tertiary,
-                              onClick: () {
-                                ref.read(appThemeDataProvider.notifier).update(resolveThemeData(dark));
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    }(),
-                ],
-              ),
-            ),
+              for (final theme in defaultAppThemeModels)
+                () {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomElevatedButton(
+                      label: theme.title,
+                      backgroundColor: context.theme.cardColor,
+                      textColor: context.theme.colorScheme.tertiary,
+                      onClick: () async{
+                        ref.read(appThemeDataProvider.notifier).update(resolveThemeData(theme));
+                        await HiveData().setData(key: "appTheme", value: theme.toJson());
+                      },
+                    ),
+                  );
+                }(),
+            ],
           ),
         ),
       ),

@@ -42,13 +42,18 @@ const CourseSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'imageLocationJson': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 5,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'imageLocationJson': PropertySchema(
+      id: 6,
       name: r'imageLocationJson',
       type: IsarType.string,
     ),
     r'lastUpdated': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'lastUpdated',
       type: IsarType.dateTime,
     )
@@ -113,8 +118,9 @@ void _courseSerialize(
   writer.writeString(offsets[2], object.courseTitle);
   writer.writeDateTime(offsets[3], object.createdAt);
   writer.writeString(offsets[4], object.description);
-  writer.writeString(offsets[5], object.imageLocationJson);
-  writer.writeDateTime(offsets[6], object.lastUpdated);
+  writer.writeLong(offsets[5], object.hashCode);
+  writer.writeString(offsets[6], object.imageLocationJson);
+  writer.writeDateTime(offsets[7], object.lastUpdated);
 }
 
 Course _courseDeserialize(
@@ -130,8 +136,8 @@ Course _courseDeserialize(
   object.createdAt = reader.readDateTimeOrNull(offsets[3]);
   object.description = reader.readString(offsets[4]);
   object.id = id;
-  object.imageLocationJson = reader.readString(offsets[5]);
-  object.lastUpdated = reader.readDateTimeOrNull(offsets[6]);
+  object.imageLocationJson = reader.readString(offsets[6]);
+  object.lastUpdated = reader.readDateTimeOrNull(offsets[7]);
   return object;
 }
 
@@ -153,8 +159,10 @@ P _courseDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -890,6 +898,59 @@ extension CourseQueryFilter on QueryBuilder<Course, Course, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Course, Course, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Course, Course, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1268,6 +1329,18 @@ extension CourseQuerySortBy on QueryBuilder<Course, Course, QSortBy> {
     });
   }
 
+  QueryBuilder<Course, Course, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Course, Course, QAfterSortBy> sortByImageLocationJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'imageLocationJson', Sort.asc);
@@ -1354,6 +1427,18 @@ extension CourseQuerySortThenBy on QueryBuilder<Course, Course, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Course, Course, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Course, Course, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1427,6 +1512,12 @@ extension CourseQueryWhereDistinct on QueryBuilder<Course, Course, QDistinct> {
     });
   }
 
+  QueryBuilder<Course, Course, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<Course, Course, QDistinct> distinctByImageLocationJson(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1476,6 +1567,12 @@ extension CourseQueryProperty on QueryBuilder<Course, Course, QQueryProperty> {
   QueryBuilder<Course, String, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
+    });
+  }
+
+  QueryBuilder<Course, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 

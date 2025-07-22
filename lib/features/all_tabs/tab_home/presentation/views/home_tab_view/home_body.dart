@@ -20,7 +20,8 @@ class HomeBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
+      // physics: const BouncingScrollPhysics(),
       controller: scrollController,
       slivers: [
         SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),

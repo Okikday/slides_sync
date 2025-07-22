@@ -7,7 +7,7 @@ import 'package:slides_sync/data/repos/course_repo.dart';
 
 class CourseCollectionRepo {
   static final IsarData<CourseCollection> _isarData = IsarData.instance<CourseCollection>();
-  static Future<Isar> get _isar async => await _isarData.isarFuture;
+  static Future<Isar> get _isar async => await IsarData.isarFuture;
 
   static Future<QueryBuilder<CourseCollection, CourseCollection, QAfterFilterCondition>> _queryById(String collectionId) async {
     return (await _isarData.query<CourseCollection>((q) => q.idGreaterThan(0))).filter().collectionIdEqualTo(collectionId);
