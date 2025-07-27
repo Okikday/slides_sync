@@ -33,7 +33,7 @@ class AppBarContainer extends ConsumerWidget implements PreferredSizeWidget {
       deviceWidth: screenSize.width,
       deviceHeight: screenSize.height,
       appBarHeight: appBarHeight,
-      scaffoldBgColor: context.scaffoldBackgroundColor,
+      scaffoldBgColor: scaffoldBgColor,
       padding: padding,
       topPadding: topPadding,
       child: child,

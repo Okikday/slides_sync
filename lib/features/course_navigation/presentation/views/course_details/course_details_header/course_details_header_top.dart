@@ -114,12 +114,12 @@ class CourseDetailsHeaderTop extends StatelessWidget {
                 shape: shape,
                 size: Size(120, 120),
                 child: CustomShapeWaveFilledWidget(
-                  progress: 0.56,
+                  progress: 0.23,
                   textStyle: TextStyle(fontWeight: FontWeight.bold, color: context.theme.primaryColor),
                   backgroundWidget: BuildImagePathWidget(
                     fileDetails: course.imageLocationJson.fileDetails,
                     fallbackWidget: const SizedBox(),
-                  ).animate().fade(begin: 1.0, end: 0.2, duration: Durations.extralong1, curve: CustomCurves.decelerate),
+                  ).animate().fade(begin: 1.0, end: 0.15, duration: Durations.extralong1, curve: CustomCurves.decelerate),
                 ),
               );
             },

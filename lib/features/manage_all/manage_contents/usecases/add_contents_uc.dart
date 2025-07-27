@@ -11,6 +11,11 @@ import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_con
 import 'package:slides_sync/routes/routes.dart';
 
 class AddContentsUc {
+  // static Future<String?> addNoteToCollection(){
+    
+  // }
+
+
   static Future<String?> addToCollection(
     BuildContext context, {
     required CourseCollection collection,

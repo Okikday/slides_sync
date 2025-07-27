@@ -1,15 +1,12 @@
-import 'dart:developer';
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/providers/course_provider.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_collection_section.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header.dart';
-import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -35,16 +32,13 @@ class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    // final deviceHeight = context.deviceHeight;
-    // final deviceWidth = context.deviceWidth;
     final topGradColor = AppColors.bgBlendColor(context, .8, .2);
     final firstStop = 1 - ((kToolbarHeight * 2 + context.topPadding) / context.deviceHeight);
 
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode, statusBarColor: Colors.transparent,),
+      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode, statusBarColor: Colors.transparent),
       child: Scaffold(
         extendBody: true,
-
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -67,26 +61,42 @@ class CourseDetailsOuterSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Course course = ref.watch(CourseProviders.courseProvider);
-    return CustomScrollView(
-      slivers: [
-        CourseDetailsHeader(course: course),
+    return Stack(
+      clipBehavior: Clip.hardEdge,
+      children: [
+        CustomScrollView(
+          slivers: [
+            CourseDetailsHeader(course: course),
 
-        // if (course.collections.isNotEmpty)
-        //   PinnedHeaderSliver(
-        //     child: ColoredBox(
-        //       color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
-        //       child: Padding(
-        //         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        //         child: CustomText("Collections", fontSize: 16, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
-        //       ),
-        //     ),
-        //   ),
+            CourseDetailsCollectionSection(course: course),
 
-        // SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
+            SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+          ],
+        ),
 
-        CourseDetailsCollectionSection(course: course),
+        Positioned(
+          bottom: context.bottomPadding + 8,
+          left: 10,
+          child: Row(
+            spacing: 12,
+            children: [
+              CustomElevatedButton(
+                borderRadius: 16,
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                backgroundColor: context.theme.colorScheme.onTertiary,
+                child: CustomText("Continue Reading", fontSize: 13, color: context.theme.scaffoldBackgroundColor),
+              ),
 
-        SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+              CustomElevatedButton(
+                pixelHeight: 48,
+                pixelWidth: 48,
+                borderRadius: 16,
+                backgroundColor: context.theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                child: Icon(Iconsax.note, color: context.theme.colorScheme.onTertiary),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

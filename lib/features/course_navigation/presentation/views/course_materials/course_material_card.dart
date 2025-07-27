@@ -59,16 +59,11 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
       next ? expandAnimationController.forward() : expandAnimationController.reverse();
     });
 
-    log("Build Course Material Card");
-
     final CourseContent courseContent = widget.courseContent;
     return AnimatedContainer(
       duration: Durations.extralong4,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.bgBlendColor(context, .88, .12),
-        borderRadius: BorderRadius.circular(12)
-      ),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(color: AppColors.bgBlendColor(context), borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
         onTap: widget.onTapCard,
@@ -77,7 +72,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [ 
+            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -88,62 +83,54 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                     decoration: BoxDecoration(
                       color: context.theme.primaryColor.withAlpha(40),
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
+                      // boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
                     ),
                     child: BuildImagePathWidget(
                       fileDetails: FileDetails(
-                        filePath: CreateContentPreviewImage.genPreviewImagePath(
-                          filePath: courseContent.path.filePath,
-                        ),
+                        filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: courseContent.path.filePath),
                       ),
-                      fallbackWidget: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true)),
+                      fallbackWidget: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true), size: 20),
                     ),
                   ),
-                  // else
-                  //   Badge(
-                  //     backgroundColor: Colors.transparent,
-                  //     label: CircleAvatar(
-                  //       radius: 13,
-                  //       backgroundColor: UiStyles.getBlueThemedBoxDecoration(context).color,
-                  //       child: CircleAvatar(
-                  //         radius: 12,
-                  //         backgroundColor: context.theme.primaryColor.withAlpha(40),
-                  //         child: Icon(Iconsax.music, size: 15),
-                  //       ),
-                  //     ),
-                  //     offset: Offset(-8, 0),
-                  //     child: CustomElevatedButton(
-                  //       onClick: () {},
-                  //       pixelWidth: 72,
-                  //       pixelHeight: 72,
-                  //       borderRadius: 8.0,
-                  //       backgroundColor: context.theme.primaryColor.withAlpha(40),
-                  //       child: courseMaterialCardModel.previewImage,
-                  //     ),
-                  //   )
                   ConstantSizing.rowSpacingMedium,
                   Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(courseContent.title, fontSize: 13, color: context.theme.colorScheme.tertiary),
-                        ConstantSizing.columnSpacingMedium,
-                        LinearProgressIndicator(
-                          minHeight: 8,
-                          borderRadius: BorderRadius.circular(36),
-                          value: math.Random().nextDouble(),
-                          backgroundColor: Colors.black.withAlpha(40),
-                          color: context.theme.primaryColor, //.withAlpha(40)
-                        ),
-                      ],
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxHeight: 100),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Flexible(
+                            child: CustomText(
+                              courseContent.title,
+                              fontSize: 13,
+                              color: context.theme.colorScheme.tertiary,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          // ConstantSizing.columnSpacing(2),
+                          CustomText(courseContent.courseContentType.name, fontSize: 11, color: context.theme.colorScheme.onTertiary),
+                          ConstantSizing.columnSpacing(8),
+                          LinearProgressIndicator(
+                            minHeight: 8,
+                            borderRadius: BorderRadius.circular(36),
+                            value: math.Random().nextDouble(),
+                            backgroundColor: Colors.black.withAlpha(40),
+                            color: context.theme.primaryColor, //.withAlpha(40)
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   ConstantSizing.rowSpacingMedium,
-                  IconButton(
-                    onPressed: () {},
-                    style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(context.theme.colorScheme.secondary.withAlpha(15))),
-                    icon: Icon(Iconsax.arrow_circle_right),
+                  CustomElevatedButton(
+                    pixelHeight: 30,
+                    pixelWidth: 30,
+                    contentPadding: EdgeInsets.zero,
+                    backgroundColor: context.theme.colorScheme.secondary,
+                    shape: CircleBorder(),
+                    onClick: () {},
+                    child: Icon(Iconsax.arrow_circle_right, color: AppColors.secondaryText(context)),
                   ),
                 ],
               ),

@@ -33,7 +33,7 @@ class HomeDashBoard extends ConsumerWidget {
       width: context.deviceWidth,
       clipBehavior: Clip.hardEdge,
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
-      margin: const EdgeInsets.symmetric(horizontal: 6),
+      margin: EdgeInsets.only(left: isFirst  == null ? 8 : 12, right: isFirst == null ? 0 : (isFirst! ? 0 : 12)),
       decoration: BoxDecoration(
         color: AppColors.bgBlendColor(context),
         borderRadius: BorderRadius.circular(18),

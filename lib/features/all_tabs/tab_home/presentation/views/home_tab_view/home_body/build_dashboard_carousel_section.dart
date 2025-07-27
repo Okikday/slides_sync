@@ -26,9 +26,9 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
           shrinkExtent: isDesktop ? deviceWidth * 0.6 : deviceWidth * 0.94,
           itemExtent: isDesktop ? deviceWidth * 0.7 : deviceWidth * 0.94,
           children: [
-            HomeDashBoard(courseName: 'Foundation of Sequential Programming', detail: 'CSC 213', progressValue: 0.45, completed: false),
+            HomeDashBoard(courseName: 'Foundation of Sequential Programming', detail: 'CSC 213', progressValue: 0.45, completed: false, isFirst: true,),
             HomeDashBoard(courseName: 'Software Workshop II', detail: '', progressValue: 0.45),
-            HomeDashBoard(courseName: 'Mathematical Methods I', detail: 'MAT 233', progressValue: 0.45),
+            HomeDashBoard(courseName: 'Mathematical Methods I', detail: 'MAT 233', progressValue: 0.45, isFirst: false,),
           ],
         ),
       ),

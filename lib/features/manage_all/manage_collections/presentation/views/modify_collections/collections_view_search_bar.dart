@@ -26,7 +26,7 @@ class CollectionsViewSearchBar extends StatelessWidget {
                   child: ClipRSuperellipse(
                     borderRadius: BorderRadius.circular(10.0),
                     child: CustomTextfield(
-                      hint: "Search Collections",
+                      hint: "Search collections",
                       hintStyle: TextStyle(color: AppColors.secondaryText(context)),
                       inputTextStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
                       backgroundColor: context.theme.colorScheme.onSurface,

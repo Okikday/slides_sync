@@ -8,6 +8,7 @@ import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/add_contents_actions.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class AddContentsBottomSheet extends ConsumerStatefulWidget {
   final CourseCollection collection;
@@ -33,27 +34,20 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
 
   @override
   Widget build(BuildContext context) {
-    
     return Stack(
-          children: [
-            Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 8,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: AddContentCardSection(
-                  fixedExtentScrollController: fixedExtentScrollController,
-                  collection: widget.collection,
-                ),
-              ),
-            ),
-          ],
-        )
-        .animate()
-        .scaleY(alignment: Alignment.bottomCenter, begin: 0, duration: Durations.extralong2, curve: CustomCurves.bouncySpring)
-        .fadeIn();
+      children: [
+        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 8,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: AddContentCardSection(fixedExtentScrollController: fixedExtentScrollController, collection: widget.collection),
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -72,7 +66,7 @@ class AddContentCardSection extends StatelessWidget {
       margin: EdgeInsets.only(bottom: context.bottomPadding + context.viewInsets.bottom, left: 24, right: 24),
       padding: EdgeInsets.only(bottom: 4.0),
       decoration: BoxDecoration(
-        color: context.scaffoldBackgroundColor,
+        color: AppColors.bgBlendColor(context).withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(24),
         border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(20))),
       ),
@@ -87,8 +81,8 @@ class AddContentCardSection extends StatelessWidget {
               "What kind of content do you want to add?",
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: context.theme.colorScheme.tertiary,
-            ),
+              color: AppColors.primary(context),
+            ).animate().fadeIn().slideX(begin: -0.05),
           ),
           // ConstantSizing.columnSpacingSmall,
           Column(
@@ -106,23 +100,29 @@ class AddContentCardSection extends StatelessWidget {
                         BuildPlainActionButton(
                           title: "Document",
                           icon: Icon(Iconsax.document, color: context.theme.primaryColor),
-                          onTap: () => AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[2] ?? typeMap[0]!),
+                          onTap:
+                              () =>
+                                  AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[2] ?? typeMap[0]!),
                         ),
 
                         BuildPlainActionButton(
                           title: "Auto",
                           icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
-                          onTap: () => AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[0] ?? typeMap[0]!),
+                          onTap:
+                              () =>
+                                  AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[0] ?? typeMap[0]!),
                         ),
 
                         BuildPlainActionButton(
                           title: "Image",
                           icon: Icon(Iconsax.image, color: context.theme.primaryColor),
-                          onTap: () => AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[1] ?? typeMap[0]!),
+                          onTap:
+                              () =>
+                                  AddContentsActions.onClickToAddContent(context, collection: collection, type: typeMap[1] ?? typeMap[0]!),
                         ),
                       ].map((e) => Padding(padding: EdgeInsets.symmetric(horizontal: 12), child: e)).toList(),
                 ),
-              ),
+              ).animate().fadeIn().scaleX(begin: 0.95),
 
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
@@ -131,28 +131,28 @@ class AddContentCardSection extends StatelessWidget {
                   children: [
                     Flexible(
                       child: CustomElevatedButton(
-                        backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(80),
+                        backgroundColor: context.theme.colorScheme.onSurface,
                         pixelHeight: 40,
                         borderRadius: 16,
                         child: Row(
                           spacing: 4.0,
                           children: [
                             Icon(Iconsax.note_add, color: context.theme.colorScheme.onTertiary),
-                            CustomText("Add note", color: context.theme.colorScheme.onSecondary),
+                            CustomText("Add note", color: AppColors.primaryText(context)),
                           ],
                         ),
                       ),
                     ),
                     Flexible(
                       child: CustomElevatedButton(
-                        backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(80),
+                        backgroundColor: context.theme.colorScheme.onSurface,
                         pixelHeight: 40,
                         borderRadius: 16,
                         child: Row(
                           spacing: 4.0,
                           children: [
                             Icon(Iconsax.link_circle, color: context.theme.colorScheme.onTertiary),
-                            CustomText("Add link", color: context.theme.colorScheme.onSecondary),
+                            CustomText("Add link", color: AppColors.primaryText(context)),
                           ],
                         ),
                       ),

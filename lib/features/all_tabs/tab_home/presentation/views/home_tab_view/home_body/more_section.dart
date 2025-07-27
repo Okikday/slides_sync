@@ -13,7 +13,7 @@ class MoreSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-      margin: EdgeInsets.symmetric(horizontal: 8),
+      margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: AppColors.bgBlendColor(context, .9, .1),
         borderRadius: BorderRadius.circular(24),
@@ -59,10 +59,13 @@ class MoreSectionOption extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 6.0,
       children: [
-        CircleAvatar(
-          radius: 24,
+        CustomElevatedButton(
+          pixelHeight: 48,
+          pixelWidth: 48,
+          // contentPadding: EdgeInsets.all(0),
+          shape: const CircleBorder(),
           backgroundColor: AppColors.bgBlendColor(context, .86, .14),
-          child: Icon(iconData, color: AppColors.secondaryText(context)),
+          child: Icon(iconData, color: AppColors.secondaryText(context))
         ),
         CustomText(title, color: AppColors.primaryText(context), fontSize: 12),
       ],

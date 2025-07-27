@@ -26,7 +26,7 @@ class IsarData<T> {
     if (_openDb == null) {
       final dir = await getApplicationDocumentsDirectory();
       _openDb = Isar.open(collectionSchemas, directory: dir.path, name: dbName);
-      log("Successfully initialized db");
+      log("Initialized Isar");
     }
   }
 
