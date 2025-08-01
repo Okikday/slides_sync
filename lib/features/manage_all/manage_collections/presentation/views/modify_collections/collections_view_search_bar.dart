@@ -12,7 +12,6 @@ class CollectionsViewSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-
       child: ColoredBox(
         color: context.scaffoldBackgroundColor.withValues(alpha: 0.6),
         child: BackdropFilter(
@@ -38,7 +37,7 @@ class CollectionsViewSearchBar extends StatelessWidget {
                     ),
                   ),
                 ),
-          
+    
                 CustomElevatedButton(
                   pixelHeight: 48,
                   shape: CircleBorder(),

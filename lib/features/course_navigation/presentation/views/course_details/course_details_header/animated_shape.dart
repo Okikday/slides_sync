@@ -52,7 +52,10 @@ class MaterialShapedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final path = shape.toPath();
     return ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: size.width, maxHeight: size.height),
+      constraints: BoxConstraints(
+        minHeight: 48,
+        minWidth: 48,
+        maxWidth: size.width, maxHeight: size.height),
       child: AspectRatio(
         aspectRatio: 1,
         child: ClipPath(

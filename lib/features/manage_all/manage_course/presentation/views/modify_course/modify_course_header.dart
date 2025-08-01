@@ -64,10 +64,14 @@ class ModifyCourseHeader extends ConsumerWidget {
                       ),
 
                     Flexible(
-                      child: Padding(
+                      child: Tooltip(
+                        message: title,
+                        triggerMode: TooltipTriggerMode.tap,
+                        child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: CustomText(title, fontSize: 22, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,),
+                        child: CustomText(title, fontSize: 20, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,),
                       ),
+                      )
                     ),
                     Flexible(
                       child: Padding(

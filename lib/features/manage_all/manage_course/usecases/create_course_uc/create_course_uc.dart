@@ -8,7 +8,7 @@ import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 
-class CreateCourseAction {
+class CreateCourseUc {
   Future<Result<Course>> createCourseAction({String courseCode = '', required String courseName, String? courseImagePath}) async {
     final Result<Course?> createCourseOutcome = await Result.tryRunAsync<Course>(() async {
       Course course = Course.create(courseTitle: CourseFormatter.joinCodeToTitle(courseCode, courseName));

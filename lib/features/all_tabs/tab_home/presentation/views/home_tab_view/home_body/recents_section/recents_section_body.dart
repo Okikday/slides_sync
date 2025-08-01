@@ -5,10 +5,8 @@ import 'package:lottie/lottie.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
-import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 import '../../../../../../../../test/dummy_slides.dart';
 import '../../../../viewmodels/recent_list_tile_model.dart';

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class ListCourseCard extends ConsumerWidget {

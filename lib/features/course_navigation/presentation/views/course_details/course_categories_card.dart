@@ -26,7 +26,7 @@ class CourseCategoriesCard extends ConsumerWidget {
       onTap: onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: context.scaffoldBackgroundColor.withValues(alpha: 0.6),
+          color: AppColors.bgBlendColor(context, .96, .04),
           border: Border.all(color: AppColors.bgBlendColor(context)),
           borderRadius: BorderRadius.circular(12)
         ),

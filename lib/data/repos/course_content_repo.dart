@@ -16,7 +16,7 @@ class CourseContentRepo {
 
   // static Stream<CourseContent?> watchByDbId(int dbId) => _isarData.watchById(dbId);
 
-  static Future<int> add(CourseContent collection) async => await _isarData.store(collection);
+  static Future<int> add(CourseContent content) async => await _isarData.store(content);
 
   // static Future<List<int>> addMultiple(List<CourseContent> courses) async => await _isarData.storeAll(courses);
 

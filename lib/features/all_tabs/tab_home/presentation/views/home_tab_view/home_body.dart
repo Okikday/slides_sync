@@ -1,7 +1,6 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/more_section.dart';
@@ -9,8 +8,6 @@ import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_t
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_header.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/build_dashboard_carousel_section.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/strings/asset_strings.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class HomeBody extends ConsumerWidget {
   final ScrollController? scrollController;

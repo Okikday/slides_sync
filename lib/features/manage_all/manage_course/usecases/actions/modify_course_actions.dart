@@ -11,7 +11,7 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_action.dart';
+import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_uc.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/modify_course_header/preview_modify_course_image_dialog.dart';
@@ -33,7 +33,7 @@ class ModifyCourseActions {
       if (course.imageLocationJson.containsAnyFilePath) {
         await FileUtils.deleteFileAtPath(course.imageLocationJson.filePath);
       }
-      final String? newPath = await CreateCourseAction.compressCourseImageAsFile(newImageFile.path, folderPath: "courses/${course.courseId}");
+      final String? newPath = await CreateCourseUc.compressCourseImageAsFile(newImageFile.path, folderPath: "courses/${course.courseId}");
       if (newPath != null) {
         course = course.copyWith(imageLocationJson: FileDetails(filePath: newPath).toJson());
         await CourseRepo.addCourse(course);

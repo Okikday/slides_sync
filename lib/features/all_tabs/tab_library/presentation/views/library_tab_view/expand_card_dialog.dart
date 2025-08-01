@@ -99,7 +99,7 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 4,
                       children: [
-                        CustomText(widget.course.courseName, fontSize: 14, color: context.theme.colorScheme.tertiary),
+                        Expanded(child: CustomText(widget.course.courseName, fontSize: 14, color: context.theme.colorScheme.tertiary, overflow: TextOverflow.ellipsis)),
                         if (widget.course.courseCode.isNotEmpty)
                           CustomText(widget.course.courseCode, fontSize: 10, color: context.theme.colorScheme.onTertiary),
                       ],
