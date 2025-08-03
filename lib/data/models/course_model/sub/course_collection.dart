@@ -24,7 +24,7 @@ class CourseCollection {
   late String imageLocationJson;
   late String collectionMetadataJson;
 
-  final contents = IsarLinks<CourseContent>();
+  final IsarLinks<CourseContent> contents = IsarLinks<CourseContent>();
 
   CourseCollection();
 
@@ -124,6 +124,11 @@ class CourseCollection {
         createdAt.hashCode ^
         imageLocationJson.hashCode ^
         collectionMetadataJson.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'CourseCollection(id: $id, collectionId: $collectionId, parentId: $parentId, collectionTitle: $collectionTitle, description: $description, createdAt: $createdAt, imageLocationJson: $imageLocationJson, collectionMetadataJson: $collectionMetadataJson)';
   }
 }
 

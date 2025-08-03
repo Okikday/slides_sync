@@ -1,21 +1,20 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_uc.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/select_contents_uc.dart';
+import 'package:slides_sync/data/repos/course_content_repo.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/select_contents_uc.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/store_contents_uc.dart';
 import 'package:slides_sync/routes/routes.dart';
 
 class AddContentsUc {
-  // static Future<String?> addNoteToCollection(){
-    
-  // }
-
-
   static Future<String?> addToCollection(
     BuildContext context, {
     required CourseCollection collection,
@@ -42,7 +41,7 @@ class AddContentsUc {
       final RootIsolateToken? rootIsolateToken = RootIsolateToken.instance;
       if (rootIsolateToken == null) return "Unable to process adding content in background";
       valueNotifier?.value = "Adding contents";
-      String? result = await compute(CreateContentUc.storeCourseContents, <String, dynamic>{
+      String? result = await compute(StoreContentsUc.storeCourseContents, <String, dynamic>{
         'rootIsolateToken': rootIsolateToken,
         'collectionJson': collection.toJson(),
         'selectedContentsPaths': <String>[for (final value in selectedContents) value.path],
@@ -59,5 +58,25 @@ class AddContentsUc {
       log("${outcome.message}");
       return "An error occurred while adding to collection!";
     }
+  }
+
+  static Future<CourseContent?> createNote(CourseCollection collection, {String defaultNote = '', String title = '', List<String> tags = const []}) async {
+    final parentId = collection.collectionId;
+    final contentHash = sha256.convert(defaultNote.codeUnits).bytes.toString();
+    final path = collection.absolutePath;
+
+    CourseContent newContent = CourseContent.create(
+      contentHash: contentHash,
+      parentId: parentId,
+      title: title,
+      description: defaultNote,
+      path: FileDetails(filePath: path),
+      courseContentType: CourseContentType.note,
+      metadataJson: jsonEncode({'tags': tags.toString()}),
+    );
+
+    final dbId = await CourseContentRepo.add(newContent);
+    final note = await CourseContentRepo.getByDbId(dbId);
+    return note;
   }
 }

@@ -37,9 +37,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
       );
     }
 
-    List<RoundedPolygon> shapes =
-        materialShapes.map<RoundedPolygon>((({RoundedPolygon shape, String title}) record) => record.shape).toList();
-    shapes.shuffle();
+
 
     return SliverList.builder(
       itemCount: collections.length,
@@ -51,13 +49,7 @@ class CourseDetailsCollectionSection extends StatelessWidget {
             isDarkMode: context.isDarkMode,
             title: list[index].collectionTitle,
             contentCount: list[index].contents.length,
-            icon: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipPath(
-                clipper: MorphClipper(path: shapes[index.clamp(0, 30)].toPath(), size: Size(20, 20)),
-                child: ColoredBox(color: context.theme.primaryColor),
-              ),
-            ),
+            
             onTap: () {
               if (context.mounted) {
                 Navigator.of(context).push(

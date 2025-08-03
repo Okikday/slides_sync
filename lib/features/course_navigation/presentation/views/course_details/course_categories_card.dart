@@ -1,13 +1,15 @@
+import 'dart:math' as math;
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
-class CourseCategoriesCard extends ConsumerWidget {
+class CourseCategoriesCard extends ConsumerStatefulWidget {
   final bool isDarkMode;
   final String title;
-  final Widget icon;
   final int contentCount;
   final void Function() onTap;
   const CourseCategoriesCard({
@@ -15,20 +17,33 @@ class CourseCategoriesCard extends ConsumerWidget {
     required this.isDarkMode,
     required this.title,
     required this.onTap,
-    required this.icon,
     this.contentCount = 0,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CourseCategoriesCard> createState() => _CourseCategoriesCardState();
+}
+
+class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
+  final List<RoundedPolygon> shapes = List.from(materialShapes.map((e) => e.shape));
+  late final RoundedPolygon shape;
+  @override
+  void initState() {
+    super.initState();
+    final randomIndex = math.Random().nextInt(shapes.length);
+    shape = shapes[randomIndex];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
+      onTap: widget.onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: AppColors.bgBlendColor(context, .96, .04),
           border: Border.all(color: AppColors.bgBlendColor(context)),
-          borderRadius: BorderRadius.circular(12)
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
           padding: EdgeInsets.all(16),
@@ -45,7 +60,13 @@ class CourseCategoriesCard extends ConsumerWidget {
                   shape: BoxShape.circle,
                   border: Border.fromBorderSide(BorderSide(color: AppColors.primary(context).withAlpha(40), width: 1.0)),
                 ),
-                child: icon,
+                child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipPath(
+                clipper: MorphClipper(path: shape.toPath(), size: Size(20, 20)),
+                child: ColoredBox(color: context.theme.primaryColor),
+              ),
+            ),
               ),
               ConstantSizing.rowSpacingMedium,
               Expanded(
@@ -54,9 +75,9 @@ class CourseCategoriesCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4.0,
                   children: [
-                    CustomText(title, fontSize: 15, color: context.theme.colorScheme.tertiary),
+                    CustomText(widget.title, fontSize: 15, color: context.theme.colorScheme.tertiary),
                     CustomText(
-                      "${contentCount == 0 ? "No" : "$contentCount"} ${contentCount == 1 ? "item" : "items"}",
+                      "${widget.contentCount == 0 ? "No" : "${widget.contentCount}"} ${widget.contentCount == 1 ? "item" : "items"}",
                       fontSize: 12,
                       color: context.theme.colorScheme.onTertiary,
                     ),

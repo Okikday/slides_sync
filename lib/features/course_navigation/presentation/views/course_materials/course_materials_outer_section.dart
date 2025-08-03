@@ -1,8 +1,10 @@
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_material_card.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class CourseMaterialsOuterSection extends ConsumerStatefulWidget {
   final CourseCollection collection;
@@ -31,6 +33,8 @@ class _CourseMaterialsOuterSectionState extends ConsumerState<CourseMaterialsOut
   @override
   Widget build(BuildContext context) {
     final courseContents = widget.collection.contents.toList();
+
+    if (courseContents.isEmpty) return Center(child: CustomText("No content found", color: AppColors.primaryText(context),));
     return ListView.builder(
       padding: EdgeInsets.only(top: 8),
       physics: BouncingScrollPhysics(),

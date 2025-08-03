@@ -12,10 +12,10 @@ import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_collection_repo.dart';
 import 'package:slides_sync/data/repos/course_content_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/repos/allowed_file_extensions.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:uuid/uuid.dart';
 
-class CreateContentUc {
+class StoreContentsUc {
   static CourseCollection collectionFromJson(String source) => CourseCollection.fromJson(source);
 
   static Future<String?> storeCourseContents(Map<String, dynamic> args) async {

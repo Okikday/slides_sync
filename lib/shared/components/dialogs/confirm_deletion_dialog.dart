@@ -47,7 +47,7 @@ class ConfirmDeletionDialog extends ConsumerWidget {
     ).animate().fadeIn().scaleY(
       begin: 0.2,
       end: 1,
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.bottomRight,
       duration: Duration(milliseconds: 500),
       curve: CustomCurves.defaultIosSpring,
     );

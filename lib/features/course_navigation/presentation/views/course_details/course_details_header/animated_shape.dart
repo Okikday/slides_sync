@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:material_shapes/material_shapes.dart';
 
+export 'package:material_shapes/material_shapes.dart';
+
 final List<({RoundedPolygon shape, String title})> materialShapes = [
   (shape: MaterialShapes.circle, title: 'Circle'),
   (shape: MaterialShapes.square, title: 'Square'),

@@ -1,11 +1,11 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/data/repos/course_content_repo.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/common_widgets/modifying_list_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
@@ -13,7 +13,7 @@ import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 typedef ModContentCardTileAction<Record> = ({String title, IconData iconData, void Function() onTap});
 
-class ModContentCardTile extends ConsumerWidget {
+class ModContentCardTile extends ConsumerStatefulWidget {
   final CourseContent content;
   final List<ModContentCardTileAction> actions;
 
@@ -29,13 +29,28 @@ class ModContentCardTile extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ModContentCardTile> createState() => _ModContentCardTileState();
+}
+
+class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
+  late final AutoDisposeStreamProvider<CourseContent?> contentProvider;
+  @override
+  void initState() {
+    super.initState();
+    contentProvider = AutoDisposeStreamProvider((ref) async* {
+      yield* CourseContentRepo.watchByDbId(widget.content.id);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final CourseContent? currContent = ref.watch(contentProvider).value;
     return Padding(
       padding: EdgeInsets.only(bottom: context.hPadding7),
       child: ModifyingListTile(
         leading: BuildImagePathWidget(
-          fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath)),
-          fallbackWidget: Icon(WidgetHelper.resolveIconData(content.courseContentType), size: 22, color: context.theme.primaryColor),
+          fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath:  widget.content.path.filePath)),
+          fallbackWidget: Icon(WidgetHelper.resolveIconData(widget.content.courseContentType), size: 22, color: context.theme.primaryColor),
         ),
         trailing: PopupMenuTheme(
           data: PopupMenuThemeData(
@@ -50,18 +65,18 @@ class ModContentCardTile extends ConsumerWidget {
               clipBehavior: Clip.hardEdge,
               menuPadding: EdgeInsets.zero,
               icon: Icon(Iconsax.more_copy, color: context.theme.colorScheme.onTertiary),
-              onSelected: (value) => actions[value].onTap(),
+              onSelected: (value) => widget.actions[value].onTap(),
               itemBuilder: (context) {
-                return List<PopupMenuItem<int>>.generate(actions.length, (index) {
-                  final a = actions[index];
+                return List<PopupMenuItem<int>>.generate(widget.actions.length, (index) {
+                  final a = widget.actions[index];
                   return PopupMenuItem(value: index, child: PopupMenuItemChild(title: a.title, iconData: a.iconData));
                 });
               },
             ),
           ),
         ),
-        title: content.title,
-        subtitle: content.courseContentType.name.substring(0, 1).toUpperCase() + content.courseContentType.name.substring(1),
+        title: currContent?.title ?? widget.content.title,
+        subtitle: widget.content.courseContentType.name.substring(0, 1).toUpperCase() + widget.content.courseContentType.name.substring(1),
       ),
     );
   }

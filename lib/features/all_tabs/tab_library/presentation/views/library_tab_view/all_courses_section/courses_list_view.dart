@@ -50,21 +50,17 @@ class CoursesListView extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(16),
                   overlayColor: WidgetStatePropertyAll(Colors.white.withAlpha(80)),
                   onTapDown: (details) {
-                    log("Detected tap down...");
                     if (!ref.read(provider.notifier).state) updateTapDownDetailsProvider(details);
                     updateScaleClickProvider(true);
                   },
                   onTapCancel: () {
-                    log("Detected tap cancel...");
                     updateScaleClickProvider(false);
                   },
                   onTapUp: (details) async {
-                    log("Detected tap up...");
                     await Future.delayed(Durations.short2);
                     updateScaleClickProvider(false);
                   },
                   onLongPress: () {
-                    log("Long press...");
                     onLongPress(index);
                   },
                   onTap: () => onTap(index),

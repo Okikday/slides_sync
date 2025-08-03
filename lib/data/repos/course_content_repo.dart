@@ -14,7 +14,7 @@ class CourseContentRepo {
 
   static Future<CourseContent?> getByDbId(int dbId) => _isarData.getById(dbId);
 
-  // static Stream<CourseContent?> watchByDbId(int dbId) => _isarData.watchById(dbId);
+  static Stream<CourseContent?> watchByDbId(int dbId) => _isarData.watchById(dbId);
 
   static Future<int> add(CourseContent content) async => await _isarData.store(content);
 

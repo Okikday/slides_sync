@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -8,16 +9,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/progress_shape_animated_widget.dart';
+import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class CourseDetailsHeader extends ConsumerWidget {
-  const CourseDetailsHeader({super.key, required this.course, required this.isScrolled, required this.appBarHeight});
+  const CourseDetailsHeader({super.key, required this.course, required this.scrollOffsetProvider, required this.appBarHeight});
 
   final Course course;
-  final bool isScrolled;
+  final AutoDisposeStateProvider<double> scrollOffsetProvider;
   final double appBarHeight;
 
   @override
@@ -49,17 +51,17 @@ class CourseDetailsHeader extends ConsumerWidget {
           ),
         ),
         titlePadding: EdgeInsets.zero,
-        title: CourseDetailsHeaderContent(course: course, isScrolled: isScrolled, appBarHeight: appBarHeight),
+        title: CourseDetailsHeaderContent(course: course, scrollOffsetProvider: scrollOffsetProvider, appBarHeight: appBarHeight),
       ),
     );
   }
 }
 
 class CourseDetailsHeaderContent extends ConsumerWidget {
-  const CourseDetailsHeaderContent({super.key, required this.course, required this.isScrolled, required this.appBarHeight});
+  const CourseDetailsHeaderContent({super.key, required this.course, required this.scrollOffsetProvider, required this.appBarHeight});
 
   final Course course;
-  final bool isScrolled;
+  final AutoDisposeStateProvider<double> scrollOffsetProvider;
   final double appBarHeight;
 
   @override
@@ -105,11 +107,19 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: ProgressShapeAnimatedWidget(
-                      progress: 0.98,
-                      shapeSize: shapeSize,
-                      fileDetails: course.imageLocationJson.fileDetails,
-                    ).animate().fadeIn(duration: Durations.medium4, curve: CustomCurves.bouncySpring).slideX(begin: 1, end: 0, duration: Durations.medium4, curve: CustomCurves.defaultIosSpring),
+                    child: Builder(
+                      builder: (context) {
+                        final rand = Random().nextDouble();
+                        return ProgressShapeAnimatedWidget(
+                              progress: rand,
+                              shapeSize: shapeSize,
+                              fileDetails: course.imageLocationJson.fileDetails,
+                            )
+                            .animate()
+                            .fadeIn(duration: Durations.medium4, curve: CustomCurves.bouncySpring)
+                            .scaleXY(begin: .4, end: 1, duration: Durations.extralong2, curve: CustomCurves.bouncySpring);
+                      }
+                    ),
                   ),
                 ],
               ),
@@ -129,7 +139,7 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                     Flexible(
                       child: CourseDetailsHeaderTitle(
                         course: course,
-                        isScrolled: isScrolled,
+                        scrollOffsetProvider: scrollOffsetProvider,
                         appBarHeight: appBarHeight,
                         adjustPosition: course.courseCode.isEmpty,
                       ),
@@ -178,14 +188,14 @@ class CourseDetailsHeaderTitle extends ConsumerStatefulWidget {
   const CourseDetailsHeaderTitle({
     super.key,
     required this.course,
-    required this.isScrolled,
+    required this.scrollOffsetProvider,
     required this.appBarHeight,
     required this.adjustPosition,
   });
 
   final Course course;
   final double appBarHeight;
-  final bool isScrolled;
+  final AutoDisposeStateProvider<double> scrollOffsetProvider;
   final bool adjustPosition;
 
   @override
@@ -193,30 +203,30 @@ class CourseDetailsHeaderTitle extends ConsumerStatefulWidget {
 }
 
 class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTitle> with SingleTickerProviderStateMixin {
-  // late final AnimationController moveAnimController;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   moveAnimController = AnimationController(vsync: this);
-  //   moveAnimController.addListener(onScrollListener);
-  // }
+  late final AnimationController moveAnimController;
+  late final ProviderSubscription<double> scrollOffsetListener;
+  @override
+  void initState() {
+    super.initState();
+    moveAnimController = AnimationController(duration: Durations.medium1, reverseDuration: Durations.medium1, vsync: this);
+    scrollOffsetListener = ref.listenManual(widget.scrollOffsetProvider, (double? prev, double next) {
+      final double percentScroll = (next / (appBarHeight + context.topPadding)).clamp(0, 1);
+      percentScroll >= 0.5 && (prev == null ? true : (prev >= 0.5 ? true : false)) ? moveAnimController.reverse() : moveAnimController.forward();
+    });
 
-  // void onScrollListener(){
-  //   if(widget.isScrolled && moveAnimController.isCompleted) {
-  //     moveAnimController.forward(from: 0);
-  //   }
-  // }
+    moveAnimController.forward(from: 0);
+  }
 
-  // @override
-  // void dispose() {
-  //   moveAnimController.removeListener(onScrollListener);
-  //   moveAnimController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    scrollOffsetListener.close();
+    moveAnimController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
+    final textWidget = Tooltip(
           message: widget.course.courseName,
           triggerMode: TooltipTriggerMode.tap,
           child: CustomText(
@@ -226,16 +236,11 @@ class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTi
             color: context.theme.colorScheme.tertiary,
             overflow: TextOverflow.fade,
           ),
-        )
-        .animate(
-          // controller: moveAnimController
-        )
-        .fadeIn()
-        .move(
-          begin: widget.adjustPosition ? (widget.isScrolled ? Offset.zero : Offset(48, -44)) : null,
-          end: widget.adjustPosition ? (widget.isScrolled ? Offset(48, -44) : Offset.zero) : null,
-          duration: Durations.extralong2,
-          curve: CustomCurves.defaultIosSpring,
         );
+    return widget.adjustPosition ?
+        textWidget.animate(controller: moveAnimController)
+        .move(begin: Offset(48, -44), end: Offset.zero, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring,)
+         : textWidget.animate()
+        .fadeIn().move(begin: Offset(48, -44), end: Offset.zero, duration: Durations.extralong1, curve: CustomCurves.bouncySpring);
   }
 }

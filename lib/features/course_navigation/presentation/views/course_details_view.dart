@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +9,8 @@ import 'package:slides_sync/features/course_navigation/presentation/views/course
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/positioned_course_options.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+
+const double appBarHeight = 180;
 
 class CourseDetailsView extends ConsumerStatefulWidget {
   final Course course;
@@ -30,6 +30,7 @@ class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
   }
 }
 
+// Course Details Outer Section
 class CourseDetailsOuterSection extends ConsumerStatefulWidget {
   final Course course;
   const CourseDetailsOuterSection({super.key, required this.course});
@@ -40,13 +41,13 @@ class CourseDetailsOuterSection extends ConsumerStatefulWidget {
 
 class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSection> {
   late final ScrollController viewScrollController;
-  late final StateProvider<double> scrollOffsetProvider;
+  late final AutoDisposeStateProvider<double> scrollOffsetProvider;
 
   @override
   void initState() {
     super.initState();
     viewScrollController = ScrollController();
-    scrollOffsetProvider = StateProvider((cb) => 0.0);
+    scrollOffsetProvider = AutoDisposeStateProvider((cb) => 0.0);
     viewScrollController.addListener(updateScrollOffset);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final modifyCourseNotifier = ref.read(CourseProviders.courseProvider.notifier);
@@ -73,11 +74,7 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
   @override
   Widget build(BuildContext context) {
     final Course course = ref.watch(CourseProviders.courseProvider);
-    const double appBarHeight = 180;
-    final scrollOffset = ref.watch(scrollOffsetProvider);
-    final isScrolled = scrollOffset >= appBarHeight / 2;
-    final double percentScroll = (scrollOffset / (appBarHeight + context.topPadding)).clamp(0, 1);
-    
+
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
@@ -85,14 +82,16 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
           controller: viewScrollController,
           physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder:
-              (context, innerBoxIsScrolled) => [CourseDetailsHeader(course: course, isScrolled: isScrolled, appBarHeight: appBarHeight)],
+              (context, innerBoxIsScrolled) => [
+                CourseDetailsHeader(course: course, scrollOffsetProvider: scrollOffsetProvider, appBarHeight: appBarHeight),
+              ],
           body: CustomScrollView(
             slivers: [
               PinnedHeaderSliver(
                 child: AnimatedSize(
                   duration: Durations.medium1,
                   curve: CustomCurves.defaultIosSpring,
-                  child: ConstantSizing.columnSpacing((kToolbarHeight + context.topPadding) * percentScroll),
+                  child: ConstantSizing.columnSpacing(kToolbarHeight/4),
                 ),
               ),
               PinnedHeaderSliver(child: CollectionsViewSearchBar()),

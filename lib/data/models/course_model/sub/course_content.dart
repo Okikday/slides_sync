@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:isar/isar.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
-import 'package:uuid/uuid.dart';
 
 export 'course_content_type.dart';
 
@@ -76,6 +76,7 @@ class CourseContent {
   }) {
     return CourseContent()
       ..id = id
+      ..contentId = contentId
       ..contentHash = contentHash
       ..parentId = parentId ?? this.parentId
       ..title = title ?? this.title
@@ -148,6 +149,11 @@ class CourseContent {
         description.hashCode ^
         courseContentType.hashCode ^
         metadataJson.hashCode;
+  }
+
+  @override
+  String toString() {
+    return 'CourseContent(id: $id, contentHash: $contentHash, contentId: $contentId, parentId: $parentId, title: $title, path: $path, createdAt: $createdAt, description: $description, courseContentType: $courseContentType, metadataJson: $metadataJson)';
   }
 }
 

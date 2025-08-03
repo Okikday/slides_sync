@@ -64,11 +64,11 @@ class UiUtils {
       canPop: canPop,
       transitionDuration: transitionDuration,
       reverseTransitionDuration: reverseTransitionDuration,
-      transitionType: TransitionType.cupertinoDialog,
+      transitionType: transitionType,
       curve: curve ?? CustomCurves.defaultIosSpring,
       barrierColor: barrierColor ?? Colors.black.withAlpha(140),
       blurSigma: blurSigma,
-      child: child.animate().fadeIn().scaleY(begin: 0.1, end: 1.0, curve: CustomCurves.bouncySpring, duration: Durations.extralong1),
+      child: child,
     );
   }
 
@@ -95,7 +95,7 @@ class UiUtils {
       flushbarPosition: flushbarPosition,
       backgroundColor: backgroundColor ?? colors[1],
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
-      borderColor: Colors.grey.withValues(alpha: 0.2),
+      borderColor: Colors.grey.withValues(alpha: 0.1),
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       margin:
           margin ??
@@ -140,7 +140,7 @@ List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   //         : const Color(0xFFF5F5F7).withValues(alpha: 0.85); // Soft off-white
 
   final normalColor = context.theme.colorScheme.onPrimary;
-  final normalBgColor = context.theme.colorScheme.primary.withValues(alpha: 0.6);
+  final normalBgColor = context.theme.colorScheme.surface.withValues(alpha: 0.4);
 
   switch (vibe) {
     case FlushbarVibe.none:
