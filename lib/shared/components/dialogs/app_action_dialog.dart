@@ -110,7 +110,7 @@ class BuildPlainActionButton extends ConsumerWidget {
       onClick: onTap,
       child: Row(
         spacing: 12.0,
-        children: [icon, Expanded(child: CustomText(title, color: context.theme.colorScheme.tertiary, style: textStyle))],
+        children: [icon, Expanded(child: CustomText(title, color: AppColors.primaryText(context), style: textStyle))],
       ),
     );
   }

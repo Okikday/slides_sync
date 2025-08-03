@@ -36,7 +36,7 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
           padding: EdgeInsets.zero,
-          child: AppBarContainerChild(context.isDarkMode, title: widget.collection.collectionTitle,),
+          child: AppBarContainerChild(context.isDarkMode, title: widget.collection.collectionTitle, trailing: Icon(Iconsax.search_normal_copy),),
         ),
 
         floatingActionButton: AddContentFAB(collection: widget.collection,),

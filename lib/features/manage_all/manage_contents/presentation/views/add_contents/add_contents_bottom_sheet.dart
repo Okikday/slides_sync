@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_link_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/add_contents_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
@@ -160,9 +161,9 @@ class AddContentCardSection extends ConsumerWidget {
                       Flexible(
                         child: CustomElevatedButton(
                           onClick: () async {
-                            CustomDialog.hide(context);
-                            final createdNote = await AddContentsUc.createNote(collection);
-                            log("created note: ${createdNote.toString()}");
+                            // CustomDialog.hide(context);
+                            // final createdNote = await AddContentsUc.createNote(collection);
+                            // log("created note: ${createdNote.toString()}");
                           },
                           backgroundColor: context.theme.colorScheme.onSurface,
                           pixelHeight: 40,
@@ -203,57 +204,9 @@ class AddContentCardSection extends ConsumerWidget {
                 ),
               ],
             ),
-
-            // BuildPlainActionButton(title: "Auto", icon: Icon(Iconsax.safe_home), onTap: (){}),
-            // BuildPlainActionButton(title: "Visual Media", icon: Icon(Iconsax.safe_home), onTap: (){}),
-            // BuildPlainActionButton(title: "Document", icon: Icon(Iconsax.safe_home), onTap: (){}),
-            // BuildPlainActionButton(title: "Audio", icon: Icon(Iconsax.safe_home), onTap: (){})
           ],
         ),
       ),
     );
-  }
-}
-
-class AddLinkBottomSheet extends ConsumerWidget {
-  final CourseCollection collection;
-  const AddLinkBottomSheet({super.key, required this.collection});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Stack(
-      children: [
-        InputTextBottomSheet(
-          title: "Add link",
-          hintText: "www.youtube.com/learn",
-          onSubmitted: (String text) async {
-            // if (text.isEmpty) return;
-            // await CreateNoteUc().createNote(collection, defaultNote: text);
-            // Navigator.pop(rootNavigatorKey.currentContext!);
-          },
-        ),
-        Positioned(
-          left: 24,
-          bottom: context.bottomPadding + 120,
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(16)),
-          ).animate(onComplete: (controller) => controller.repeat()).shimmer(duration: Durations.extralong4),
-        ),
-        Positioned(
-          right: 12,
-          bottom: context.bottomPadding + 120,
-          child: CustomElevatedButton(
-            label: "Paste from Clipboard",
-            backgroundColor: context.theme.colorScheme.onTertiary.withValues(alpha: .1),
-            textColor: AppColors.primaryText(context),
-            onClick: () {
-              UiUtils.showFlushBar(context, msg: "Not available!", flushbarPosition: FlushbarPosition.TOP);
-            },
-          ),
-        ),
-      ],
-    ).animate().fadeIn().slideY(begin: .4, end: 0, curve: CustomCurves.decelerate);
   }
 }

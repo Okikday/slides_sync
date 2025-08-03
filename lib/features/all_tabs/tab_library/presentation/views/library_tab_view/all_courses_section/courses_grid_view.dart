@@ -53,22 +53,18 @@ class CoursesGridView extends ConsumerWidget {
               child: InkWell(
                 borderRadius: BorderRadius.circular(12),
                 onTapDown: (details) {
-                  log("Detected tap down...");
                   if (!ref.read(provider.notifier).state) updateTapDownDetailsProvider(details);
                   updateScaleClickProvider(true);
                   
                 },
                 onTapCancel: () {
-                  log("Detected tap cancel...");
                   updateScaleClickProvider(false);
                 },
                 onTapUp: (details) async {
-                  log("Detected tap up...");
                   await Future.delayed(Durations.short2);
                   updateScaleClickProvider(false);
                 },
                 onLongPress: () {
-                  log("Long press...");
                   onLongPress(index);
                 },
                 onTap: () => onTap(index),

@@ -9,6 +9,7 @@ import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 import 'package:slides_sync/shared/styles/theme/themes.dart';
 
@@ -23,7 +24,7 @@ class SettingsView extends ConsumerWidget {
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
           padding: EdgeInsets.zero,
-          child: AppBarContainerChild(context.isDarkMode, title: "Settings"),
+          child: AppBarContainerChild(context.isDarkMode, title: "Settings",),
         ),
 
         body: Padding(
@@ -41,7 +42,7 @@ class SettingsView extends ConsumerWidget {
                 trailing: CustomElevatedButton(
                   label: "Change",
                   backgroundColor: context.theme.colorScheme.secondary,
-                  textColor: Color(0xff0e1d27),
+                  textColor: AppColors.secondaryText(context),
                   textSize: 14,
                   onClick: () {
                     CustomDialog.show(context, barrierColor: Colors.black26, blurSigma: Offset(2, 2), child: SettingsAppearanceDialog());

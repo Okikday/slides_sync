@@ -87,13 +87,7 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
               ],
           body: CustomScrollView(
             slivers: [
-              PinnedHeaderSliver(
-                child: AnimatedSize(
-                  duration: Durations.medium1,
-                  curve: CustomCurves.defaultIosSpring,
-                  child: ConstantSizing.columnSpacing(kToolbarHeight/4),
-                ),
-              ),
+              PinnedHeaderSliver(child: AdjustingSpacing(scrollOffsetProvider: scrollOffsetProvider)),
               PinnedHeaderSliver(child: CollectionsViewSearchBar()),
               CourseDetailsCollectionSection(course: course),
 
@@ -104,6 +98,22 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
 
         PositionedCourseOptions(),
       ],
+    );
+  }
+}
+
+class AdjustingSpacing extends ConsumerWidget {
+  final AutoDisposeStateProvider<double> scrollOffsetProvider;
+  const AdjustingSpacing({super.key, required this.scrollOffsetProvider});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollOffset = ref.watch(scrollOffsetProvider);
+    final double percentScroll = (scrollOffset / (appBarHeight + context.topPadding)).clamp(0, 1);
+    return AnimatedSize(
+      duration: Durations.medium1,
+      curve: CustomCurves.defaultIosSpring,
+      child: ConstantSizing.columnSpacing((kToolbarHeight + context.topPadding) * percentScroll),
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/data/repos/course_collection_repo.dart';
 import 'package:slides_sync/data/repos/course_content_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/select_contents_uc.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/store_contents_uc.dart';
@@ -60,23 +61,30 @@ class AddContentsUc {
     }
   }
 
-  static Future<CourseContent?> createNote(CourseCollection collection, {String defaultNote = '', String title = '', List<String> tags = const []}) async {
-    final parentId = collection.collectionId;
-    final contentHash = sha256.convert(defaultNote.codeUnits).bytes.toString();
-    final path = collection.absolutePath;
+  static Future<bool> createNote(
+    CourseCollection collection, {
+    String defaultNote = '',
+    String title = '',
+    List<String> tags = const [],
+  }) async {
+    return (await Result.tryRunAsync<bool>(() async {
+          final parentId = collection.collectionId;
+          final contentHash = sha256.convert(defaultNote.codeUnits).bytes.toString();
+          // final path = collection.absolutePath;
 
-    CourseContent newContent = CourseContent.create(
-      contentHash: contentHash,
-      parentId: parentId,
-      title: title,
-      description: defaultNote,
-      path: FileDetails(filePath: path),
-      courseContentType: CourseContentType.note,
-      metadataJson: jsonEncode({'tags': tags.toString()}),
-    );
+          CourseContent newContent = CourseContent.create(
+            contentHash: contentHash,
+            parentId: parentId,
+            title: title,
+            description: defaultNote,
+            path: FileDetails(),
+            courseContentType: CourseContentType.note,
+            metadataJson: jsonEncode({'tags': tags.toString()}),
+          );
 
-    final dbId = await CourseContentRepo.add(newContent);
-    final note = await CourseContentRepo.getByDbId(dbId);
-    return note;
+          await CourseCollectionRepo.addContent(newContent);
+          return true;
+        })).data ??
+        false;
   }
 }

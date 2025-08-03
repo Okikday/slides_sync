@@ -1,11 +1,15 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/data/models/course_model/course.dart';
 import 'package:slides_sync/data/repos/course_content_repo.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
 import 'package:slides_sync/shared/common_widgets/modifying_list_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
@@ -13,20 +17,15 @@ import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 typedef ModContentCardTileAction<Record> = ({String title, IconData iconData, void Function() onTap});
 
+
+
 class ModContentCardTile extends ConsumerStatefulWidget {
   final CourseContent content;
-  final List<ModContentCardTileAction> actions;
 
   /// This entails on click the icon or on long press
   final void Function()? onSelected;
   final void Function()? onTap;
-  const ModContentCardTile({
-    super.key,
-    required this.content,
-    this.onSelected,
-    this.onTap,
-    this.actions = const <ModContentCardTileAction>[],
-  });
+  const ModContentCardTile({super.key, required this.content, this.onSelected, this.onTap});
 
   @override
   ConsumerState<ModContentCardTile> createState() => _ModContentCardTileState();
@@ -45,11 +44,12 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
   @override
   Widget build(BuildContext context) {
     final CourseContent? currContent = ref.watch(contentProvider).value;
+    final actions = getActions(context, currContent: currContent ?? widget.content);
     return Padding(
       padding: EdgeInsets.only(bottom: context.hPadding7),
       child: ModifyingListTile(
         leading: BuildImagePathWidget(
-          fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath:  widget.content.path.filePath)),
+          fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: widget.content.path.filePath)),
           fallbackWidget: Icon(WidgetHelper.resolveIconData(widget.content.courseContentType), size: 22, color: context.theme.primaryColor),
         ),
         trailing: PopupMenuTheme(
@@ -65,10 +65,10 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
               clipBehavior: Clip.hardEdge,
               menuPadding: EdgeInsets.zero,
               icon: Icon(Iconsax.more_copy, color: context.theme.colorScheme.onTertiary),
-              onSelected: (value) => widget.actions[value].onTap(),
+              onSelected: (value) => actions[value].onTap(),
               itemBuilder: (context) {
-                return List<PopupMenuItem<int>>.generate(widget.actions.length, (index) {
-                  final a = widget.actions[index];
+                return List<PopupMenuItem<int>>.generate(actions.length, (index) {
+                  final a = actions[index];
                   return PopupMenuItem(value: index, child: PopupMenuItemChild(title: a.title, iconData: a.iconData));
                 });
               },
@@ -99,4 +99,54 @@ class PopupMenuItemChild extends StatelessWidget {
       ],
     );
   }
+}
+
+
+/// Available actions you can take to modify a content
+List<ModContentCardTileAction> getActions(BuildContext context, {required CourseContent currContent}) {
+  final mca = ModifyContentsAction();
+  final actions = <ModContentCardTileAction>[
+    (title: "Select", iconData: Iconsax.tick_circle, onTap: () {}),
+    (
+      title: "Rename",
+      iconData: Iconsax.edit,
+      onTap: () {
+        UiUtils.showCustomDialog(
+          context,
+          child: InputTextBottomSheet(
+            title: "Rename content",
+            hintText: "Input a title different from previous one",
+            defaultText: currContent.title,
+            onSubmitted: (String text) async {
+              await mca.onRenameContent(currContent, newTitle: text.trim());
+              if (context.mounted) CustomDialog.hide(context);
+            },
+          ).animate().fadeIn().scaleY(
+            begin: 0.1,
+            end: 1.0,
+            curve: CustomCurves.bouncySpring,
+            duration: Durations.extralong1,
+            alignment: Alignment.bottomCenter,
+          ),
+        );
+      },
+    ),
+    (
+      title: "Delete",
+      iconData: Iconsax.trash,
+      onTap: () async {
+        final outcome = await mca.onDeleteContent(currContent);
+        if (context.mounted) {
+          if (outcome == null) {
+            UiUtils.showFlushBar(context, msg: "Successfully removed content!", vibe: FlushbarVibe.success);
+          } else if (outcome.toLowerCase().contains("error")) {
+            UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.error);
+          } else {
+            UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.warning);
+          }
+        }
+      },
+    ),
+  ];
+  return actions;
 }

@@ -61,7 +61,7 @@ class RecentsSectionBody extends ConsumerWidget {
                 context,
                 canPop: true,
                 blurSigma: Offset(2.0, 2.0),
-                transitionType: TransitionType.levelFromCenterWithFade,
+                transitionType: TransitionType.cupertinoDialog,
                 barrierColor: Colors.black.withValues(alpha: 0.5),
                 transitionDuration: Durations.short4,
                 reverseTransitionDuration: Durations.short4,

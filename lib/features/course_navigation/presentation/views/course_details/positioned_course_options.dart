@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class PositionedCourseOptions extends StatelessWidget {
   const PositionedCourseOptions({
@@ -11,7 +12,7 @@ class PositionedCourseOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: context.bottomPadding + 8,
+      bottom: context.bottomPadding + 16,
       left: 10,
       right: 10,
       child: Row(
@@ -21,13 +22,13 @@ class PositionedCourseOptions extends StatelessWidget {
           CustomElevatedButton(
             borderRadius: 16,
             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            backgroundColor: context.theme.colorScheme.onTertiary,
+            backgroundColor: context.theme.colorScheme.onSurface,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 4,
               children: [
-                Flexible(child: Icon(Iconsax.play)),
-                Flexible(child: CustomText("Continue from last content", fontSize: 13, color: context.theme.scaffoldBackgroundColor)),
+                Flexible(child: Icon(Iconsax.play, color: AppColors.primaryText(context),)),
+                Flexible(child: CustomText("Continue from last content", fontSize: 13, color: AppColors.primaryText(context))),
               ],
             ),
           ),

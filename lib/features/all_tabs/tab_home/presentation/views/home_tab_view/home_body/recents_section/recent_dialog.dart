@@ -8,6 +8,7 @@ import 'package:slides_sync/core/models/file_details.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {
@@ -39,7 +40,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
               decoration: BoxDecoration(
                 color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.blueAccent.withAlpha(50)),
+                border: Border.all(color: context.theme.colorScheme.onSurface),
               ),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
@@ -109,7 +110,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                     if (widget.recentDialogModel.description.isNotEmpty) ConstantSizing.columnSpacingSmall,
 
                     if (widget.recentDialogModel.description.isNotEmpty)
-                      Padding(padding: const EdgeInsets.symmetric(horizontal: 12.0), child: Divider(color: Colors.blueGrey.withAlpha(40))),
+                      Padding(padding: const EdgeInsets.symmetric(horizontal: 12.0), child: divider),
 
                     if (widget.recentDialogModel.description.isNotEmpty)
                       Align(
@@ -147,8 +148,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Continue reading",
-                          icon: Icon(Iconsax.play_copy, size: 24),
-                          textStyle: TextStyle(fontSize: 16),
+                          icon: Icon(Iconsax.play_copy, size: 24, color: AppColors.secondaryText(context),),
+                          textStyle: TextStyle(fontSize: 16, color: AppColors.primaryText(context)),
                           onTap: () {},
                         ),
 
@@ -156,8 +157,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Share",
-                          icon: Icon(Icons.share_outlined, size: 24),
-                          textStyle: TextStyle(fontSize: 16),
+                          icon: Icon(Icons.share_outlined, size: 24, color: AppColors.secondaryText(context)),
+                          textStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
                           onTap: () {},
                         ),
 
@@ -166,7 +167,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                         BuildPlainActionButton(
                           title: "Remove from recents",
                           icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                          textStyle: TextStyle(fontSize: 16),
+                          textStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
                           onTap: () {},
                         ),
 
