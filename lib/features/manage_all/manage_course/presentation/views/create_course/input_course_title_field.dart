@@ -19,24 +19,29 @@ class InputCourseTitleField extends ConsumerWidget {
     return CustomTextfield(
       controller: courseNameController,
       backgroundColor: context.theme.colorScheme.onSurface,
-      cursorColor: context.theme.colorScheme.tertiary,
-      selectionHandleColor: context.theme.primaryColor,
+      cursorColor: ref.theme.primaryText,
+      selectionHandleColor: ref.theme.primaryColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: context.isDarkMode ? context.theme.colorScheme.secondary.withAlpha(80) : context.theme.primaryColor.withAlpha(20)),
+        borderSide: BorderSide(
+          color:
+              context.isDarkMode
+                  ? context.theme.colorScheme.secondary.withAlpha(80)
+                  : ref.theme.primaryColor.withAlpha(20),
+        ),
       ),
       pixelWidth: context.deviceWidth,
       pixelHeight: 60,
       inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
       hint: "Enter course title",
-      inputTextStyle: TextStyle(fontSize: 16, color: context.theme.colorScheme.tertiary),
+      inputTextStyle: TextStyle(fontSize: 16, color: ref.theme.primaryText),
       onTapOutside: () {},
       autoDispose: false,
       suffixIcon: CustomElevatedButton(
         pixelWidth: 50,
         pixelHeight: 50,
         borderRadius: 12,
-        overlayColor: context.theme.primaryColor.withAlpha(40),
+        overlayColor: ref.theme.primaryColor.withAlpha(40),
         onClick: () async {
           final bool isCourseCodeVisible = ref.read(isCourseCodeFieldVisible.notifier).state;
           if (isCourseCodeVisible) FocusScope.of(context).unfocus();

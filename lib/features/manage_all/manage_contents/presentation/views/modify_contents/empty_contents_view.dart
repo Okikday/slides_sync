@@ -2,10 +2,10 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_collection.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_contents_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/strings/icon_strings.dart';
+import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 
 class EmptyContentsView extends ConsumerWidget {
   final CourseCollection collection;
@@ -37,7 +37,7 @@ class EmptyContentsView extends ConsumerWidget {
                     child: AddContentsBottomSheet(collection: collection),
                   );
                 },
-                backgroundColor: context.theme.primaryColor,
+                backgroundColor: ref.theme.primaryColor,
                 // backgroundColor: context.theme.colorScheme.secondary,
                 borderRadius: 12,
                 pixelHeight: 44,
@@ -52,7 +52,7 @@ class EmptyContentsView extends ConsumerWidget {
             // Padding(
             //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
             //   child: CustomElevatedButton(
-            //     backgroundColor: context.theme.primaryColor,
+            //     backgroundColor: ref.theme.primaryColor,
             //     borderRadius: 12,
             //     pixelHeight: 44,
             //     label: "Explore Contents",

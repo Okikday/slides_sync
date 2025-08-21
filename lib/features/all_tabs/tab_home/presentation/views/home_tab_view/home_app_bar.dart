@@ -8,9 +8,15 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
+import 'package:slides_sync/shared/styles/theme/themes.dart';
 
 class HomeAppBar extends ConsumerWidget {
-  const HomeAppBar({super.key, required this.onClickUserIcon, required this.title, required this.onClickNotification});
+  const HomeAppBar({
+    super.key,
+    required this.onClickUserIcon,
+    required this.title,
+    required this.onClickNotification,
+  });
 
   final void Function() onClickUserIcon;
 
@@ -35,14 +41,20 @@ class HomeAppBar extends ConsumerWidget {
             isScrolled
                 ? AppColors.bgBlendColor(context)
                 : context.scaffoldBackgroundColor,
-        statusBarBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
-        statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarBrightness:
+            context.isDarkMode ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness:
+            context.isDarkMode ? Brightness.light : Brightness.dark,
       ),
       flexibleSpace: FlexibleSpaceBar(
         expandedTitleScale: 1.0,
         background: GestureDetector(
           onTap: () {
-            PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
+            PrimaryScrollController.of(context).animateTo(
+              0,
+              duration: Durations.extralong1,
+              curve: CustomCurves.defaultIosSpring,
+            );
           },
           child: Material(
             type: MaterialType.transparency,
@@ -50,18 +62,28 @@ class HomeAppBar extends ConsumerWidget {
                 isScrolled
                     ? LinearBorder(
                       bottom: LinearBorderEdge(),
-                      side: BorderSide(color: AppColors.bgBlendColor(context, .88, .12)),
+                      side: BorderSide(
+                        color: ref.theme.altBackgroundSecondary.withValues(
+                          alpha: 0.4,
+                        ),
+                      ),
                     )
                     : null,
-            child:
-                isScrolled
-                    ? AnimatedContainer(
-                      duration: Durations.medium3,
-                      clipBehavior: Clip.hardEdge,
-                      color: AppColors.bgBlendColor(context).withValues(alpha: 0.94),
-                      child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), child: const SizedBox.expand(),),
-                    )
-                    : ColoredBox(color: context.scaffoldBackgroundColor),
+            child: AnimatedContainer(
+              duration: Durations.medium3,
+              clipBehavior: Clip.hardEdge,
+              color:
+                  isScrolled
+                      ? ref.theme.altBackgroundPrimary.withValues(alpha: 0.75)
+                      : ref.theme.background,
+              child:
+                  isScrolled
+                      ? BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                        child: const SizedBox.expand(),
+                      )
+                      : null,
+            ),
           ),
         ),
         // collapseMode: CollapseMode.pin,
@@ -70,7 +92,11 @@ class HomeAppBar extends ConsumerWidget {
           alignment: Alignment(0, 0.75),
           child: GestureDetector(
             onTap: () {
-              PrimaryScrollController.of(context).animateTo(0, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring);
+              PrimaryScrollController.of(context).animateTo(
+                0,
+                duration: Durations.extralong1,
+                curve: CustomCurves.defaultIosSpring,
+              );
             },
             child: AnimatedSize(
               duration: Durations.medium3,
@@ -83,32 +109,55 @@ class HomeAppBar extends ConsumerWidget {
                       onClick: onClickUserIcon,
                       pixelHeight: context.defaultBtnDimension,
                       pixelWidth: context.defaultBtnDimension,
-                      overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
+                      overlayColor: context.theme.colorScheme.secondary
+                          .withAlpha(40),
                       contentPadding: EdgeInsets.zero,
-                      backgroundColor: AppColors.bgBlendColor(context, .85, .11),
-                      shape: CircleBorder(),
+                      backgroundColor: ref.theme.altBackgroundPrimary,
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: ref.theme.altBackgroundSecondary.withValues(
+                            alpha: 0.4,
+                          ),
+                        ),
+                      ),
                       child: Icon(
                         Iconsax.menu_1_copy,
-                        color: isScrolled ? context.theme.colorScheme.tertiary : context.theme.colorScheme.onTertiary,
+                        color: ref.theme.background.blendColor(
+                          context.isDarkMode ? 0.88 : 0.1,
+                        ),
                         size: context.defaultBtnDimension * 0.5,
                       ),
                     ),
 
                     ConstantSizing.rowSpacingMedium,
-                    Expanded(child: CustomText(title, fontSize: 17, fontWeight: FontWeight.bold, color: context.theme.colorScheme.primary)),
+                    Expanded(
+                      child: CustomText(
+                        title,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: ref.theme.primaryText,
+                      ),
+                    ),
 
                     // CustomElevatedButton(
                     //   shape: CircleBorder(),
                     //   backgroundColor: context.theme.secondary.withAlpha(40),
-                    //   overlayColor: context.theme.primaryColor.withAlpha(20),
+                    //   overlayColor: ref.theme.primaryColor.withAlpha(20),
                     //   onClick: onToggleFullScreen,
-                    //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : context.theme.primaryColor),
+                    //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : ref.theme.primaryColor),
                     // ),
                     CustomElevatedButton(
                       onClick: onClickNotification,
-                      overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
-                      shape: CircleBorder(),
-                      backgroundColor: AppColors.bgBlendColor(context, .86, isScrolled ? 0.11 : 0.1),
+                      overlayColor: context.theme.colorScheme.secondary
+                          .withAlpha(40),
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: ref.theme.altBackgroundSecondary.withValues(
+                            alpha: 0.4,
+                          ),
+                        ),
+                      ),
+                      backgroundColor: ref.theme.altBackgroundPrimary,
                       child: Badge(
                         backgroundColor: Colors.transparent,
                         offset: Offset(-1, -1),
@@ -122,8 +171,8 @@ class HomeAppBar extends ConsumerWidget {
                         //   ),
                         // ),
                         child: Icon(
-                          Iconsax.notification,
-                          color: context.isDarkMode && isScrolled ? context.theme.colorScheme.tertiary : context.theme.colorScheme.onTertiary,
+                          Iconsax.moon,
+                          color: ref.theme.secondaryText,
                           size: 24,
                         ),
                       ),

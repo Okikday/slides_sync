@@ -1,17 +1,18 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-class AddCollectionActionButton extends StatelessWidget {
+class AddCollectionActionButton extends ConsumerWidget {
   final int courseDbId;
   final void Function() onClickUp;
   final bool isScrolled;
   const AddCollectionActionButton({super.key, required this.courseDbId, required this.isScrolled, required this.onClickUp});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FloatingActionButton.extended(
       shape: isScrolled ? CircleBorder() : null,
       backgroundColor: context.isDarkMode ? Colors.white : Colors.black,
@@ -34,12 +35,12 @@ class AddCollectionActionButton extends StatelessWidget {
               : CustomText(
                 "Add a collection",
                 fontWeight: FontWeight.bold,
-                color: context.theme.primaryColor,
+                color: ref.theme.primaryColor,
               ),
       icon: Icon(
         isScrolled ? Iconsax.arrow_up : Iconsax.add_circle,
         size: 32,
-        color: context.theme.primaryColor,
+        color: ref.theme.primaryColor,
       ),
     );
   }

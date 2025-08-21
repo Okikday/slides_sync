@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
-import 'package:slides_sync/routes/routes_strings.dart';
+import 'package:slides_sync/core/routes/routes_strings.dart';
 
 class AppNavigator {
   final BuildContext context;

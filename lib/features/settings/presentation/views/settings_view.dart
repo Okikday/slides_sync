@@ -4,7 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app.dart';
-import 'package:slides_sync/core/data/hive_data/hive_data.dart';
+import 'package:slides_sync/core/storage/hive_data/hive_data.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
@@ -31,7 +31,7 @@ class SettingsView extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
           child: ListView(
             children: [
-              CustomText("Appearance", color: context.theme.colorScheme.onTertiary),
+              CustomText("Appearance", color: ref.theme.secondaryText),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -61,7 +61,7 @@ class SettingsView extends ConsumerWidget {
 
               ConstantSizing.columnSpacingLarge,
 
-              CustomText("Technical", color: context.theme.colorScheme.onTertiary),
+              CustomText("Technical", color: ref.theme.secondaryText),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -74,7 +74,7 @@ class SettingsView extends ConsumerWidget {
 
               ConstantSizing.columnSpacingLarge,
 
-              CustomText("Language", color: context.theme.colorScheme.onTertiary),
+              CustomText("Language", color: ref.theme.secondaryText),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -87,7 +87,7 @@ class SettingsView extends ConsumerWidget {
   }
 }
 
-class SettingsCard extends StatelessWidget {
+class SettingsCard extends ConsumerWidget {
   final String title;
   final IconData iconData;
   final String? content;
@@ -95,7 +95,7 @@ class SettingsCard extends StatelessWidget {
   const SettingsCard({super.key, required this.title, required this.iconData, this.content, this.trailing});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(color: context.theme.cardColor, borderRadius: BorderRadius.circular(24)),
       child: Column(
@@ -114,8 +114,13 @@ class SettingsCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 2,
                     children: [
-                      CustomText(title, color: context.theme.colorScheme.tertiary),
-                      if (content != null) CustomText(content!, fontSize: 11, color: context.theme.colorScheme.onTertiary),
+                      CustomText(title, color: ref.theme.primaryText),
+                      if (content != null)
+                        CustomText(
+                          content!,
+                          fontSize: 11,
+                          color: ref.theme.secondaryText,
+                        ),
                     ],
                   ),
                 ),
@@ -137,7 +142,9 @@ class SettingsAppearanceDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AppCustomizableDialog(
       blurSigma: Offset(2, 2),
-      leading: Center(child: CustomText("Adjust Theme", color: context.theme.colorScheme.tertiary)),
+      leading: Center(
+        child: CustomText("Adjust Theme", color: ref.theme.primaryText),
+      ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -155,9 +162,9 @@ class SettingsAppearanceDialog extends ConsumerWidget {
                     child: CustomElevatedButton(
                       label: theme.title,
                       backgroundColor: context.theme.cardColor,
-                      textColor: context.theme.colorScheme.tertiary,
+                      textColor: ref.theme.primaryText,
                       onClick: () async{
-                        ref.read(appThemeDataProvider.notifier).update(resolveThemeData(theme));
+                        ref.read(appThemeProvider.notifier).update(theme);
                         await HiveData().setData(key: "appTheme", value: theme.toJson());
                       },
                     ),

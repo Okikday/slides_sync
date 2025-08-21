@@ -98,24 +98,24 @@ flutter_native_splash:
   android: true
   ios: true
 
-  color: "#ffffff"
+  color: "#FCFAFE"
   image: "assets/logo/3d_transparent_logo.png"
-  color_dark: "#111111"
+  color_dark: "#0B0B10"
   image_dark: "assets/logo/3d_transparent_logo.png"
 
   android_12:
-    color: "#ffffff"
+    color: "#FCFAFE"
     image: "assets/logo/3d_transparent_logo.png"
-    color_dark: "#111111"
+    color_dark: "#0B0B10"
     image_dark: "assets/logo/3d_transparent_logo.png"
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo/3d_transparent_logo.png"
+  image_path: "assets/logo/icon_white_only_transparent.png"
   android_adaptive_icon:
-    background_color: "#ffeaca"
-    foreground_image: "assets/logo/3d_transparent_logo.png"
+    background_color: "#5000B8"
+    foreground_image: "assets/logo/icon_white_only_transparent.png"
   remove_alpha_ios: true
 
 
@@ -128,9 +128,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.14.4
 
   flutter_lints: ^5.0.0
-  # analyzer: ^7.4.5
-#  custom_lint: ^0.7.5
-#  riverpod_lint: ^2.6.5
+  riverpod_lint: ^2.1.1
 
   isar_generator: ^3.1.0+1
   build_runner: any

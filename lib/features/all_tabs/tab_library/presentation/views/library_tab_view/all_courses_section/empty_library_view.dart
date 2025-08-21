@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course_view.dart';
-import 'package:slides_sync/shared/strings/icon_strings.dart';
+import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/theme/themes.dart';
 
 // class SimpleActionModel {
 //   final String title;
@@ -56,7 +57,7 @@ class EmptyLibraryView extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: CustomElevatedButton(
-              backgroundColor: context.theme.primaryColor,
+              backgroundColor: ref.theme.primaryColor,
               borderRadius: 12,
               pixelHeight: 44,
               label: "Explore Courses",

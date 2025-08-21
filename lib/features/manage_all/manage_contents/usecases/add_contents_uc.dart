@@ -5,15 +5,15 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/data/repos/course_collection_repo.dart';
-import 'package:slides_sync/data/repos/course_content_repo.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/select_contents_uc.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/store_contents_uc.dart';
-import 'package:slides_sync/routes/routes.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 
 class AddContentsUc {
   static Future<String?> addToCollection(

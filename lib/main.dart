@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/app.dart';
-import 'package:slides_sync/core/data/hive_data/app_hive_data.dart';
+import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:slides_sync/core/data/isar_data/isar_data.dart';
-import 'package:slides_sync/core/data/isar_data/isar_schemas.dart';
+import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
+import 'package:slides_sync/core/storage/isar_data/isar_schemas.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

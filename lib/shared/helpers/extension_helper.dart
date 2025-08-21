@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/app.dart';
 import 'package:slides_sync/shared/helpers/device_helper.dart';
 import 'package:slides_sync/shared/helpers/responsiveness_helper.dart';
+import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
 extension ExtensionHelper on BuildContext {
   BuildContext get context => this;
@@ -26,4 +29,8 @@ extension ResponsivenessExtension on BuildContext {
 
   double get hPadding5 => hPadding * .5;
   double get hPadding7 => hPadding * .7;
+}
+
+extension AppProviderTheme on WidgetRef {
+  AppThemeModel get theme => watch(appThemeProvider);
 }

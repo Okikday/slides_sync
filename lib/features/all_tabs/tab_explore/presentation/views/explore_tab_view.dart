@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/test/file_manager_page.dart';

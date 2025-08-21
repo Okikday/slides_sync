@@ -18,7 +18,7 @@ class SelectedItemsCountPopUp extends ConsumerWidget {
       margin: EdgeInsets.symmetric(horizontal: 16.0,),
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: context.theme.primaryColor.withValues(alpha: .4),
+        color: ref.theme.primaryColor.withValues(alpha: .4),
         border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(20))),
         borderRadius: BorderRadius.circular(24),
       ),

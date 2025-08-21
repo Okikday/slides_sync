@@ -18,7 +18,7 @@ class BottomNavBar extends ConsumerWidget {
 
     return Container(
       clipBehavior: Clip.hardEdge,
-      padding: EdgeInsets.fromLTRB(8, 0, 8, context.bottomPadding + 8),
+      margin: EdgeInsets.only(bottom: context.bottomPadding, left: 8, right: 8),
       decoration: BoxDecoration(
         boxShadow: [BoxShadow(color: Colors.black.withAlpha(20), blurRadius: kBottomNavigationBarHeight / 2, spreadRadius: 4)],
       ),
@@ -29,11 +29,14 @@ class BottomNavBar extends ConsumerWidget {
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex,
-            unselectedItemColor: context.theme.colorScheme.onTertiary,
-            selectedItemColor: context.theme.primaryColor,
+            unselectedItemColor: ref.theme.secondaryText,
+            selectedItemColor: ref.theme.primaryColor,
             onTap: (index) => onTap(index),
-            backgroundColor: AppColors.bgBlendColor(context).withValues(alpha: 0.86),
+            backgroundColor: ref.theme.altBackgroundPrimary.withValues(
+              alpha: 0.6,
+            ),
             elevation: 48,
+            landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
             items: [
               BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
               BottomNavigationBarItem(icon: Icon(Iconsax.folder), label: "Library", tooltip: "Library holding all your courses"),

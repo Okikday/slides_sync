@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/data/repos/course_content_repo.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
@@ -50,7 +50,11 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
       child: ModifyingListTile(
         leading: BuildImagePathWidget(
           fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: widget.content.path.filePath)),
-          fallbackWidget: Icon(WidgetHelper.resolveIconData(widget.content.courseContentType), size: 22, color: context.theme.primaryColor),
+          fallbackWidget: Icon(
+            WidgetHelper.resolveIconData(widget.content.courseContentType),
+            size: 22,
+            color: ref.theme.primaryColor,
+          ),
         ),
         trailing: PopupMenuTheme(
           data: PopupMenuThemeData(
@@ -64,7 +68,7 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
               tooltip: "Show options",
               clipBehavior: Clip.hardEdge,
               menuPadding: EdgeInsets.zero,
-              icon: Icon(Iconsax.more_copy, color: context.theme.colorScheme.onTertiary),
+              icon: Icon(Iconsax.more_copy, color: ref.theme.secondaryText),
               onSelected: (value) => actions[value].onTap(),
               itemBuilder: (context) {
                 return List<PopupMenuItem<int>>.generate(actions.length, (index) {
@@ -82,19 +86,19 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
   }
 }
 
-class PopupMenuItemChild extends StatelessWidget {
+class PopupMenuItemChild extends ConsumerWidget {
   final IconData iconData;
   final String title;
   const PopupMenuItemChild({super.key, required this.title, required this.iconData});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        Icon(iconData, color: context.theme.colorScheme.onTertiary),
-        CustomText(title, color: context.theme.colorScheme.tertiary),
+        Icon(iconData, color: ref.theme.secondaryText),
+        CustomText(title, color: ref.theme.primaryText),
         ConstantSizing.rowSpacingSmall,
       ],
     );

@@ -9,6 +9,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/test/file_manager_page.dart';
 
 class ManageCourseDialog extends ConsumerStatefulWidget {
@@ -43,7 +44,10 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
           Positioned.fill(
             child: OrganicBackgroundEffect(
               gradientOpacity: 0.015,
-              gradientColors: [context.theme.primaryColor, context.theme.colorScheme.onSecondary],
+              gradientColors: [
+                ref.theme.primaryColor,
+                context.theme.colorScheme.onSecondary,
+              ],
             ),
           ),
 
@@ -61,8 +65,15 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
               child: ClipRSuperellipse(
                 borderRadius: BorderRadius.circular(16.0),
                 child: ColoredBox(
-                  color: context.theme.primaryColor,
-                  child: SizedBox(width: 51, height: 51, child: Icon(Iconsax.close_circle, color: context.theme.colorScheme.tertiary)),
+                  color: ref.theme.primaryColor,
+                  child: SizedBox(
+                    width: 51,
+                    height: 51,
+                    child: Icon(
+                      Iconsax.close_circle,
+                      color: ref.theme.primaryText,
+                    ),
+                  ),
                 ),
               ),
             ),

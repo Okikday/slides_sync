@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 
 typedef PreviewImagePathRecord<Record> = ({String previewDirPath, String previewPath});
 

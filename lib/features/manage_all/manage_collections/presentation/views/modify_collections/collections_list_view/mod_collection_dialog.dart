@@ -4,12 +4,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_collection.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
-import 'package:slides_sync/routes/routes.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -77,7 +77,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                   collection.collectionTitle,
                   fontSize: 14.5,
                   fontWeight: FontWeight.bold,
-                  color: context.theme.colorScheme.tertiary,
+                  color: ref.theme.primaryText,
                 ),
               ),
             ),
@@ -89,13 +89,21 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
       actions: [
         AppActionDialogModel(
           title: "Select",
-          icon: Icon(Iconsax.tick_circle_copy, size: 24, color: context.theme.colorScheme.onTertiary),
+          icon: Icon(
+            Iconsax.tick_circle_copy,
+            size: 24,
+            color: ref.theme.secondaryText,
+          ),
           onTap: () {},
         ),
 
         AppActionDialogModel(
           title: "View contents",
-          icon: Icon(Iconsax.forward_copy, size: 24, color: context.theme.colorScheme.onTertiary),
+          icon: Icon(
+            Iconsax.forward_copy,
+            size: 24,
+            color: ref.theme.secondaryText,
+          ),
           onTap: () {
             CustomDialog.hide(context);
             AppNavigator.to(context).modifyContentsRoute((
@@ -108,7 +116,11 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
         AppActionDialogModel(
           title: "Share",
-          icon: Icon(Icons.share_outlined, size: 24, color: context.theme.colorScheme.onTertiary),
+          icon: Icon(
+            Icons.share_outlined,
+            size: 24,
+            color: ref.theme.secondaryText,
+          ),
           onTap: () {},
         ),
         AppActionDialogModel(

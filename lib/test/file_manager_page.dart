@@ -1,20 +1,21 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-class FileManagerPage extends StatefulWidget {
+class FileManagerPage extends ConsumerStatefulWidget {
   const FileManagerPage({super.key});
 
   @override
-  State<FileManagerPage> createState() => _FileManagerPageState();
+  ConsumerState<FileManagerPage> createState() => _FileManagerPageState();
 }
 
-class _FileManagerPageState extends State<FileManagerPage> {
+class _FileManagerPageState extends ConsumerState<FileManagerPage> {
   Directory? _currentDir;
   List<FileSystemEntity> _entries = [];
   bool _loading = true;
@@ -78,7 +79,10 @@ class _FileManagerPageState extends State<FileManagerPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('File Manager: $dirName', style: TextStyle(color: context.theme.colorScheme.tertiary)),
+          title: Text(
+            'File Manager: $dirName',
+            style: TextStyle(color: ref.theme.primaryText),
+          ),
           leading: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
@@ -99,7 +103,12 @@ class _FileManagerPageState extends State<FileManagerPage> {
             _loading
                 ? Center(child: CircularProgressIndicator())
                 : _entries.isEmpty
-                ? Center(child: Text('Empty', style: TextStyle(color: context.theme.colorScheme.tertiary)))
+                ? Center(
+                  child: Text(
+                    'Empty',
+                    style: TextStyle(color: ref.theme.primaryText),
+                  ),
+                )
                 : ListView.separated(
                   itemCount: _entries.length,
                   separatorBuilder: (_, __) => Divider(height: 1),
@@ -117,8 +126,17 @@ class _FileManagerPageState extends State<FileManagerPage> {
 
                         return ListTile(
                           leading: Icon(isDir ? Icons.folder : Icons.insert_drive_file),
-                          title: Text(name, style: TextStyle(color: context.theme.colorScheme.tertiary)),
-                          subtitle: Text(isDir ? modified : '$modified • $size', style: TextStyle(fontSize: 12, color: context.theme.colorScheme.tertiary)),
+                          title: Text(
+                            name,
+                            style: TextStyle(color: ref.theme.primaryText),
+                          ),
+                          subtitle: Text(
+                            isDir ? modified : '$modified • $size',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: ref.theme.primaryText,
+                            ),
+                          ),
                           onTap: isDir ? () => _listDir(ent) : null,
                           onLongPress:
                               isDir

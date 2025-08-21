@@ -1,9 +1,10 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
-class ModifyingListTile extends StatelessWidget {
+class ModifyingListTile extends ConsumerWidget {
   final Widget leading;
   final Widget? trailing;
   final String title;
@@ -24,7 +25,7 @@ class ModifyingListTile extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final buttonPadding = context.hPadding5;
     final btnDimension = context.defaultBtnDimension;
 
@@ -67,11 +68,15 @@ class ModifyingListTile extends StatelessWidget {
                           title,
                           fontWeight: FontWeight.bold,
                           fontSize: 13.5,
-                          color: context.theme.colorScheme.tertiary,
+                          color: ref.theme.primaryText,
                           overflow: TextOverflow.fade,
                         ),
                         ConstantSizing.columnSpacing(4),
-                        CustomText(subtitle, fontSize: 12, color: context.theme.colorScheme.onTertiary),
+                        CustomText(
+                          subtitle,
+                          fontSize: 12,
+                          color: ref.theme.secondaryText,
+                        ),
                       ],
                     ),
                   ),

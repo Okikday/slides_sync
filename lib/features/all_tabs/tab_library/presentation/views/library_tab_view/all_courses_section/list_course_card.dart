@@ -33,6 +33,7 @@ class ListCourseCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Badge(
       backgroundColor: Colors.transparent,
       label: CircleAvatar(radius: 5, backgroundColor: dotColor),
@@ -45,10 +46,10 @@ class ListCourseCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
         //   image: DecorationImage(
-        //   image: AssetImage(AssetStrings.instance.bookSparkleTransparentBg),
+          //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
         //   opacity: 0.05,
         //   fit: BoxFit.cover,
-        //   colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+          //   colorFilter: ColorFilter.mode(ref.theme.primaryColor, BlendMode.srcIn),
         // ),
         ),
         child: Row(
@@ -62,7 +63,11 @@ class ListCourseCard extends ConsumerWidget {
                 label: CircleAvatar(
                   radius: 10.5,
                   backgroundColor: Color(0xff0e1d27),
-                  child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor),
+                  child: Icon(
+                    Iconsax.star_1,
+                    size: 16,
+                    color: ref.theme.primaryColor,
+                  ),
                 ),
                 offset: Offset(0, -2),
                 child: Container(
@@ -88,10 +93,7 @@ class ListCourseCard extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
                       child: CustomTextButton(
-                              backgroundColor: AppColors.lightenColor(
-                                context.theme.primaryColor.withAlpha(40),
-                                context.isDarkMode ? 0.75 : 0.25,
-                              ),
+                        backgroundColor: theme.altBackgroundPrimary,
                               pixelHeight: 24,
                               borderRadius: 8,
                               contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
@@ -99,7 +101,7 @@ class ListCourseCard extends ConsumerWidget {
                                 courseCode,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: context.theme.primaryColor.withAlpha(200),
+                          color: ref.theme.primaryColor.withAlpha(200),
                               ),
                             ),
                     ),
@@ -109,7 +111,12 @@ class ListCourseCard extends ConsumerWidget {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
+                      child: CustomText(
+                        courseName,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: ref.theme.primaryText,
+                      ),
                     ),
                   ),
 
@@ -120,7 +127,7 @@ class ListCourseCard extends ConsumerWidget {
                     child: CustomText(
                       "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "category" : "categories"}",
                       fontSize: 11,
-                      color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.8),
+                      color: ref.theme.secondaryText.withValues(alpha: 0.8),
                     ),
                   ),
                 ],
@@ -143,7 +150,7 @@ class ListCourseCard extends ConsumerWidget {
                       "64%",
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.5),
+                      color: ref.theme.secondaryText.withValues(alpha: 0.5),
                     ),
                   ),
 
@@ -156,8 +163,10 @@ class ListCourseCard extends ConsumerWidget {
                       child: CircularProgressIndicator(
                         value: 0.64,
                         strokeCap: StrokeCap.round,
-                        color: context.theme.primaryColor,
-                        backgroundColor: context.theme.colorScheme.onSurface,
+                        color: ref.theme.primaryColor,
+                        backgroundColor: theme.altBackgroundPrimary.withValues(
+                          alpha: 0.4,
+                        ),
                       ),
                     ),
                   ),

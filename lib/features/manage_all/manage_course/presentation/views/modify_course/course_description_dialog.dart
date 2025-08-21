@@ -55,7 +55,15 @@ class _CourseDescriptionDialogState extends ConsumerState<CourseDescriptionDialo
                   ConstantSizing.columnSpacingSmall,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(child: CustomText("Course description", fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center, color: context.theme.colorScheme.tertiary,)),
+                    child: Center(
+                      child: CustomText(
+                        "Course description",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        textAlign: TextAlign.center,
+                        color: ref.theme.primaryText,
+                      ),
+                    ),
                   ),
                   ConstantSizing.columnSpacingSmall,
                   Divider(color: context.isDarkMode ? Colors.lightBlue.withAlpha(40) : Colors.grey.withAlpha(40)),
@@ -64,7 +72,12 @@ class _CourseDescriptionDialogState extends ConsumerState<CourseDescriptionDialo
                       physics: const BouncingScrollPhysics(),
                       controller: scrollController,
                       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                      child: CustomText(widget.description, fontSize: 15, fontWeight: FontWeight.w600, color: context.theme.colorScheme.tertiary),
+                      child: CustomText(
+                        widget.description,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: ref.theme.primaryText,
+                      ),
                     ),
                   ),
                 ],

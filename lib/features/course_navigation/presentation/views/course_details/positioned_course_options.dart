@@ -1,16 +1,17 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
-class PositionedCourseOptions extends StatelessWidget {
+class PositionedCourseOptions extends ConsumerWidget {
   const PositionedCourseOptions({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Positioned(
       bottom: context.bottomPadding + 16,
       left: 10,
@@ -38,7 +39,7 @@ class PositionedCourseOptions extends StatelessWidget {
             pixelWidth: 48,
             borderRadius: 16,
             backgroundColor: context.theme.colorScheme.onSurface.withValues(alpha: 0.8),
-            child: Icon(Icons.download_rounded, color: context.theme.colorScheme.onTertiary),
+            child: Icon(Icons.download_rounded, color: ref.theme.secondaryText),
           ),
         ],
       ),

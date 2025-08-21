@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_content_type.dart';
 
 class WidgetHelper {
   static IconData resolveIconData(CourseContentType type, [bool isOutlined = false]) {

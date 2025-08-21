@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -27,10 +27,12 @@ class ExpandCardDialog extends ConsumerStatefulWidget {
 class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     final Size widgetSize = widget.widgetSize ?? Size(180, 150);
     final boundedOffset = repositionOffset(tapPosition: widget.tapPosition, screenSize: context.screenSize, widgetSize: widgetSize);
     final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     final divider = Divider(color: AppColors.bgBlendColor(context), height: 0);
+    
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
@@ -61,7 +63,8 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                     children: [
                       CircleAvatar(
                         radius: dimension / 2 - 3,
-                        backgroundColor: context.theme.cardColor.withAlpha(80),
+                        backgroundColor: theme.altBackgroundSecondary
+                            .withValues(alpha: 0.4),
                         child: ClipOval(
                           child: CircleAvatar(
                             radius: dimension / 2 - 4,
@@ -70,7 +73,11 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                               dimension: dimension - 8,
                               child: BuildImagePathWidget(
                                 fileDetails: widget.course.imageLocationJson.fileDetails,
-                                fallbackWidget: Icon(Iconsax.document_1, size: 16, color: context.theme.colorScheme.tertiary),
+                                fallbackWidget: Icon(
+                                  Iconsax.document_1,
+                                  size: 16,
+                                  color: ref.theme.primaryText,
+                                ),
                               ),
                             ),
                           ),
@@ -86,8 +93,9 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                       child: CircularProgressIndicator(
                         value: 0.01,
                         strokeCap: StrokeCap.round,
-                        color: context.theme.primaryColor,
-                        backgroundColor: context.theme.colorScheme.onSurface,
+                            color: theme.primaryColor,
+                            backgroundColor: theme.altBackgroundSecondary
+                                .withValues(alpha: 0.6),
                       ),
                     ),
                   ),
@@ -99,9 +107,20 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 4,
                       children: [
-                        Flexible(child: CustomText(widget.course.courseName, fontSize: 14, color: context.theme.colorScheme.tertiary, overflow: TextOverflow.ellipsis)),
+                        Flexible(
+                          child: CustomText(
+                            widget.course.courseName,
+                            fontSize: 14,
+                            color: ref.theme.primaryText,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         if (widget.course.courseCode.isNotEmpty)
-                          CustomText(widget.course.courseCode, fontSize: 10, color: context.theme.colorScheme.onTertiary),
+                          CustomText(
+                            widget.course.courseCode,
+                            fontSize: 10,
+                            color: ref.theme.secondaryText,
+                          ),
                       ],
                     ),
                   ),
@@ -111,7 +130,7 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                     child: CustomText(
                       widget.course.collections.length.toString(),
                       fontSize: 12,
-                      color: context.theme.colorScheme.onTertiary,
+                      color: ref.theme.secondaryText,
                     ),
                   ),
                 ],
@@ -183,7 +202,7 @@ class BuildExpandCardButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BuildPlainActionButton(
       title: title,
-      icon: Icon(iconData, color: context.theme.colorScheme.onTertiary),
+      icon: Icon(iconData, color: ref.theme.secondaryText),
       contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       onTap: onTap,
     );

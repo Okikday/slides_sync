@@ -15,3 +15,11 @@ class ThemeUtils {
     return Color(int.parse(buffer.toString(), radix: 16));
   }
 }
+
+extension ThemeUtilsExtension1 on Color {
+  String get toHexColor => ThemeUtils.colorToHex(this);
+}
+
+extension ThemeUtilsExtension2 on String {
+  Color get toColor => ThemeUtils.hexToColor(this);
+}

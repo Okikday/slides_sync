@@ -2,9 +2,8 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/strings/asset_strings.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class MoreSection extends ConsumerWidget {
   const MoreSection({super.key});
@@ -15,13 +14,16 @@ class MoreSection extends ConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: AppColors.bgBlendColor(context, .9, .1),
+        color: ref.theme.altBackgroundPrimary.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(24),
         image: DecorationImage(
-          image: AssetImage(AssetStrings.instance.zigzagWavy),
+          image: Assets.images.zigzagWavy.asImageProvider,
           fit: BoxFit.cover,
-          opacity: 0.02,
-          colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+          opacity: 0.01,
+          colorFilter: ColorFilter.mode(
+            ref.theme.primaryColor,
+            BlendMode.srcIn,
+          ),
         ),
       ),
       child: ConstrainedBox(
@@ -64,10 +66,10 @@ class MoreSectionOption extends ConsumerWidget {
           pixelWidth: 48,
           // contentPadding: EdgeInsets.all(0),
           shape: const CircleBorder(),
-          backgroundColor: AppColors.bgBlendColor(context, .86, .14),
-          child: Icon(iconData, color: AppColors.secondaryText(context))
+          backgroundColor: ref.theme.background,
+          child: Icon(iconData, color: ref.theme.secondaryText)
         ),
-        CustomText(title, color: AppColors.primaryText(context), fontSize: 12),
+        CustomText(title, color: ref.theme.secondaryText, fontSize: 12),
       ],
     );
   }

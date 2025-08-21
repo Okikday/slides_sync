@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
@@ -56,10 +56,15 @@ class ModifyCourseHeader extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: CustomTextButton(
-                          backgroundColor: context.theme.primaryColor.withAlpha(60),
+                          backgroundColor: ref.theme.primaryColor.withAlpha(60),
                           pixelHeight: 28,
                           contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: context.theme.primaryColor),
+                          child: CustomText(
+                            courseCode,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: ref.theme.primaryColor,
+                          ),
                         ),
                       ),
 
@@ -69,7 +74,12 @@ class ModifyCourseHeader extends ConsumerWidget {
                         triggerMode: TooltipTriggerMode.tap,
                         child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: CustomText(title, fontSize: 20, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,),
+                          child: CustomText(
+                            title,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: ref.theme.primaryText,
+                          ),
                       ),
                       )
                     ),
@@ -83,7 +93,12 @@ class ModifyCourseHeader extends ConsumerWidget {
                               borderRadius: 4.0,
                               contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                               onClick: onClickAddDescription,
-                              child: CustomText(description.isEmpty ? "Add description" : description, color: context.theme.primaryColor),
+                              child: CustomText(
+                                description.isEmpty
+                                    ? "Add description"
+                                    : description,
+                                color: ref.theme.primaryColor,
+                              ),
                             ),
                           ),
                         ),
@@ -104,18 +119,31 @@ class ModifyCourseHeader extends ConsumerWidget {
                   decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
                     BoxShadow(color: Colors.white12, offset: Offset(1, 1), blurRadius: 3, spreadRadius: 2),
                     BoxShadow(color: Colors.black12, offset: Offset(-1, -1), blurRadius: 3, spreadRadius: 2),
-                    BoxShadow(color: AppColors.lightenColor(context.theme.primaryColor.withValues(alpha: 0.2), 0.6), spreadRadius: 2, blurRadius: 3)
+                      BoxShadow(
+                        color: AppColors.lightenColor(
+                          ref.theme.primaryColor.withValues(alpha: 0.2),
+                          0.6,
+                        ),
+                        spreadRadius: 2,
+                        blurRadius: 3,
+                      )
                   ]),
                   child: GestureDetector(
                     onTap: onClickImage,
                     onLongPress: onLongPressImage,
                     child: ColoredBox(
-                      color: context.theme.primaryColor.withAlpha(60),
+                      color: ref.theme.primaryColor.withAlpha(60),
                       child: SizedBox.square(
                         dimension: 80,
                         child: BuildImagePathWidget(
                           fileDetails: courseFileDetails.fileDetails,
-                          fallbackWidget: Icon(Iconsax.document, color: context.isDarkMode ? context.theme.primaryColor : context.theme.primaryColor),
+                          fallbackWidget: Icon(
+                            Iconsax.document,
+                            color:
+                                context.isDarkMode
+                                    ? ref.theme.primaryColor
+                                    : ref.theme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
@@ -137,7 +165,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                     onClick: onClickEditCourse,
                     textColor: context.theme.colorScheme.primary,
                     textSize: 14,
-                    backgroundColor: context.theme.primaryColor.withAlpha(60),
+                    backgroundColor: ref.theme.primaryColor.withAlpha(60),
                     pixelHeight: 48,
                     borderRadius: 48,
                   ),

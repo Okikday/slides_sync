@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -68,7 +68,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
     if (widget.collections.isEmpty) {
       return SliverPadding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        sliver: _buildNewCollectionTile(context, onTap: widget.onClickNewCollection),
+        sliver: _buildNewCollectionTile(ref, onTap: widget.onClickNewCollection),
       );
     }
 
@@ -156,23 +156,25 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
   }
 }
 
-Widget _buildNewCollectionTile(BuildContext context, {required void Function() onTap}) {
+Widget _buildNewCollectionTile(WidgetRef ref, {required void Function() onTap}) {
   return SliverToBoxAdapter(
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        overlayColor: WidgetStatePropertyAll(context.theme.primaryColor.withAlpha(40)),
+        overlayColor: WidgetStatePropertyAll(
+          ref.theme.primaryColor.withAlpha(40),
+        ),
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(color: AppColors.bgBlendColor(context, .88, .12), borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(color: ref.theme.altBackgroundPrimary, borderRadius: BorderRadius.circular(12)),
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
 
           child: Row(
             children: [
               Icon(Iconsax.add_circle, size: 30),
               ConstantSizing.rowSpacingMedium,
-              Expanded(child: CustomText("New Collection", color: context.theme.colorScheme.onTertiary)),
+              Expanded(child: CustomText("New Collection", color: ref.theme.primaryText)),
             ],
           ),
         ),

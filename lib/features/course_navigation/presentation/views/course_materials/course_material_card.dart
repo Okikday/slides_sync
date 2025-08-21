@@ -4,8 +4,8 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
@@ -80,9 +80,9 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                     height: 50,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      color: context.theme.primaryColor.withAlpha(40),
+                      color: ref.theme.primaryColor.withAlpha(40),
                       borderRadius: BorderRadius.circular(12),
-                      // boxShadow: [BoxShadow(color: context.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
+                      // boxShadow: [BoxShadow(color: ref.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
                     ),
                     child: BuildImagePathWidget(
                       fileDetails: FileDetails(
@@ -103,19 +103,23 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
                             child: CustomText(
                               courseContent.title,
                               fontSize: 13,
-                              color: context.theme.colorScheme.tertiary,
+                              color: ref.theme.primaryText,
                               overflow: TextOverflow.fade,
                             ),
                           ),
                           // ConstantSizing.columnSpacing(2),
-                          CustomText(courseContent.courseContentType.name, fontSize: 11, color: context.theme.colorScheme.onTertiary),
+                          CustomText(
+                            courseContent.courseContentType.name,
+                            fontSize: 11,
+                            color: ref.theme.secondaryText,
+                          ),
                           ConstantSizing.columnSpacing(8),
                           LinearProgressIndicator(
                             minHeight: 8,
                             borderRadius: BorderRadius.circular(36),
                             value: math.Random().nextDouble(),
                             backgroundColor: Colors.black.withAlpha(40),
-                            color: context.theme.primaryColor, //.withAlpha(40)
+                            color: ref.theme.primaryColor, //.withAlpha(40)
                           ),
                         ],
                       ),
@@ -137,39 +141,46 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
   }
 }
 
-class AnimatedCourseMaterialCardMenu extends StatelessWidget {
+class AnimatedCourseMaterialCardMenu extends ConsumerStatefulWidget {
   const AnimatedCourseMaterialCardMenu({super.key, required this.courseMaterialCardActionModels, required this.expandAnim});
 
   final List<CourseMaterialCardActionModel> courseMaterialCardActionModels;
   final Animation<double> expandAnim;
 
   @override
+  ConsumerState<AnimatedCourseMaterialCardMenu> createState() =>
+      _AnimatedCourseMaterialCardMenuState();
+}
+
+class _AnimatedCourseMaterialCardMenuState
+    extends ConsumerState<AnimatedCourseMaterialCardMenu> {
+  @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        final cam = courseMaterialCardActionModels;
+        final cam = widget.courseMaterialCardActionModels;
         final List<Widget> genCardFuncs = List.generate(cam.length, (index) {
           return ScaleTransition(
-            scale: expandAnim,
+            scale: widget.expandAnim,
             child: CustomElevatedButton(
               borderRadius: 24,
-              backgroundColor: context.theme.primaryColor.withAlpha(40),
+              backgroundColor: ref.theme.primaryColor.withAlpha(40),
               onClick: cam[index].onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(cam[index].icon),
                   ConstantSizing.rowSpacingSmall,
-                  CustomText(cam[index].label, color: context.theme.colorScheme.tertiary),
+                  CustomText(cam[index].label, color: ref.theme.primaryText),
                 ],
               ),
             ),
           );
         });
         return SizeTransition(
-          sizeFactor: expandAnim,
+          sizeFactor: widget.expandAnim,
           child: FadeTransition(
-            opacity: expandAnim,
+            opacity: widget.expandAnim,
             child: Padding(
               padding: EdgeInsets.only(left: context.deviceWidth * 0.2),
               child: Wrap(runAlignment: WrapAlignment.start, spacing: 8.0, runSpacing: 8.0, children: genCardFuncs),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
@@ -46,7 +46,7 @@ class EditCourseTile extends ConsumerWidget {
             ClipOval(
               // borderRadius: BorderRadius.circular(13),
               child: ColoredBox(
-                color: context.theme.primaryColor.withAlpha(80),
+                color: ref.theme.primaryColor.withAlpha(80),
                 child: Padding(
                   padding: EdgeInsets.all(2),
                   child: ClipOval(
@@ -62,7 +62,7 @@ class EditCourseTile extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (courseCode.isNotEmpty) CustomTextButton(
-                    backgroundColor: context.theme.primaryColor.withAlpha(80),
+                      backgroundColor: ref.theme.primaryColor.withAlpha(80),
                     pixelHeight: 24,
                     borderRadius: 12,
                     contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -71,7 +71,14 @@ class EditCourseTile extends ConsumerWidget {
 
                   if (courseCode.isNotEmpty) ConstantSizing.columnSpacing(2),
 
-                  Flexible(child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary)),
+                  Flexible(
+                    child: CustomText(
+                      courseName,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: ref.theme.primaryText,
+                    ),
+                  ),
 
                   ConstantSizing.columnSpacing(2.0),
 
@@ -79,7 +86,11 @@ class EditCourseTile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // CustomText("This is a Content."),
-                      CustomText("$categoriesCount items", fontSize: 12, color: context.theme.colorScheme.onTertiary),
+                      CustomText(
+                        "$categoriesCount items",
+                        fontSize: 12,
+                        color: ref.theme.secondaryText,
+                      ),
                     ],
                   ),
                 ],
@@ -98,9 +109,9 @@ class EditCourseTile extends ConsumerWidget {
                     selectionState.isSelecting && !selectionState.selected
                         ? Colors.grey
                         : (selectionState.isSelecting && selectionState.selected
-                            ? context.theme.primaryColor
+                            ? ref.theme.primaryColor
                             :
-                            context.theme.primaryColor),
+                            ref.theme.primaryColor),
                 size: 26,
               ),
             ).animate().scale(begin: Offset(0, 0), end: Offset(1, 1), curve: CustomCurves.bouncySpring, duration: Durations.extralong4),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/home_dash_board.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/home_dashboard.dart';
 import 'package:slides_sync/shared/helpers/device_helper.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -25,10 +25,26 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
           itemSnapping: true,
           shrinkExtent: isDesktop ? deviceWidth * 0.6 : deviceWidth * 0.94,
           itemExtent: isDesktop ? deviceWidth * 0.7 : deviceWidth * 0.94,
+          shape: BeveledRectangleBorder(),
           children: [
-            HomeDashBoard(courseName: 'Foundation of Sequential Programming', detail: 'CSC 213', progressValue: 0.45, completed: false, isFirst: true,),
-            HomeDashBoard(courseName: 'Software Workshop II', detail: '', progressValue: 0.45),
-            HomeDashBoard(courseName: 'Mathematical Methods I', detail: 'MAT 233', progressValue: 0.45, isFirst: false,),
+            HomeDashboard(
+              courseName: 'Foundation of Sequential Programming',
+              detail: 'CSC 213',
+              progressValue: 0.45,
+              completed: false,
+              isFirst: true,
+            ),
+            HomeDashboard(
+              courseName: 'Software Workshop II',
+              detail: '',
+              progressValue: 0.45,
+            ),
+            HomeDashboard(
+              courseName: 'Mathematical Methods I',
+              detail: 'MAT 233',
+              progressValue: 0.45,
+              isFirst: false,
+            ),
           ],
         ),
       ),

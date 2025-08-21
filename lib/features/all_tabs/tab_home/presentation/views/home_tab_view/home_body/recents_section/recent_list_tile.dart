@@ -14,10 +14,14 @@ class RecentListTile extends ConsumerWidget {
   final RecentListTileModel dataModel;
   const RecentListTile({super.key, required this.isDarkMode, required this.dataModel, required this.tilePadding});
 
-  Color _resolveLevelColor(BuildContext context, ProgressLevel level) {
+  Color _resolveLevelColor(WidgetRef ref, ProgressLevel level) {
     return level == ProgressLevel.danger
         ? Colors.red
-        : (level == ProgressLevel.warning ? Colors.orange : (level == ProgressLevel.success ? Colors.green : context.theme.primaryColor));
+        : (level == ProgressLevel.warning
+            ? Colors.orange
+            : (level == ProgressLevel.success
+                ? Colors.green
+                : ref.theme.primaryColor));
   }
 
   @override
@@ -27,7 +31,7 @@ class RecentListTile extends ConsumerWidget {
       child: CustomElevatedButton(
         backgroundColor: Colors.transparent,
         // backgroundColor: context.isDarkMode ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor() : HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.9).toColor(),
-        overlayColor: context.theme.colorScheme.secondary,
+        overlayColor: ref.theme.altBackgroundPrimary,
         contentPadding: EdgeInsets.all(tilePadding),
         borderRadius: 12,
         onClick: () {
@@ -44,7 +48,11 @@ class RecentListTile extends ConsumerWidget {
               label: CircleAvatar(
                 radius: 10.5,
                 backgroundColor: Color(0xff0e1d27),
-                child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor),
+                child: Icon(
+                  Iconsax.star_1,
+                  size: 16,
+                  color: ref.theme.primaryColor,
+                ),
               ),
               offset: Offset(0, -2),
               child: CustomElevatedButton(
@@ -54,7 +62,9 @@ class RecentListTile extends ConsumerWidget {
                 pixelHeight: 48,
                 pixelWidth: 48,
                 shape: CircleBorder(),
-                backgroundColor: AppColors.primary(context).withValues(alpha: 0.1),
+                backgroundColor: ref.theme.altBackgroundPrimary.withValues(
+                  alpha: 1,
+                ),
                 child: Icon(Iconsax.document_1, size: 26, color: AppColors.primary(context)),
               ),
             ),
@@ -78,7 +88,7 @@ class RecentListTile extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           height: 1.0,
-                          color: context.theme.colorScheme.tertiary,
+                          color: ref.theme.primaryText,
                         ),
                       ),
                     ),
@@ -86,7 +96,7 @@ class RecentListTile extends ConsumerWidget {
                       child: CustomText(
                         dataModel.subtitle,
                         fontSize: dataModel.extraContent.isEmpty ? 14 : 12,
-                        color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.5),
+                        color: ref.theme.secondaryText.withValues(alpha: 0.8),
                       ),
                     ),
                     if (dataModel.extraContent.isNotEmpty) Flexible(child: CustomText(dataModel.extraContent, fontSize: 13)),
@@ -116,7 +126,9 @@ class RecentListTile extends ConsumerWidget {
                             "${(dataModel.progress! * 100).truncate()}%",
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.5),
+                            color: ref.theme.secondaryText.withValues(
+                              alpha: 0.5,
+                            ),
                           ),
                 ),
 
@@ -130,8 +142,9 @@ class RecentListTile extends ConsumerWidget {
                       child: CircularProgressIndicator(
                         value: dataModel.progress,
                         strokeCap: StrokeCap.round,
-                        color: _resolveLevelColor(context, dataModel.progressLevel),
-                        backgroundColor: context.theme.colorScheme.onSurface,
+                        color: _resolveLevelColor(ref, dataModel.progressLevel),
+                        backgroundColor: ref.theme.altBackgroundSecondary
+                            .withValues(alpha: 0.4),
                       ),
                     ),
                   ),

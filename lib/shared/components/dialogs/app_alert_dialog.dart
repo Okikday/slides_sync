@@ -41,7 +41,7 @@ class AppAlertDialog extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 17,
                 textAlign: TextAlign.center,
-                color: context.theme.colorScheme.tertiary,
+                color: ref.theme.primaryText,
               ),
             ),
           ),
@@ -50,7 +50,11 @@ class AppAlertDialog extends ConsumerWidget {
           ConstantSizing.columnSpacingSmall,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: CustomText(content, fontSize: 14.5, color: context.theme.colorScheme.tertiary),
+            child: CustomText(
+              content,
+              fontSize: 14.5,
+              color: ref.theme.primaryText,
+            ),
           ),
           ConstantSizing.columnSpacingExtraLarge,
           Padding(
@@ -76,8 +80,8 @@ class AppAlertDialog extends ConsumerWidget {
                       label: "Confirm",
                       textSize: 14,
                       pixelHeight: 44,
-                      textColor: context.theme.primaryColor,
-                      backgroundColor: context.theme.primaryColor.withAlpha(80),
+                      textColor: ref.theme.primaryColor,
+                      backgroundColor: ref.theme.primaryColor.withAlpha(80),
                       borderRadius: ConstantSizing.borderRadiusCircle,
                       onClick: () {
                         if (onConfirm != null) onConfirm!();

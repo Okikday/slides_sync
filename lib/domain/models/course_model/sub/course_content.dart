@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:isar/isar.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content_type.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_content_type.dart';
 
 export 'course_content_type.dart';
 

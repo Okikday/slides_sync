@@ -19,13 +19,20 @@ class RecentsSectionHeader extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium, vertical: 0),
         child: Row(
           children: [
-            Expanded(child: CustomText("Recents", fontSize: 18, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary,)),
+            Expanded(
+              child: CustomText(
+                "Recents",
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: ref.theme.primaryText,
+              ),
+            ),
       
             CustomTextButton(
               label: "See all",
               contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              textColor: context.theme.colorScheme.onTertiary.withValues(alpha: 0.6),
-              textSize: 14.5,
+              textColor: ref.theme.secondaryText.withValues(alpha: 0.9),
+              textSize: 14,
               pixelHeight: 32,
               onClick: onClickSeeAll,
             ),

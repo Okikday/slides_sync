@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
@@ -70,13 +70,21 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
                                   shape: CircleBorder(),
                                   contentPadding: EdgeInsets.all(12),
-                                  child: Icon(Iconsax.star_copy, size: 26, color: context.theme.colorScheme.onTertiary),
+                                  child: Icon(
+                                    Iconsax.star_copy,
+                                    size: 26,
+                                    color: ref.theme.secondaryText,
+                                  ),
                                 ),
                                 CustomElevatedButton(
                                   backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
                                   shape: CircleBorder(),
                                   contentPadding: EdgeInsets.all(12),
-                                  child: Icon(Iconsax.note_add_copy, size: 26, color: context.theme.colorScheme.onTertiary),
+                                  child: Icon(
+                                    Iconsax.note_add_copy,
+                                    size: 26,
+                                    color: ref.theme.secondaryText,
+                                  ),
                                 ),
                               ],
                             ),
@@ -98,10 +106,14 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                               widget.recentDialogModel.title,
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
-                              color: context.theme.colorScheme.tertiary,
+                              color: ref.theme.primaryText,
                             ),
                             ConstantSizing.columnSpacingSmall,
-                            CustomText("Short detail", fontSize: 12.0, color: context.theme.colorScheme.onTertiary),
+                            CustomText(
+                              "Short detail",
+                              fontSize: 12.0,
+                              color: ref.theme.secondaryText,
+                            ),
                           ],
                         ),
                       ),
@@ -124,7 +136,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                 "Description",
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                color: context.theme.colorScheme.tertiary,
+                                color: ref.theme.primaryText,
                               ),
                               ConstantSizing.columnSpacingSmall,
                               CustomText(
@@ -132,7 +144,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                     .substring(0, widget.recentDialogModel.description.length.clamp(0, 128))
                                     .padRight(3, "."),
                                 fontSize: 13,
-                                color: context.theme.colorScheme.onTertiary,
+                                color: ref.theme.secondaryText,
                               ),
                             ],
                           ),

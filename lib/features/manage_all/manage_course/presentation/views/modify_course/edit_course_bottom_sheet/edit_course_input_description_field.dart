@@ -1,7 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EditCourseInputDescriptionField extends ConsumerWidget {
@@ -24,7 +24,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 6.0,
         children: [
-          CustomText("Description", fontSize: 13, color: context.theme.colorScheme.tertiary),
+          CustomText("Description", fontSize: 13, color: ref.theme.primaryText),
           SizedBox(
             width: context.deviceWidth,
             child: CustomTextfield(
@@ -39,7 +39,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               focusNode: descriptionFocusNode,
               controller: descriptionTextController,
               backgroundColor: context.theme.colorScheme.onSurface,
-              cursorColor: context.theme.primaryColor,
+              cursorColor: ref.theme.primaryColor,
               maxLength: 1024,
               counterText: null,
               border: OutlineInputBorder(
@@ -51,7 +51,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               maxLines: 6,
               inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               hint: "Enter new description",
-              inputTextStyle: TextStyle(color: context.theme.colorScheme.tertiary, ),
+              inputTextStyle: TextStyle(color: ref.theme.primaryText),
             ),
           ),
         ],

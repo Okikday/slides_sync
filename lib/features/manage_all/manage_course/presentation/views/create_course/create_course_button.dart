@@ -6,9 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_uc.dart';
-import 'package:slides_sync/routes/routes.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CreateCourseButton extends ConsumerWidget {
@@ -32,7 +32,7 @@ class CreateCourseButton extends ConsumerWidget {
       left: 0,
       right: 0,
       child: CustomElevatedButton(
-        backgroundColor: context.theme.primaryColor,
+        backgroundColor: ref.theme.primaryColor,
         label: "Create Course",
         textColor: Colors.white,
         textSize: 14,

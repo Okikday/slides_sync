@@ -2,10 +2,11 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ProgressShapeAnimatedWidget extends ConsumerStatefulWidget {
@@ -57,7 +58,11 @@ class _ProgressShapeAnimatedWidgetState extends ConsumerState<ProgressShapeAnima
                 child: CustomShapeWaveFilledWidget(
                   progress: widget.progress,
                   waveSize: Size.square(widget.shapeSize),
-                  textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: context.theme.primaryColor),
+                  textStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: ref.theme.primaryColor,
+                  ),
                   backgroundWidget: BuildImagePathWidget(
                     fileDetails: widget.fileDetails,
                     fallbackWidget: const SizedBox(),

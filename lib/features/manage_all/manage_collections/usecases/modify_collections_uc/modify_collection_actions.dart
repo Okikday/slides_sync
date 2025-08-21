@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/data/repos/course_repo.dart';
-import 'package:slides_sync/routes/routes.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 
 class ModifyCollectionActions {
   /// Add collection to course

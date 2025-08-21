@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/interactive_course_material_view.dart';

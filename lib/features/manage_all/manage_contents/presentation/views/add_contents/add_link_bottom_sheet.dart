@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -41,7 +41,7 @@ class AddLinkBottomSheet extends ConsumerWidget {
           bottom: context.bottomPadding + 120,
           child: CustomElevatedButton(
             label: "Paste from Clipboard",
-            backgroundColor: context.theme.colorScheme.onTertiary.withValues(alpha: .1),
+            backgroundColor: ref.theme.secondaryText.withValues(alpha: .1),
             textColor: AppColors.primaryText(context),
             onClick: () {
               UiUtils.showFlushBar(context, msg: "Not available!", flushbarPosition: FlushbarPosition.TOP);

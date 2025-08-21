@@ -20,7 +20,7 @@ class LibraryTabViewHeaderText extends ConsumerWidget {
       fontSize: (50 * percentScroll).clamp(20.0, 26),
       fontWeight: FontWeight.bold,
       textAlign: TextAlign.center,
-      color: context.theme.colorScheme.tertiary,
+      color: ref.theme.primaryText,
     );
     final Size textSize = UtilFunctions.getTextSize(textWidget.data, textWidget.effectiveStyle(context));
 

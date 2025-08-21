@@ -56,7 +56,15 @@ class AppActionDialog extends ConsumerWidget {
                   ConstantSizing.columnSpacingSmall,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Center(child: CustomText(title!, color: context.theme.colorScheme.tertiary, fontWeight: FontWeight.bold, fontSize: 18, textAlign: TextAlign.center)),
+                    child: Center(
+                      child: CustomText(
+                        title!,
+                        color: ref.theme.primaryText,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                   ConstantSizing.columnSpacingSmall,
                   divider,
@@ -110,7 +118,16 @@ class BuildPlainActionButton extends ConsumerWidget {
       onClick: onTap,
       child: Row(
         spacing: 12.0,
-        children: [icon, Expanded(child: CustomText(title, color: AppColors.primaryText(context), style: textStyle))],
+        children: [
+          icon,
+          Expanded(
+            child: CustomText(
+              title,
+              color: ref.theme.primaryText,
+              style: textStyle,
+            ),
+          ),
+        ],
       ),
     );
   }

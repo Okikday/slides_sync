@@ -29,8 +29,12 @@ class ContentListTile extends ConsumerWidget {
     this.onLongTapTile,
   });
 
-  static Color _resolveLevelColor(BuildContext context, int? level) {
-    return level == 0 ? Colors.red : (level == 1 ? Colors.orange : (level == 2 ? Colors.green : context.theme.primaryColor));
+  static Color _resolveLevelColor(WidgetRef ref, int? level) {
+    return level == 0
+        ? Colors.red
+        : (level == 1
+            ? Colors.orange
+            : (level == 2 ? Colors.green : ref.theme.primaryColor));
   }
 
   @override
@@ -58,7 +62,12 @@ class ContentListTile extends ConsumerWidget {
                 label: CircleAvatar(
                     radius: 10.5,
                     backgroundColor: context.theme.cardColor,
-                    child: Icon(Iconsax.star_1, size: 16, color: context.theme.primaryColor,)),
+                  child: Icon(
+                    Iconsax.star_1,
+                    size: 16,
+                    color: ref.theme.primaryColor,
+                  ),
+                ),
                 offset:  Offset(0, -2),
                 child: CustomElevatedButton(
                   onClick: () {
@@ -85,10 +94,27 @@ class ContentListTile extends ConsumerWidget {
                     children: [
                       ConstrainedBox(
                         constraints: BoxConstraints(maxHeight: 30),
-                        child: CustomText(title, fontSize: 14, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary, height: 1.0),
+                        child: CustomText(
+                          title,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: ref.theme.primaryText,
+                          height: 1.0,
+                        ),
                       ),
-                      FittedBox(child: CustomText(subtitle, fontSize: extraContent.isEmpty ? 14 : 12, color: context.theme.colorScheme.onTertiary)),
-                      if(extraContent.isNotEmpty) CustomText(extraContent, fontSize: 13, color: context.theme.colorScheme.tertiary,),
+                      FittedBox(
+                        child: CustomText(
+                          subtitle,
+                          fontSize: extraContent.isEmpty ? 14 : 12,
+                          color: ref.theme.secondaryText,
+                        ),
+                      ),
+                      if (extraContent.isNotEmpty)
+                        CustomText(
+                          extraContent,
+                          fontSize: 13,
+                          color: ref.theme.primaryText,
+                        ),
                     ],
                   ),
                 ),
@@ -110,8 +136,17 @@ class ContentListTile extends ConsumerWidget {
                     },
                     child:
                     progress == null
-                        ? Icon(Iconsax.arrow_right_2_copy, color: context.theme.colorScheme.tertiary, size: 26)
-                        : CustomText("${(progress! * 100).truncate()}%", fontSize: 11, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
+                            ? Icon(
+                              Iconsax.arrow_right_2_copy,
+                              color: ref.theme.primaryText,
+                              size: 26,
+                            )
+                            : CustomText(
+                              "${(progress! * 100).truncate()}%",
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: ref.theme.primaryText,
+                            ),
                   ),
 
                   if (progress != null)
@@ -121,7 +156,11 @@ class ContentListTile extends ConsumerWidget {
                       top: 0,
                       bottom: 0,
                       child: IgnorePointer(
-                        child: CircularProgressIndicator(value: progress, strokeCap: StrokeCap.round, color: _resolveLevelColor(context, level)),
+                        child: CircularProgressIndicator(
+                          value: progress,
+                          strokeCap: StrokeCap.round,
+                          color: _resolveLevelColor(ref, level),
+                        ),
                       ),
                     ),
                 ],

@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:isar/isar.dart';
-import 'package:slides_sync/core/data/isar_data/isar_data.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 
 class CourseRepo {
   static final IsarData<Course> _isarData = IsarData.instance<Course>();

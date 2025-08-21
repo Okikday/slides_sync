@@ -3,15 +3,16 @@ import 'dart:ui';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-class LoadingOverlay extends StatelessWidget {
+class LoadingOverlay extends ConsumerWidget {
   final double? progress;
   final String? message;
   const LoadingOverlay({super.key, this.progress, this.message});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final loadingCard = ClipRSuperellipse(
       borderRadius: BorderRadius.circular(44),
       clipBehavior: Clip.hardEdge,
@@ -27,10 +28,18 @@ class LoadingOverlay extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               spacing: 12,
               children: [
-                CustomText(message ?? "Loading", fontSize: 10, fontWeight: FontWeight.bold, color: context.theme.colorScheme.tertiary),
+                CustomText(
+                  message ?? "Loading",
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: ref.theme.primaryText,
+                ),
                 SizedBox.square(
                   dimension: 14,
-                  child: CircularProgressIndicator(strokeCap: StrokeCap.round, color: context.theme.primaryColor),
+                  child: CircularProgressIndicator(
+                    strokeCap: StrokeCap.round,
+                    color: ref.theme.primaryColor,
+                  ),
                 ),
               ],
             ),

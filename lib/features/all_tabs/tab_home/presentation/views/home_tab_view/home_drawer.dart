@@ -27,33 +27,48 @@ class HomeDrawer extends ConsumerWidget {
                 CircleAvatar(
                   radius: 40,
                   backgroundColor: context.theme.colorScheme.onSurface,
-                  child: Icon(Iconsax.user, color: context.theme.colorScheme.onTertiary),
+                  child: Icon(Iconsax.user, color: ref.theme.secondaryText),
                 ),
                 ConstantSizing.columnSpacingMedium,
-                CustomText("Username", color: context.theme.colorScheme.tertiary),
+                CustomText("Username", color: ref.theme.primaryText),
                 ConstantSizing.columnSpacingSmall,
-                CustomText("Some description", color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.6)),
+                CustomText(
+                  "Some description",
+                  color: ref.theme.secondaryText.withValues(alpha: 0.6),
+                ),
 
                 ConstantSizing.columnSpacingExtraLarge,
 
                 ListTile(
-                  leading: Icon(Iconsax.profile_tick, color: context.theme.colorScheme.onTertiary),
-                  title: CustomText("Profile", color: context.theme.colorScheme.tertiary),
+                  leading: Icon(
+                    Iconsax.profile_tick,
+                    color: ref.theme.secondaryText,
+                  ),
+                  title: CustomText("Profile", color: ref.theme.primaryText),
                 ),
                 ListTile(
-                  leading: Icon(Iconsax.bookmark, color: context.theme.colorScheme.onTertiary),
-                  title: CustomText("Bookmarks", color: context.theme.colorScheme.tertiary),
+                  leading: Icon(
+                    Iconsax.bookmark,
+                    color: ref.theme.secondaryText,
+                  ),
+                  title: CustomText("Bookmarks", color: ref.theme.primaryText),
                 ),
                 ListTile(
-                  leading: Icon(Iconsax.setting, color: context.theme.colorScheme.onTertiary),
-                  title: CustomText("Settings", color: context.theme.colorScheme.tertiary),
+                  leading: Icon(
+                    Iconsax.setting,
+                    color: ref.theme.secondaryText,
+                  ),
+                  title: CustomText("Settings", color: ref.theme.primaryText),
                   onTap: () {
                     AppNavigator.to(context).settingsRoute();
                   },
                 ),
                 ListTile(
-                  leading: Icon(Iconsax.information_copy, color: context.theme.colorScheme.onTertiary),
-                  title: CustomText("Help", color: context.theme.colorScheme.tertiary),
+                  leading: Icon(
+                    Iconsax.information_copy,
+                    color: ref.theme.secondaryText,
+                  ),
+                  title: CustomText("Help", color: ref.theme.primaryText),
                 ),
               ],
             ),

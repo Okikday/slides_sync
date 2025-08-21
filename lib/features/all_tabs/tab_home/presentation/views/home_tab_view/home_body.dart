@@ -1,8 +1,8 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/more_section.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_body.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recents_section_header.dart';
@@ -17,7 +17,7 @@ class HomeBody extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
-      physics: const ClampingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       // physics: const BouncingScrollPhysics(),
       controller: scrollController,
       slivers: [
@@ -52,7 +52,14 @@ class HomeBody extends ConsumerWidget {
             Navigator.push(
               context,
               PageAnimation.pageRouteBuilder(
-                Scaffold(body: Center(child: CustomText("No recent reads", color: context.theme.colorScheme.tertiary))),
+                Scaffold(
+                  body: Center(
+                    child: CustomText(
+                      "No recent reads",
+                      color: ref.theme.primaryText,
+                    ),
+                  ),
+                ),
                 type: TransitionType.levelFromRightCenterWithFade,
                 duration: Durations.extralong1,
                 curve: CustomCurves.defaultIosSpring,

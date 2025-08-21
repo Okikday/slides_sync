@@ -6,11 +6,12 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/models/file_details.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/progress_shape_animated_widget.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
+import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -87,7 +88,13 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                       spacing: 8,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        ComponentWidgets.backButton(context, backgroundColor: AppColors.bgBlendColor(context, .8, .2)),
+                        AppBackButton(
+                          backgroundColor: AppColors.bgBlendColor(
+                            context,
+                            .8,
+                            .2,
+                          ),
+                        ),
 
                         (course.courseCode.isNotEmpty)
                             ? CustomTextButton(
@@ -98,7 +105,7 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                                 course.courseCode,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: context.theme.primaryColor,
+                                color: ref.theme.primaryColor,
                               ),
                             ).animate().fadeIn(duration: Durations.medium4, curve: CustomCurves.defaultIosSpring)
                             : const SizedBox(),
@@ -233,7 +240,7 @@ class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTi
             widget.course.courseName,
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            color: context.theme.colorScheme.tertiary,
+        color: ref.theme.primaryText,
             overflow: TextOverflow.fade,
           ),
         );

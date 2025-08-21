@@ -1,6 +1,6 @@
-class AssetStrings {
-  static final AssetStrings instance = AssetStrings._instance();
-  AssetStrings._instance();
+class ImageStrings {
+  static final ImageStrings instance = ImageStrings._instance();
+  ImageStrings._instance();
 
   static const String _imagePrefix = "assets/images/";
   static String _withImagePrefix(String name) => "$_imagePrefix$name";

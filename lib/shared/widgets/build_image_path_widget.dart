@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -10,7 +10,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
-import 'package:slides_sync/shared/strings/icon_strings.dart';
+import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 
 class BuildImagePathWidget extends ConsumerStatefulWidget {
   final FileDetails fileDetails;

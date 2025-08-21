@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/edit_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_code_field.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_title_field.dart';
@@ -107,7 +107,12 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                 PinnedHeaderSliver(
                                   child: ColoredBox(
                                     color: context.scaffoldBackgroundColor,
-                                    child: CustomText("Edit course", fontSize: 18, color: context.theme.primaryColor, fontWeight: FontWeight.bold),
+                                    child: CustomText(
+                                      "Edit course",
+                                      fontSize: 18,
+                                      color: ref.theme.primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
 
@@ -119,7 +124,11 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     spacing: 6.0,
                                     children: [
-                                      CustomText("course title", fontSize: 13, color: context.theme.colorScheme.tertiary,),
+                                      CustomText(
+                                        "course title",
+                                        fontSize: 13,
+                                        color: ref.theme.primaryText,
+                                      ),
                                       InputCourseTitleField(
                                         courseNameController: courseNameTextController,
                                         isCourseCodeFieldVisible: isCourseCodeFieldVisible,
@@ -179,7 +188,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                               },
                           contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                           label: "Update details",
-                          textColor: context.theme.colorScheme.tertiary,
+                          textColor: ref.theme.primaryText,
                           textSize: 15,
                           pixelHeight: 48,
                           backgroundColor: context.theme.colorScheme.primary,

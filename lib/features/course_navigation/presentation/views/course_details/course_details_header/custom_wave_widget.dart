@@ -4,6 +4,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -56,9 +57,9 @@ class CustomWaveWidget extends ConsumerWidget {
     return WaveWidget(
       config: CustomConfig(
         colors: [
-          context.theme.primaryColor.withAlpha(50),
-          context.theme.primaryColor.withAlpha(80),
-          context.theme.primaryColor.withAlpha(30),
+          ref.theme.primaryColor.withAlpha(50),
+          ref.theme.primaryColor.withAlpha(80),
+          ref.theme.primaryColor.withAlpha(30),
         ],
         durations: [5000, 4000, 3000],
         heightPercentages: [fill - 0.01, fill + 0.01, fill + 0.05],

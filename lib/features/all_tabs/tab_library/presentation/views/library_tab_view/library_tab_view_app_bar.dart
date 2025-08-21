@@ -6,8 +6,9 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_header_text.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_search_button.dart';
+import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/strings/asset_strings.dart';
+import 'package:slides_sync/shared/styles/colors.dart';
 
 class LibraryTabViewAppBar extends ConsumerWidget {
   const LibraryTabViewAppBar({
@@ -42,11 +43,14 @@ class LibraryTabViewAppBar extends ConsumerWidget {
             color: context.scaffoldBackgroundColor.withAlpha(200),
         borderRadius: BorderRadius.circular(24),
         image: DecorationImage(
-          image: AssetImage(AssetStrings.instance.eduElements),
+              image: Assets.images.eduElements.asImageProvider,
           repeat: ImageRepeat.repeat,
           // fit: BoxFit.cover,
           opacity: 0.02,
-          colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                ref.theme.primaryColor,
+                BlendMode.srcIn,
+              ),
         ),
       ),
         ),

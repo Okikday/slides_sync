@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:slides_sync/core/data/isar_data/isar_data.dart';
-import 'package:slides_sync/data/models/course_model/sub/course_content.dart';
+import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 
 class CourseContentRepo {
   static final IsarData<CourseContent> _isarData = IsarData.instance<CourseContent>();

@@ -1,17 +1,18 @@
 import 'dart:ui';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-class ModifyContentsHeader extends StatelessWidget {
+class ModifyContentsHeader extends ConsumerWidget {
   final void Function() onSelect;
   final void Function() onClickFilter;
   final void Function() onSearch;
   const ModifyContentsHeader({super.key, required this.onSelect, required this.onClickFilter, required this.onSearch});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final hPadding = context.hPadding;
     final padding4 = hPadding * .4;
     final padding2 = hPadding * .2;
@@ -39,7 +40,10 @@ class ModifyContentsHeader extends StatelessWidget {
                         contentPadding: EdgeInsets.symmetric(horizontal: padding7),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onSelect,
-                        child: CustomText("Select", color: context.theme.colorScheme.onTertiary),
+                        child: CustomText(
+                          "Select",
+                          color: ref.theme.secondaryText,
+                        ),
                       ),
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
@@ -50,8 +54,15 @@ class ModifyContentsHeader extends StatelessWidget {
                         child: Row(
                           spacing: padding2,
                           children: [
-                            Icon(Icons.keyboard_arrow_down, size: 22, color: context.theme.colorScheme.onTertiary),
-                            CustomText("Filter", color: context.theme.colorScheme.onTertiary),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 22,
+                              color: ref.theme.secondaryText,
+                            ),
+                            CustomText(
+                              "Filter",
+                              color: ref.theme.secondaryText,
+                            ),
                           ],
                         ),
                       ),
@@ -64,7 +75,10 @@ class ModifyContentsHeader extends StatelessWidget {
                         contentPadding: EdgeInsets.all(padding4),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onSearch,
-                        child: Icon(Iconsax.search_normal_copy, color: context.theme.colorScheme.onTertiary),
+                        child: Icon(
+                          Iconsax.search_normal_copy,
+                          color: ref.theme.secondaryText,
+                        ),
                       ),
                     ],
                   ),

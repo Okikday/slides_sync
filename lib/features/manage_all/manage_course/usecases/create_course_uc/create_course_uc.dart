@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:slides_sync/core/models/file_details.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
-import 'package:slides_sync/data/repos/course_repo.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 
 class CreateCourseUc {

@@ -1,432 +1,418 @@
 import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
-// List<AppThemeModel> defaultAppThemeModels = [
-
-//   // 🌒 Twilight Academia (Dark)
-//   AppThemeModel(
-//     title: "Twilight Academia (Dark)",
-//     primaryColor: Colors.deepPurpleAccent,
-//     accentColor: Colors.deepPurpleAccent,
-//     textPrimaryColor: Colors.white,
-//     textSecondaryColor: Color(0xFFC5C5C5),
-//     backgroundColor: Color(0xFF0B1014),
-//     onBackgroundColor: Color(0xFF1F272A),
-//     cardColor: Color(0xFF1A1F26),
-//     fontFamily: "Nunito",
-//     brightness: Brightness.dark,
-//   ),
-
-//   // ☀️ Twilight Academia (Light)
-//   AppThemeModel(
-//     title: "Twilight Academia (Light)",
-//     primaryColor: Colors.deepPurple,
-//     accentColor: Colors.deepPurpleAccent,
-//     textPrimaryColor: Color(0xFF0B1014),
-//     textSecondaryColor: Color(0xFF4B4B4B),
-//     backgroundColor: Color(0xfff5f5f5),
-//     onBackgroundColor: Color(0xFFF0EDF6),
-//     cardColor: Color(0xFFF6F2FF),
-//     fontFamily: "Nunito",
-//     brightness: Brightness.light,
-//   ),
-
-//   // ⚫️ Monochrome Minimal (Dark) - fixed brightness pattern
-//   AppThemeModel(
-//     title: "Monochrome Minimal (Dark)",
-//     primaryColor: Color(0xFFE0E0E0),
-//     accentColor: Color(0xFF9E9E9E),
-//     textPrimaryColor: Colors.white,
-//     textSecondaryColor: Color(0xFFB0B0B0),
-//     backgroundColor: Color(0xFF121212),
-//     onBackgroundColor: Color(0xFF1E1E1E),
-//     cardColor: Color(0xFF2C2C2C),
-//     fontFamily: "Inter",
-//     brightness: Brightness.dark,
-//   ),
-
-//   // ⚪️ Monochrome Minimal (Light) - fixed brightness pattern
-//   AppThemeModel(
-//     title: "Monochrome Minimal (Light)",
-//     primaryColor: Color(0xFF212121),
-//     accentColor: Color(0xFF757575),
-//     textPrimaryColor: Color(0xFF212121),
-//     textSecondaryColor: Color(0xFF616161),
-//     backgroundColor: Color(0xFFFAFAFA),
-//     onBackgroundColor: Color(0xFFF5F5F5),
-//     cardColor: Color(0xFFE0E0E0),
-//     fontFamily: "Inter",
-//     brightness: Brightness.light,
-//   ),
-
-//   // 🌸 Rose Milk (Dark) - fixed brightness pattern
-//   AppThemeModel(
-//     title: "Rose Milk (Dark)",
-//     primaryColor: Color(0xFFB66E80),
-//     accentColor: Color(0xFFFFAEBE),
-//     textPrimaryColor: Colors.white,
-//     textSecondaryColor: Color(0xFFDEC7CA),
-//     backgroundColor: Color(0xFF2E1F23),
-//     onBackgroundColor: Color(0xFF3A2C2F),
-//     cardColor: Color(0xFF462F33),
-//     fontFamily: "Nunito",
-//     brightness: Brightness.dark,
-//   ),
-
-//   // 🌸 Rose Milk (Light) - fixed brightness pattern
-//   AppThemeModel(
-//     title: "Rose Milk (Light)",
-//     primaryColor: Color(0xFFFFAEBE),
-//     accentColor: Color(0xFFB66E80),
-//     textPrimaryColor: Color(0xFF3D3D3D),
-//     textSecondaryColor: Color(0xFF7F7F7F),
-//     backgroundColor: Color(0xFFFFF9F9),
-//     onBackgroundColor: Color(0xFFFFF0F2),
-//     cardColor: Color(0xFFFFEDEE),
-//     fontFamily: "Nunito",
-//     brightness: Brightness.light,
-//   ),
-
-//   // 🌊 Ocean Cream (Dark) - fixed brightness pattern
-//   AppThemeModel(
-//     title: "Ocean Cream (Dark)",
-//     primaryColor: Color(0xFF84A59D),
-//     accentColor: Color(0xFF7FDBDA),
-//     textPrimaryColor: Colors.white,
-//     textSecondaryColor: Color(0xFFB6D2CD),
-//     backgroundColor: Color(0xFF0F1C1A),
-//     onBackgroundColor: Color(0xFF162624),
-//     cardColor: Color(0xFF223534),
-//     fontFamily: "Montserrat",
-//     brightness: Brightness.dark,
-//   ),
-
-//   // 🌊 Ocean Cream (Light) - fixed brightness pattern
-//   AppThemeModel(
-//     title: "Ocean Cream (Light)",
-//     primaryColor: Color(0xFF7FDBDA),
-//     accentColor: Color(0xFF84A59D),
-//     textPrimaryColor: Color(0xFF1A2B2F),
-//     textSecondaryColor: Color(0xFF6C8B88),
-//     backgroundColor: Color(0xFFF9F9F9),
-//     onBackgroundColor: Color(0xFFE8F1EF),
-//     cardColor: Color(0xFFE3F1EF),
-//     fontFamily: "Montserrat",
-//     brightness: Brightness.light,
-//   ),
-
-//   // ⚪️ Antiflash White (Light)
-//   AppThemeModel(
-//     title: "Antiflash White (Light)",
-//     primaryColor: Color(0xFFB0B7BC), // subtle gray-blue
-//     accentColor: Color(0xFF7A8C99), // muted blue-gray
-//     textPrimaryColor: Color(0xFF1A1A1A), // very dark gray for text
-//     textSecondaryColor: Color(0xFF5A5A5A), // medium gray
-//     backgroundColor: Color(0xFFF2F3F4), // Antiflash White
-//     onBackgroundColor: Colors.white,
-//     cardColor: Color(0xFFFFFFFF), // white card
-//     fontFamily: "Inter",
-//     brightness: Brightness.light,
-//   ),
-
-//   // ⚫️ Antiflash White (Dark)
-//   AppThemeModel(
-//     title: "Antiflash White (Dark)",
-//     primaryColor: Color(0xFF7A8C99), // muted blue-gray
-//     accentColor: Color(0xFFB0B7BC), // subtle gray-blue
-//     textPrimaryColor: Colors.white,
-//     textSecondaryColor: Color(0xFFB0B7BC),
-//     backgroundColor: Color(0xFF0A0A0A), // very clean black
-//     onBackgroundColor: Color(0xFF1A1A1A),
-//     cardColor: Color(0xFF1F1F1F),
-//     fontFamily: "Inter",
-//     brightness: Brightness.dark,
-//   ),
-
-//   // 🥇 Premium Gold (Light)
-//   AppThemeModel(
-//     title: "Premium Gold (Light)",
-//     primaryColor: Color(0xFFFFD700), // Gold
-//     accentColor: Color(0xFFFFB700), // Darker gold accent
-//     textPrimaryColor: Color(0xFF3E2F00), // Dark brownish for contrast
-//     textSecondaryColor: Color(0xFF7A6B00), // Medium brown
-//     backgroundColor: Color(0xFFFFFDF5), // Very light cream
-//     onBackgroundColor: Color(0xFFFFF8DC),
-//     cardColor: Color(0xFFFFF5CC), // Light gold card
-//     fontFamily: "Montserrat",
-//     brightness: Brightness.light,
-//   ),
-
-//   // 🥇 Premium Gold (Dark)
-//   AppThemeModel(
-//     title: "Premium Gold (Dark)",
-//     primaryColor: Color(0xFFFFB700), // Darker gold
-//     accentColor: Color(0xFFFFD700), // Bright gold accent
-//     textPrimaryColor: Colors.white,
-//     textSecondaryColor: Color(0xFFFFE066), // Soft gold text
-//     backgroundColor: Color(0xFF1A1400), // Very dark brown-black
-//     onBackgroundColor: Color(0xFF2E2200),
-//     cardColor: Color(0xFF3E2F00), // Dark brown card
-//     fontFamily: "Montserrat",
-//     brightness: Brightness.dark,
-//   ),
-
-// ];
-
 List<AppThemeModel> defaultAppThemeModels = [
+  // Default Light Theme (your provided palette)
+  const AppThemeModel(
+    title: 'Default Light Theme',
+    fontFamily: 'Nunito',
+    brightness: Brightness.light,
+    primaryColor: Color(0xFF5000B8),
+    secondaryColor: Color(0xFF00D5B3),
+    background: Color(0xFFFCFAFE),
+    stepUpBackground: Color(0xFFE6FBF7),
+    bgText: Color(0xFF0D0D0D),
+    bgSupportText: Color(0xFF6B5DAF),
+    altBackgroundPrimary: Color(0xFFF0EDF6),
+    altBackgroundSecondary: Color(0xFFE9E1FF),
+    surfaceDark: Color(0xFFF3F0FF),
+    surfaceLight: Color(0xFFFBF9FF),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF2B005A),
+    emphasisSoft: Color(0xFF4A1A8E),
+    frostedPrimaryBase: Color(0xFFF7F4FF),
+    frostedSecondaryBase: Color(0xFFF3FFFB),
+  ),
 
-  // 🌒 Twilight Academia (Dark) - unchanged
-  AppThemeModel(
+  // Default Dark Theme
+  const AppThemeModel(
+    title: 'Default Dark Theme',
+    fontFamily: 'Nunito',
+    brightness: Brightness.dark,
+    primaryColor: Color(0xFF5000B8),
+    secondaryColor: Color(0xFF00D5B3),
+    background: Color(0xFF0B0B10),
+    stepUpBackground: Color(0xFF121219),
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFBFB6F0),
+    altBackgroundPrimary: Color(0xFF1E1630),
+    altBackgroundSecondary: Color(0xFF042E29),
+    surfaceDark: Color(0xFF0E0D12),
+    surfaceLight: Color(0xFF16151B),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF2B005A),
+    emphasisSoft: Color(0xFF004F45),
+    frostedPrimaryBase: Color(0xFF120914),
+    frostedSecondaryBase: Color(0xFF05120F),
+  ),
+
+  // Twilight Academia (Dark)
+  const AppThemeModel(
     title: "Twilight Academia (Dark)",
-    primaryColor: Colors.deepPurpleAccent,
-    accentColor: Colors.deepPurpleAccent,
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFFC5C5C5),
-    backgroundColor: Color(0xFF0B1014),
-    onBackgroundColor: Color(0xFF1F272A),
-    cardColor: Color(0xFF1A1F26),
     fontFamily: "Nunito",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFF7C4DFF),
+    secondaryColor: Color(0xFF7C4DFF),
+    background: Color(0xFF0B1014),
+    stepUpBackground: Color(0xFF141527), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFC5C5C5),
+    altBackgroundPrimary: Color(0xFF1F272A),
+    altBackgroundSecondary: Color(0xFF1A1F26),
+    surfaceDark: Color(0xFF121316),
+    surfaceLight: Color(0xFF1B1A21),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFFC5C5C5),
+    emphasisStrong: Color(0xFF4A2DB8),
+    emphasisSoft: Color(0xFF6F56D6),
+    frostedPrimaryBase: Color(0xFF0C0710),
+    frostedSecondaryBase: Color(0xFF0E0C12),
   ),
 
-  // ☀️ Twilight Academia (Light) - unchanged
-  AppThemeModel(
+  // Twilight Academia (Light)
+  const AppThemeModel(
     title: "Twilight Academia (Light)",
-    primaryColor: Colors.deepPurple,
-    accentColor: Colors.deepPurpleAccent,
-    textPrimaryColor: Color(0xFF0B1014),
-    textSecondaryColor: Color(0xFF4B4B4B),
-    backgroundColor: Color(0xfff5f5f5),
-    onBackgroundColor: Color(0xFFF0EDF6),
-    cardColor: Color(0xFFF6F2FF),
     fontFamily: "Nunito",
     brightness: Brightness.light,
+    primaryColor: Color(0xFF673AB7),
+    secondaryColor: Color(0xFF7C4DFF),
+    background: Color(0xfff5f5f5),
+    stepUpBackground: Color(0xFFF2EDFF), // 10% secondary + white
+    bgText: Color(0xFF0B1014),
+    bgSupportText: Color(0xFF4B4B4B),
+    altBackgroundPrimary: Color(0xFFF0EDF6),
+    altBackgroundSecondary: Color(0xFFF6F2FF),
+    surfaceDark: Color(0xFFEDE8FF),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF49237F),
+    emphasisSoft: Color(0xFF6A57A9),
+    frostedPrimaryBase: Color(0xFFF5F1FF),
+    frostedSecondaryBase: Color(0xFFF7F3FF),
   ),
 
-  // // ⚫️ Monochrome Minimal (Dark) - adjusted colors and font
-  // AppThemeModel(
-  //   title: "Monochrome Minimal (Dark)",
-  //   primaryColor: Color(0xFFBDBDBD), // lighter gray for primary
-  //   accentColor: Color(0xFF9E9E9E),
-  //   textPrimaryColor: Colors.white,
-  //   textSecondaryColor: Color(0xFFB0B0B0),
-  //   backgroundColor: Color(0xFF121212),
-  //   onBackgroundColor: Color(0xFF1E1E1E),
-  //   cardColor: Color(0xFF2C2C2C),
-  //   fontFamily: "Roboto", // changed to Roboto for variety
-  //   brightness: Brightness.dark,
-  // ),
-
-  // ⚪️ Monochrome Minimal (Light) - adjusted colors and font
-  AppThemeModel(
+  // Monochrome Minimal (Light)
+  const AppThemeModel(
     title: "Monochrome Minimal (Light)",
-    primaryColor: Color(0xFF424242), // darker gray primary
-    accentColor: Color(0xFF757575),
-    textPrimaryColor: Color(0xFF212121),
-    textSecondaryColor: Color(0xFF616161),
-    backgroundColor: Color(0xFFF5F5F5), // slightly lighter background
-    onBackgroundColor: Color(0xFFFFFFFF),
-    cardColor: Color(0xFFE0E0E0),
-    fontFamily: "Roboto", // changed to Roboto for variety
+    fontFamily: "Roboto",
     brightness: Brightness.light,
+    primaryColor: Color(0xFF424242),
+    secondaryColor: Color(0xFF757575),
+    background: Color(0xFFF5F5F5),
+    stepUpBackground: Color(0xFFF1F1F1), // 10% secondary + white
+    bgText: Color(0xFF212121),
+    bgSupportText: Color(0xFF616161),
+    altBackgroundPrimary: Color(0xFFFFFFFF),
+    altBackgroundSecondary: Color(0xFFE0E0E0),
+    surfaceDark: Color(0xFFD6D6D6),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF333333),
+    emphasisSoft: Color(0xFF555555),
+    frostedPrimaryBase: Color(0xFFF6F6F6),
+    frostedSecondaryBase: Color(0xFFF0F0F0),
   ),
 
-  // 🌸 Rose Milk (Dark) - adjusted colors and font
-  AppThemeModel(
+  // Rose Milk (Dark)
+  const AppThemeModel(
     title: "Rose Milk (Dark)",
+    fontFamily: "Poppins",
+    brightness: Brightness.dark,
     primaryColor: Color(0xFFB66E80),
-    accentColor: Color(0xFFFFAEBE),
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFFD9AEB3), // softer pink secondary text
-    backgroundColor: Color(0xFF2E1F23),
-    onBackgroundColor: Color(0xFF3A2C2F),
-    cardColor: Color(0xFF462F33),
-    fontFamily: "Poppins", // changed to Poppins for softness
-    brightness: Brightness.dark,
+    secondaryColor: Color(0xFFFFAEBE),
+    background: Color(0xFF2E1F23),
+    stepUpBackground: Color(0xFF3F2A2F), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFD9AEB3),
+    altBackgroundPrimary: Color(0xFF3A2C2F),
+    altBackgroundSecondary: Color(0xFF462F33),
+    surfaceDark: Color(0xFF2A2022),
+    surfaceLight: Color(0xFF352B2D),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF8F3E52),
+    emphasisSoft: Color(0xFFB07A8A),
+    frostedPrimaryBase: Color(0xFF291A1D),
+    frostedSecondaryBase: Color(0xFF321F22),
   ),
 
-  // // 🌸 Rose Milk (Light) - adjusted colors and font
-  // AppThemeModel(
-  //   title: "Rose Milk (Light)",
-  //   primaryColor: Color(0xFFFFAEBE),
-  //   accentColor: Color(0xFFB66E80),
-  //   textPrimaryColor: Color(0xFF4A3A3F), // darker text for contrast
-  //   textSecondaryColor: Color(0xFF8C6F74), // muted secondary text
-  //   backgroundColor: Color(0xFFFFF9F9),
-  //   onBackgroundColor: Color(0xFFFFF0F2),
-  //   cardColor: Color(0xFFFFEDEE),
-  //   fontFamily: "Poppins", // changed to Poppins for softness
-  //   brightness: Brightness.light,
-  // ),
-
-  // 🌊 Ocean Cream (Dark) - adjusted colors and font
-  AppThemeModel(
+  // Ocean Cream (Dark)
+  const AppThemeModel(
     title: "Ocean Cream (Dark)",
-    primaryColor: Color(0xFF7CA9A1), // slightly lighter teal
-    accentColor: Color(0xFF6FD1D0), // softer accent
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFFA9CFCB), // lighter secondary text
-    backgroundColor: Color(0xFF0F1C1A),
-    onBackgroundColor: Color(0xFF162624),
-    cardColor: Color(0xFF223534),
-    fontFamily: "Lato", // changed to Lato for modern look
+    fontFamily: "Lato",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFF7CA9A1),
+    secondaryColor: Color(0xFF6FD1D0),
+    background: Color(0xFF0F1C1A),
+    stepUpBackground: Color(0xFF172A29), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFA9CFCB),
+    altBackgroundPrimary: Color(0xFF162624),
+    altBackgroundSecondary: Color(0xFF223534),
+    surfaceDark: Color(0xFF0E1A19),
+    surfaceLight: Color(0xFF172927),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF4E7B76),
+    emphasisSoft: Color(0xFF6AAFA8),
+    frostedPrimaryBase: Color(0xFF0B1514),
+    frostedSecondaryBase: Color(0xFF081312),
   ),
 
-  // 🌊 Ocean Cream (Light) - adjusted colors and font
-  AppThemeModel(
+  // Ocean Cream (Light)
+  const AppThemeModel(
     title: "Ocean Cream (Light)",
+    fontFamily: "Lato",
+    brightness: Brightness.light,
     primaryColor: Color(0xFF6FD1D0),
-    accentColor: Color(0xFF7CA9A1),
-    textPrimaryColor: Color(0xFF1A2B2F),
-    textSecondaryColor: Color(0xFF5E7D7A), // slightly darker secondary
-    backgroundColor: Color(0xFFF9F9F9),
-    onBackgroundColor: Color(0xFFE8F1EF),
-    cardColor: Color(0xFFE3F1EF),
-    fontFamily: "Lato", // changed to Lato for modern look
-    brightness: Brightness.light,
+    secondaryColor: Color(0xFF7CA9A1),
+    background: Color(0xFFF9F9F9),
+    stepUpBackground: Color(0xFFF2F6F6), // 10% secondary + white
+    bgText: Color(0xFF1A2B2F),
+    bgSupportText: Color(0xFF5E7D7A),
+    altBackgroundPrimary: Color(0xFFE8F1EF),
+    altBackgroundSecondary: Color(0xFFE3F1EF),
+    surfaceDark: Color(0xFFDCEFEF),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF3F7B78),
+    emphasisSoft: Color(0xFF66B9B7),
+    frostedPrimaryBase: Color(0xFFF2FBFB),
+    frostedSecondaryBase: Color(0xFFF3FFFB),
   ),
 
-  // ⚪️ Antiflash White (Light) - adjusted colors and font
-  AppThemeModel(
+  // Antiflash White (Light)
+  const AppThemeModel(
     title: "Antiflash White (Light)",
-    primaryColor: Color(0xFF9AA5AD), // slightly darker subtle gray-blue
-    accentColor: Color(0xFF6B7C87), // deeper muted blue-gray
-    textPrimaryColor: Color(0xFF1A1A1A),
-    textSecondaryColor: Color(0xFF4A4A4A), // darker secondary text
-    backgroundColor: Color(0xFFF2F3F4),
-    onBackgroundColor: Colors.white,
-    cardColor: Color(0xFFFFFFFF),
-    fontFamily: "Open Sans", // changed to Open Sans for clarity
+    fontFamily: "Open Sans",
     brightness: Brightness.light,
+    primaryColor: Color(0xFF9AA5AD),
+    secondaryColor: Color(0xFF6B7C87),
+    background: Color(0xFFF2F3F4),
+    stepUpBackground: Color(0xFFF0F2F3), // 10% secondary + white
+    bgText: Color(0xFF1A1A1A),
+    bgSupportText: Color(0xFF4A4A4A),
+    altBackgroundPrimary: Color(0xFFFBFBFC),
+    altBackgroundSecondary: Color(0xFFFFFFFF),
+    surfaceDark: Color(0xFFECEFF0),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF7A868C),
+    emphasisSoft: Color(0xFF99A2A7),
+    frostedPrimaryBase: Color(0xFFF8F9F9),
+    frostedSecondaryBase: Color(0xFFF6F7F8),
   ),
 
-  // ⚫️ Antiflash White (Dark) - adjusted colors and font
-  AppThemeModel(
+  // Antiflash White (Dark)
+  const AppThemeModel(
     title: "Antiflash White (Dark)",
-    primaryColor: Color(0xFF6B7C87), // deeper muted blue-gray
-    accentColor: Color(0xFF9AA5AD), // lighter subtle gray-blue
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFF9AA5AD),
-    backgroundColor: Color(0xFF0A0A0A),
-    onBackgroundColor: Color(0xFF1A1A1A),
-    cardColor: Color(0xFF1F1F1F),
-    fontFamily: "Open Sans", // changed to Open Sans for clarity
+    fontFamily: "Open Sans",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFF6B7C87),
+    secondaryColor: Color(0xFF9AA5AD),
+    background: Color(0xFF0A0A0A),
+    stepUpBackground: Color(0xFF161617), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFF9AA5AD),
+    altBackgroundPrimary: Color(0xFF1A1A1A),
+    altBackgroundSecondary: Color(0xFF1F1F1F),
+    surfaceDark: Color(0xFF0F0F0F),
+    surfaceLight: Color(0xFF1A1A1A),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF4D5A61),
+    emphasisSoft: Color(0xFF7F8A90),
+    frostedPrimaryBase: Color(0xFF0A0A0A),
+    frostedSecondaryBase: Color(0xFF121212),
   ),
 
-  // 🥇 Premium Gold (Light) - adjusted colors and font
-  AppThemeModel(
+  // Premium Gold (Light)
+  const AppThemeModel(
     title: "Premium Gold (Light)",
-    primaryColor: Color(0xFFFFD700),
-    accentColor: Color(0xFFFFB700),
-    textPrimaryColor: Color(0xFF3E2F00),
-    textSecondaryColor: Color(0xFF7A6B00),
-    backgroundColor: Color(0xFFFFFDF5),
-    onBackgroundColor: Color(0xFFFFF8DC),
-    cardColor: Color(0xFFFFF5CC),
     fontFamily: "Montserrat",
     brightness: Brightness.light,
+    primaryColor: Color(0xFFFFD700),
+    secondaryColor: Color(0xFFFFB700),
+    background: Color(0xFFFFFDF5),
+    stepUpBackground: Color(0xFFFFF8E6), // 10% secondary + white
+    bgText: Color(0xFF3E2F00),
+    bgSupportText: Color(0xFF7A6B00),
+    altBackgroundPrimary: Color(0xFFFFF8DC),
+    altBackgroundSecondary: Color(0xFFFFF5CC),
+    surfaceDark: Color(0xFFFFF2C8),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFFB68300),
+    emphasisSoft: Color(0xFFD6A900),
+    frostedPrimaryBase: Color(0xFFFFF7E6),
+    frostedSecondaryBase: Color(0xFFFFF9EA),
   ),
 
-  // 🥇 Premium Gold (Dark) - unchanged
-  AppThemeModel(
+  // Premium Gold (Dark)
+  const AppThemeModel(
     title: "Premium Gold (Dark)",
-    primaryColor: Color(0xFFFFB700),
-    accentColor: Color(0xFFFFD700),
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFFFFE066),
-    backgroundColor: Color(0xFF1A1400),
-    onBackgroundColor: Color(0xFF2E2200),
-    cardColor: Color(0xFF3E2F00),
     fontFamily: "Montserrat",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFFFFB700),
+    secondaryColor: Color(0xFFFFD700),
+    background: Color(0xFF1A1400),
+    stepUpBackground: Color(0xFF2C2400), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFFFE066),
+    altBackgroundPrimary: Color(0xFF2E2200),
+    altBackgroundSecondary: Color(0xFF3E2F00),
+    surfaceDark: Color(0xFF1A1400),
+    surfaceLight: Color(0xFF2E2200),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF8F6B00),
+    emphasisSoft: Color(0xFFCFA800),
+    frostedPrimaryBase: Color(0xFF120C00),
+    frostedSecondaryBase: Color(0xFF1A1200),
   ),
 
-  // New Themes
-
-  // 🌿 Forest Whisper (Dark)
-  AppThemeModel(
+  // Forest Whisper (Dark)
+  const AppThemeModel(
     title: "Forest Whisper (Dark)",
-    primaryColor: Color(0xFF2E7D32), // deep green
-    accentColor: Color(0xFF81C784), // light green accent
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFFA5D6A7), // soft green secondary text
-    backgroundColor: Color(0xFF121B12),
-    onBackgroundColor: Color(0xFF1B2A1B),
-    cardColor: Color(0xFF264D26),
-    fontFamily: "Merriweather", // serif font for nature feel
+    fontFamily: "Merriweather",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFF2E7D32),
+    secondaryColor: Color(0xFF81C784),
+    background: Color(0xFF121B12),
+    stepUpBackground: Color(0xFF1B291B), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFA5D6A7),
+    altBackgroundPrimary: Color(0xFF1B2A1B),
+    altBackgroundSecondary: Color(0xFF264D26),
+    surfaceDark: Color(0xFF0F160F),
+    surfaceLight: Color(0xFF162116),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF1F5A1F),
+    emphasisSoft: Color(0xFF4FB46B),
+    frostedPrimaryBase: Color(0xFF0D140D),
+    frostedSecondaryBase: Color(0xFF122012),
   ),
 
-  // 🌿 Forest Whisper (Light)
-  AppThemeModel(
+  // Forest Whisper (Light)
+  const AppThemeModel(
     title: "Forest Whisper (Light)",
-    primaryColor: Color(0xFF81C784),
-    accentColor: Color(0xFF2E7D32),
-    textPrimaryColor: Color(0xFF1B2A1B),
-    textSecondaryColor: Color(0xFF4A6B4A),
-    backgroundColor: Color(0xFFF1F8F1),
-    onBackgroundColor: Color(0xFFE6F0E6),
-    cardColor: Color(0xFFDFF0DF),
     fontFamily: "Merriweather",
     brightness: Brightness.light,
+    primaryColor: Color(0xFF81C784),
+    secondaryColor: Color(0xFF2E7D32),
+    background: Color(0xFFF1F8F1),
+    stepUpBackground: Color(0xFFEAF2EA), // 10% secondary + white
+    bgText: Color(0xFF1B2A1B),
+    bgSupportText: Color(0xFF4A6B4A),
+    altBackgroundPrimary: Color(0xFFE6F0E6),
+    altBackgroundSecondary: Color(0xFFDFF0DF),
+    surfaceDark: Color(0xFFD6EAD6),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF3F8A3F),
+    emphasisSoft: Color(0xFF6FCF78),
+    frostedPrimaryBase: Color(0xFFF4FBF5),
+    frostedSecondaryBase: Color(0xFFF1F8F1),
   ),
 
-  // 🌅 Sunset Glow (Dark)
-  AppThemeModel(
+  // Sunset Glow (Dark)
+  const AppThemeModel(
     title: "Sunset Glow (Dark)",
-    primaryColor: Color(0xFFD84315), // deep orange-red
-    accentColor: Color(0xFFFF7043), // bright orange accent
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFFFFAB91), // soft orange secondary text
-    backgroundColor: Color(0xFF2B0A00),
-    onBackgroundColor: Color(0xFF3B1A00),
-    cardColor: Color(0xFF4A1F00),
-    fontFamily: "Raleway", // clean sans-serif
+    fontFamily: "Raleway",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFFD84315),
+    secondaryColor: Color(0xFFFF7043),
+    background: Color(0xFF2B0A00),
+    stepUpBackground: Color(0xFF3C1205), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFFFAB91),
+    altBackgroundPrimary: Color(0xFF3B1A00),
+    altBackgroundSecondary: Color(0xFF4A1F00),
+    surfaceDark: Color(0xFF280900),
+    surfaceLight: Color(0xFF3A1200),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF9A2800),
+    emphasisSoft: Color(0xFFCC6A4F),
+    frostedPrimaryBase: Color(0xFF200700),
+    frostedSecondaryBase: Color(0xFF2A0B00),
   ),
 
-  // 🌅 Sunset Glow (Light)
-  AppThemeModel(
+  // Sunset Glow (Light)
+  const AppThemeModel(
     title: "Sunset Glow (Light)",
-    primaryColor: Color(0xFFFF7043),
-    accentColor: Color(0xFFD84315),
-    textPrimaryColor: Color(0xFF3B1A00),
-    textSecondaryColor: Color(0xFF7A3B1A),
-    backgroundColor: Color(0xFFFFF3ED),
-    onBackgroundColor: Color(0xFFFFE6D9),
-    cardColor: Color(0xFFFFDCC7),
     fontFamily: "Raleway",
     brightness: Brightness.light,
+    primaryColor: Color(0xFFFF7043),
+    secondaryColor: Color(0xFFD84315),
+    background: Color(0xFFFFF3ED),
+    stepUpBackground: Color(0xFFFBECE8), // 10% secondary + white
+    bgText: Color(0xFF3B1A00),
+    bgSupportText: Color(0xFF7A3B1A),
+    altBackgroundPrimary: Color(0xFFFFE6D9),
+    altBackgroundSecondary: Color(0xFFFFDCC7),
+    surfaceDark: Color(0xFFFFE0CD),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFFA23B22),
+    emphasisSoft: Color(0xFFDD7A56),
+    frostedPrimaryBase: Color(0xFFFFF6F2),
+    frostedSecondaryBase: Color(0xFFFFF0EC),
   ),
 
-  // 🌌 Midnight Blue (Dark)
-  AppThemeModel(
+  // Midnight Blue (Dark)
+  const AppThemeModel(
     title: "Midnight Blue (Dark)",
-    primaryColor: Color(0xFF283593), // indigo blue
-    accentColor: Color(0xFF5C6BC0), // lighter indigo accent
-    textPrimaryColor: Colors.white,
-    textSecondaryColor: Color(0xFF9FA8DA), // soft blue secondary text
-    backgroundColor: Color(0xFF0D1333),
-    onBackgroundColor: Color(0xFF1A204D),
-    cardColor: Color(0xFF2E3573),
-    fontFamily: "Source Sans Pro", // modern sans-serif
+    fontFamily: "Source Sans Pro",
     brightness: Brightness.dark,
+    primaryColor: Color(0xFF283593),
+    secondaryColor: Color(0xFF5C6BC0),
+    background: Color(0xFF0D1333),
+    stepUpBackground: Color(0xFF131A3E), // bg tinted with secondary (8%)
+    bgText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFF9FA8DA),
+    altBackgroundPrimary: Color(0xFF1A204D),
+    altBackgroundSecondary: Color(0xFF2E3573),
+    surfaceDark: Color(0xFF0C1128),
+    surfaceLight: Color(0xFF1C254C),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF16254A),
+    emphasisSoft: Color(0xFF415A9A),
+    frostedPrimaryBase: Color(0xFF071020),
+    frostedSecondaryBase: Color(0xFF0A1628),
   ),
 
-  // 🌌 Midnight Blue (Light)
-  AppThemeModel(
+  // Midnight Blue (Light)
+  const AppThemeModel(
     title: "Midnight Blue (Light)",
-    primaryColor: Color(0xFF5C6BC0),
-    accentColor: Color(0xFF283593),
-    textPrimaryColor: Color(0xFF1A204D),
-    textSecondaryColor: Color(0xFF4A4F7B),
-    backgroundColor: Color(0xFFF0F2FF),
-    onBackgroundColor: Color(0xFFE6E9FF),
-    cardColor: Color(0xFFD9DBFF),
     fontFamily: "Source Sans Pro",
     brightness: Brightness.light,
+    primaryColor: Color(0xFF5C6BC0),
+    secondaryColor: Color(0xFF283593),
+    background: Color(0xFFF0F2FF),
+    stepUpBackground: Color(0xFFEAEBF4), // 10% secondary + white
+    bgText: Color(0xFF1A204D),
+    bgSupportText: Color(0xFF4A4F7B),
+    altBackgroundPrimary: Color(0xFFE6E9FF),
+    altBackgroundSecondary: Color(0xFFD9DBFF),
+    surfaceDark: Color(0xFFE3E6FF),
+    surfaceLight: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFF000000),
+    emphasisStrong: Color(0xFF3B4A8F),
+    emphasisSoft: Color(0xFF6A79C6),
+    frostedPrimaryBase: Color(0xFFF6F7FF),
+    frostedSecondaryBase: Color(0xFFF2F3FF),
   ),
-
 ];

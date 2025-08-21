@@ -64,7 +64,7 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
               padding: const EdgeInsets.all(8.0),
               child: ClipPath(
                 clipper: MorphClipper(path: shape.toPath(), size: Size(20, 20)),
-                child: ColoredBox(color: context.theme.primaryColor),
+                    child: ColoredBox(color: ref.theme.primaryColor),
               ),
             ),
               ),
@@ -75,11 +75,15 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   spacing: 4.0,
                   children: [
-                    CustomText(widget.title, fontSize: 15, color: context.theme.colorScheme.tertiary),
+                    CustomText(
+                      widget.title,
+                      fontSize: 15,
+                      color: ref.theme.primaryText,
+                    ),
                     CustomText(
                       "${widget.contentCount == 0 ? "No" : "${widget.contentCount}"} ${widget.contentCount == 1 ? "item" : "items"}",
                       fontSize: 12,
-                      color: context.theme.colorScheme.onTertiary,
+                      color: ref.theme.secondaryText,
                     ),
                   ],
                 ),

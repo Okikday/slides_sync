@@ -1,9 +1,10 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/strings/asset_strings.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
+import 'package:slides_sync/shared/styles/theme/themes.dart';
 
 class GridCourseCard extends ConsumerWidget {
   const GridCourseCard({
@@ -31,6 +32,7 @@ class GridCourseCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Badge(
       backgroundColor: Colors.transparent,
       label: CircleAvatar(radius: 5, backgroundColor: dotColor),
@@ -42,9 +44,12 @@ class GridCourseCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
           image: DecorationImage(
-          image: AssetImage(AssetStrings.instance.bookSparkleTransparentBg),
+            image: Assets.images.bookSparkleTransparentBg.asImageProvider,
           opacity: 0.05,
-          colorFilter: ColorFilter.mode(context.theme.primaryColor, BlendMode.srcIn),
+            colorFilter: ColorFilter.mode(
+              ref.theme.primaryColor,
+              BlendMode.srcIn,
+            ),
         ),
         ),
         child: Padding(
@@ -80,10 +85,7 @@ class GridCourseCard extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: CustomTextButton(
-                              backgroundColor: AppColors.lightenColor(
-                                context.theme.primaryColor.withAlpha(40),
-                                context.isDarkMode ? 0.75 : 0.25,
-                              ),
+                              backgroundColor: theme.altBackgroundPrimary,
                               pixelHeight: 24,
                               borderRadius: 8,
                               contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
@@ -91,7 +93,7 @@ class GridCourseCard extends ConsumerWidget {
                                 courseCode,
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
-                                color: context.theme.primaryColor.withAlpha(200),
+                                color: ref.theme.primaryColor.withAlpha(200),
                               ),
                             ),
                           ),
@@ -110,7 +112,7 @@ class GridCourseCard extends ConsumerWidget {
                       overflow: TextOverflow.fade,
                       fontWeight: FontWeight.bold,
                       fontSize: 13.5,
-                      color: context.theme.colorScheme.tertiary,
+                      color: ref.theme.primaryText,
                     ),
                   ),
                 ),
@@ -124,7 +126,7 @@ class GridCourseCard extends ConsumerWidget {
                   child: CustomText(
                     "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
                     fontSize: 12,
-                    color: context.theme.colorScheme.onTertiary.withValues(alpha: 0.8),
+                    color: ref.theme.secondaryText.withValues(alpha: 0.8),
                   ),
                 ),
 
@@ -140,8 +142,9 @@ class GridCourseCard extends ConsumerWidget {
                         minHeight: 12,
                         borderRadius: BorderRadius.circular(16),
                         value: (progress).clamp(0.1, 1.0),
-                        backgroundColor: AppColors.bgBlendColor(context, .87, 0.13),
-                        color: context.theme.primaryColor, //.withAlpha(40)
+                        backgroundColor: theme.altBackgroundSecondary
+                            .withValues(alpha: 0.2),
+                        color: ref.theme.primaryColor, //.withAlpha(40)
                       ),
                     ),
                     // CustomText("${(progress * 100).truncate()}%", fontSize: 10, fontWeight: FontWeight.bold),

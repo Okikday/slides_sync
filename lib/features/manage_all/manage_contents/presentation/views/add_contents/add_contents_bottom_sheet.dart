@@ -9,7 +9,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/data/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_link_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/add_contents_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/add_contents_uc.dart';
@@ -119,7 +119,10 @@ class AddContentCardSection extends ConsumerWidget {
                         [
                           BuildPlainActionButton(
                             title: "Document",
-                            icon: Icon(Iconsax.document, color: context.theme.primaryColor),
+                                icon: Icon(
+                                  Iconsax.document,
+                                  color: ref.theme.primaryColor,
+                                ),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
                                   context,
@@ -130,7 +133,10 @@ class AddContentCardSection extends ConsumerWidget {
 
                           BuildPlainActionButton(
                             title: "Auto",
-                            icon: Icon(Iconsax.autobrightness, color: context.theme.primaryColor),
+                                icon: Icon(
+                                  Iconsax.autobrightness,
+                                  color: ref.theme.primaryColor,
+                                ),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
                                   context,
@@ -141,7 +147,10 @@ class AddContentCardSection extends ConsumerWidget {
 
                           BuildPlainActionButton(
                             title: "Image",
-                            icon: Icon(Iconsax.image, color: context.theme.primaryColor),
+                                icon: Icon(
+                                  Iconsax.image,
+                                  color: ref.theme.primaryColor,
+                                ),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
                                   context,
@@ -171,7 +180,10 @@ class AddContentCardSection extends ConsumerWidget {
                           child: Row(
                             spacing: 4.0,
                             children: [
-                              Icon(Iconsax.note_add, color: context.theme.colorScheme.onTertiary),
+                              Icon(
+                                Iconsax.note_add,
+                                color: ref.theme.secondaryText,
+                              ),
                               CustomText("Add note", color: AppColors.primaryText(context)),
                             ],
                           ),
@@ -193,7 +205,10 @@ class AddContentCardSection extends ConsumerWidget {
                           child: Row(
                             spacing: 4.0,
                             children: [
-                              Icon(Iconsax.link_circle, color: context.theme.colorScheme.onTertiary),
+                              Icon(
+                                Iconsax.link_circle,
+                                color: ref.theme.secondaryText,
+                              ),
                               CustomText("Add link", color: AppColors.primaryText(context)),
                             ],
                           ),

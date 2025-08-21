@@ -48,7 +48,12 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
-                  child: CustomText("New Collection", fontSize: 13, color: context.theme.primaryColor, fontWeight: FontWeight.bold),
+                  child: CustomText(
+                    "New Collection",
+                    fontSize: 13,
+                    color: ref.theme.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 ConstantSizing.columnSpacingSmall,
                 CustomTextfield(
@@ -97,16 +102,21 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                     }
                   },
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                  inputTextStyle: TextStyle(fontSize: 15, color: context.theme.colorScheme.tertiary),
-                  cursorColor: context.theme.primaryColor,
+                  inputTextStyle: TextStyle(
+                    fontSize: 15,
+                    color: ref.theme.primaryText,
+                  ),
+                  cursorColor: ref.theme.primaryColor,
                   backgroundColor: Colors.transparent,
-                  border: UnderlineInputBorder(borderSide: BorderSide(color: context.theme.primaryColor)),
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: ref.theme.primaryColor),
+                  ),
                   // alwaysShowSuffixIcon: true,
                   // suffixIcon: Padding(
                   //   padding: const EdgeInsets.only(left: 8.0, right: 10.0),
                   //   child: CustomElevatedButton(
                   //     onClick: () {},
-                  //     backgroundColor: context.theme.primaryColor,
+                  //     backgroundColor: ref.theme.primaryColor,
                   //     contentPadding: EdgeInsets.all(2.0),
                   //     shape: CircleBorder(),
                   //     child: Icon(Iconsax.add_circle, size: 20, color: context.isDarkMode ? Colors.white : Colors.white),
