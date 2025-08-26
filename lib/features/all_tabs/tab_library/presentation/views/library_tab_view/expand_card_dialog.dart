@@ -1,9 +1,11 @@
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
@@ -36,7 +38,16 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
-        Positioned.fill(child: SizedBox.expand(child: GestureDetector(onTap: () => CustomDialog.hide(context)))),
+        Positioned.fill(
+          child: SizedBox.expand(
+            child: GestureDetector(
+              onTap: () {
+                log("Clicked outside");
+                UiUtils.hideDialog(context);
+              },
+            ),
+          ),
+        ),
         Positioned(
           top: boundedOffset.dy - (kToolbarHeight + 4) - 12,
           left: 20,

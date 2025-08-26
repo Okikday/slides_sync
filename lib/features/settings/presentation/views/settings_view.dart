@@ -11,7 +11,6 @@ import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.da
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
-import 'package:slides_sync/shared/styles/theme/themes.dart';
 
 class SettingsView extends ConsumerWidget {
   const SettingsView({super.key});

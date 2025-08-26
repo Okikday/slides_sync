@@ -171,7 +171,13 @@ class ModifyCourseActions {
       child: AppActionDialog(
         title: "What would you like to do?",
         actions: dialogModels,
-      ).animate().scaleY(alignment: Alignment.topRight, begin: 0.6, end: 1.0, curve: CustomCurves.defaultIosSpring, duration: Durations.medium2),
+      ).animate().fadeIn().scaleXY(
+        begin: 0.9,
+        end: 1,
+        alignment: Alignment.topRight,
+        duration: Duration(milliseconds: 500),
+        curve: CustomCurves.defaultIosSpring,
+      ),
     );
   }
 }

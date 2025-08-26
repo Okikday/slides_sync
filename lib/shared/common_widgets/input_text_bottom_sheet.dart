@@ -68,12 +68,14 @@ class _InputTextBottomSheetState extends ConsumerState<InputTextBottomSheet> {
                   focusNode: focusNode,
                   onTapOutside: () {},
                   onSubmitted: widget.onSubmitted,
+                  
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(
                     fontSize: 15,
                     color: ref.theme.primaryText,
                   ),
                   cursorColor: ref.theme.primaryColor,
+                  selectionHandleColor: ref.theme.primaryColor,
                   backgroundColor: Colors.transparent,
                   border: UnderlineInputBorder(
                     borderSide: BorderSide(color: ref.theme.primaryColor),

@@ -45,7 +45,7 @@ class ConfirmDeletionDialog extends ConsumerWidget {
         _buildDialogButton(label: "Delete", textColor: Colors.red, backgroundColor: Colors.red.withAlpha(40), onClick: onDelete),
       ],
     ).animate().fadeIn().scaleY(
-      begin: 0.2,
+      begin: 0.4,
       end: 1,
       alignment: Alignment.bottomRight,
       duration: Duration(milliseconds: 500),

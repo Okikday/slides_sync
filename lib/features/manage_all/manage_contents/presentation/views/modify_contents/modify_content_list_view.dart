@@ -20,11 +20,13 @@ class ModifyContentListView extends StatelessWidget {
         itemCount: contentList.length,
         itemBuilder: (context, index) {
           
-          return ModContentCardTile(content: contentList[index]).animate().slideY(
-            begin: double.parse((0.2 * (index + (10 / 2) / 10)).toStringAsFixed(2)),
+          return ModContentCardTile(
+            content: contentList[index],
+          ).animate().fadeIn().slideY(
+            begin: (index / contentList.length + 1) * 0.4,
             end: 0,
-            curve: CustomCurves.bouncySpring,
-            duration: Durations.extralong1,
+            curve: Curves.fastEaseInToSlowEaseOut,
+            duration: Durations.extralong2,
           );
         },
       ),

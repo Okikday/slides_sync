@@ -40,6 +40,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               controller: descriptionTextController,
               backgroundColor: ref.theme.altBackgroundPrimary,
               cursorColor: ref.theme.primaryColor,
+              selectionHandleColor: ref.theme.primaryColor,
               maxLength: 1024,
               counterText: null,
               border: OutlineInputBorder(

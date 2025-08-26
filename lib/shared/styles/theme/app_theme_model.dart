@@ -135,29 +135,29 @@ class AppThemeModel {
   }
 
   factory AppThemeModel.fromMap(Map<String, dynamic> m) {
-    Color _c(dynamic v) => (v.toString()).toColor;
+    Color c(dynamic v) => (v.toString()).toColor;
     return AppThemeModel(
       title: m['title'] as String? ?? '',
       fontFamily: m['fontFamily'] as String?,
       brightness: Brightness.values.byName(
         m['brightness'] as String? ?? 'light',
       ),
-      primaryColor: _c(m['primaryColor']),
-      secondaryColor: _c(m['secondaryColor']),
-      background: _c(m['background']),
-      stepUpBackground: _c(m['stepUpBackground']),
-      bgText: _c(m['bgText']),
-      bgSupportText: _c(m['bgSupportText']),
-      altBackgroundPrimary: _c(m['altBackgroundPrimary']),
-      altBackgroundSecondary: _c(m['altBackgroundSecondary']),
-      surfaceDark: _c(m['surfaceDark']),
-      surfaceLight: _c(m['surfaceLight']),
-      onPrimaryText: _c(m['onPrimaryText']),
-      onSecondaryText: _c(m['onSecondaryText']),
-      emphasisStrong: _c(m['emphasisStrong']),
-      emphasisSoft: _c(m['emphasisSoft']),
-      frostedPrimaryBase: _c(m['frostedPrimaryBase']),
-      frostedSecondaryBase: _c(m['frostedSecondaryBase']),
+      primaryColor: c(m['primaryColor']),
+      secondaryColor: c(m['secondaryColor']),
+      background: c(m['background']),
+      stepUpBackground: c(m['stepUpBackground']),
+      bgText: c(m['bgText']),
+      bgSupportText: c(m['bgSupportText']),
+      altBackgroundPrimary: c(m['altBackgroundPrimary']),
+      altBackgroundSecondary: c(m['altBackgroundSecondary']),
+      surfaceDark: c(m['surfaceDark']),
+      surfaceLight: c(m['surfaceLight']),
+      onPrimaryText: c(m['onPrimaryText']),
+      onSecondaryText: c(m['onSecondaryText']),
+      emphasisStrong: c(m['emphasisStrong']),
+      emphasisSoft: c(m['emphasisSoft']),
+      frostedPrimaryBase: c(m['frostedPrimaryBase']),
+      frostedSecondaryBase: c(m['frostedSecondaryBase']),
     );
   }
 

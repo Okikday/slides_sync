@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:slides_sync/app.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 
@@ -55,7 +54,6 @@ ThemeData resolveThemeData(AppThemeModel theme) {
     onTertiary: theme.bgSupportText,
 
     // Surface containers / emphasis colors
-    surfaceVariant: theme.stepUpBackground,
     onSurfaceVariant: theme.bgSupportText,
 
     // Error, outline, scrim keep defaults unless needed

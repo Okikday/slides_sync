@@ -34,11 +34,11 @@ class CollectionsListView extends ConsumerWidget {
                 courseTitle: (courseCode: "", courseName: "CourseName"),
               ));
             },
-          ).animate().slideY(
-            begin: double.parse((0.2 * (index + (collections.length / 2) / collections.length)).toStringAsFixed(2)),
+          ).animate().fadeIn().slideY(
+            begin: (index / collections.length + 1) * 0.4,
             end: 0,
-            curve: CustomCurves.bouncySpring,
-            duration: Durations.extralong4,
+            curve: Curves.fastEaseInToSlowEaseOut,
+            duration: Durations.extralong2,
           );
         },
       ),

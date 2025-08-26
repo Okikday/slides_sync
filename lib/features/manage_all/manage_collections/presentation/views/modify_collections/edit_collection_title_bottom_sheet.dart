@@ -1,20 +1,25 @@
+import 'dart:developer';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
+import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-class CreateCollectionBottomSheet extends ConsumerStatefulWidget {
-  final int courseDbId;
-  const CreateCollectionBottomSheet({super.key, required this.courseDbId});
+class EditCollectionTitleBottomSheet extends ConsumerStatefulWidget {
+  final CourseCollection collection;
+  const EditCollectionTitleBottomSheet({super.key, required this.collection});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _CreateCollectionBottomSheetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _EditCollectionTitleBottomSheetState();
 }
 
-class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBottomSheet> {
+class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionTitleBottomSheet> {
   late final FocusNode focusNode;
   @override
   void initState() {
@@ -32,10 +37,12 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
   @override
   Widget build(BuildContext context) {
     final ModifyCollectionActions modifyCollectionActions = ModifyCollectionActions();
+    final collection = widget.collection;
+    
 
     return Stack(
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
+        Positioned.fill(child: GestureDetector(onTap: () => context.pop())),
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -49,7 +56,7 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                 Padding(
                   padding: const EdgeInsets.only(left: 12.0),
                   child: CustomText(
-                    "New Collection",
+                    "Rename Collection",
                     fontSize: 13,
                     color: ref.theme.primaryColor,
                     fontWeight: FontWeight.bold,
@@ -58,28 +65,38 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                 ConstantSizing.columnSpacingSmall,
                 CustomTextfield(
                   autoDispose: false,
-                  hint: "Enter a Collection name",
+                  hint: "Edit Collection name",
+                  defaultText: collection.collectionTitle,
                   focusNode: focusNode,
                   selectionHandleColor: ref.theme.primaryColor,
-                  onTapOutside: () {},
+                  // onTapOutside: () {},
                   onSubmitted: (text) async {
+                    
                     // Create new collection
-                    final outcome = await modifyCollectionActions.onCreateNewCollection(
-                      context,
-                      text: text.trim(),
-                      courseDbId: widget.courseDbId,
+                    final outcome = await modifyCollectionActions.renameCollectionAction(
+                      collection.copyWith(collectionTitle: text)
                     );
+                    
 
                     // Handle outcome
-                    if (outcome == null) {
-                      if (context.mounted) CustomDialog.hide(context);
-                      if (context.mounted) await UiUtils.showFlushBar(context, msg: "Added $text to Collections!", vibe: FlushbarVibe.success);
-                    } else if (outcome.isEmpty) {
+                    if (outcome == null && text.trim() != collection.collectionTitle && text.trim().isNotEmpty) {
+                      log("point 1");
+                      if (context.mounted){
+                        log("point 2");
+                        context.pop();
+                      }else{
+                        log("point 3");
+                        rootNavigatorKey.currentContext?.pop();
+                      }
+                      if (context.mounted) await UiUtils.showFlushBar(context, msg: "Renamed ${collection.collectionTitle} to $text!", vibe: FlushbarVibe.success);
+                    } else{
                       final String message;
                       if (text.isEmpty) {
                         message = "Try typing into the Field!";
                       } else if (text.length < 2) {
                         message = "Text input is too short!";
+                      } else if(text.trim() == collection.collectionTitle){
+                        message = "Try inputting a new different title";
                       } else {
                         message = "Invalid input!";
                       }
@@ -87,15 +104,6 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                         await UiUtils.showFlushBar(
                           context,
                           msg: message,
-                          flushbarPosition: FlushbarPosition.TOP,
-                          vibe: FlushbarVibe.warning,
-                        );
-                      }
-                    } else {
-                      if (context.mounted) {
-                        await UiUtils.showFlushBar(
-                          context,
-                          msg: outcome,
                           flushbarPosition: FlushbarPosition.TOP,
                           vibe: FlushbarVibe.warning,
                         );

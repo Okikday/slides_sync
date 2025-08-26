@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
@@ -65,7 +66,7 @@ class RecentsSectionBody extends ConsumerWidget {
               isStarred: false,
               progress: DummySlides.dummySlides[index]['progress'] as double?,
               onLongTapTile: () {
-                CustomDialog.show(
+                UiUtils.showCustomDialog(
                   context,
                   canPop: true,
                   blurSigma: Offset(2.0, 2.0),

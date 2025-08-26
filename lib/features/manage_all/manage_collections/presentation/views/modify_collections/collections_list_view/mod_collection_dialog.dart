@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/edit_collection_title_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
@@ -50,10 +54,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
     return AppActionDialog(
       blurSigma: Offset(4, 4),
       backgroundColor: context.scaffoldBackgroundColor.withValues(alpha: 0.5),
-      onPop: () async {
-        final newText = textEditingController.text;
-        await mca.onRenameCollection(context, newText: newText, courseDbId: widget.courseDbId, collection: collection);
-      },
+      
       leading: Padding(
         padding: const EdgeInsets.only(bottom: ConstantSizing.spaceMedium),
         child: Row(
@@ -64,20 +65,34 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 padding: EdgeInsets.all(16),
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(left: 12),
-                decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.outlineVariant),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: ref.theme.altBackgroundPrimary,
+                ),
                 child: BuildImagePathWidget(fileDetails: FileDetails()),
               ),
             ),
             ConstantSizing.rowSpacingMedium,
         
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: CustomText(
-                  collection.collectionTitle,
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.bold,
-                  color: ref.theme.primaryText,
+              child: GestureDetector(
+                onTap: () {
+                  CustomDialog.hide(context);
+                  UiUtils.showCustomDialog(
+                    context,
+                    child: EditCollectionTitleBottomSheet(
+                      collection: collection,
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: CustomText(
+                    collection.collectionTitle,
+                    fontSize: 14.5,
+                    fontWeight: FontWeight.bold,
+                    color: ref.theme.primaryText,
+                  ),
                 ),
               ),
             ),
@@ -145,6 +160,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                       "This will delete \"${collection.collectionTitle}\"."
                       "\n\nAre you sure you want to delete this course?",
                   onPop: () {
+                    log("Popping");
                     if (context.mounted) {
                       CustomDialog.hide(context);
                     } else {
@@ -166,7 +182,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
     ).animate().fadeIn().scaleXY(
       begin: 0.4,
       end: 1,
-      alignment: Alignment.topRight,
+      alignment: Alignment.centerRight,
       duration: Durations.extralong1,
       curve: CustomCurves.defaultIosSpring,
     );

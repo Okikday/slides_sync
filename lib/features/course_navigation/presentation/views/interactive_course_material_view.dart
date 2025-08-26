@@ -10,10 +10,8 @@ import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/document_viewer.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class InteractiveCourseMaterialView extends ConsumerWidget {
   final CourseCollection collection;

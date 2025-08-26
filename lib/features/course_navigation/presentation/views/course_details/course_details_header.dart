@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math';
 import 'dart:ui';
 
@@ -12,7 +11,6 @@ import 'package:slides_sync/features/course_navigation/presentation/views/course
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/component_widgets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 

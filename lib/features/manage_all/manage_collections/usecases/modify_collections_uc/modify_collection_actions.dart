@@ -56,7 +56,6 @@ class ModifyCollectionActions {
   Future<void> onRenameCollection(
     BuildContext context, {
     required String newText,
-    required int courseDbId,
     required CourseCollection collection,
   }) async {
     if (newText.isNotEmpty && newText != collection.collectionTitle && newText.length >= 2 && newText.length < 256) {

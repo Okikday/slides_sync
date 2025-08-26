@@ -160,8 +160,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Continue reading",
-                          icon: Icon(Iconsax.play_copy, size: 24, color: AppColors.secondaryText(context),),
-                          textStyle: TextStyle(fontSize: 16, color: AppColors.primaryText(context)),
+                          icon: Icon(Iconsax.play_copy, size: 24, color: ref.theme.secondaryText,),
+                          textStyle: TextStyle(fontSize: 16, color: ref.theme.primaryText),
                           onTap: () {},
                         ),
 
@@ -169,8 +169,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Share",
-                          icon: Icon(Icons.share_outlined, size: 24, color: AppColors.secondaryText(context)),
-                          textStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
+                          icon: Icon(Icons.share_outlined, size: 24, color: ref.theme.secondaryText),
+                          textStyle: TextStyle(fontSize: 15, color: ref.theme.primaryText),
                           onTap: () {},
                         ),
 
@@ -179,7 +179,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                         BuildPlainActionButton(
                           title: "Remove from recents",
                           icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                          textStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
+                          textStyle: TextStyle(fontSize: 15, color: ref.theme.primaryText),
                           onTap: () {},
                         ),
 

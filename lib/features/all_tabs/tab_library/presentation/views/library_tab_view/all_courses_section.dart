@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/expand_card_dialog.dart';
@@ -60,7 +61,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection>
     final Offset? tapPosition =
         ref.read(longPressDetailsProvider.notifier).state;
     if (tapPosition == null) return;
-    CustomDialog.show(
+    UiUtils.showCustomDialog(
       context,
       blurSigma: Offset(2, 2),
       barrierColor: Colors.black26,

@@ -28,6 +28,7 @@ class CollectionsViewSearchBar extends ConsumerWidget {
                     child: CustomTextfield(
                       hint: "Search collections",
                       hintStyle: TextStyle(color: AppColors.secondaryText(context)),
+                      selectionHandleColor: ref.theme.primaryColor,
                       inputTextStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
                       backgroundColor: ref.theme.stepUpBackground,
                       border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.zero),

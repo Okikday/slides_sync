@@ -1,9 +1,9 @@
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
-import 'package:slides_sync/test/test_page_1.dart';
 
 class CourseNavRoutes {
   static List<GoRoute> routes = [

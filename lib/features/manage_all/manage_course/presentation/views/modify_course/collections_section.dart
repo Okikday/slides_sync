@@ -9,7 +9,6 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
 /// COLLECTION SECTION

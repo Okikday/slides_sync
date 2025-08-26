@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
-import 'component_widgets.dart';
 
 class AppBarContainerChild extends ConsumerWidget {
   const AppBarContainerChild(
