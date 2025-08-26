@@ -39,13 +39,22 @@ class ModCollectionCardTile extends ConsumerWidget {
             color: ref.theme.primaryColor,
           ),
         ),
-        trailing: CustomElevatedButton(backgroundColor:Colors.transparent, contentPadding: EdgeInsets.all(12), onClick: onSelected, child: Icon(Iconsax.edit_copy, size: 20)),
+        trailing: CustomElevatedButton(
+          backgroundColor: Colors.transparent,
+          contentPadding: EdgeInsets.all(12),
+          onClick: onSelected,
+          child: Icon(
+            Iconsax.edit_copy,
+            size: 20,
+            color: ref.theme.secondaryText,
+          ),
+        ),
         title: title,
         subtitle:
             "${subCollectionCount < 1 ? '' : "$subCollectionCount collections"}"
             "${(contentCount > 0 && subCollectionCount > 0) ? ", " : ''}"
             "${contentCount == 0 ? 'No items' : "$contentCount items"}",
-      
+
         onTapTile: () {
           if (onTap != null) onTap!();
         },

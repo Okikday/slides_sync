@@ -10,8 +10,7 @@ import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/expand_card_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/providers/course_provider.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/is_list_view_notifier.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_grid_view.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_list_view.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 
@@ -24,25 +23,32 @@ class AllCoursesSection extends ConsumerStatefulWidget {
   ConsumerState createState() => _AllCoursesSectionState();
 }
 
-class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with AutomaticKeepAliveClientMixin {
-  late final StateProviderFamily<bool, int> scaleClickProviderFamily;
+class _AllCoursesSectionState extends ConsumerState<AllCoursesSection>
+    with AutomaticKeepAliveClientMixin {
+  late final AutoDisposeStateProviderFamily<bool, int> scaleClickProviderFamily;
   late final StateProvider<bool> isCourseClickedProvider;
   late final StreamProvider<List<Course>> watchAllcoursesProvider;
-  late final StateProvider<TapDownDetails?> longPressDetailsProvider;
+  late final StateProvider<Offset?> longPressDetailsProvider;
 
   @override
   void initState() {
     super.initState();
-    scaleClickProviderFamily = StateProviderFamily((ref, index) => false);
+    scaleClickProviderFamily = AutoDisposeStateProviderFamily(
+      (ref, index) => false,
+    );
     isCourseClickedProvider = StateProvider((ref) => false);
-    watchAllcoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
-    longPressDetailsProvider = StateProvider<TapDownDetails?>((ref) => null);
+    watchAllcoursesProvider = StreamProvider(
+      (ref) => CourseRepo.watchAllCourses(),
+    );
+    longPressDetailsProvider = StateProvider<Offset?>((ref) => null);
   }
 
   void onTap(Course course) async {
     final isCourseClickedNotifier = ref.read(isCourseClickedProvider.notifier);
     if (isCourseClickedNotifier.state) return;
-    isCourseClickedNotifier.update((cb) => true); // Tell that a course is currently opened
+    isCourseClickedNotifier.update(
+      (cb) => true,
+    ); // Tell that a course is currently opened
 
     await Future.delayed(Durations.short4);
     ref.read(CourseProviders.courseProvider.notifier).update(course);
@@ -51,7 +57,8 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
   }
 
   void onLongPress(Course course) {
-    final Offset? tapPosition = ref.read(longPressDetailsProvider.notifier).state?.globalPosition;
+    final Offset? tapPosition =
+        ref.read(longPressDetailsProvider.notifier).state;
     if (tapPosition == null) return;
     CustomDialog.show(
       context,
@@ -71,8 +78,12 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final AsyncValue<List<Course>> streamedCourses = ref.watch(watchAllcoursesProvider);
-    final AsyncValue<bool> asyncIsListView = ref.watch(widget.isListViewAsyncProvider);
+    final AsyncValue<List<Course>> streamedCourses = ref.watch(
+      watchAllcoursesProvider,
+    );
+    final AsyncValue<bool> asyncIsListView = ref.watch(
+      widget.isListViewAsyncProvider,
+    );
     final isListView = asyncIsListView.value ?? false;
 
     return streamedCourses.when(
@@ -81,27 +92,23 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
           return EmptyLibraryView();
         }
 
-        if (isListView) {
-          return CoursesListView(
+        return SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 12),
+          sliver: CoursesView(
+            isListView,
             scaleClickProviderFamily: scaleClickProviderFamily,
             longPressTapDetailsProvider: longPressDetailsProvider,
             data: data,
             onTap: (index) => onTap(data[index]),
             onLongPress: (index) => onLongPress(data[index]),
-          );
-        } else {
-          return CoursesGridView(
-            scaleClickProviderFamily: scaleClickProviderFamily,
-            longPressTapDetailsProvider: longPressDetailsProvider,
-            data: data,
-            onTap: (index) => onTap(data[index]),
-            onLongPress: (index) => onLongPress(data[index]),
-          );
-        }
+          ),
+        );
       },
       error: (error, st) {
         log("error: $st");
-        return SliverToBoxAdapter(child: RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle)));
+        return SliverToBoxAdapter(
+          child: RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle)),
+        );
       },
       loading: () {
         return SliverToBoxAdapter(child: LoadingView(msg: "Loading Courses"));

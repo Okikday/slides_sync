@@ -47,7 +47,7 @@ class InteractiveCourseMaterialView extends ConsumerWidget {
                           Navigator.of(context).push(
                             PageAnimation.pageRouteBuilder(
                               DocumentViewer(),
-                              type: TransitionType.levelFromCenterWithFade,
+                              type: TransitionType.rightToLeft,
                               duration: Durations.extralong3,
                               opaque: false,
                               reverseDuration: Durations.medium1,
@@ -59,7 +59,10 @@ class InteractiveCourseMaterialView extends ConsumerWidget {
                           width: boxDimension,
                           height: boxDimension,
                           clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(color: context.theme.colorScheme.onSurface, borderRadius: BorderRadius.circular(24)),
+                          decoration: BoxDecoration(
+                            color: ref.theme.altBackgroundPrimary,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
                           child: Stack(
                             children: [
                               Positioned.fill(

@@ -7,7 +7,6 @@ import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/r
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
 import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 import '../../../../../../../../test/dummy_slides.dart';
 import '../../../../viewmodels/recent_list_tile_model.dart';

@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course_view.dart';
 import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/theme/themes.dart';
 
 // class SimpleActionModel {
 //   final String title;

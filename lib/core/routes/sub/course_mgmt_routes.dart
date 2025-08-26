@@ -1,4 +1,5 @@
-import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart'
+    show CustomCurves;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
@@ -8,6 +9,7 @@ import 'package:slides_sync/features/manage_all/manage_course/presentation/views
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course_view.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
+import 'package:slides_sync/test/test_page_1.dart';
 
 import '../../../features/manage_all/manage_course/presentation/views/create_course_view.dart';
 
@@ -61,10 +63,19 @@ class CourseMgmtRoutes {
           pageBuilder:
               (context, state) => PageAnimation.buildCustomTransitionPage(
                 state.pageKey,
-                type: TransitionType.fade,
-                duration: Durations.medium1,
-                reverseDuration: Durations.medium1,
-                child: ModifyCollectionsView(courseDbId: (state.extra as Course).id),
+                type: TransitionType.paired(
+                  incoming: TransitionType.fade,
+                  outgoing: TransitionType.leftToRight,
+                  outgoingDuration: Durations.medium1,
+                  reverseDuration: Durations.extralong1,
+                ),
+
+                duration: Duration(seconds: 2),
+                reverseDuration: Durations.extralong4,
+                curve: CustomCurves.defaultIosSpring,
+                child: ModifyCollectionsView(
+                  courseDbId: (state.extra as Course).id,
+                ),
               ),
           routes: [
             //MODIFY CONTENTS VIEW NAVIGATION
@@ -77,7 +88,15 @@ class CourseMgmtRoutes {
                   duration: Durations.extralong1,
                   reverseDuration: Durations.medium1,
                   curve: CustomCurves.defaultIosSpring,
-                  child: ModifyContentsView(record: state.extra as ContentRecord<int, CourseCollection, CourseTitleRecord>),
+                  child: ModifyContentsView(
+                    record:
+                        state.extra
+                            as ContentRecord<
+                              int,
+                              CourseCollection,
+                              CourseTitleRecord
+                            >,
+                  ),
                 );
               },
             ),
@@ -87,3 +106,6 @@ class CourseMgmtRoutes {
     ),
   ];
 }
+
+
+

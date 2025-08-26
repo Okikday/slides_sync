@@ -18,7 +18,7 @@ class InputCourseTitleField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomTextfield(
       controller: courseNameController,
-      backgroundColor: context.theme.colorScheme.onSurface,
+      backgroundColor: ref.theme.altBackgroundPrimary,
       cursorColor: ref.theme.primaryText,
       selectionHandleColor: ref.theme.primaryColor,
       border: OutlineInputBorder(

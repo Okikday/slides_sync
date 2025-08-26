@@ -1,38 +1,38 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/theme/themes.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class GridCourseCard extends ConsumerWidget {
-  const GridCourseCard({
+  const GridCourseCard(this.course,{
     super.key,
-    this.courseCode = '',
-    required this.courseName,
-    required this.categoriesCount,
-    required this.progress,
-    required this.isDarkMode,
+    this.dimension,
+    this.progress = 0.0,
     this.dotColor = Colors.transparent,
-    this.courseImageWidget,
-    required this.dimension,
+    this.isStarred = false,
     required this.onTapIcon
   });
 
-  final String courseCode;
-  final String courseName;
-  final int categoriesCount;
+  final Course course;
+  final double? dimension;
   final double progress;
-  final bool isDarkMode;
   final Color dotColor;
-  final Widget? courseImageWidget;
-  final double dimension;
+  final bool isStarred;
   final void Function() onTapIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
+    final courseCode = course.courseCode;
+    final categoriesCount = course.collections.length;
+    final isDarkMode = context.isDarkMode;
+    final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     return Badge(
       backgroundColor: Colors.transparent,
       label: CircleAvatar(radius: 5, backgroundColor: dotColor),
@@ -41,7 +41,7 @@ class GridCourseCard extends ConsumerWidget {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           color: AppColors.bgBlendColor(context),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
           border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
           image: DecorationImage(
             image: Assets.images.bookSparkleTransparentBg.asImageProvider,
@@ -73,7 +73,10 @@ class GridCourseCard extends ConsumerWidget {
                           child: CircleAvatar(
                             radius: dimension / 2 - 4,
                             backgroundColor: AppColors.bgBlendColor(context, .88, .12),
-                            child: SizedBox.square(dimension: dimension - 8, child: courseImageWidget),
+                            child: SizedBox.square(dimension: dimension - 8, child: BuildImagePathWidget(
+                    fileDetails: course.imageLocationJson.fileDetails,
+                    fallbackWidget: Icon(Iconsax.document_1, size: 16, color: isDarkMode ? Colors.white : Colors.black),
+                  ),),
                           ),
                         ),
                       ),
@@ -108,7 +111,7 @@ class GridCourseCard extends ConsumerWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: CustomText(
-                      courseName,
+                      course.courseName,
                       overflow: TextOverflow.fade,
                       fontWeight: FontWeight.bold,
                       fontSize: 13.5,
@@ -140,7 +143,7 @@ class GridCourseCard extends ConsumerWidget {
                     Expanded(
                       child: LinearProgressIndicator(
                         minHeight: 12,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(32),
                         value: (progress).clamp(0.1, 1.0),
                         backgroundColor: theme.altBackgroundSecondary
                             .withValues(alpha: 0.2),

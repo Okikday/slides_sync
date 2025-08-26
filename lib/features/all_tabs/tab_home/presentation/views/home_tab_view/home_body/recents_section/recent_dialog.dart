@@ -40,7 +40,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
               decoration: BoxDecoration(
                 color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: context.theme.colorScheme.onSurface),
+                border: Border.all(color: ref.theme.altBackgroundPrimary),
               ),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),

@@ -26,7 +26,7 @@ class HomeDrawer extends ConsumerWidget {
                 ConstantSizing.columnSpacing(kToolbarHeight + 24),
                 CircleAvatar(
                   radius: 40,
-                  backgroundColor: context.theme.colorScheme.onSurface,
+                  backgroundColor: ref.theme.altBackgroundPrimary,
                   child: Icon(Iconsax.user, color: ref.theme.secondaryText),
                 ),
                 ConstantSizing.columnSpacingMedium,

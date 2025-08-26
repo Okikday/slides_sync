@@ -58,12 +58,12 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
         ),
         trailing: PopupMenuTheme(
           data: PopupMenuThemeData(
-            color: context.scaffoldBackgroundColor.withValues(alpha: 0.95),
+            color: ref.theme.background.withValues(alpha: 0.95),
             shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
             shadowColor: Colors.white.withAlpha(10),
           ),
           child: CircleAvatar(
-            backgroundColor: context.theme.colorScheme.onSurface,
+            backgroundColor: ref.theme.altBackgroundPrimary,
             child: PopupMenuButton<int>(
               tooltip: "Show options",
               clipBehavior: Clip.hardEdge,

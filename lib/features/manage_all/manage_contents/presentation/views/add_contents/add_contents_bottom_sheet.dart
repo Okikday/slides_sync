@@ -101,7 +101,7 @@ class AddContentCardSection extends ConsumerWidget {
                 "What kind of content do you want to add?",
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primary(context),
+                color: ref.theme.primaryText,
               ).animate().fadeIn().slideX(begin: -0.05),
             ),
             // ConstantSizing.columnSpacingSmall,
@@ -174,7 +174,7 @@ class AddContentCardSection extends ConsumerWidget {
                             // final createdNote = await AddContentsUc.createNote(collection);
                             // log("created note: ${createdNote.toString()}");
                           },
-                          backgroundColor: context.theme.colorScheme.onSurface,
+                          backgroundColor: ref.theme.altBackgroundPrimary,
                           pixelHeight: 40,
                           borderRadius: 16,
                           child: Row(
@@ -184,7 +184,10 @@ class AddContentCardSection extends ConsumerWidget {
                                 Iconsax.note_add,
                                 color: ref.theme.secondaryText,
                               ),
-                              CustomText("Add note", color: AppColors.primaryText(context)),
+                              CustomText(
+                                "Add note",
+                                color: ref.theme.primaryText,
+                              ),
                             ],
                           ),
                         ),
@@ -199,7 +202,7 @@ class AddContentCardSection extends ConsumerWidget {
                               child: AddLinkBottomSheet(collection: collection),
                             );
                           },
-                          backgroundColor: context.theme.colorScheme.onSurface,
+                          backgroundColor: ref.theme.altBackgroundPrimary,
                           pixelHeight: 40,
                           borderRadius: 16,
                           child: Row(
@@ -209,7 +212,7 @@ class AddContentCardSection extends ConsumerWidget {
                                 Iconsax.link_circle,
                                 color: ref.theme.secondaryText,
                               ),
-                              CustomText("Add link", color: AppColors.primaryText(context)),
+                              CustomText("Add link", color: ref.theme.primaryText),
                             ],
                           ),
                         ),

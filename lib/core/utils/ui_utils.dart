@@ -1,10 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
-import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
+import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart' show TransitionType, CustomCurves, ConstantSizing;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/test/test_page.dart';
 
 enum FlushbarVibe { none, error, success, warning }
 

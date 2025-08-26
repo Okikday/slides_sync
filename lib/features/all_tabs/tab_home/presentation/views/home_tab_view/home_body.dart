@@ -60,7 +60,7 @@ class HomeBody extends ConsumerWidget {
                     ),
                   ),
                 ),
-                type: TransitionType.levelFromRightCenterWithFade,
+                type: TransitionType.rightToLeft,
                 duration: Durations.extralong1,
                 curve: CustomCurves.defaultIosSpring,
               ),

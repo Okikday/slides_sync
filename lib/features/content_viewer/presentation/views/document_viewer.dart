@@ -17,7 +17,9 @@ class DocumentViewer extends ConsumerWidget {
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
           padding: EdgeInsets.zero,
-          scaffoldBgColor: context.theme.colorScheme.onSurface.withValues(alpha: 0.4),
+          scaffoldBgColor: ref.theme.altBackgroundPrimary.withValues(
+            alpha: 0.4,
+          ),
           child: Stack(
             children: [
               Positioned.fill(child: LinearProgressIndicator(color: AppColors.primary(context).withAlpha(20), value: 0.6, backgroundColor: Colors.transparent,)),

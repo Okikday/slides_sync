@@ -36,7 +36,7 @@ class ModifyContentsHeader extends ConsumerWidget {
                     children: [
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
-                        backgroundColor: context.theme.colorScheme.onSurface,
+                        backgroundColor: ref.theme.altBackgroundPrimary,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding7),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onSelect,
@@ -47,7 +47,7 @@ class ModifyContentsHeader extends ConsumerWidget {
                       ),
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
-                        backgroundColor: context.theme.colorScheme.onSurface,
+                        backgroundColor: ref.theme.altBackgroundPrimary,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding6),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onClickFilter,
@@ -71,7 +71,7 @@ class ModifyContentsHeader extends ConsumerWidget {
                         pixelHeight: btnDimension,
                         pixelWidth: btnDimension,
                         shape: CircleBorder(),
-                        backgroundColor: context.theme.colorScheme.onSurface,
+                        backgroundColor: ref.theme.altBackgroundPrimary,
                         contentPadding: EdgeInsets.all(padding4),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onSearch,

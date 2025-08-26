@@ -36,7 +36,7 @@ class Routes {
         pageBuilder:
             (context, state) => PageAnimation.buildCustomTransitionPage(
               state.pageKey,
-              type: TransitionType.scaleFromLeftCenter,
+              type: TransitionType.scale(alignment: Alignment.centerLeft),
               duration: Durations.extralong1,
               reverseDuration: Durations.medium1,
               curve: CustomCurves.defaultIosSpring,

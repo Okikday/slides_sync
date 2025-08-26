@@ -8,7 +8,6 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/lib
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_search_button.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class LibraryTabViewAppBar extends ConsumerWidget {
   const LibraryTabViewAppBar({

@@ -17,7 +17,12 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
 class CourseDetailsHeader extends ConsumerWidget {
-  const CourseDetailsHeader({super.key, required this.course, required this.scrollOffsetProvider, required this.appBarHeight});
+  const CourseDetailsHeader({
+    super.key,
+    required this.course,
+    required this.scrollOffsetProvider,
+    required this.appBarHeight,
+  });
 
   final Course course;
   final AutoDisposeStateProvider<double> scrollOffsetProvider;
@@ -27,8 +32,12 @@ class CourseDetailsHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final appBarCollapsedHeight = kToolbarHeight;
 
-    final topGradColor = AppColors.bgBlendColor(context, .8, .2);
-    final firstStop = ((appBarHeight + context.topPadding) / context.deviceHeight);
+    // final topGradColor = ref.theme.background.blendColor(
+    //   context.isDarkMode ? .2 : .8,
+    // );
+    final topGradColor = ref.theme.altBackgroundPrimary;
+    final firstStop =
+        ((appBarHeight + context.topPadding) / context.deviceHeight);
     return SliverAppBar(
       pinned: true,
       automaticallyImplyLeading: false,
@@ -52,14 +61,23 @@ class CourseDetailsHeader extends ConsumerWidget {
           ),
         ),
         titlePadding: EdgeInsets.zero,
-        title: CourseDetailsHeaderContent(course: course, scrollOffsetProvider: scrollOffsetProvider, appBarHeight: appBarHeight),
+        title: CourseDetailsHeaderContent(
+          course: course,
+          scrollOffsetProvider: scrollOffsetProvider,
+          appBarHeight: appBarHeight,
+        ),
       ),
     );
   }
 }
 
 class CourseDetailsHeaderContent extends ConsumerWidget {
-  const CourseDetailsHeaderContent({super.key, required this.course, required this.scrollOffsetProvider, required this.appBarHeight});
+  const CourseDetailsHeaderContent({
+    super.key,
+    required this.course,
+    required this.scrollOffsetProvider,
+    required this.appBarHeight,
+  });
 
   final Course course;
   final AutoDisposeStateProvider<double> scrollOffsetProvider;
@@ -78,7 +96,10 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
           fit: StackFit.expand,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: ConstantSizing.spaceSmall, right: ConstantSizing.spaceSmall),
+              padding: EdgeInsets.only(
+                left: ConstantSizing.spaceSmall,
+                right: ConstantSizing.spaceSmall,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 8,
@@ -89,25 +110,26 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         AppBackButton(
-                          backgroundColor: AppColors.bgBlendColor(
-                            context,
-                            .8,
-                            .2,
-                          ),
+                          
                         ),
 
                         (course.courseCode.isNotEmpty)
                             ? CustomTextButton(
-                              backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
+                              backgroundColor: ref.theme.altBackgroundPrimary,
                               pixelHeight: 28,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 12.0,
+                              ),
                               child: CustomText(
                                 course.courseCode,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: ref.theme.primaryColor,
                               ),
-                            ).animate().fadeIn(duration: Durations.medium4, curve: CustomCurves.defaultIosSpring)
+                            ).animate().scaleXY(
+                              duration: Durations.extralong4,
+                              curve: CustomCurves.defaultIosSpring,
+                            )
                             : const SizedBox(),
                       ],
                     ),
@@ -123,9 +145,17 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                               fileDetails: course.imageLocationJson.fileDetails,
                             )
                             .animate()
-                            .fadeIn(duration: Durations.medium4, curve: CustomCurves.bouncySpring)
-                            .scaleXY(begin: .4, end: 1, duration: Durations.extralong2, curve: CustomCurves.bouncySpring);
-                      }
+                            .fadeIn(
+                              duration: Durations.medium4,
+                              curve: CustomCurves.bouncySpring,
+                            )
+                            .scaleXY(
+                              begin: .4,
+                              end: 1,
+                              duration: Durations.extralong2,
+                              curve: CustomCurves.bouncySpring,
+                            );
+                      },
                     ),
                   ),
                 ],
@@ -145,19 +175,23 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                   children: [
                     Flexible(
                       child: CourseDetailsHeaderTitle(
-                        course: course,
+                        courseName: course.courseName,
                         scrollOffsetProvider: scrollOffsetProvider,
                         appBarHeight: appBarHeight,
                         adjustPosition: course.courseCode.isEmpty,
                       ),
                     ),
 
-                    if (course.description.isNotEmpty) ConstantSizing.columnSpacingSmall,
+                    if (course.description.isNotEmpty)
+                      ConstantSizing.columnSpacingSmall,
 
                     Flexible(
                       child: CustomTextButton(
                         borderRadius: 4.0,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 2,
+                          vertical: 2,
+                        ),
                         onClick: () {
                           if (course.description.isNotEmpty) {
                             CustomDialog.show(
@@ -169,13 +203,19 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                               barrierColor: Colors.black.withAlpha(100),
                               child: CourseDescriptionDialog(
                                 description: course.description,
-                              ).animate().scale(begin: Offset(0.5, 0.5), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
+                              ).animate().scale(
+                                begin: Offset(0.5, 0.5),
+                                duration: Durations.extralong1,
+                                curve: CustomCurves.bouncySpring,
+                              ),
                             );
                           }
                         },
                         child: CustomText(
-                          course.description.isEmpty ? "No description" : course.description,
-                          color: AppColors.bgBlendColor(context, .7, .3),
+                          course.description.isEmpty
+                              ? "No description"
+                              : course.description,
+                          color: ref.theme.secondaryText.withValues(alpha: .9),
                           overflow: TextOverflow.fade,
                         ),
                       ),
@@ -194,31 +234,45 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
 class CourseDetailsHeaderTitle extends ConsumerStatefulWidget {
   const CourseDetailsHeaderTitle({
     super.key,
-    required this.course,
+    required this.courseName,
     required this.scrollOffsetProvider,
     required this.appBarHeight,
     required this.adjustPosition,
   });
 
-  final Course course;
+  final String courseName;
   final double appBarHeight;
   final AutoDisposeStateProvider<double> scrollOffsetProvider;
   final bool adjustPosition;
 
   @override
-  ConsumerState<CourseDetailsHeaderTitle> createState() => _CourseDetailsHeaderTitleState();
+  ConsumerState<CourseDetailsHeaderTitle> createState() =>
+      _CourseDetailsHeaderTitleState();
 }
 
-class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTitle> with SingleTickerProviderStateMixin {
+class _CourseDetailsHeaderTitleState
+    extends ConsumerState<CourseDetailsHeaderTitle>
+    with SingleTickerProviderStateMixin {
   late final AnimationController moveAnimController;
   late final ProviderSubscription<double> scrollOffsetListener;
   @override
   void initState() {
     super.initState();
-    moveAnimController = AnimationController(duration: Durations.medium1, reverseDuration: Durations.medium1, vsync: this);
-    scrollOffsetListener = ref.listenManual(widget.scrollOffsetProvider, (double? prev, double next) {
-      final double percentScroll = (next / (appBarHeight + context.topPadding)).clamp(0, 1);
-      percentScroll >= 0.5 && (prev == null ? true : (prev >= 0.5 ? true : false)) ? moveAnimController.reverse() : moveAnimController.forward();
+    moveAnimController = AnimationController(
+      duration: Durations.medium1,
+      reverseDuration: Durations.medium1,
+      vsync: this,
+    );
+    scrollOffsetListener = ref.listenManual(widget.scrollOffsetProvider, (
+      double? prev,
+      double next,
+    ) {
+      final double percentScroll = (next / (appBarHeight + context.topPadding))
+          .clamp(0, 1);
+      percentScroll >= 0.5 &&
+              (prev == null ? true : (prev >= 0.5 ? true : false))
+          ? moveAnimController.reverse()
+          : moveAnimController.forward();
     });
 
     moveAnimController.forward(from: 0);
@@ -234,20 +288,30 @@ class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTi
   @override
   Widget build(BuildContext context) {
     final textWidget = Tooltip(
-          message: widget.course.courseName,
-          triggerMode: TooltipTriggerMode.tap,
-          child: CustomText(
-            widget.course.courseName,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+      message: widget.courseName,
+      triggerMode: TooltipTriggerMode.tap,
+      child: CustomText(
+        widget.courseName,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
         color: ref.theme.primaryText,
-            overflow: TextOverflow.fade,
-          ),
+        overflow: TextOverflow.fade,
+      ),
+    );
+    return widget.adjustPosition
+        ? textWidget
+            .animate(controller: moveAnimController)
+            .move(
+              begin: Offset(48, -44),
+              end: Offset.zero,
+              duration: Durations.extralong4,
+              curve: CustomCurves.defaultIosSpring,
+            )
+        : textWidget.animate().fadeIn().move(
+          begin: Offset(48, -44),
+          end: Offset.zero,
+          duration: Durations.extralong4,
+          curve: CustomCurves.defaultIosSpring,
         );
-    return widget.adjustPosition ?
-        textWidget.animate(controller: moveAnimController)
-        .move(begin: Offset(48, -44), end: Offset.zero, duration: Durations.extralong1, curve: CustomCurves.defaultIosSpring,)
-         : textWidget.animate()
-        .fadeIn().move(begin: Offset(48, -44), end: Offset.zero, duration: Durations.extralong1, curve: CustomCurves.bouncySpring);
   }
 }

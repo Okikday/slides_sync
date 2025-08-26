@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/theme/themes.dart';
 
 class HomeDashboard extends ConsumerWidget {
   const HomeDashboard({

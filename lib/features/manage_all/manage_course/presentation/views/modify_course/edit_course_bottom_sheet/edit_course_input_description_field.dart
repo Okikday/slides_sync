@@ -38,7 +38,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               // onTapOutside: () {},
               focusNode: descriptionFocusNode,
               controller: descriptionTextController,
-              backgroundColor: context.theme.colorScheme.onSurface,
+              backgroundColor: ref.theme.altBackgroundPrimary,
               cursorColor: ref.theme.primaryColor,
               maxLength: 1024,
               counterText: null,

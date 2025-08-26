@@ -2,15 +2,16 @@ import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
-class CollectionsViewSearchBar extends StatelessWidget {
+class CollectionsViewSearchBar extends ConsumerWidget {
   const CollectionsViewSearchBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ClipRRect(
       child: ColoredBox(
         color: context.scaffoldBackgroundColor.withValues(alpha: 0.6),
@@ -28,7 +29,7 @@ class CollectionsViewSearchBar extends StatelessWidget {
                       hint: "Search collections",
                       hintStyle: TextStyle(color: AppColors.secondaryText(context)),
                       inputTextStyle: TextStyle(fontSize: 15, color: AppColors.primaryText(context)),
-                      backgroundColor: context.theme.colorScheme.onSurface,
+                      backgroundColor: ref.theme.stepUpBackground,
                       border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.zero),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 12.0, right: 10.0, top: 12.0, bottom: 12.0),
@@ -41,7 +42,7 @@ class CollectionsViewSearchBar extends StatelessWidget {
                 CustomElevatedButton(
                   pixelHeight: 48,
                   shape: CircleBorder(),
-                  backgroundColor: context.theme.colorScheme.outlineVariant,
+                  backgroundColor: ref.theme.altBackgroundPrimary,
                   child: Icon(Iconsax.filter_copy, size: 20, color: AppColors.secondaryText(context)),
                 ),
               ],

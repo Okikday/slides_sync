@@ -33,4 +33,5 @@ extension ResponsivenessExtension on BuildContext {
 
 extension AppProviderTheme on WidgetRef {
   AppThemeModel get theme => watch(appThemeProvider);
+  bool get isDarkMode => context.isDarkMode;
 }

@@ -22,7 +22,7 @@ class LoadingView extends ConsumerWidget {
             ConstantSizing.columnSpacingMedium,
             CircleAvatar(
               radius: 35,
-              backgroundColor: context.theme.colorScheme.onSurface,
+              backgroundColor: ref.theme.altBackgroundPrimary.withAlpha(40),
               child: Lottie.asset(
                 IconStrings.instance.loadingSpinner,
                 delegates: LottieDelegates(

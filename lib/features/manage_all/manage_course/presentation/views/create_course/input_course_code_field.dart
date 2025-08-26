@@ -23,7 +23,7 @@ class InputCourseCodeField extends ConsumerWidget {
               alignment: Alignment.centerRight,
               child: CustomTextfield(
                 controller: courseCodeController,
-                backgroundColor: context.theme.colorScheme.onSurface,
+                backgroundColor: ref.theme.altBackgroundPrimary,
                 cursorColor: ref.theme.primaryText,
                 selectionHandleColor: ref.theme.primaryColor,
                 autoDispose: false,

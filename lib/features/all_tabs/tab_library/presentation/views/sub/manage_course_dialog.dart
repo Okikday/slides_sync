@@ -9,7 +9,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/test/file_manager_page.dart';
 
 class ManageCourseDialog extends ConsumerStatefulWidget {
@@ -90,14 +89,14 @@ class _ManageCourseDialogState extends ConsumerState<ManageCourseDialog> with Si
   }
 }
 
-class ManageCourseDialogCard extends StatelessWidget {
+class ManageCourseDialogCard extends ConsumerWidget {
   const ManageCourseDialogCard({super.key, required this.rightPad, required this.animationController});
 
   final double rightPad;
   final AnimationController animationController;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final width = context.deviceWidth;
     var divider = Divider(color: context.theme.colorScheme.secondary.withAlpha(40).withAlpha(40), height: 4);
     return SingleChildScrollView(
@@ -109,7 +108,7 @@ class ManageCourseDialogCard extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: context.theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                  color: ref.theme.altBackgroundPrimary.withValues(alpha: 0.8),
                   border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(40), width: 0)),
                 ),
                 child: BackdropFilter(
