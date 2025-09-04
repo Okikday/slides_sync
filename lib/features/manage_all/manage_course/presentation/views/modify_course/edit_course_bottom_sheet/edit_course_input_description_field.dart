@@ -18,41 +18,51 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return SliverToBoxAdapter(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 6.0,
         children: [
-          CustomText("Description", fontSize: 13, color: ref.theme.primaryText),
+          CustomText("Description", fontSize: 13, color: theme.primaryText),
           SizedBox(
             width: context.deviceWidth,
             child: CustomTextfield(
               ontap: () {
                 final descriptionText = descriptionTextController.text;
                 if (descriptionText == course.description) {
-                  descriptionTextController.selection = TextSelection(baseOffset: 0, extentOffset: descriptionText.length);
+                  descriptionTextController.selection = TextSelection(
+                    baseOffset: 0,
+                    extentOffset: descriptionText.length,
+                  );
                 }
               },
               onchanged: (text) {},
               // onTapOutside: () {},
               focusNode: descriptionFocusNode,
               controller: descriptionTextController,
-              backgroundColor: ref.theme.altBackgroundPrimary,
-              cursorColor: ref.theme.primaryColor,
-              selectionHandleColor: ref.theme.primaryColor,
-              maxLength: 1024,
-              counterText: null,
+              backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.8),
+              cursorColor: theme.primaryColor,
+              selectionHandleColor: theme.primaryColor,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: context.theme.colorScheme.secondary),
+                borderSide: BorderSide(color: theme.altBackgroundPrimary),
               ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide(color: theme.primaryColor),
+              ),
+              hintStyle: TextStyle(color: theme.secondaryText.withAlpha(80)),
+              maxLength: 1024,
+              counterText: null,
+
               pixelWidth: context.deviceWidth,
               minLines: 3,
               maxLines: 6,
               inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               hint: "Enter new description",
-              inputTextStyle: TextStyle(color: ref.theme.primaryText),
+              inputTextStyle: TextStyle(color: theme.primaryText),
             ),
           ),
         ],

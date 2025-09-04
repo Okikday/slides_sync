@@ -3,36 +3,32 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 
 final defaultCourse = Course.create(courseTitle: "_");
-final StateProvider<int?> _activeCourseDbIdProvider = StateProvider<int?>((ref) => null);
-final AutoDisposeStreamProviderFamily<Course?, int> _syncCourseStreamProvider = AutoDisposeStreamProviderFamily<Course?, int>(
-  (ref, arg) => CourseRepo.watchCourseByDbId(arg),
+final StateProvider<int?> _activeCourseDbIdProvider = StateProvider<int?>(
+  (ref) => null,
 );
-final NotifierProvider<CourseNotifier, Course> _courseProvider = NotifierProvider(CourseNotifier.new);
+final AsyncNotifierProvider<CourseNotifier, Course> _courseProvider =
+    AsyncNotifierProvider(CourseNotifier.new);
 
 class CourseProviders {
-  static NotifierProvider<CourseNotifier, Course> get courseProvider => _courseProvider;
+  static AsyncNotifierProvider<CourseNotifier, Course> get courseProvider =>
+      _courseProvider;
 }
 
-class CourseNotifier extends Notifier<Course> {
+class CourseNotifier extends AsyncNotifier<Course> {
   @override
-  Course build() {
-    final int? courseId = ref.watch(_activeCourseDbIdProvider);
-    if (courseId == null) {
-      return defaultCourse;
-    } else {
-      final asyncCourse = ref.watch(_syncCourseStreamProvider(courseId));
+  Future<Course> build() async {
+    final courseId = ref.watch(_activeCourseDbIdProvider);
+    if (courseId == null) return defaultCourse;
 
-      return asyncCourse.when(
-        data: (data) => data ?? defaultCourse,
-        error: (e, st) => defaultCourse,
-        loading: () => defaultCourse,
-      );
-    }
+    final asyncCourse = await CourseRepo.watchCourseByDbId(courseId).first;
+    return asyncCourse ?? defaultCourse;
   }
 
-  Course get value => state;
-  void update(Course value) {
-    if (state == value) return;
-    ref.read(_activeCourseDbIdProvider.notifier).state = value.id;
+   void updateCourse(Course value) async {
+    ref.read(_activeCourseDbIdProvider.notifier).update((cb) => value.id);
+  }
+
+  void updateByDate(Course value) async {
+    if (state.value?.lastUpdated != value.lastUpdated) ref.read(_activeCourseDbIdProvider.notifier).update((cb) => value.id);
   }
 }

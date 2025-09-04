@@ -51,11 +51,11 @@ class AppCustomizableDialog extends ConsumerWidget {
             clipBehavior: Clip.hardEdge,
             constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
             decoration: BoxDecoration(
-              color: backgroundColor ?? AppColors.bgBlendColor(context, 0.84, 0.16).withValues(alpha: 0.4),
+              color: backgroundColor ?? ref.theme.frostedPrimaryBase,
               borderRadius: BorderRadius.circular(16.0),
-              boxShadow: [
-                BoxShadow(color: Colors.white12, offset: Offset(1, 1), blurRadius: 3, blurStyle: BlurStyle.outer),
-              ],
+              border: Border.fromBorderSide(
+                BorderSide(color: ref.theme.secondaryText.withAlpha(40), strokeAlign: BorderSide.strokeAlignOutside),
+              )
             ),
             padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
             child:

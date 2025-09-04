@@ -1,181 +1,553 @@
+// import 'package:flutter/material.dart';
+// import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
+
+// List<AppThemeModel> defaultAppThemeModels = [
+//   // Default Light Theme (fixed accent)
+//   const AppThemeModel(
+//     title: 'Default Light Theme',
+//     fontFamily: 'Nunito',
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFF5000B8),
+//     secondaryColor: Color(0xFF7A5BFF),
+//     background: Color(0xFFFCFAFE),
+//     stepUpBackground: Color(0xFFE6FBF7),
+//     bgText: Color(0xFF0D0D0D),
+//     bgSupportText: Color(0xFF6B5DAF),
+//     altBackgroundPrimary: Color(0xFFF0EDF6),
+//     altBackgroundSecondary: Color(0xFFE9E1FF),
+//     surfaceDark: Color(0xFFF3F0FF),
+//     surfaceLight: Color(0xFFFBF9FF),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF2B005A),
+//     emphasisSoft: Color(0xFF4A1A8E),
+//     frostedPrimaryBase: Color(0xFFF7F4FF),
+//     frostedSecondaryBase: Color(0xFFF3FFFB),
+//   ),
+
+//   // Default Dark Theme (fixed accent)
+//   const AppThemeModel(
+//     title: 'Default Dark Theme',
+//     fontFamily: 'Nunito',
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF5000B8),
+//     secondaryColor: Color(0xFF7A5BFF), // matched to the light theme
+//     background: Color(0xFF0B0B10),
+//     stepUpBackground: Color(0xFF121219),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFBFB6F0),
+//     altBackgroundPrimary: Color(0xFF1E1630),
+//     altBackgroundSecondary: Color(0xFF042E29),
+//     surfaceDark: Color(0xFF0E0D12),
+//     surfaceLight: Color(0xFF16151B),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF2B005A),
+//     emphasisSoft: Color(0xFF004F45),
+//     frostedPrimaryBase: Color(0xFF120914),
+//     frostedSecondaryBase: Color(0xFF05120F),
+//   ),
+
+//   // Twilight Academia (Dark) - refined
+//   const AppThemeModel(
+//     title: "Twilight Academia (Dark)",
+//     fontFamily: "Nunito",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF7353D6),
+//     secondaryColor: Color(0xFFB89CFF),
+//     background: Color(0xFF0C0F14),
+//     stepUpBackground: Color(0xFF15121A),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFBFB8D7),
+//     altBackgroundPrimary: Color(0xFF1C2230),
+//     altBackgroundSecondary: Color(0xFF14121A),
+//     surfaceDark: Color(0xFF0F0E12),
+//     surfaceLight: Color(0xFF181520),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFFFFFFFF),
+//     emphasisStrong: Color(0xFF3D1E7A),
+//     emphasisSoft: Color(0xFF6B4AA0),
+//     frostedPrimaryBase: Color(0xFF0B0610),
+//     frostedSecondaryBase: Color(0xFF0D0B12),
+//   ),
+
+//   // Twilight Academia (Light) - refined
+//   const AppThemeModel(
+//     title: "Twilight Academia (Light)",
+//     fontFamily: "Nunito",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFF6A4BD6),
+//     secondaryColor: Color(0xFF7C57FF),
+//     background: Color(0xFFF6F5FA),
+//     stepUpBackground: Color(0xFFF3F0FF),
+//     bgText: Color(0xFF11121A),
+//     bgSupportText: Color(0xFF5E5476),
+//     altBackgroundPrimary: Color(0xFFF1EEF7),
+//     altBackgroundSecondary: Color(0xFFF7F5FF),
+//     surfaceDark: Color(0xFFECE9F8),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF4A2DB8),
+//     emphasisSoft: Color(0xFF6F56D6),
+//     frostedPrimaryBase: Color(0xFFF5F1FF),
+//     frostedSecondaryBase: Color(0xFFF7F3FF),
+//   ),
+
+//   // Monochrome Minimal (Light)
+//   const AppThemeModel(
+//     title: "Monochrome Minimal (Light)",
+//     fontFamily: "Roboto",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFF424242),
+//     secondaryColor: Color(0xFF757575),
+//     background: Color(0xFFF5F5F5),
+//     stepUpBackground: Color(0xFFF1F1F1),
+//     bgText: Color(0xFF212121),
+//     bgSupportText: Color(0xFF616161),
+//     altBackgroundPrimary: Color(0xFFFFFFFF),
+//     altBackgroundSecondary: Color(0xFFE0E0E0),
+//     surfaceDark: Color(0xFFD6D6D6),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF333333),
+//     emphasisSoft: Color(0xFF555555),
+//     frostedPrimaryBase: Color(0xFFF6F6F6),
+//     frostedSecondaryBase: Color(0xFFF0F0F0),
+//   ),
+
+//   // Monochrome Minimal (Dark) - NEW
+//   const AppThemeModel(
+//     title: "Monochrome Minimal (Dark)",
+//     fontFamily: "Roboto",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF9E9E9E),
+//     secondaryColor: Color(0xFF757575),
+//     background: Color(0xFF0F0F10),
+//     stepUpBackground: Color(0xFF1A1A1B),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFBDBDBD),
+//     altBackgroundPrimary: Color(0xFF121212),
+//     altBackgroundSecondary: Color(0xFF1C1C1C),
+//     surfaceDark: Color(0xFF0B0B0B),
+//     surfaceLight: Color(0xFF181818),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFFFFFFFF),
+//     emphasisStrong: Color(0xFF333333),
+//     emphasisSoft: Color(0xFF555555),
+//     frostedPrimaryBase: Color(0xFF0D0D0D),
+//     frostedSecondaryBase: Color(0xFF141414),
+//   ),
+
+//   // Ocean Cream (Dark)
+//   const AppThemeModel(
+//     title: "Ocean Cream (Dark)",
+//     fontFamily: "Lato",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF7CA9A1),
+//     secondaryColor: Color(0xFF6FD1D0),
+//     background: Color(0xFF0F1C1A),
+//     stepUpBackground: Color(0xFF172A29),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFA9CFCB),
+//     altBackgroundPrimary: Color(0xFF162624),
+//     altBackgroundSecondary: Color(0xFF223534),
+//     surfaceDark: Color(0xFF0E1A19),
+//     surfaceLight: Color(0xFF172927),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF4E7B76),
+//     emphasisSoft: Color(0xFF6AAFA8),
+//     frostedPrimaryBase: Color(0xFF0B1514),
+//     frostedSecondaryBase: Color(0xFF081312),
+//   ),
+
+//   // Ocean Cream (Light)
+//   const AppThemeModel(
+//     title: "Ocean Cream (Light)",
+//     fontFamily: "Lato",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFF6FD1D0),
+//     secondaryColor: Color(0xFF7CA9A1),
+//     background: Color(0xFFF9F9F9),
+//     stepUpBackground: Color(0xFFF2F6F6),
+//     bgText: Color(0xFF1A2B2F),
+//     bgSupportText: Color(0xFF5E7D7A),
+//     altBackgroundPrimary: Color(0xFFE8F1EF),
+//     altBackgroundSecondary: Color(0xFFE3F1EF),
+//     surfaceDark: Color(0xFFDCEFEF),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF3F7B78),
+//     emphasisSoft: Color(0xFF66B9B7),
+//     frostedPrimaryBase: Color(0xFFF2FBFB),
+//     frostedSecondaryBase: Color(0xFFF3FFFB),
+//   ),
+
+//   // Antiflash White (Light)
+//   const AppThemeModel(
+//     title: "Antiflash White (Light)",
+//     fontFamily: "Open Sans",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFF9AA5AD),
+//     secondaryColor: Color(0xFF6B7C87),
+//     background: Color(0xFFF2F3F4),
+//     stepUpBackground: Color(0xFFF0F2F3),
+//     bgText: Color(0xFF1A1A1A),
+//     bgSupportText: Color(0xFF4A4A4A),
+//     altBackgroundPrimary: Color(0xFFFBFBFC),
+//     altBackgroundSecondary: Color(0xFFFFFFFF),
+//     surfaceDark: Color(0xFFECEFF0),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF7A868C),
+//     emphasisSoft: Color(0xFF99A2A7),
+//     frostedPrimaryBase: Color(0xFFF8F9F9),
+//     frostedSecondaryBase: Color(0xFFF6F7F8),
+//   ),
+
+//   // Antiflash White (Dark)
+//   const AppThemeModel(
+//     title: "Antiflash White (Dark)",
+//     fontFamily: "Open Sans",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF6B7C87),
+//     secondaryColor: Color(0xFF9AA5AD),
+//     background: Color(0xFF0A0A0A),
+//     stepUpBackground: Color(0xFF161617),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFF9AA5AD),
+//     altBackgroundPrimary: Color(0xFF1A1A1A),
+//     altBackgroundSecondary: Color(0xFF1F1F1F),
+//     surfaceDark: Color(0xFF0F0F0F),
+//     surfaceLight: Color(0xFF1A1A1A),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF4D5A61),
+//     emphasisSoft: Color(0xFF7F8A90),
+//     frostedPrimaryBase: Color(0xFF0A0A0A),
+//     frostedSecondaryBase: Color(0xFF121212),
+//   ),
+
+//   // Premium Gold (Light) - refined
+//   const AppThemeModel(
+//     title: "Premium Gold (Light)",
+//     fontFamily: "Montserrat",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFFFFD700),
+//     secondaryColor: Color(0xFFFFB700),
+//     background: Color(0xFFFFFDF5),
+//     stepUpBackground: Color(0xFFFFF8E6),
+//     bgText: Color(0xFF3E2F00),
+//     bgSupportText: Color(0xFF7A6B00),
+//     altBackgroundPrimary: Color(0xFFFFF8DC),
+//     altBackgroundSecondary: Color(0xFFFFF5CC),
+//     surfaceDark: Color(0xFFFFF2C8),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFF000000),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFFB68300),
+//     emphasisSoft: Color(0xFFD6A900),
+//     frostedPrimaryBase: Color(0xFFFFF7E6),
+//     frostedSecondaryBase: Color(0xFFFFF9EA),
+//   ),
+
+//   // Premium Gold (Dark) - refined
+//   const AppThemeModel(
+//     title: "Premium Gold (Dark)",
+//     fontFamily: "Montserrat",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFFFFB700),
+//     secondaryColor: Color(0xFFFFD700),
+//     background: Color(0xFF1C1508),
+//     stepUpBackground: Color(0xFF2A2108),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFFFE6A8),
+//     altBackgroundPrimary: Color(0xFF2E2200),
+//     altBackgroundSecondary: Color(0xFF3B2E00),
+//     surfaceDark: Color(0xFF16100A),
+//     surfaceLight: Color(0xFF241A07),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFFFFFFFF),
+//     emphasisStrong: Color(0xFF8F6B00),
+//     emphasisSoft: Color(0xFFCFA800),
+//     frostedPrimaryBase: Color(0xFF120C00),
+//     frostedSecondaryBase: Color(0xFF1A1200),
+//   ),
+
+//   // Forest Whisper (Dark)
+//   const AppThemeModel(
+//     title: "Forest Whisper (Dark)",
+//     fontFamily: "Merriweather",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFF2E7D32),
+//     secondaryColor: Color(0xFF81C784),
+//     background: Color(0xFF121B12),
+//     stepUpBackground: Color(0xFF1B291B),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFA5D6A7),
+//     altBackgroundPrimary: Color(0xFF1B2A1B),
+//     altBackgroundSecondary: Color(0xFF264D26),
+//     surfaceDark: Color(0xFF0F160F),
+//     surfaceLight: Color(0xFF162116),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF1F5A1F),
+//     emphasisSoft: Color(0xFF4FB46B),
+//     frostedPrimaryBase: Color(0xFF0D140D),
+//     frostedSecondaryBase: Color(0xFF122012),
+//   ),
+
+//   // Forest Whisper (Light)
+//   const AppThemeModel(
+//     title: "Forest Whisper (Light)",
+//     fontFamily: "Merriweather",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFF81C784),
+//     secondaryColor: Color(0xFF2E7D32),
+//     background: Color(0xFFF1F8F1),
+//     stepUpBackground: Color(0xFFEAF2EA),
+//     bgText: Color(0xFF1B2A1B),
+//     bgSupportText: Color(0xFF4A6B4A),
+//     altBackgroundPrimary: Color(0xFFE6F0E6),
+//     altBackgroundSecondary: Color(0xFFDFF0DF),
+//     surfaceDark: Color(0xFFD6EAD6),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFF000000),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF3F8A3F),
+//     emphasisSoft: Color(0xFF6FCF78),
+//     frostedPrimaryBase: Color(0xFFF4FBF5),
+//     frostedSecondaryBase: Color(0xFFF1F8F1),
+//   ),
+
+//   // Sunset Glow (Dark)
+//   const AppThemeModel(
+//     title: "Sunset Glow (Dark)",
+//     fontFamily: "Raleway",
+//     brightness: Brightness.dark,
+//     primaryColor: Color(0xFFD84315),
+//     secondaryColor: Color(0xFFFF7043),
+//     background: Color(0xFF2B0A00),
+//     stepUpBackground: Color(0xFF3C1205),
+//     bgText: Color(0xFFFFFFFF),
+//     bgSupportText: Color(0xFFFFAB91),
+//     altBackgroundPrimary: Color(0xFF3B1A00),
+//     altBackgroundSecondary: Color(0xFF4A1F00),
+//     surfaceDark: Color(0xFF280900),
+//     surfaceLight: Color(0xFF3A1200),
+//     onPrimaryText: Color(0xFFFFFFFF),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFF9A2800),
+//     emphasisSoft: Color(0xFFCC6A4F),
+//     frostedPrimaryBase: Color(0xFF200700),
+//     frostedSecondaryBase: Color(0xFF2A0B00),
+//   ),
+
+//   // Sunset Glow (Light)
+//   const AppThemeModel(
+//     title: "Sunset Glow (Light)",
+//     fontFamily: "Raleway",
+//     brightness: Brightness.light,
+//     primaryColor: Color(0xFFFF7043),
+//     secondaryColor: Color(0xFFD84315),
+//     background: Color(0xFFFFF3ED),
+//     stepUpBackground: Color(0xFFFBECE8),
+//     bgText: Color(0xFF3B1A00),
+//     bgSupportText: Color(0xFF7A3B1A),
+//     altBackgroundPrimary: Color(0xFFFFE6D9),
+//     altBackgroundSecondary: Color(0xFFFFDCC7),
+//     surfaceDark: Color(0xFFFFE0CD),
+//     surfaceLight: Color(0xFFFFFFFF),
+//     onPrimaryText: Color(0xFF000000),
+//     onSecondaryText: Color(0xFF000000),
+//     emphasisStrong: Color(0xFFA23B22),
+//     emphasisSoft: Color(0xFFDD7A56),
+//     frostedPrimaryBase: Color(0xFFFFF6F2),
+//     frostedSecondaryBase: Color(0xFFFFF0EC),
+//   ),
+// ];
 import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
 List<AppThemeModel> defaultAppThemeModels = [
-  // Default Light Theme (your provided palette)
+  // Default Light Theme - improved harmony
   const AppThemeModel(
     title: 'Default Light Theme',
     fontFamily: 'Nunito',
     brightness: Brightness.light,
     primaryColor: Color(0xFF5000B8),
-    secondaryColor: Color(0xFF00D5B3),
+    secondaryColor: Color(0xFF6B2FD6), // Better harmony with primary
     background: Color(0xFFFCFAFE),
-    stepUpBackground: Color(0xFFE6FBF7),
+    stepUpBackground: Color(0xFFF7F4FF), // More cohesive purple tint
     bgText: Color(0xFF0D0D0D),
     bgSupportText: Color(0xFF6B5DAF),
     altBackgroundPrimary: Color(0xFFF0EDF6),
-    altBackgroundSecondary: Color(0xFFE9E1FF),
+    altBackgroundSecondary: Color(0xFFEBE5FF), // Softer transition
     surfaceDark: Color(0xFFF3F0FF),
     surfaceLight: Color(0xFFFBF9FF),
     onPrimaryText: Color(0xFFFFFFFF),
     onSecondaryText: Color(0xFF000000),
     emphasisStrong: Color(0xFF2B005A),
-    emphasisSoft: Color(0xFF4A1A8E),
+    emphasisSoft: Color(0xFF8A6BCF), // Better blend with palette
     frostedPrimaryBase: Color(0xFFF7F4FF),
-    frostedSecondaryBase: Color(0xFFF3FFFB),
+    frostedSecondaryBase: Color(0xFFF9F7FF),
   ),
 
-  // Default Dark Theme
+  // Default Dark Theme - improved harmony
   const AppThemeModel(
     title: 'Default Dark Theme',
     fontFamily: 'Nunito',
     brightness: Brightness.dark,
-    primaryColor: Color(0xFF5000B8),
-    secondaryColor: Color(0xFF00D5B3),
+    primaryColor: Color(0xFF7A5BFF), // Lighter for better dark mode contrast
+    secondaryColor: Color(0xFF9B7CFF), // Harmonious progression
     background: Color(0xFF0B0B10),
     stepUpBackground: Color(0xFF121219),
     bgText: Color(0xFFFFFFFF),
     bgSupportText: Color(0xFFBFB6F0),
     altBackgroundPrimary: Color(0xFF1E1630),
-    altBackgroundSecondary: Color(0xFF042E29),
+    altBackgroundSecondary: Color(0xFF251C3D), // Better purple tone
     surfaceDark: Color(0xFF0E0D12),
     surfaceLight: Color(0xFF16151B),
     onPrimaryText: Color(0xFFFFFFFF),
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF2B005A),
-    emphasisSoft: Color(0xFF004F45),
+    emphasisStrong: Color(0xFF4A2DB8), // Better visibility in dark mode
+    emphasisSoft: Color(0xFF6B4FCF),
     frostedPrimaryBase: Color(0xFF120914),
-    frostedSecondaryBase: Color(0xFF05120F),
+    frostedSecondaryBase: Color(0xFF15111A),
   ),
 
-  // Twilight Academia (Dark)
+  // Twilight Academia (Dark) - refined color relationships
   const AppThemeModel(
     title: "Twilight Academia (Dark)",
     fontFamily: "Nunito",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFF7C4DFF),
-    secondaryColor: Color(0xFF7C4DFF),
-    background: Color(0xFF0B1014),
-    stepUpBackground: Color(0xFF141527), // bg tinted with secondary (8%)
+    primaryColor: Color(0xFF7353D6),
+    secondaryColor: Color(0xFF9B7CFF), // Better harmony
+    background: Color(0xFF0C0F14),
+    stepUpBackground: Color(0xFF15121A),
     bgText: Color(0xFFFFFFFF),
-    bgSupportText: Color(0xFFC5C5C5),
-    altBackgroundPrimary: Color(0xFF1F272A),
-    altBackgroundSecondary: Color(0xFF1A1F26),
-    surfaceDark: Color(0xFF121316),
-    surfaceLight: Color(0xFF1B1A21),
+    bgSupportText: Color(0xFFBFB8D7),
+    altBackgroundPrimary: Color(0xFF1C1F30), // Improved blend
+    altBackgroundSecondary: Color(0xFF1A1625), // More cohesive
+    surfaceDark: Color(0xFF0F0E12),
+    surfaceLight: Color(0xFF181520),
     onPrimaryText: Color(0xFFFFFFFF),
-    onSecondaryText: Color(0xFFC5C5C5),
+    onSecondaryText: Color(0xFFFFFFFF),
     emphasisStrong: Color(0xFF4A2DB8),
-    emphasisSoft: Color(0xFF6F56D6),
-    frostedPrimaryBase: Color(0xFF0C0710),
-    frostedSecondaryBase: Color(0xFF0E0C12),
+    emphasisSoft: Color(0xFF8A6BCF), // Better progression
+    frostedPrimaryBase: Color(0xFF0B0610),
+    frostedSecondaryBase: Color(0xFF0E0C14),
   ),
 
-  // Twilight Academia (Light)
+  // Twilight Academia (Light) - refined
   const AppThemeModel(
     title: "Twilight Academia (Light)",
     fontFamily: "Nunito",
     brightness: Brightness.light,
-    primaryColor: Color(0xFF673AB7),
-    secondaryColor: Color(0xFF7C4DFF),
-    background: Color(0xfff5f5f5),
-    stepUpBackground: Color(0xFFF2EDFF), // 10% secondary + white
-    bgText: Color(0xFF0B1014),
-    bgSupportText: Color(0xFF4B4B4B),
-    altBackgroundPrimary: Color(0xFFF0EDF6),
-    altBackgroundSecondary: Color(0xFFF6F2FF),
-    surfaceDark: Color(0xFFEDE8FF),
+    primaryColor: Color(0xFF6A4BD6),
+    secondaryColor: Color(0xFF8B6BFF), // Smoother transition
+    background: Color(0xFFF6F5FA),
+    stepUpBackground: Color(0xFFF1EEFF), // Better purple undertone
+    bgText: Color(0xFF11121A),
+    bgSupportText: Color(0xFF5E5476),
+    altBackgroundPrimary: Color(0xFFF1EEF7),
+    altBackgroundSecondary: Color(0xFFF4F0FF), // More consistent
+    surfaceDark: Color(0xFFECE9F8),
     surfaceLight: Color(0xFFFFFFFF),
     onPrimaryText: Color(0xFFFFFFFF),
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF49237F),
-    emphasisSoft: Color(0xFF6A57A9),
+    emphasisStrong: Color(0xFF4A2DB8),
+    emphasisSoft: Color(0xFF7353D6), // Better harmony
     frostedPrimaryBase: Color(0xFFF5F1FF),
-    frostedSecondaryBase: Color(0xFFF7F3FF),
+    frostedSecondaryBase: Color(0xFFF8F5FF),
   ),
 
-  // Monochrome Minimal (Light)
+  // Monochrome Minimal (Light) - improved neutrals
   const AppThemeModel(
     title: "Monochrome Minimal (Light)",
     fontFamily: "Roboto",
     brightness: Brightness.light,
     primaryColor: Color(0xFF424242),
-    secondaryColor: Color(0xFF757575),
+    secondaryColor: Color(0xFF616161), // Better progression
     background: Color(0xFFF5F5F5),
-    stepUpBackground: Color(0xFFF1F1F1), // 10% secondary + white
+    stepUpBackground: Color(0xFFF0F0F0), // Smoother step
     bgText: Color(0xFF212121),
     bgSupportText: Color(0xFF616161),
     altBackgroundPrimary: Color(0xFFFFFFFF),
-    altBackgroundSecondary: Color(0xFFE0E0E0),
+    altBackgroundSecondary: Color(0xFFE8E8E8), // Better contrast
     surfaceDark: Color(0xFFD6D6D6),
     surfaceLight: Color(0xFFFFFFFF),
     onPrimaryText: Color(0xFFFFFFFF),
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF333333),
-    emphasisSoft: Color(0xFF555555),
-    frostedPrimaryBase: Color(0xFFF6F6F6),
-    frostedSecondaryBase: Color(0xFFF0F0F0),
+    emphasisStrong: Color(0xFF303030), // Better contrast
+    emphasisSoft: Color(0xFF606060),
+    frostedPrimaryBase: Color(0xFFF8F8F8),
+    frostedSecondaryBase: Color(0xFFF2F2F2),
   ),
 
-  // Rose Milk (Dark)
+  // Monochrome Minimal (Dark) - improved
   const AppThemeModel(
-    title: "Rose Milk (Dark)",
-    fontFamily: "Poppins",
+    title: "Monochrome Minimal (Dark)",
+    fontFamily: "Roboto",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFFB66E80),
-    secondaryColor: Color(0xFFFFAEBE),
-    background: Color(0xFF2E1F23),
-    stepUpBackground: Color(0xFF3F2A2F), // bg tinted with secondary (8%)
+    primaryColor: Color(0xFF9E9E9E),
+    secondaryColor: Color(0xFFB0B0B0), // Better visibility
+    background: Color(0xFF0F0F10),
+    stepUpBackground: Color(0xFF1A1A1B),
     bgText: Color(0xFFFFFFFF),
-    bgSupportText: Color(0xFFD9AEB3),
-    altBackgroundPrimary: Color(0xFF3A2C2F),
-    altBackgroundSecondary: Color(0xFF462F33),
-    surfaceDark: Color(0xFF2A2022),
-    surfaceLight: Color(0xFF352B2D),
-    onPrimaryText: Color(0xFFFFFFFF),
+    bgSupportText: Color(0xFFBDBDBD),
+    altBackgroundPrimary: Color(0xFF121212),
+    altBackgroundSecondary: Color(0xFF1E1E1E), // Smoother progression
+    surfaceDark: Color(0xFF0B0B0B),
+    surfaceLight: Color(0xFF181818),
+    onPrimaryText: Color(0xFF000000), // Better contrast on light grays
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF8F3E52),
-    emphasisSoft: Color(0xFFB07A8A),
-    frostedPrimaryBase: Color(0xFF291A1D),
-    frostedSecondaryBase: Color(0xFF321F22),
+    emphasisStrong: Color(0xFF707070), // More visible
+    emphasisSoft: Color(0xFF858585),
+    frostedPrimaryBase: Color(0xFF0D0D0D),
+    frostedSecondaryBase: Color(0xFF151515),
   ),
 
-  // Ocean Cream (Dark)
+  // Ocean Cream (Dark) - improved aqua harmony
   const AppThemeModel(
     title: "Ocean Cream (Dark)",
     fontFamily: "Lato",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFF7CA9A1),
-    secondaryColor: Color(0xFF6FD1D0),
+    primaryColor: Color(0xFF6FD1D0), // Swapped for better visibility
+    secondaryColor: Color(0xFF8FBEBC), // Better harmony
     background: Color(0xFF0F1C1A),
-    stepUpBackground: Color(0xFF172A29), // bg tinted with secondary (8%)
+    stepUpBackground: Color(0xFF172A29),
     bgText: Color(0xFFFFFFFF),
     bgSupportText: Color(0xFFA9CFCB),
     altBackgroundPrimary: Color(0xFF162624),
-    altBackgroundSecondary: Color(0xFF223534),
+    altBackgroundSecondary: Color(0xFF1F302E), // Better progression
     surfaceDark: Color(0xFF0E1A19),
     surfaceLight: Color(0xFF172927),
-    onPrimaryText: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000), // Better contrast
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF4E7B76),
+    emphasisStrong: Color(0xFF4E9B96), // More vibrant
     emphasisSoft: Color(0xFF6AAFA8),
     frostedPrimaryBase: Color(0xFF0B1514),
-    frostedSecondaryBase: Color(0xFF081312),
+    frostedSecondaryBase: Color(0xFF0E1817),
   ),
 
-  // Ocean Cream (Light)
+  // Ocean Cream (Light) - improved
   const AppThemeModel(
     title: "Ocean Cream (Light)",
     fontFamily: "Lato",
     brightness: Brightness.light,
-    primaryColor: Color(0xFF6FD1D0),
+    primaryColor: Color(0xFF5FB8B7), // Slightly deeper for contrast
     secondaryColor: Color(0xFF7CA9A1),
-    background: Color(0xFFF9F9F9),
-    stepUpBackground: Color(0xFFF2F6F6), // 10% secondary + white
+    background: Color(0xFFF9FBFB), // Subtle aqua tint
+    stepUpBackground: Color(0xFFF2F8F8),
     bgText: Color(0xFF1A2B2F),
     bgSupportText: Color(0xFF5E7D7A),
     altBackgroundPrimary: Color(0xFFE8F1EF),
-    altBackgroundSecondary: Color(0xFFE3F1EF),
+    altBackgroundSecondary: Color(0xFFE0F0EE), // Smoother
     surfaceDark: Color(0xFFDCEFEF),
     surfaceLight: Color(0xFFFFFFFF),
     onPrimaryText: Color(0xFFFFFFFF),
@@ -183,236 +555,190 @@ List<AppThemeModel> defaultAppThemeModels = [
     emphasisStrong: Color(0xFF3F7B78),
     emphasisSoft: Color(0xFF66B9B7),
     frostedPrimaryBase: Color(0xFFF2FBFB),
-    frostedSecondaryBase: Color(0xFFF3FFFB),
+    frostedSecondaryBase: Color(0xFFF5FDFD),
   ),
 
-  // Antiflash White (Light)
+  // Antiflash White (Light) - warmer neutrals
   const AppThemeModel(
     title: "Antiflash White (Light)",
     fontFamily: "Open Sans",
     brightness: Brightness.light,
-    primaryColor: Color(0xFF9AA5AD),
+    primaryColor: Color(0xFF8A9BA6), // Warmer tone
     secondaryColor: Color(0xFF6B7C87),
     background: Color(0xFFF2F3F4),
-    stepUpBackground: Color(0xFFF0F2F3), // 10% secondary + white
+    stepUpBackground: Color(0xFFEEF1F2), // Smoother step
     bgText: Color(0xFF1A1A1A),
     bgSupportText: Color(0xFF4A4A4A),
-    altBackgroundPrimary: Color(0xFFFBFBFC),
+    altBackgroundPrimary: Color(0xFFF8F9FA), // Warmer
     altBackgroundSecondary: Color(0xFFFFFFFF),
-    surfaceDark: Color(0xFFECEFF0),
+    surfaceDark: Color(0xFFE8EBED), // Better progression
     surfaceLight: Color(0xFFFFFFFF),
     onPrimaryText: Color(0xFFFFFFFF),
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF7A868C),
-    emphasisSoft: Color(0xFF99A2A7),
-    frostedPrimaryBase: Color(0xFFF8F9F9),
-    frostedSecondaryBase: Color(0xFFF6F7F8),
+    emphasisStrong: Color(0xFF6B7782),
+    emphasisSoft: Color(0xFF8A9BA6),
+    frostedPrimaryBase: Color(0xFFF6F7F8),
+    frostedSecondaryBase: Color(0xFFF3F5F6),
   ),
 
-  // Antiflash White (Dark)
+  // Antiflash White (Dark) - improved
   const AppThemeModel(
     title: "Antiflash White (Dark)",
     fontFamily: "Open Sans",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFF6B7C87),
-    secondaryColor: Color(0xFF9AA5AD),
+    primaryColor: Color(0xFF8A9BA6), // Better visibility
+    secondaryColor: Color(0xFFABB8C2), // Lighter for contrast
     background: Color(0xFF0A0A0A),
-    stepUpBackground: Color(0xFF161617), // bg tinted with secondary (8%)
+    stepUpBackground: Color(0xFF161617),
     bgText: Color(0xFFFFFFFF),
     bgSupportText: Color(0xFF9AA5AD),
     altBackgroundPrimary: Color(0xFF1A1A1A),
-    altBackgroundSecondary: Color(0xFF1F1F1F),
+    altBackgroundSecondary: Color(0xFF212124), // Warmer tone
     surfaceDark: Color(0xFF0F0F0F),
     surfaceLight: Color(0xFF1A1A1A),
-    onPrimaryText: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000), // Better contrast
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF4D5A61),
-    emphasisSoft: Color(0xFF7F8A90),
-    frostedPrimaryBase: Color(0xFF0A0A0A),
-    frostedSecondaryBase: Color(0xFF121212),
+    emphasisStrong: Color(0xFF5C6B73),
+    emphasisSoft: Color(0xFF7A8A94),
+    frostedPrimaryBase: Color(0xFF0D0D0D),
+    frostedSecondaryBase: Color(0xFF131313),
   ),
 
-  // Premium Gold (Light)
+  // Premium Gold (Light) - refined elegance
   const AppThemeModel(
     title: "Premium Gold (Light)",
     fontFamily: "Montserrat",
     brightness: Brightness.light,
-    primaryColor: Color(0xFFFFD700),
+    primaryColor: Color(0xFFE6C200), // Less harsh than pure gold
     secondaryColor: Color(0xFFFFB700),
     background: Color(0xFFFFFDF5),
-    stepUpBackground: Color(0xFFFFF8E6), // 10% secondary + white
+    stepUpBackground: Color(0xFFFFF6E1), // Smoother transition
     bgText: Color(0xFF3E2F00),
     bgSupportText: Color(0xFF7A6B00),
-    altBackgroundPrimary: Color(0xFFFFF8DC),
-    altBackgroundSecondary: Color(0xFFFFF5CC),
-    surfaceDark: Color(0xFFFFF2C8),
+    altBackgroundPrimary: Color(0xFFFFF3D4), // Better harmony
+    altBackgroundSecondary: Color(0xFFFFEFC2),
+    surfaceDark: Color(0xFFFFEBB8),
     surfaceLight: Color(0xFFFFFFFF),
     onPrimaryText: Color(0xFF000000),
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFFB68300),
-    emphasisSoft: Color(0xFFD6A900),
-    frostedPrimaryBase: Color(0xFFFFF7E6),
-    frostedSecondaryBase: Color(0xFFFFF9EA),
+    emphasisStrong: Color(0xFF996F00), // Better contrast
+    emphasisSoft: Color(0xFFCC9A00),
+    frostedPrimaryBase: Color(0xFFFFF4D9),
+    frostedSecondaryBase: Color(0xFFFFF7E0),
   ),
 
-  // Premium Gold (Dark)
+  // Premium Gold (Dark) - refined
   const AppThemeModel(
     title: "Premium Gold (Dark)",
     fontFamily: "Montserrat",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFFFFB700),
-    secondaryColor: Color(0xFFFFD700),
-    background: Color(0xFF1A1400),
-    stepUpBackground: Color(0xFF2C2400), // bg tinted with secondary (8%)
+    primaryColor: Color(0xFFFFD700), // Full gold for dark mode
+    secondaryColor: Color(0xFFE6C200), // Better progression
+    background: Color(0xFF1C1508),
+    stepUpBackground: Color(0xFF2A2108),
     bgText: Color(0xFFFFFFFF),
-    bgSupportText: Color(0xFFFFE066),
+    bgSupportText: Color(0xFFFFE6A8),
     altBackgroundPrimary: Color(0xFF2E2200),
-    altBackgroundSecondary: Color(0xFF3E2F00),
-    surfaceDark: Color(0xFF1A1400),
-    surfaceLight: Color(0xFF2E2200),
-    onPrimaryText: Color(0xFFFFFFFF),
+    altBackgroundSecondary: Color(0xFF3B2E00),
+    surfaceDark: Color(0xFF16100A),
+    surfaceLight: Color(0xFF241A07),
+    onPrimaryText: Color(0xFF000000), // Better contrast on gold
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF8F6B00),
-    emphasisSoft: Color(0xFFCFA800),
-    frostedPrimaryBase: Color(0xFF120C00),
-    frostedSecondaryBase: Color(0xFF1A1200),
+    emphasisStrong: Color(0xFFB8860B),
+    emphasisSoft: Color(0xFFDAA520),
+    frostedPrimaryBase: Color(0xFF1A1400),
+    frostedSecondaryBase: Color(0xFF1F1800),
   ),
 
-  // Forest Whisper (Dark)
+  // Forest Whisper (Dark) - improved greens
   const AppThemeModel(
     title: "Forest Whisper (Dark)",
     fontFamily: "Merriweather",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFF2E7D32),
+    primaryColor: Color(0xFF4CAF50), // Brighter for visibility
     secondaryColor: Color(0xFF81C784),
     background: Color(0xFF121B12),
-    stepUpBackground: Color(0xFF1B291B), // bg tinted with secondary (8%)
+    stepUpBackground: Color(0xFF1B291B),
     bgText: Color(0xFFFFFFFF),
     bgSupportText: Color(0xFFA5D6A7),
     altBackgroundPrimary: Color(0xFF1B2A1B),
-    altBackgroundSecondary: Color(0xFF264D26),
+    altBackgroundSecondary: Color(0xFF1F2E1F), // Better progression
     surfaceDark: Color(0xFF0F160F),
     surfaceLight: Color(0xFF162116),
-    onPrimaryText: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000), // Better contrast
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF1F5A1F),
-    emphasisSoft: Color(0xFF4FB46B),
-    frostedPrimaryBase: Color(0xFF0D140D),
+    emphasisStrong: Color(0xFF2E7D32),
+    emphasisSoft: Color(0xFF66BB6A),
+    frostedPrimaryBase: Color(0xFF0F160F),
     frostedSecondaryBase: Color(0xFF122012),
   ),
 
-  // Forest Whisper (Light)
+  // Forest Whisper (Light) - improved
   const AppThemeModel(
     title: "Forest Whisper (Light)",
     fontFamily: "Merriweather",
     brightness: Brightness.light,
-    primaryColor: Color(0xFF81C784),
+    primaryColor: Color(0xFF4CAF50),
     secondaryColor: Color(0xFF2E7D32),
     background: Color(0xFFF1F8F1),
-    stepUpBackground: Color(0xFFEAF2EA), // 10% secondary + white
+    stepUpBackground: Color(0xFFE8F5E8), // Better green tint
     bgText: Color(0xFF1B2A1B),
     bgSupportText: Color(0xFF4A6B4A),
-    altBackgroundPrimary: Color(0xFFE6F0E6),
-    altBackgroundSecondary: Color(0xFFDFF0DF),
-    surfaceDark: Color(0xFFD6EAD6),
+    altBackgroundPrimary: Color(0xFFE1F0E1), // More consistent
+    altBackgroundSecondary: Color(0xFFDBEBDB),
+    surfaceDark: Color(0xFFD0E5D0),
     surfaceLight: Color(0xFFFFFFFF),
-    onPrimaryText: Color(0xFF000000),
-    onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF3F8A3F),
-    emphasisSoft: Color(0xFF6FCF78),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFFFFFFFF),
+    emphasisStrong: Color(0xFF2E7D32),
+    emphasisSoft: Color(0xFF5CAF60),
     frostedPrimaryBase: Color(0xFFF4FBF5),
-    frostedSecondaryBase: Color(0xFFF1F8F1),
+    frostedSecondaryBase: Color(0xFFF0F8F0),
   ),
 
-  // Sunset Glow (Dark)
+  // Sunset Glow (Dark) - warmer harmony
   const AppThemeModel(
     title: "Sunset Glow (Dark)",
     fontFamily: "Raleway",
     brightness: Brightness.dark,
-    primaryColor: Color(0xFFD84315),
-    secondaryColor: Color(0xFFFF7043),
+    primaryColor: Color(0xFFFF6B3D), // Warmer, more vibrant
+    secondaryColor: Color(0xFFFF8A65),
     background: Color(0xFF2B0A00),
-    stepUpBackground: Color(0xFF3C1205), // bg tinted with secondary (8%)
+    stepUpBackground: Color(0xFF3C1205),
     bgText: Color(0xFFFFFFFF),
     bgSupportText: Color(0xFFFFAB91),
     altBackgroundPrimary: Color(0xFF3B1A00),
     altBackgroundSecondary: Color(0xFF4A1F00),
     surfaceDark: Color(0xFF280900),
     surfaceLight: Color(0xFF3A1200),
-    onPrimaryText: Color(0xFFFFFFFF),
+    onPrimaryText: Color(0xFF000000), // Better contrast
     onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF9A2800),
-    emphasisSoft: Color(0xFFCC6A4F),
-    frostedPrimaryBase: Color(0xFF200700),
-    frostedSecondaryBase: Color(0xFF2A0B00),
+    emphasisStrong: Color(0xFFD84315),
+    emphasisSoft: Color(0xFFFF7043),
+    frostedPrimaryBase: Color(0xFF240800),
+    frostedSecondaryBase: Color(0xFF2D0B00),
   ),
 
-  // Sunset Glow (Light)
+  // Sunset Glow (Light) - improved warmth
   const AppThemeModel(
     title: "Sunset Glow (Light)",
     fontFamily: "Raleway",
     brightness: Brightness.light,
-    primaryColor: Color(0xFFFF7043),
+    primaryColor: Color(0xFFFF6B3D),
     secondaryColor: Color(0xFFD84315),
     background: Color(0xFFFFF3ED),
-    stepUpBackground: Color(0xFFFBECE8), // 10% secondary + white
+    stepUpBackground: Color(0xFFFAE8DF), // Warmer step
     bgText: Color(0xFF3B1A00),
     bgSupportText: Color(0xFF7A3B1A),
-    altBackgroundPrimary: Color(0xFFFFE6D9),
-    altBackgroundSecondary: Color(0xFFFFDCC7),
-    surfaceDark: Color(0xFFFFE0CD),
+    altBackgroundPrimary: Color(0xFFFFE0D1), // Better progression
+    altBackgroundSecondary: Color(0xFFFFD6C1),
+    surfaceDark: Color(0xFFFFD0B8),
     surfaceLight: Color(0xFFFFFFFF),
-    onPrimaryText: Color(0xFF000000),
-    onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFFA23B22),
-    emphasisSoft: Color(0xFFDD7A56),
+    onPrimaryText: Color(0xFFFFFFFF),
+    onSecondaryText: Color(0xFFFFFFFF),
+    emphasisStrong: Color(0xFFBF360C),
+    emphasisSoft: Color(0xFFFF7043),
     frostedPrimaryBase: Color(0xFFFFF6F2),
-    frostedSecondaryBase: Color(0xFFFFF0EC),
-  ),
-
-  // Midnight Blue (Dark)
-  const AppThemeModel(
-    title: "Midnight Blue (Dark)",
-    fontFamily: "Source Sans Pro",
-    brightness: Brightness.dark,
-    primaryColor: Color(0xFF283593),
-    secondaryColor: Color(0xFF5C6BC0),
-    background: Color(0xFF0D1333),
-    stepUpBackground: Color(0xFF131A3E), // bg tinted with secondary (8%)
-    bgText: Color(0xFFFFFFFF),
-    bgSupportText: Color(0xFF9FA8DA),
-    altBackgroundPrimary: Color(0xFF1A204D),
-    altBackgroundSecondary: Color(0xFF2E3573),
-    surfaceDark: Color(0xFF0C1128),
-    surfaceLight: Color(0xFF1C254C),
-    onPrimaryText: Color(0xFFFFFFFF),
-    onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF16254A),
-    emphasisSoft: Color(0xFF415A9A),
-    frostedPrimaryBase: Color(0xFF071020),
-    frostedSecondaryBase: Color(0xFF0A1628),
-  ),
-
-  // Midnight Blue (Light)
-  const AppThemeModel(
-    title: "Midnight Blue (Light)",
-    fontFamily: "Source Sans Pro",
-    brightness: Brightness.light,
-    primaryColor: Color(0xFF5C6BC0),
-    secondaryColor: Color(0xFF283593),
-    background: Color(0xFFF0F2FF),
-    stepUpBackground: Color(0xFFEAEBF4), // 10% secondary + white
-    bgText: Color(0xFF1A204D),
-    bgSupportText: Color(0xFF4A4F7B),
-    altBackgroundPrimary: Color(0xFFE6E9FF),
-    altBackgroundSecondary: Color(0xFFD9DBFF),
-    surfaceDark: Color(0xFFE3E6FF),
-    surfaceLight: Color(0xFFFFFFFF),
-    onPrimaryText: Color(0xFFFFFFFF),
-    onSecondaryText: Color(0xFF000000),
-    emphasisStrong: Color(0xFF3B4A8F),
-    emphasisSoft: Color(0xFF6A79C6),
-    frostedPrimaryBase: Color(0xFFF6F7FF),
-    frostedSecondaryBase: Color(0xFFF2F3FF),
+    frostedSecondaryBase: Color(0xFFFFF2EC),
   ),
 ];

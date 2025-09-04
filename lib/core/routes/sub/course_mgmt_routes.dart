@@ -1,6 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections_view.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/modify_contents_view.dart';
@@ -46,67 +47,30 @@ class CourseMgmtRoutes {
     GoRoute(
       path: RoutesStrings.modifyCourseView,
       pageBuilder:
-          (context, state) => PageAnimation.buildCustomTransitionPage(
-            state.pageKey,
-            type: TransitionType.paired(
-              incoming: TransitionType.rightToLeftWithFade,
-              outgoing: TransitionType.size,
-              outgoingDuration: Durations.extralong1,
-              reverseDuration: Durations.medium1,
-              curve: CustomCurves.defaultIosSpring,
-              reverseCurve: CustomCurves.decelerate,
-            ),
-            duration: Durations.extralong1,
-            reverseDuration: Durations.medium1,
-            curve: CustomCurves.defaultIosSpring,
-            child: ModifyCourseView(course: state.extra as Course),
-          ),
+          (context, state) => defaultTransition(state.pageKey, child: ModifyCourseView(course: state.extra as Course)),
       routes: [
         //MODIFY COLLECTIONS VIEW NAVIGATION
         GoRoute(
           path: RoutesStrings.modifyCollectionsView,
           pageBuilder:
-              (context, state) => PageAnimation.buildCustomTransitionPage(
+              (context, state) => defaultTransition(
                 state.pageKey,
-                type: TransitionType.paired(
-                  incoming: TransitionType.fade,
-                  outgoing: TransitionType.leftToRight,
-                  outgoingDuration: Durations.medium1,
-                  reverseDuration: Durations.medium1,
-                  curve: CustomCurves.decelerate,
-                  reverseCurve: CustomCurves.decelerate,
-                ),
-
-                duration: Durations.medium2,
-                reverseDuration: Durations.medium1,
-                curve: CustomCurves.decelerate,
-                child: ModifyCollectionsView(
-                  courseDbId: (state.extra as Course).id,
-                ),
+                defaultIncomingDuration: Durations.medium2,
+                defaultIncomingCurve: CustomCurves.decelerate,
+                defaultIncoming: TransitionType.slide(begin: const Offset(0, 0.6), end: Offset(0, 0), fade: true),
+                child: ModifyCollectionsView(courseDbId: (state.extra as Course).id),
               ),
           routes: [
             //MODIFY CONTENTS VIEW NAVIGATION
             GoRoute(
               path: RoutesStrings.modifyContentsView,
-              pageBuilder: (context, state) {
-                return PageAnimation.buildCustomTransitionPage(
-                  state.pageKey,
-                  type: TransitionType.rightToLeftWithFade,
-                  duration: Durations.extralong1,
-                  reverseDuration: Durations.medium2,
-                  curve: CustomCurves.defaultIosSpring,
-                  reverseCurve: CustomCurves.defaultIosSpring,
-                  child: ModifyContentsView(
-                    record:
-                        state.extra
-                            as ContentRecord<
-                              int,
-                              CourseCollection,
-                              CourseTitleRecord
-                            >,
+              pageBuilder:
+                  (context, state) => defaultTransition(
+                    state.pageKey,
+                    child: ModifyContentsView(
+                      record: state.extra as ContentRecord<int, CourseCollection, CourseTitleRecord>,
+                    ),
                   ),
-                );
-              },
             ),
           ],
         ),
@@ -114,6 +78,3 @@ class CourseMgmtRoutes {
     ),
   ];
 }
-
-
-

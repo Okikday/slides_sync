@@ -4,13 +4,18 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/app.dart';
+import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 import 'package:slides_sync/core/storage/hive_data/hive_data.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
+import 'package:slides_sync/features/settings/presentation/views/sub/settings_appearance_dialog.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
 class SettingsView extends ConsumerWidget {
   const SettingsView({super.key});
@@ -40,8 +45,8 @@ class SettingsView extends ConsumerWidget {
                 content: "Customize colors to suit your style",
                 trailing: CustomElevatedButton(
                   label: "Change",
-                  backgroundColor: context.theme.colorScheme.secondary,
-                  textColor: AppColors.secondaryText(context),
+                  backgroundColor: ref.theme.altBackgroundPrimary,
+                  textColor: ref.theme.secondaryText,
                   textSize: 14,
                   onClick: () {
                     CustomDialog.show(context, barrierColor: Colors.black26, blurSigma: Offset(2, 2), child: SettingsAppearanceDialog());
@@ -96,7 +101,7 @@ class SettingsCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      decoration: BoxDecoration(color: context.theme.cardColor, borderRadius: BorderRadius.circular(24)),
+      decoration: BoxDecoration(color: ref.theme.bgSupportText.withAlpha(10), borderRadius: BorderRadius.circular(24)),
       child: Column(
         children: [
           Padding(
@@ -131,48 +136,5 @@ class SettingsCard extends ConsumerWidget {
         ],
       ),
     );
-  }
-}
-
-class SettingsAppearanceDialog extends ConsumerWidget {
-  const SettingsAppearanceDialog({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return AppCustomizableDialog(
-      blurSigma: Offset(2, 2),
-      leading: Center(
-        child: CustomText("Adjust Theme", color: ref.theme.primaryText),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ConstantSizing.columnSpacingSmall,
-
-              for (final theme in defaultAppThemeModels)
-                () {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomElevatedButton(
-                      label: theme.title,
-                      backgroundColor: context.theme.cardColor,
-                      textColor: ref.theme.primaryText,
-                      onClick: () async{
-                        ref.read(appThemeProvider.notifier).update(theme);
-                        await HiveData().setData(key: "appTheme", value: theme.toJson());
-                      },
-                    ),
-                  );
-                }(),
-            ],
-          ),
-        ),
-      ),
-    ).animate().flipV(duration: Durations.medium1, curve: CustomCurves.defaultIosSpring);
   }
 }

@@ -27,7 +27,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
         appBar: AppBarContainer(
           appBarHeight: kToolbarHeight + 12,
           padding: EdgeInsets.zero,
-          child: AppBarContainerChild(context.isDarkMode, title: "Create course"),
+          child: AppBarContainerChild(context.isDarkMode, title: "Create Course"),
         ),
 
         body: CreateCourseOuterSection(),

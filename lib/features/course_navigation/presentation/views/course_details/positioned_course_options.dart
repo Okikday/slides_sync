@@ -22,7 +22,7 @@ class PositionedCourseOptions extends ConsumerWidget {
           CustomElevatedButton(
             borderRadius: 16,
             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            backgroundColor: ref.theme.stepUpBackground,
+            backgroundColor: ref.theme.bgSupportText.withAlpha(10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 4,

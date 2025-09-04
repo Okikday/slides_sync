@@ -14,8 +14,9 @@ class MoreSection extends ConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: ref.theme.altBackgroundPrimary.withValues(alpha: 0.4),
+        color: ref.theme.altBackgroundPrimary,
         borderRadius: BorderRadius.circular(24),
+        border: Border.fromBorderSide(BorderSide(color: Colors.black.withAlpha(5))),
         image: DecorationImage(
           image: Assets.images.zigzagWavy.asImageProvider,
           fit: BoxFit.cover,

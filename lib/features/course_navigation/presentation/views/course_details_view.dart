@@ -24,7 +24,11 @@ class _CourseDetailsViewState extends ConsumerState<CourseDetailsView> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode, statusBarColor: Colors.transparent),
+      value: UiUtils.getSystemUiOverlayStyle(
+        context.scaffoldBackgroundColor,
+        context.isDarkMode,
+        statusBarColor: Colors.transparent,
+      ),
       child: Scaffold(extendBody: true, body: CourseDetailsOuterSection(course: widget.course)),
     );
   }
@@ -50,10 +54,7 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
     scrollOffsetProvider = AutoDisposeStateProvider((cb) => 0.0);
     viewScrollController.addListener(updateScrollOffset);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final modifyCourseNotifier = ref.read(CourseProviders.courseProvider.notifier);
-      if (modifyCourseNotifier.value.lastUpdated != widget.course.lastUpdated) {
-        modifyCourseNotifier.update(widget.course);
-      }
+      ref.read(CourseProviders.courseProvider.notifier).updateByDate(widget.course);
     });
   }
 
@@ -73,7 +74,7 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
 
   @override
   Widget build(BuildContext context) {
-    final Course course = ref.watch(CourseProviders.courseProvider);
+    final AsyncValue<Course> courseAsyncValue = ref.watch(CourseProviders.courseProvider);
 
     return Stack(
       clipBehavior: Clip.hardEdge,
@@ -83,13 +84,21 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
           physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder:
               (context, innerBoxIsScrolled) => [
-                CourseDetailsHeader(course: course, scrollOffsetProvider: scrollOffsetProvider, appBarHeight: appBarHeight),
+                CourseDetailsHeader(
+                  course: courseAsyncValue.when(
+                    data: (data) => data,
+                    error: (error, st) => defaultCourse,
+                    loading: () => defaultCourse,
+                  ),
+                  scrollOffsetProvider: scrollOffsetProvider,
+                  appBarHeight: appBarHeight,
+                ),
               ],
           body: CustomScrollView(
             slivers: [
               PinnedHeaderSliver(child: AdjustingSpacing(scrollOffsetProvider: scrollOffsetProvider)),
               PinnedHeaderSliver(child: CollectionsViewSearchBar()),
-              CourseDetailsCollectionSection(course: course),
+              CourseDetailsCollectionSection(courseAsyncValue: courseAsyncValue),
 
               SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
             ],

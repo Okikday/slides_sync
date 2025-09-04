@@ -53,7 +53,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
     final mca = ModifyCollectionActions();
     return AppActionDialog(
       blurSigma: Offset(4, 4),
-      backgroundColor: context.scaffoldBackgroundColor.withValues(alpha: 0.5),
+      backgroundColor: ref.theme.frostedPrimaryBase.withAlpha(200),
       
       leading: Padding(
         padding: const EdgeInsets.only(bottom: ConstantSizing.spaceMedium),
@@ -67,9 +67,12 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 margin: EdgeInsets.only(left: 12),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: ref.theme.altBackgroundPrimary,
+                  color: ref.theme.primaryColor.withAlpha(40),
                 ),
-                child: BuildImagePathWidget(fileDetails: FileDetails()),
+                child: BuildImagePathWidget(
+                  fileDetails: FileDetails(),
+                  fallbackWidget: Icon(Iconsax.document, color: ref.theme.onPrimaryText, size: 30),
+                ),
               ),
             ),
             ConstantSizing.rowSpacingMedium,

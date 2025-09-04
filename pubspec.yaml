@@ -37,7 +37,6 @@ dependencies:
   flutter_riverpod: ^2.6.1
   custom_widgets_toolkit: ^0.0.66
   iconsax_flutter: ^1.0.0
-  page_transition: ^2.2.1
   flutter_animate: ^4.5.2
   heroine: ^0.4.0
   marquee: ^2.3.0
@@ -60,9 +59,10 @@ dependencies:
   extension_google_sign_in_as_googleapis_auth: ^2.0.13
   googleapis_auth:
   http: ^1.4.0
+  
 
-  syncfusion_flutter_pdf: ^29.2.4
-  syncfusion_flutter_pdfviewer: ^29.2.4
+  # syncfusion_flutter_pdf: ^29.2.4
+  # syncfusion_flutter_pdfviewer: ^29.2.4
   open_filex: ^4.7.0
   permission_handler: ^12.0.0+1
   photo_view: ^0.15.0
@@ -92,30 +92,37 @@ dependencies:
   crypto: ^3.0.6
   google_fonts: ^6.2.1
   isar: ^3.1.0+1
-  textura: ^0.1.0+1
+  skeletonizer: ^2.1.0+1
+  cloud_firestore: ^6.0.0
+  firebase_auth: ^6.0.1
+  firebase_core: ^4.0.0
+  firebase_database: ^12.0.0
+  firebase_storage: ^13.0.0
+  google_sign_in: ^6.3.0
+  family_bottom_sheet: ^0.1.0
 
 flutter_native_splash:
   android: true
   ios: true
 
   color: "#FCFAFE"
-  image: "assets/logo/3d_transparent_logo.png"
+  image: "assets/logo/logo.png"
   color_dark: "#0B0B10"
-  image_dark: "assets/logo/3d_transparent_logo.png"
+  image_dark: "assets/logo/logo.png"
 
   android_12:
     color: "#FCFAFE"
-    image: "assets/logo/3d_transparent_logo.png"
+    image: "assets/logo/logo.png"
     color_dark: "#0B0B10"
-    image_dark: "assets/logo/3d_transparent_logo.png"
+    image_dark: "assets/logo/logo.png"
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo/icon_white_only_transparent.png"
+  image_path: "assets/logo/logo.png"
   android_adaptive_icon:
     background_color: "#5000B8"
-    foreground_image: "assets/logo/icon_white_only_transparent.png"
+    foreground_image: "assets/logo/logo.png"
   remove_alpha_ios: true
 
 
@@ -149,6 +156,7 @@ flutter:
     - assets/icons/
     - assets/icons/animated_jsons/
     - assets/images/
+    - assets/logo/
 
 #-FONTS
 fonts:

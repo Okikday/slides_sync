@@ -47,7 +47,10 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
     if (readCourse.description.isNotEmpty) {
       descriptionTextController.text = readCourse.description;
-      descriptionTextController.selection = TextSelection(baseOffset: 0, extentOffset: descriptionTextController.text.length);
+      descriptionTextController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: descriptionTextController.text.length,
+      );
     }
     if (widget.isEditingDescription) descriptionFocusNode.requestFocus();
   }
@@ -62,14 +65,14 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
     final Course course = ref.watch(ModifyCourseProviders.modifyCourseProvider);
     final editCourseActions = EditCourseActions();
 
-    final double bottomPadding = MediaQuery.paddingOf(context).bottom;
-    final double keyboardInsets = double.parse((context.viewInsets.bottom / context.deviceHeight).toStringAsFixed(2)).clamp(0.0, 0.25);
-
-    // CupertinoContextMenu(actions: actions, child: child)
+    final double keyboardInsets = double.parse(
+      (context.viewInsets.bottom / context.deviceHeight).toStringAsFixed(2),
+    ).clamp(0.0, 0.25);
 
     return PopScope(
       canPop: ref.watch(canExitProvider),
-      onPopInvokedWithResult: (_, __) => editCourseActions.onPopInvokedWithResult(context, ref.read(canExitProvider.notifier)),
+      onPopInvokedWithResult:
+          (_, __) => editCourseActions.onPopInvokedWithResult(context, ref.read(canExitProvider.notifier)),
 
       child: AnimatedSize(
         duration: Durations.extralong1,
@@ -80,127 +83,149 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
           expand: false,
           snapSizes: [],
           builder: (context, scrollController) {
-            return ClipRRect(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+            return ClipRSuperellipse(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               child: ColoredBox(
                 color: context.scaffoldBackgroundColor,
                 child: Stack(
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.hardEdge,
-                          margin: EdgeInsets.symmetric(vertical: 20.0),
-                          decoration: BoxDecoration(
-                            color: context.isDarkMode ? Colors.blueGrey : Colors.grey,
-                            borderRadius: BorderRadius.circular(20),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24),
+                      child: CustomScrollView(
+                        slivers: [
+                          PinnedHeaderSliver(
+                            child: ColoredBox(
+                              color: context.scaffoldBackgroundColor,
+                              child: CustomText(
+                                "Edit course",
+                                fontSize: 18,
+                                color: ref.theme.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                          height: 4,
-                          width: 48,
-                        ),
 
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: CustomScrollView(
-                              slivers: [
-                                PinnedHeaderSliver(
-                                  child: ColoredBox(
-                                    color: context.scaffoldBackgroundColor,
-                                    child: CustomText(
-                                      "Edit course",
-                                      fontSize: 18,
-                                      color: ref.theme.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                          SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+
+                          SliverToBoxAdapter(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 6.0,
+                              children: [
+                                CustomText("Title", fontSize: 13, color: ref.theme.primaryText),
+                                InputCourseTitleField(
+                                  courseNameController: courseNameTextController,
+                                  isCourseCodeFieldVisible: isCourseCodeFieldVisible,
                                 ),
 
-                                SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
-
-                                SliverToBoxAdapter(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    spacing: 6.0,
-                                    children: [
-                                      CustomText(
-                                        "course title",
-                                        fontSize: 13,
-                                        color: ref.theme.primaryText,
-                                      ),
-                                      InputCourseTitleField(
-                                        courseNameController: courseNameTextController,
-                                        isCourseCodeFieldVisible: isCourseCodeFieldVisible,
-                                      ),
-
-                                      InputCourseCodeField(
-                                        courseCodeController: courseCodeController,
-                                        isCourseCodeFieldVisible: isCourseCodeFieldVisible,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
-
-                                EditCourseInputDescriptionField(
-                                  descriptionTextController: descriptionTextController,
-                                  course: course,
-                                  descriptionFocusNode: widget.isEditingDescription ? descriptionFocusNode : null,
-                                ),
-
-                                SliverToBoxAdapter(
-                                  child: AnimatedSize(
-                                    duration: Durations.extralong1,
-                                    curve: CustomCurves.defaultIosSpring,
-                                    child: ConstantSizing.columnSpacing(context.viewInsets.bottom + bottomPadding + 48),
-                                  ),
+                                InputCourseCodeField(
+                                  courseCodeController: courseCodeController,
+                                  isCourseCodeFieldVisible: isCourseCodeFieldVisible,
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
 
-                    AnimatedPositioned(
-                      duration: Durations.extralong1,
-                      curve: CustomCurves.defaultIosSpring,
-                      bottom: bottomPadding + context.viewInsets.bottom + 4.0,
-                      left: context.viewInsets.bottom > 20 ? null : 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: CustomElevatedButton(
-                          onClick:
-                              () async {
-                                final ModifyCourseNotifier modifyCourseNotifier = ref.read(ModifyCourseProviders.modifyCourseProvider.notifier);
-                                editCourseActions.onUpdateDetails(
-                                context,
-                                courseName: courseNameTextController.text,
-                                courseCode: courseCodeController.text,
-                                description: descriptionTextController.text,
-                                isCourseCodeFieldVisible: ref.read(isCourseCodeFieldVisible.notifier).state,
-                                canExitProvider: ref.read(canExitProvider.notifier),
-                                modifyCourseProvider: modifyCourseNotifier,
-                              );
-                              },
-                          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                          label: "Update details",
-                          textColor: ref.theme.primaryText,
-                          textSize: 15,
-                          pixelHeight: 48,
-                          backgroundColor: context.theme.colorScheme.primary,
-                          borderRadius: 48,
-                        ),
+                          SliverToBoxAdapter(child: ConstantSizing.columnSpacingLarge),
+
+                          EditCourseInputDescriptionField(
+                            descriptionTextController: descriptionTextController,
+                            course: course,
+                            descriptionFocusNode: widget.isEditingDescription ? descriptionFocusNode : null,
+                          ),
+                                      
+                          SliverToBoxAdapter(child: AnimatedSpacing()),
+                        ],
                       ),
+                    ),
+              
+                    PositionedUpdateDetailsButton(
+                      editCourseActions: editCourseActions,
+                      courseNameTextController: courseNameTextController,
+                      courseCodeController: courseCodeController,
+                      descriptionTextController: descriptionTextController,
+                      isCourseCodeFieldVisible: isCourseCodeFieldVisible,
+                      canExitProvider: canExitProvider,
                     ),
                   ],
                 ),
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedSpacing extends StatelessWidget {
+  const AnimatedSpacing({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final double bottomPadding = MediaQuery.paddingOf(context).bottom;
+    return AnimatedSize(
+      duration: Durations.medium1,
+      curve: CustomCurves.decelerate,
+      child: ConstantSizing.columnSpacing(context.viewInsets.bottom + bottomPadding + 48),
+    );
+  }
+}
+
+class PositionedUpdateDetailsButton extends ConsumerWidget {
+  const PositionedUpdateDetailsButton({
+    super.key,
+    required this.editCourseActions,
+    required this.courseNameTextController,
+    required this.courseCodeController,
+    required this.descriptionTextController,
+    required this.isCourseCodeFieldVisible,
+    required this.canExitProvider,
+  });
+
+  final EditCourseActions editCourseActions;
+  final TextEditingController courseNameTextController;
+  final TextEditingController courseCodeController;
+  final TextEditingController descriptionTextController;
+  final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+  final AutoDisposeStateProvider<bool> canExitProvider;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final double bottomPadding = MediaQuery.paddingOf(context).bottom;
+    final theme = ref.theme;
+
+    return AnimatedPositioned(
+      duration: Durations.extralong1,
+      curve: CustomCurves.defaultIosSpring,
+      bottom: bottomPadding + context.viewInsets.bottom + 4.0,
+      left: context.viewInsets.bottom > 20 ? null : 0,
+      right: 0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: CustomElevatedButton(
+          onClick: () async {
+            final ModifyCourseNotifier modifyCourseNotifier = ref.read(
+              ModifyCourseProviders.modifyCourseProvider.notifier,
+            );
+            editCourseActions.onUpdateDetails(
+              context,
+              courseName: courseNameTextController.text,
+              courseCode: courseCodeController.text,
+              description: descriptionTextController.text,
+              isCourseCodeFieldVisible: ref.read(isCourseCodeFieldVisible.notifier).state,
+              canExitProvider: ref.read(canExitProvider.notifier),
+              modifyCourseProvider: modifyCourseNotifier,
+            );
+          },
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          label: "Update details",
+          textColor: theme.onPrimaryText,
+          textSize: 15,
+          pixelHeight: 48,
+          backgroundColor: theme.primaryColor,
+          borderRadius: 48,
         ),
       ),
     );

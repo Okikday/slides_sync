@@ -38,13 +38,11 @@ class EditCourseActions {
     if (provider.state) return;
     UiUtils.showCustomDialog(
       context,
-      barrierColor: Colors.black.withValues(alpha: 0.7),
       transitionType: TransitionType.cupertinoDialog,
       transitionDuration: Durations.medium2,
       child: AppAlertDialog(
         title: "Confirm exit",
         content: "Are you sure you want to exit without saving?",
-        backgroundColor: context.scaffoldBackgroundColor,
         onCancel: () {
           CustomDialog.hide(context);
         },

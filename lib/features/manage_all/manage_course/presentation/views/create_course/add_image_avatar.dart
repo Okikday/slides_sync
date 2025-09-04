@@ -22,7 +22,7 @@ class AddImageAvatar extends ConsumerWidget {
           width: imgRadius,
           height: imgRadius,
           clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: context.theme.colorScheme.secondary.withAlpha(40)),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: ref.theme.altBackgroundPrimary),
           child: InkWell(
             customBorder: CircleBorder(),
             onTap: () async {
@@ -50,7 +50,7 @@ class AddImageAvatar extends ConsumerWidget {
             },
             child:
                 courseImagePath == null
-                    ? Icon(Iconsax.folder_add, size: 72)
+                    ? Icon(Iconsax.folder_add, size: 72, color: ref.theme.primaryColor)
                     : Image.file(File(courseImagePath), fit: BoxFit.cover, width: imgRadius, height: imgRadius)
                         .animate()
                         .scale(

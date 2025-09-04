@@ -1,5 +1,6 @@
 class RoutesStrings {
   static const splashScreen = "/splash";
+  static const authView = "/auth";
   static const homeView = "/home";
   static const libraryView = "/library";
   static const exploreView = "/explore";

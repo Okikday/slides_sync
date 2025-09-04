@@ -17,6 +17,7 @@ class EmptyContentsView extends ConsumerWidget {
       child: Center(
         child: ListView(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             ConstantSizing.columnSpacing(context.deviceHeight * 0.2),
             SizedBox.square(

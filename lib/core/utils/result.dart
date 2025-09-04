@@ -12,7 +12,8 @@ class Result<T> {
 
   const Result.loading() : this._(status: ResultStatus.loading);
 
-  factory Result.success(T value) {
+  factory Result.success(T value, {String? logMsg}) {
+    if (logMsg != null) log("success: $logMsg");
     return Result._(status: ResultStatus.success, data: value);
   }
 

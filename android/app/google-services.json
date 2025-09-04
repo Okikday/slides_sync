@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1045161038439",
+    "project_id": "slidesync-1",
+    "storage_bucket": "slidesync-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045161038439:android:cc1e65749a9cf7eb1fbac2",
+        "android_client_info": {
+          "package_name": "com.example.slides_sync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045161038439-2rsfa16m7dl14s35fglv020i9js1vn4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.slides_sync",
+            "certificate_hash": "7c47145676bc3241e38b14b5e722a7c77867bcd8"
+          }
+        },
+        {
+          "client_id": "1045161038439-7smeruh597vlp3j52d2d16nohkmce2fe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLK1tAa61E9elkYB5SKmqzffRkmcdNe9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045161038439-7smeruh597vlp3j52d2d16nohkmce2fe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1045161038439-la9d1fjprqughlranqjrgfji4gt4ffbk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.slidesSync"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

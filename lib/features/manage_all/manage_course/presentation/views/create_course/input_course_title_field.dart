@@ -16,32 +16,36 @@ class InputCourseTitleField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return CustomTextfield(
       controller: courseNameController,
-      backgroundColor: ref.theme.altBackgroundPrimary,
-      cursorColor: ref.theme.primaryText,
-      selectionHandleColor: ref.theme.primaryColor,
+      backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.8),
+      cursorColor: theme.primaryColor,
+      selectionHandleColor: theme.primaryColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: BorderSide(
           color:
-              context.isDarkMode
-                  ? context.theme.colorScheme.secondary.withAlpha(80)
-                  : ref.theme.primaryColor.withAlpha(20),
+              theme.altBackgroundPrimary),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8.0),
+        borderSide: BorderSide(color: theme.primaryColor,
         ),
       ),
+      hintStyle: TextStyle(color: theme.secondaryText.withAlpha(80)),
       pixelWidth: context.deviceWidth,
       pixelHeight: 60,
       inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
       hint: "Enter course title",
-      inputTextStyle: TextStyle(fontSize: 16, color: ref.theme.primaryText),
+      inputTextStyle: TextStyle(fontSize: 16, color: theme.primaryText),
       onTapOutside: () {},
       autoDispose: false,
       suffixIcon: CustomElevatedButton(
         pixelWidth: 50,
         pixelHeight: 50,
         borderRadius: 12,
-        overlayColor: ref.theme.primaryColor.withAlpha(40),
+        overlayColor: theme.primaryColor.withAlpha(40),
         onClick: () async {
           final bool isCourseCodeVisible = ref.read(isCourseCodeFieldVisible.notifier).state;
           if (isCourseCodeVisible) FocusScope.of(context).unfocus();

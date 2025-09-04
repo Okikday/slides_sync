@@ -93,7 +93,6 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
               context: context,
               enableDrag: false,
               showDragHandle: false,
-              backgroundColor: context.scaffoldBackgroundColor,
               isScrollControlled: true,
               builder: (context) => EditCourseBottomSheet(),
             );

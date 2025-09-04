@@ -2,23 +2,28 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
-import 'package:slides_sync/features/course_navigation/presentation/views/interactive_course_material_view.dart';
+import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/empty_collections_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseDetailsCollectionSection extends ConsumerWidget {
-  const CourseDetailsCollectionSection({super.key, required this.course});
+  const CourseDetailsCollectionSection({super.key, required this.courseAsyncValue});
 
-  final Course course;
+  final AsyncValue<Course> courseAsyncValue;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final collections = course.collections;
 
-    if (collections.isEmpty) {
+    return courseAsyncValue.when(
+      data: (data) {
+        final course = data;
+        final collections = course.collections;
+        if (collections.isEmpty) {
       return EmptyCollectionsView(
         onClickAddCollection: () async {
           // AppNavigator.to(context).modifyCollectionsRoute(course);
@@ -59,8 +64,8 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
 
               Navigator.of(context).push(
                 PageAnimation.pageRouteBuilder(
-                  InteractiveCourseMaterialView(collection: list[index]),
-                  type: TransitionType.cupertinoDialog,
+                      CourseMaterialsView(collection: list[index]),
+                      type: TransitionType.cupertino,
                   duration: Durations.extralong3,
                   opaque: false,
                   reverseDuration: Durations.medium1,
@@ -76,6 +81,43 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
           ),
         );
       },
+    );
+      },
+      error:
+          (error, st) => SliverToBoxAdapter(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle, size: 48)),
+                CustomText("Error loading course!"),
+              ],
+            ),
+          ),
+      loading:
+          () => SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverToBoxAdapter(child: LoadingShimmerListView()),
+          ),
+    );
+  }
+}
+
+class LoadingShimmerListView extends ConsumerWidget {
+  const LoadingShimmerListView({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: 5,
+      shrinkWrap: true,
+      itemBuilder:
+          (context, index) => Skeletonizer(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: CourseCategoriesCard(isDarkMode: ref.isDarkMode, title: "_", onTap: () {}),
+            ),
+          ),
     );
   }
 }

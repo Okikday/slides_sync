@@ -40,17 +40,17 @@ class GridCourseCard extends ConsumerWidget {
       child: Container(
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
-          color: AppColors.bgBlendColor(context),
+          color: theme.background.blendColor(isDarkMode ? 0.09 : 0.91),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .88, .12)),
-          image: DecorationImage(
-            image: Assets.images.bookSparkleTransparentBg.asImageProvider,
-          opacity: 0.05,
-            colorFilter: ColorFilter.mode(
-              ref.theme.primaryColor,
-              BlendMode.srcIn,
-            ),
-        ),
+          //   image: DecorationImage(
+          //     image: Assets.images.bookSparkleTransparentBg.asImageProvider,
+          //   opacity: 0.05,
+          //     colorFilter: ColorFilter.mode(
+          //       ref.theme.primaryColor,
+          //       BlendMode.srcIn,
+          //     ),
+          // ),
         ),
         child: Padding(
           padding: const EdgeInsets.only(top: 8, bottom: 8),

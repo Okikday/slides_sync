@@ -28,11 +28,9 @@ class CoursesView extends ConsumerWidget {
     // final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     
     if (isListView) {
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(childCount: data.length, (
-          context,
-          index,
-        ) {
+      return SliverList.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
           return UnionCourseCard(
             data[index],
             false,
@@ -41,19 +39,17 @@ class CoursesView extends ConsumerWidget {
             onTap: () => onTap(index),
             onLongPress: () => onLongPress(index),
           );
-        }),
+        }
       );
     } else {
-      return SliverGrid(
+      return SliverGrid.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: context.deviceHeight > context.deviceWidth ? 2 : 3,
           
           crossAxisSpacing: 12,
         ),
-        delegate: SliverChildBuilderDelegate(childCount: data.length, (
-          context,
-          index,
-        ) {
+        itemCount: data.length,
+        itemBuilder: (context, index) {
           return UnionCourseCard(
             data[index],
             true,
@@ -62,7 +58,7 @@ class CoursesView extends ConsumerWidget {
             onTap: () => onTap(index),
             onLongPress: () => onLongPress(index),
           );
-        }),
+        },
       );
     }
   }

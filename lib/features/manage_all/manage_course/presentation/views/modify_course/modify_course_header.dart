@@ -73,15 +73,15 @@ class ModifyCourseHeader extends ConsumerWidget {
                         message: title,
                         triggerMode: TooltipTriggerMode.tap,
                         child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: CustomText(
                             title,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: ref.theme.primaryText,
                           ),
+                        ),
                       ),
-                      )
                     ),
                     Flexible(
                       child: Padding(
@@ -94,10 +94,8 @@ class ModifyCourseHeader extends ConsumerWidget {
                               contentPadding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                               onClick: onClickAddDescription,
                               child: CustomText(
-                                description.isEmpty
-                                    ? "Add description"
-                                    : description,
-                                color: ref.theme.primaryColor,
+                                description.isEmpty ? "Add description" : description,
+                                color: ref.theme.secondaryText.withValues(alpha: 0.9),
                               ),
                             ),
                           ),
@@ -116,33 +114,22 @@ class ModifyCourseHeader extends ConsumerWidget {
                   width: 80,
                   height: 80,
                   clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                    BoxShadow(color: Colors.white12, offset: Offset(1, 1), blurRadius: 3, spreadRadius: 2),
-                    BoxShadow(color: Colors.black12, offset: Offset(-1, -1), blurRadius: 3, spreadRadius: 2),
-                      BoxShadow(
-                        color: AppColors.lightenColor(
-                          ref.theme.primaryColor.withValues(alpha: 0.2),
-                          0.6,
-                        ),
-                        spreadRadius: 2,
-                        blurRadius: 3,
-                      )
-                  ]),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [BoxShadow(color: ref.theme.altBackgroundPrimary, spreadRadius: 2, blurRadius: 3)],
+                  ),
                   child: GestureDetector(
                     onTap: onClickImage,
                     onLongPress: onLongPressImage,
                     child: ColoredBox(
-                      color: ref.theme.primaryColor.withAlpha(60),
+                      color: ref.theme.altBackgroundPrimary,
                       child: SizedBox.square(
                         dimension: 80,
                         child: BuildImagePathWidget(
                           fileDetails: courseFileDetails.fileDetails,
                           fallbackWidget: Icon(
                             Iconsax.document,
-                            color:
-                                context.isDarkMode
-                                    ? ref.theme.primaryColor
-                                    : ref.theme.primaryColor,
+                            color: context.isDarkMode ? ref.theme.primaryColor : ref.theme.primaryColor,
                           ),
                         ),
                       ),
@@ -161,13 +148,24 @@ class ModifyCourseHeader extends ConsumerWidget {
               children: [
                 Expanded(
                   child: CustomElevatedButton(
-                    label: "Edit course",
                     onClick: onClickEditCourse,
-                    textColor: context.theme.colorScheme.primary,
-                    textSize: 14,
-                    backgroundColor: ref.theme.primaryColor.withAlpha(60),
-                    pixelHeight: 48,
-                    borderRadius: 48,
+                    buttonStyle: ElevatedButton.styleFrom(
+                      fixedSize: Size(double.infinity, 48),
+                      backgroundColor: ref.theme.primaryColor.withAlpha(40),
+                      elevation: 0,
+                      shape: RoundedSuperellipseBorder(
+                        side: BorderSide(color: ref.theme.primaryColor.withAlpha(41), width: 1.5),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                    ),
+                    child: Row(
+                      spacing: 8.0,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomText("Edit course", color: ref.theme.primaryColor),
+                        Icon(Iconsax.edit_2, color: ref.theme.secondaryText),
+                      ],
+                    ),
                   ),
                 ),
                 CustomElevatedButton(

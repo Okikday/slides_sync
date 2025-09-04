@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 
 import 'dart:io';
@@ -11,6 +13,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class BuildImagePathWidget extends ConsumerStatefulWidget {
   final FileDetails fileDetails;
@@ -119,7 +122,7 @@ class ImageFromNetwork extends StatelessWidget {
       width: width,
       height: height,
       progressIndicatorBuilder: (context, url, progress) {
-        return Lottie.asset(IconStrings.instance.loadingSpinner);
+        return Skeletonizer(child: SizedBox.expand());
       },
       errorWidget: (context, error, stackTrace) => fallbackWidget,
     );
@@ -150,10 +153,16 @@ class ImageFromMemory extends StatelessWidget {
       width: width,
       height: height,
       frameBuilder: (BuildContext context, Widget child, int? frame, bool wasSynchronouslyLoaded) {
+        
         if (wasSynchronouslyLoaded || frame != null) {
           return child;
         } else {
-          return Lottie.asset(IconStrings.instance.loadingSpinner);
+          return SizedBox.expand(child: ColoredBox(color: context.theme.primaryColor.withAlpha(40)))
+              .animate(onComplete: (controller) => controller.repeat())
+              .shimmer(duration: const Duration(seconds: 1), curve: Curves.decelerate)
+              .blurXY(begin: 2, end: 0, duration: Duration(seconds: 1))
+              .animate(onComplete: (controller) => controller.repeat(reverse: true))
+              .tint(color: context.theme.primaryColor.withAlpha(10), duration: Duration(seconds: 1));
         }
       },
       errorBuilder: (context, error, stackTrace) => fallbackWidget,

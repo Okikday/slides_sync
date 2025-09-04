@@ -82,7 +82,6 @@ class ModifyCourseActions {
         context: context,
         enableDrag: false,
         showDragHandle: false,
-        backgroundColor: context.scaffoldBackgroundColor,
         barrierColor: Colors.black54,
         isScrollControlled: true,
         builder: (context) {

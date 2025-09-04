@@ -8,6 +8,7 @@ import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/helpers/formatter.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
@@ -61,79 +62,92 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
     final CourseContent courseContent = widget.courseContent;
     return AnimatedContainer(
       duration: Durations.extralong4,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(color: AppColors.bgBlendColor(context), borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10),
-        onTap: widget.onTapCard,
-        onLongPress: widget.onLongPressed,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: ref.theme.primaryColor.withAlpha(40),
-                      borderRadius: BorderRadius.circular(12),
-                      // boxShadow: [BoxShadow(color: ref.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
-                    ),
-                    child: BuildImagePathWidget(
-                      fileDetails: FileDetails(
-                        filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: courseContent.path.filePath),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          overlayColor: WidgetStatePropertyAll(ref.theme.altBackgroundPrimary),
+          onTap: widget.onTapCard,
+          onLongPress: widget.onLongPressed,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        color: ref.theme.primaryColor.withAlpha(40),
+                        borderRadius: BorderRadius.circular(12),
+                        // boxShadow: [BoxShadow(color: ref.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
                       ),
-                      fallbackWidget: Icon(WidgetHelper.resolveIconData(courseContent.courseContentType, true), size: 20),
+                      child: BuildImagePathWidget(
+                        fileDetails: FileDetails(
+                          filePath: CreateContentPreviewImage.genPreviewImagePath(
+                            filePath: courseContent.path.filePath,
+                          ),
+                        ),
+                        fallbackWidget: Icon(
+                          WidgetHelper.resolveIconData(courseContent.courseContentType, true),
+                          size: 20,
+                        ),
+                      ),
                     ),
-                  ),
-                  ConstantSizing.rowSpacingMedium,
-                  Expanded(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(maxHeight: 100),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            child: CustomText(
-                              courseContent.title,
-                              fontSize: 13,
-                              color: ref.theme.primaryText,
-                              overflow: TextOverflow.fade,
+                    ConstantSizing.rowSpacingMedium,
+                    Expanded(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 100),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: CustomText(
+                                courseContent.title,
+                                fontSize: 13,
+                                color: ref.theme.primaryText,
+                                fontWeight: FontWeight.w600,
+                                overflow: TextOverflow.fade,
+                              ),
                             ),
-                          ),
-                          // ConstantSizing.columnSpacing(2),
-                          CustomText(
-                            courseContent.courseContentType.name,
-                            fontSize: 11,
-                            color: ref.theme.secondaryText,
-                          ),
-                          ConstantSizing.columnSpacing(8),
-                          LinearProgressIndicator(
-                            minHeight: 8,
-                            borderRadius: BorderRadius.circular(36),
-                            value: math.Random().nextDouble(),
-                            backgroundColor: Colors.black.withAlpha(40),
-                            color: ref.theme.primaryColor, //.withAlpha(40)
-                          ),
-                        ],
+                            // ConstantSizing.columnSpacing(2),
+                            CustomText(
+                              Formatter.formatEnumName(courseContent.courseContentType.name),
+                              fontSize: 11,
+                              color: ref.theme.secondaryText,
+                            ),
+                            // ConstantSizing.columnSpacing(8),
+                            // LinearProgressIndicator(
+                            //   minHeight: 8,
+                            //   borderRadius: BorderRadius.circular(36),
+                            //   value: math.Random().nextDouble(),
+                            //   backgroundColor: Colors.black.withAlpha(40),
+                            //   color: ref.theme.primaryColor, //.withAlpha(40)
+                            // ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  ConstantSizing.rowSpacingMedium,
-                  Icon(Iconsax.arrow_circle_right, color: AppColors.secondaryText(context)),
-                ],
-              ),
+                    ConstantSizing.rowSpacingMedium,
+                    // Icon(Iconsax.arrow_circle_right, color: AppColors.secondaryText(context)),
+                  ],
+                ),
 
-              SizeTransition(sizeFactor: expandAnim, child: ConstantSizing.columnSpacingMedium),
+                SizeTransition(sizeFactor: expandAnim, child: ConstantSizing.columnSpacingMedium),
 
-              AnimatedCourseMaterialCardMenu(courseMaterialCardActionModels: widget.courseMaterialCardActionModels, expandAnim: expandAnim),
-            ],
+                AnimatedCourseMaterialCardMenu(
+                  courseMaterialCardActionModels: widget.courseMaterialCardActionModels,
+                  expandAnim: expandAnim,
+                ),
+              ],
+            ),
           ),
         ),
       ),

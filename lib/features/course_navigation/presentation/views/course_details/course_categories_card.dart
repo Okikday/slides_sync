@@ -41,8 +41,8 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
       onTap: widget.onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.bgBlendColor(context, .96, .04),
-          border: Border.all(color: AppColors.bgBlendColor(context)),
+          color: ref.theme.bgSupportText.withAlpha(10),
+          border: Border.all(color: ref.theme.bgSupportText.withAlpha(12)),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(

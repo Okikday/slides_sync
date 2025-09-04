@@ -1,16 +1,18 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-class EmptyCoursesView extends StatelessWidget {
+class EmptyCoursesView extends ConsumerWidget {
   const EmptyCoursesView({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SliverToBoxAdapter(
       child: SizedBox(
         height: context.deviceHeight / 2,
@@ -28,21 +30,14 @@ class EmptyCoursesView extends StatelessWidget {
                 onClick: () {
                   Navigator.pop(context);
     
-                  Navigator.push(
-                    context,
-                    CupertinoSheetRoute(
-                      builder: (context) {
-                        return CreateCourseView();
-                      },
-                    ),
-                  );
+                  AppNavigator.to(context).createCourseRoute();
                 },
-                backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
+                backgroundColor: ref.theme.altBackgroundPrimary,
                 borderRadius: 12,
                 pixelHeight: 44,
                 label: "Create your course",
                 textSize: 15,
-                textColor: context.isDarkMode ? Colors.white : Colors.black,
+                textColor: ref.theme.primaryText,
               ),
             ),
           ],

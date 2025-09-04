@@ -79,13 +79,12 @@ class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionT
                     
 
                     // Handle outcome
-                    if (outcome == null && text.trim() != collection.collectionTitle && text.trim().isNotEmpty) {
-                      log("point 1");
-                      if (context.mounted){
-                        log("point 2");
+                    if (outcome == null &&
+                        text.trim() != collection.collectionTitle &&
+                        text.trim().isNotEmpty) {
+                      if (context.mounted) {
                         context.pop();
-                      }else{
-                        log("point 3");
+                      } else {
                         rootNavigatorKey.currentContext?.pop();
                       }
                       if (context.mounted) await UiUtils.showFlushBar(context, msg: "Renamed ${collection.collectionTitle} to $text!", vibe: FlushbarVibe.success);

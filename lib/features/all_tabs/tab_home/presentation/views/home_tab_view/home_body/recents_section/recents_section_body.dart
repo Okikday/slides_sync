@@ -23,6 +23,7 @@ class RecentsSectionBody extends ConsumerWidget {
       return SliverToBoxAdapter(
         child: ListView(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             SizedBox.square(dimension: context.deviceWidth * 0.5, child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true,)),
         

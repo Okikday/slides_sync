@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class InputCourseCodeField extends ConsumerWidget {
-   final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
+  final AutoDisposeStateProvider<bool> isCourseCodeFieldVisible;
   final TextEditingController courseCodeController;
   const InputCourseCodeField({super.key, required this.courseCodeController, required this.isCourseCodeFieldVisible});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isCourseVisible = ref.watch(isCourseCodeFieldVisible);
+    final theme = ref.theme;
     return AnimatedSize(
       duration: Durations.extralong4,
       curve: CustomCurves.bouncySpring,
@@ -23,31 +24,28 @@ class InputCourseCodeField extends ConsumerWidget {
               alignment: Alignment.centerRight,
               child: CustomTextfield(
                 controller: courseCodeController,
-                backgroundColor: ref.theme.altBackgroundPrimary,
-                cursorColor: ref.theme.primaryText,
-                selectionHandleColor: ref.theme.primaryColor,
-                autoDispose: false,
+                backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.8),
+                cursorColor: theme.primaryColor,
+                selectionHandleColor: theme.primaryColor,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(
-                    color:
-                        context.isDarkMode
-                            ? context.theme.colorScheme.secondary.withAlpha(80)
-                            : ref.theme.primaryColor.withAlpha(20),
-                  ),
+                  borderSide: BorderSide(color: theme.altBackgroundPrimary),
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: theme.primaryColor),
+                ),
+                hintStyle: TextStyle(color: theme.secondaryText.withAlpha(80)),
+                autoDispose: false,
                 onTapOutside: () {},
                 constraints: BoxConstraints(maxWidth: 200),
                 pixelHeight: 60,
                 inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                 hint: "Optional course code",
-                inputTextStyle: TextStyle(
-                  fontSize: 16,
-                  color: ref.theme.primaryText,
-                ),
+                inputTextStyle: TextStyle(fontSize: 16, color: theme.primaryText),
               ),
             ),
-        
+
             Positioned(
               left: 4,
               child: Column(
@@ -57,12 +55,18 @@ class InputCourseCodeField extends ConsumerWidget {
                   Container(
                     height: 32,
                     width: 4,
-                    decoration: BoxDecoration(color: Colors.grey.withAlpha(40), borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withAlpha(40),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   Container(
                     width: (context.deviceWidth - 48 - 200).clamp(80, context.deviceWidth),
                     height: 4,
-                    decoration: BoxDecoration(color: Colors.grey.withAlpha(40), borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withAlpha(40),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ],
               ),

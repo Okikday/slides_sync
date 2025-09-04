@@ -40,7 +40,7 @@ class AppActionDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final divider = Divider(color: AppColors.bgBlendColor(context), height: 0);
+    final divider = Divider(color: ref.theme.secondaryText.withAlpha(60), height: 0);
     return AppCustomizableDialog(
       blurSigma: blurSigma,
       backgroundColor: backgroundColor,
