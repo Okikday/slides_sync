@@ -3,10 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/storage/hive_data/hive_data.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
-import 'core/routes/routes.dart';
 import 'shared/styles/theme/themes.dart';
 
 final NotifierProvider<AppThemeProvider, AppThemeModel> appThemeProvider =

@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_content_fab.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_materials_outer_section.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-
 
 class CourseMaterialsView extends ConsumerStatefulWidget {
   final CourseCollection collection;
@@ -18,9 +18,11 @@ class CourseMaterialsView extends ConsumerStatefulWidget {
 }
 
 class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
+  late final AutoDisposeStreamProvider<CourseCollection?> streamedCollection;
   @override
   void initState() {
     super.initState();
+    streamedCollection = AutoDisposeStreamProvider((cb) => CourseCollectionRepo.watchByDbId(widget.collection.id));
   }
 
   @override
@@ -30,6 +32,7 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
 
   @override
   Widget build(BuildContext context) {
+    final CourseCollection collection = ref.watch(streamedCollection).value ?? widget.collection;
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
       child: Scaffold(
@@ -38,7 +41,7 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
           padding: EdgeInsets.zero,
           child: AppBarContainerChild(
             context.isDarkMode,
-            title: widget.collection.collectionTitle,
+            title: collection.collectionTitle,
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -49,9 +52,9 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
           ),
         ),
 
-        floatingActionButton: AddContentFAB(collection: widget.collection,),
+        floatingActionButton: AddContentFAB(collection: collection),
 
-        body: CourseMaterialsOuterSection(collection: widget.collection),
+        body: CourseMaterialsOuterSection(collection: collection),
       ),
     );
   }

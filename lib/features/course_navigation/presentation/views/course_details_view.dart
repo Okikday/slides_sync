@@ -84,15 +84,27 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
           physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder:
               (context, innerBoxIsScrolled) => [
-                CourseDetailsHeader(
-                  course: courseAsyncValue.when(
-                    data: (data) => data,
-                    error: (error, st) => defaultCourse,
-                    loading: () => defaultCourse,
-                  ),
+                courseAsyncValue.when(
+                  data:
+                      (data) => CourseDetailsHeader(
+                        course: data,
                   scrollOffsetProvider: scrollOffsetProvider,
                   appBarHeight: appBarHeight,
                 ),
+                  error:
+                      (error, st) => CourseDetailsHeader(
+                        course: widget.course,
+                        scrollOffsetProvider: scrollOffsetProvider,
+                        appBarHeight: appBarHeight,
+                      ),
+                  loading:
+                      () => CourseDetailsHeader(
+                        course: widget.course,
+                        scrollOffsetProvider: scrollOffsetProvider,
+                        appBarHeight: appBarHeight,
+                      ),
+                ),
+                
               ],
           body: CustomScrollView(
             slivers: [

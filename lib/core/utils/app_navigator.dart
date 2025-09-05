@@ -14,12 +14,31 @@ class AppNavigator {
 
   void _push(String location, {Object? extra}) => context.push(location, extra: extra);
 
-  void _pushAsReplacement(String location, {Object? extra}) => context.go(location, extra: extra);
+  void _pushAsReplacement(String location, {Object? extra}) => context.pushReplacement(location, extra: extra);
+
+  void contentViewGateRoute(CourseContent content) =>
+      _isPushedAsReplacement
+          ? _pushAsReplacement(
+            "${RoutesStrings.courseDetailsView}${RoutesStrings.courseMaterialsView}${RoutesStrings.contentViewGate}",
+            extra: content,
+          )
+          : _push(
+            "${RoutesStrings.courseDetailsView}${RoutesStrings.courseMaterialsView}${RoutesStrings.contentViewGate}",
+            extra: content,
+          );
 
   void courseDetailsRoute(Course course) =>
       _isPushedAsReplacement
           ? _pushAsReplacement(RoutesStrings.courseDetailsView, extra: course)
           : _push(RoutesStrings.courseDetailsView, extra: course);
+
+  void courseMaterialsRoute(CourseCollection collection) =>
+      _isPushedAsReplacement
+          ? _pushAsReplacement(
+            "${RoutesStrings.courseDetailsView}${RoutesStrings.courseMaterialsView}",
+            extra: collection,
+          )
+          : _push("${RoutesStrings.courseDetailsView}${RoutesStrings.courseMaterialsView}", extra: collection);
 
   void createCourseRoute() {
     final route = RoutesStrings.createCourseView;
@@ -37,17 +56,26 @@ class AppNavigator {
   }
 
   void modifyCollectionsRoute(Course course) {
-    final route = "${RoutesStrings.modifyCourseView}/${RoutesStrings.modifyCollectionsView}";
+    final route = "${RoutesStrings.modifyCourseView}${RoutesStrings.modifyCollectionsView}";
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: course) : _push(route, extra: course);
   }
 
   void modifyContentsRoute(ContentRecord record) {
-    final route = "${RoutesStrings.modifyCourseView}/${RoutesStrings.modifyCollectionsView}/${RoutesStrings.modifyContentsView}";
+    final route =
+        "${RoutesStrings.modifyCourseView}${RoutesStrings.modifyCollectionsView}${RoutesStrings.modifyContentsView}";
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: record) : _push(route, extra: record);
   }
 
   void settingsRoute() {
     final route = RoutesStrings.settingsView;
     _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
+  }
+
+
+  /// Viewers
+  void contentViewerRoute(CourseContent content) {
+    // resolve viewer
+    final route = RoutesStrings.documentViewer;
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: content) : _push(route, extra: content);
   }
 }

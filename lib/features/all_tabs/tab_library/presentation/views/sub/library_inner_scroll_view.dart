@@ -16,9 +16,6 @@ class LibraryInnerScrollView extends ConsumerWidget {
       onNotification: (notification) => true,
       child: CustomScrollView(
         slivers: [
-          // SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kToolbarHeight)),
-
-          // LibraryViewHeader(),
           SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
           AllCoursesSection(isListViewAsyncProvider: isListViewAsyncProvider),

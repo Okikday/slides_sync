@@ -22,7 +22,7 @@ class LibraryOuterScrollView extends ConsumerWidget {
         return true;
       },
       child: NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, isInnerBoxScrolled) {
           if (ref.read(mainTabViewIndexProvider.notifier).state == 1) {
             final currValue = ref.read(isMainScrolledProvider.notifier).state;

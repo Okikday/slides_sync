@@ -7,25 +7,40 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-class CustomShapeWaveFilledWidget extends StatelessWidget {
+class CustomShapeWaveFilledWidget extends ConsumerWidget {
   final double progress;
   final Widget? backgroundWidget;
   final TextStyle? textStyle;
   final Size waveSize;
-  const CustomShapeWaveFilledWidget({super.key, required this.progress, required this.waveSize, this.backgroundWidget, this.textStyle});
+  final bool showProgress;
+  final Color? waveColor;
+  const CustomShapeWaveFilledWidget({
+    super.key,
+    required this.progress,
+    required this.waveSize,
+    this.backgroundWidget,
+    this.textStyle,
+    this.showProgress = true,
+    this.waveColor,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [
         Positioned(
           width: waveSize.width,
           height: waveSize.height,
-          child: Wave(value: progress.clamp(0.2, 1.0), color: context.theme.colorScheme.secondary.withAlpha(40), direction: Axis.vertical),
+          child: Wave(
+            value: progress.clamp(0.2, 1.0),
+            color: waveColor ?? ref.theme.primaryColor.withAlpha(40),
+            direction: Axis.vertical,
+          ),
         ),
         // CustomWaveWidget(progress: progress.clamp(0.4, 1.0)),
         if (backgroundWidget != null) Positioned.fill(child: backgroundWidget!),
-        Positioned.fill(
+        if (showProgress)
+          Positioned.fill(
           child: Align(
             alignment: Alignment.center,
             child: CustomText(
@@ -43,7 +58,8 @@ class CustomShapeWaveFilledWidget extends StatelessWidget {
 
 class CustomWaveWidget extends ConsumerWidget {
   final double progress;
-  const CustomWaveWidget({super.key, required this.progress});
+  final Color? backgroundColor;
+  const CustomWaveWidget({super.key, required this.progress, this.backgroundColor});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,7 +79,7 @@ class CustomWaveWidget extends ConsumerWidget {
         durations: [5000, 4000, 3000],
         heightPercentages: [fill - 0.01, fill + 0.01, fill + 0.05],
       ),
-      backgroundColor: context.theme.colorScheme.secondary.withAlpha(40),
+      backgroundColor: backgroundColor ?? ref.theme.primaryColor.withAlpha(40),
       size: Size(double.infinity, double.infinity),
       waveAmplitude: 10,
     );

@@ -9,7 +9,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/document_viewer.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -42,16 +42,16 @@ class InteractiveCourseMaterialView extends ConsumerWidget {
                     children: List.generate(4, (index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            PageAnimation.pageRouteBuilder(
-                              DocumentViewer(),
-                              type: TransitionType.rightToLeft,
-                              duration: Durations.extralong3,
-                              opaque: false,
-                              reverseDuration: Durations.medium1,
-                              curve: CustomCurves.snappySpring,
-                            ),
-                          );
+                          // Navigator.of(context).push(
+                          //   PageAnimation.pageRouteBuilder(
+                          //     DocumentViewer(),
+                          //     type: TransitionType.rightToLeft,
+                          //     duration: Durations.extralong3,
+                          //     opaque: false,
+                          //     reverseDuration: Durations.medium1,
+                          //     curve: CustomCurves.snappySpring,
+                          //   ),
+                          // );
                         },
                         child: Container(
                           width: boxDimension,

@@ -12,34 +12,39 @@ class EmptyCollectionsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SliverToBoxAdapter(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ConstantSizing.columnSpacing((context.deviceHeight / 2) - context.deviceWidth * 0.5 - ConstantSizing.spaceHuge - 48),
-            SizedBox.square(
-              dimension: context.deviceWidth * 0.5,
-              child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true),
-            ),
-
-            CustomText("Oops, can't find any collections", color: Colors.blueGrey),
-
-            ConstantSizing.columnSpacingHuge,
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: CustomElevatedButton(
-                onClick: () {
-                  if (onClickAddCollection != null) onClickAddCollection!();
-                },
-                backgroundColor: ref.theme.primaryColor,
-                borderRadius: 12,
-                pixelHeight: 44,
-                label: "Add a new collection",
-                textSize: 15,
-                textColor: ref.theme.primaryText,
+      child: SizedBox(
+        height: 400,
+        
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ConstantSizing.columnSpacing(20),
+              SizedBox.square(
+                dimension: context.deviceWidth * 0.5,
+                child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true),
               ),
-            ),
-          ],
+
+              CustomText("Oops, can't find any collections", color: Colors.blueGrey),
+
+              ConstantSizing.columnSpacingHuge,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: CustomElevatedButton(
+                  onClick: () {
+                    if (onClickAddCollection != null) onClickAddCollection!();
+                  },
+                  backgroundColor: ref.theme.primaryColor,
+                  borderRadius: 12,
+                  pixelHeight: 44,
+                  label: "Add a new collection",
+                  textSize: 15,
+                  textColor: ref.theme.onPrimaryText,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

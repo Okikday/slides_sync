@@ -109,7 +109,7 @@ class LoadingShimmerListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
-      itemCount: 5,
+      itemCount: 4,
       shrinkWrap: true,
       itemBuilder:
           (context, index) => Skeletonizer(

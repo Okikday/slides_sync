@@ -13,27 +13,27 @@ import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
-class CourseMaterialCard extends ConsumerStatefulWidget {
+class CourseMaterialListCard extends ConsumerStatefulWidget {
   final CourseContent courseContent;
-  final AutoDisposeStateProvider<bool> isCourseMaterialCardExpandedProvider;
-  final List<CourseMaterialCardActionModel> courseMaterialCardActionModels;
+  final AutoDisposeStateProvider<bool> isCourseMaterialListCardExpandedProvider;
+  final List<CourseMaterialListCardActionModel> courseMaterialListCardActionModels;
   final void Function() onTapCard;
   final void Function() onLongPressed;
 
-  const CourseMaterialCard({
+  const CourseMaterialListCard({
     super.key,
     required this.courseContent,
-    required this.isCourseMaterialCardExpandedProvider,
-    this.courseMaterialCardActionModels = const <CourseMaterialCardActionModel>[],
+    required this.isCourseMaterialListCardExpandedProvider,
+    this.courseMaterialListCardActionModels = const <CourseMaterialListCardActionModel>[],
     required this.onTapCard,
     required this.onLongPressed,
   });
 
   @override
-  ConsumerState<CourseMaterialCard> createState() => _CourseMaterialCardState();
+  ConsumerState<CourseMaterialListCard> createState() => _CourseMaterialListCardState();
 }
 
-class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with SingleTickerProviderStateMixin {
+class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard> with SingleTickerProviderStateMixin {
   late AnimationController expandAnimationController;
   late Animation<double> expandAnim;
 
@@ -54,7 +54,7 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<bool>(widget.isCourseMaterialCardExpandedProvider, (previous, next) {
+    ref.listen<bool>(widget.isCourseMaterialListCardExpandedProvider, (previous, next) {
       if (!mounted) return;
       next ? expandAnimationController.forward() : expandAnimationController.reverse();
     });
@@ -142,8 +142,8 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
 
                 SizeTransition(sizeFactor: expandAnim, child: ConstantSizing.columnSpacingMedium),
 
-                AnimatedCourseMaterialCardMenu(
-                  courseMaterialCardActionModels: widget.courseMaterialCardActionModels,
+                AnimatedCourseMaterialListCardMenu(
+                  CourseMaterialListCardActionModels: widget.courseMaterialListCardActionModels,
                   expandAnim: expandAnim,
                 ),
               ],
@@ -155,24 +155,24 @@ class _CourseMaterialCardState extends ConsumerState<CourseMaterialCard> with Si
   }
 }
 
-class AnimatedCourseMaterialCardMenu extends ConsumerStatefulWidget {
-  const AnimatedCourseMaterialCardMenu({super.key, required this.courseMaterialCardActionModels, required this.expandAnim});
+class AnimatedCourseMaterialListCardMenu extends ConsumerStatefulWidget {
+  const AnimatedCourseMaterialListCardMenu({super.key, required this.CourseMaterialListCardActionModels, required this.expandAnim});
 
-  final List<CourseMaterialCardActionModel> courseMaterialCardActionModels;
+  final List<CourseMaterialListCardActionModel> CourseMaterialListCardActionModels;
   final Animation<double> expandAnim;
 
   @override
-  ConsumerState<AnimatedCourseMaterialCardMenu> createState() =>
-      _AnimatedCourseMaterialCardMenuState();
+  ConsumerState<AnimatedCourseMaterialListCardMenu> createState() =>
+      _AnimatedCourseMaterialListCardMenuState();
 }
 
-class _AnimatedCourseMaterialCardMenuState
-    extends ConsumerState<AnimatedCourseMaterialCardMenu> {
+class _AnimatedCourseMaterialListCardMenuState
+    extends ConsumerState<AnimatedCourseMaterialListCardMenu> {
   @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        final cam = widget.courseMaterialCardActionModels;
+        final cam = widget.CourseMaterialListCardActionModels;
         final List<Widget> genCardFuncs = List.generate(cam.length, (index) {
           return ScaleTransition(
             scale: widget.expandAnim,
@@ -183,7 +183,7 @@ class _AnimatedCourseMaterialCardMenuState
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(cam[index].icon),
+                  Icon(cam[index].icon, color: ref.theme.secondaryText),
                   ConstantSizing.rowSpacingSmall,
                   CustomText(cam[index].label, color: ref.theme.primaryText),
                 ],
@@ -206,46 +206,46 @@ class _AnimatedCourseMaterialCardMenuState
   }
 }
 
-// class CourseMaterialCardModel {
+// class CourseMaterialListCardModel {
 //   final String title;
 //   final double progress;
 //   final Widget? previewImage;
 //   final void Function()? onOpen;
-//   final List<CourseMaterialCardActionModel> CourseMaterialCardActionModels;
+//   final List<CourseMaterialListCardActionModel> CourseMaterialListCardActionModels;
 
-//   CourseMaterialCardModel({
+//   CourseMaterialListCardModel({
 //     required this.title,
 //     required this.progress,
 //     this.previewImage,
 //     this.onOpen,
-//     required this.CourseMaterialCardActionModels,
+//     required this.CourseMaterialListCardActionModels,
 //   });
 
-//   CourseMaterialCardModel copyWith({
+//   CourseMaterialListCardModel copyWith({
 //     String? title,
 //     double? progress,
 //     Widget? previewImage,
 //     void Function()? onOpen,
-//     List<CourseMaterialCardActionModel>? CourseMaterialCardActionModels,
+//     List<CourseMaterialListCardActionModel>? CourseMaterialListCardActionModels,
 //   }) {
-//     return CourseMaterialCardModel(
+//     return CourseMaterialListCardModel(
 //       title: title ?? this.title,
 //       progress: progress ?? this.progress,
 //       previewImage: previewImage ?? this.previewImage,
 //       onOpen: onOpen ?? this.onOpen,
-//       CourseMaterialCardActionModels: CourseMaterialCardActionModels ?? this.CourseMaterialCardActionModels,
+//       CourseMaterialListCardActionModels: CourseMaterialListCardActionModels ?? this.CourseMaterialListCardActionModels,
 //     );
 //   }
 // }
 
-class CourseMaterialCardActionModel {
+class CourseMaterialListCardActionModel {
   final String label;
   final IconData icon;
   final void Function() onTap;
 
-  CourseMaterialCardActionModel({required this.label, required this.icon, required this.onTap});
+  CourseMaterialListCardActionModel({required this.label, required this.icon, required this.onTap});
 
-  CourseMaterialCardActionModel copyWith({String? label, IconData? icon, void Function()? onTap}) {
-    return CourseMaterialCardActionModel(label: label ?? this.label, icon: icon ?? this.icon, onTap: onTap ?? this.onTap);
+  CourseMaterialListCardActionModel copyWith({String? label, IconData? icon, void Function()? onTap}) {
+    return CourseMaterialListCardActionModel(label: label ?? this.label, icon: icon ?? this.icon, onTap: onTap ?? this.onTap);
   }
 }

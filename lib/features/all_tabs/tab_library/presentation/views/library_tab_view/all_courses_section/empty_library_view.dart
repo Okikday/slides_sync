@@ -16,14 +16,16 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 // }
 
 class EmptyLibraryView extends ConsumerWidget {
-  const EmptyLibraryView({super.key, });
+  final bool asSliver;
+  const EmptyLibraryView({super.key, this.asSliver = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SliverToBoxAdapter(
-      child: ListView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+    final child = SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
+      child: Column(
+        // shrinkWrap: true,
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox.square(
             dimension: context.deviceWidth * 0.5,
@@ -62,5 +64,10 @@ class EmptyLibraryView extends ConsumerWidget {
         ],
       ),
     );
+    if (asSliver) {
+      return SliverToBoxAdapter(child: child);
+    } else {
+      return child;
+    }
   }
 }

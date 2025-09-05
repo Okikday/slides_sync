@@ -8,6 +8,8 @@ class CourseRepo {
   static final IsarData<Course> _isarData = IsarData.instance<Course>();
   static Future<Isar> get _isar async => await IsarData.isarFuture;
 
+  static Future<QueryBuilder<Course, Course, QFilterCondition>> get filter async=> (await _isar).courses.filter();
+
   static Future<QueryBuilder<Course, Course, QAfterFilterCondition>> _queryById(String courseId) async {
     return (await _isarData.query<Course>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
   }

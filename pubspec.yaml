@@ -99,7 +99,7 @@ dependencies:
   firebase_database: ^12.0.0
   firebase_storage: ^13.0.0
   google_sign_in: ^6.3.0
-  family_bottom_sheet: ^0.1.0
+  infinite_scroll_pagination: ^5.1.1
 
 flutter_native_splash:
   android: true

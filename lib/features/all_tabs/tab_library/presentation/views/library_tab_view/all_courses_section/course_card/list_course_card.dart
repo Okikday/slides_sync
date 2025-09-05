@@ -33,7 +33,7 @@ class ListCourseCard extends ConsumerWidget {
       offset: Offset(-12, 12),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        constraints: BoxConstraints(minHeight: 100, maxHeight: 140),
+        constraints: BoxConstraints(minHeight: 100, maxHeight: 140, maxWidth: 500),
         decoration: BoxDecoration(
           color: theme.background.blendColor(isDarkMode ? 0.09 : 0.91),
           borderRadius: BorderRadius.circular(20),

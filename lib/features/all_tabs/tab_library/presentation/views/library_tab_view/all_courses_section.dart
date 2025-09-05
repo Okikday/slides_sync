@@ -1,23 +1,14 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
-import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/course_card/grid_course_card.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/course_card/list_course_card.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/expand_card_dialog.dart';
 import 'package:slides_sync/features/course_navigation/presentation/providers/course_provider.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/is_list_view_notifier.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/courses_view.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/all_courses_section/empty_library_view.dart';
-import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/widgets/loading_view.dart';
 
 class AllCoursesSection extends ConsumerStatefulWidget {
   final AsyncNotifierProvider<IsListViewNotifier, bool> isListViewAsyncProvider;
@@ -31,7 +22,7 @@ class AllCoursesSection extends ConsumerStatefulWidget {
 class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with AutomaticKeepAliveClientMixin {
   late final AutoDisposeStateProviderFamily<bool, int> scaleClickProviderFamily;
   late final StateProvider<bool> isCourseClickedProvider;
-  late final StreamProvider<List<Course>> watchAllcoursesProvider;
+  // late final StreamProvider<List<Course>> watchAllcoursesProvider;
   late final StateProvider<Offset?> longPressDetailsProvider;
 
   @override
@@ -39,7 +30,7 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
     super.initState();
     scaleClickProviderFamily = AutoDisposeStateProviderFamily((ref, index) => false);
     isCourseClickedProvider = StateProvider((ref) => false);
-    watchAllcoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
+    // watchAllcoursesProvider = StreamProvider((ref) => CourseRepo.watchAllCourses());
     longPressDetailsProvider = StateProvider<Offset?>((ref) => null);
   }
 
@@ -75,61 +66,17 @@ class _AllCoursesSectionState extends ConsumerState<AllCoursesSection> with Auto
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final AsyncValue<List<Course>> streamedCourses = ref.watch(watchAllcoursesProvider);
-    final AsyncValue<bool> asyncIsListView = ref.watch(widget.isListViewAsyncProvider);
-    final isListView = asyncIsListView.value ?? false;
+    final bool isListView = ref.watch(widget.isListViewAsyncProvider).value ?? false;
 
-    return streamedCourses.when(
-      data: (List<Course> data) {
-        if (data.isEmpty) {
-          return EmptyLibraryView();
-        }
-
-        return SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          sliver: CoursesView(
-            isListView,
-            scaleClickProviderFamily: scaleClickProviderFamily,
-            longPressTapDetailsProvider: longPressDetailsProvider,
-            data: data,
-            onTap: (index) => onTap(data[index]),
-            onLongPress: (index) => onLongPress(data[index]),
-          ),
-        );
-      },
-      error: (error, st) {
-        log("error: $st");
-        return SliverToBoxAdapter(child: RotatedBox(quarterTurns: 2, child: Icon(Iconsax.info_circle)));
-      },
-      loading: () {
-        return SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          sliver:
-              isListView
-                  ? SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => Skeletonizer(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: ListCourseCard(defaultCourse, onTapIcon: () {}),
-                        ),
-                      ),
-                      childCount: 5,
-                    ),
-                  )
-                  : SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: context.deviceHeight > context.deviceWidth ? 2 : 3,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => Skeletonizer(child: GridCourseCard(defaultCourse, onTapIcon: () {})),
-                      childCount: 5,
-                    ),
-                  ),
-        );
-      },
+    return SliverPadding(
+      padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
+      sliver: CoursesView(
+        isListView,
+        scaleClickProviderFamily: scaleClickProviderFamily,
+        longPressTapDetailsProvider: longPressDetailsProvider,
+        onTap: (course) => onTap(course),
+        onLongPress: (course) => onLongPress(course),
+      ),
     );
   }
 

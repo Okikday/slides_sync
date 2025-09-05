@@ -24,7 +24,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
     // final AsyncValue<bool> asyncIsListView = ref.watch(isListViewProvider);
     // final double scrollOffset = ref.watch(scrollOffsetProvider);
     const double maxHeight = 240; // context.deviceHeight * 0.3
-    const double minHeight = 80;
+    final double minHeight = kToolbarHeight;
 
     return SliverAppBar(
       pinned: true,
@@ -36,6 +36,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
       automaticallyImplyLeading: false,
       flexibleSpace: FlexibleSpaceBar(
         expandedTitleScale: 1.0,
+        titlePadding: EdgeInsets.all(0),
         background: Container(
           
           decoration: BoxDecoration(

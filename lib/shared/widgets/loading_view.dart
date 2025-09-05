@@ -14,8 +14,8 @@ class LoadingView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
-      child: SizedBox(
-        height: 124,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 124),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -38,8 +38,8 @@ class LoadingView extends ConsumerWidget {
                 ),
               ),
             ).animate().scale(begin: Offset(0.6, 0.6), end: Offset(1, 1), duration: Durations.extralong1, curve: CustomCurves.bouncySpring),
-            ConstantSizing.columnSpacingMedium,
-            CustomText(msg, color: ref.theme.primaryText),
+            if (msg.isNotEmpty) ConstantSizing.columnSpacingMedium,
+            if (msg.isNotEmpty) CustomText(msg, color: ref.theme.primaryText),
           ],
         ),
       ),
