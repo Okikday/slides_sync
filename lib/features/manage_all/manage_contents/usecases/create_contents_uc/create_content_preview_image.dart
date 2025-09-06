@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
+import 'package:pdfx/pdfx.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -13,22 +14,47 @@ typedef PreviewImagePathRecord<Record> = ({String previewDirPath, String preview
 class CreateContentPreviewImage {
   /// Returns the preview path where the image file is stored at after making a compressed version of the image
   static Future<String?> _createForTypeImage(String path, PreviewImagePathRecord previewPathRecord) async {
-    log("Creating preview for Type Image");
-    final Result<File> result = await ImageUtils.compressImage(inputFile: File(path), targetMB: 0.05, outputFormat: 'png');
-    
-    if (result.isSuccess) {
-      final String cachePath = result.data!.path;
-      await Directory(previewPathRecord.previewDirPath).create();
-      final file = File(cachePath);
-      final copyToPath = previewPathRecord.previewPath;
-      await file.copy(copyToPath);
-      await file.delete();
-      return copyToPath;
-    }
-    return null;
+    final Result<String?> result = await Result.tryRunAsync(() async {
+      log("Creating preview for Type Image");
+      final Result<File> result = await ImageUtils.compressImage(
+        inputFile: File(path),
+        targetMB: 0.05,
+        outputFormat: 'png',
+      );
+
+      if (result.isSuccess) {
+        final String cachePath = result.data!.path;
+        await Directory(previewPathRecord.previewDirPath).create();
+        final file = File(cachePath);
+        final copyToPath = previewPathRecord.previewPath;
+        await file.copy(copyToPath);
+        await file.delete();
+        return copyToPath;
+      }
+    });
+
+    return result.data;
   }
 
-  void createForTypeDocument() {}
+  static Future<String?> _createForTypeDocument(String path, PreviewImagePathRecord previewPathRecord) async {
+    final Result<String?> result = await Result.tryRunAsync(() async {
+      final doc = await PdfDocument.openFile(path);
+      final page = await doc.getPage(1);
+
+      final pageImage = await page.render(width: page.width, height: page.height, format: PdfPageImageFormat.png);
+
+      await Directory(previewPathRecord.previewDirPath).create(recursive: true);
+      final file = File(previewPathRecord.previewPath);
+      await file.writeAsBytes(pageImage?.bytes ?? []);
+
+      await page.close();
+      await doc.close();
+      log("Created preview for document: ${file.path}");
+      return file.path;
+    });
+    return result.data;
+  }
+
   void createForTypeLink() {}
 
   static Future<void> createPreviewImageForContent(
@@ -36,9 +62,13 @@ class CreateContentPreviewImage {
     required CourseContentType courseContentType,
     required PreviewImagePathRecord genPreviewPathRecord,
   }) async {
+    log("ContentType for preview: ${courseContentType.name}");
     switch (courseContentType) {
       case CourseContentType.image:
         await _createForTypeImage(path, genPreviewPathRecord);
+        break;
+      case CourseContentType.document:
+        await _createForTypeDocument(path, genPreviewPathRecord);
         break;
       default:
         break;
@@ -46,7 +76,8 @@ class CreateContentPreviewImage {
     return;
   }
 
-  static String genPreviewImagePath({required String filePath}) => genPreviewImagePathRecord(filePath: filePath).previewPath;
+  static String genPreviewImagePath({required String filePath}) =>
+      genPreviewImagePathRecord(filePath: filePath).previewPath;
 
   static PreviewImagePathRecord genPreviewImagePathRecord({required String filePath}) {
     final int lastIndexOfPathSep = filePath.lastIndexOf(Platform.pathSeparator);
@@ -71,7 +102,8 @@ class CreateContentPreviewImage {
       final RootIsolateToken rootIsolateToken = args['rootIsolateToken'] as RootIsolateToken;
       BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
-      final List<CourseContent> allContents = (args['courseContentsJsons'] as List<String>).map((e) => courseContentFromJson(e)).toList();
+      final List<CourseContent> allContents =
+          (args['courseContentsJsons'] as List<String>).map((e) => courseContentFromJson(e)).toList();
 
       for (int i = 0; i < allContents.length; i++) {
         final content = allContents[i];

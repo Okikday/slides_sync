@@ -12,6 +12,7 @@ class HomeDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
         Scaffold.of(context).closeDrawer();
@@ -26,15 +27,15 @@ class HomeDrawer extends ConsumerWidget {
                 ConstantSizing.columnSpacing(kToolbarHeight + 24),
                 CircleAvatar(
                   radius: 40,
-                  backgroundColor: ref.theme.altBackgroundPrimary,
-                  child: Icon(Iconsax.user, color: ref.theme.secondaryText),
+                  backgroundColor: theme.altBackgroundPrimary,
+                  child: Icon(Iconsax.user, color: theme.secondaryText),
                 ),
                 ConstantSizing.columnSpacingMedium,
-                CustomText("Username", color: ref.theme.primaryText),
+                CustomText("Username", color: theme.primaryText),
                 ConstantSizing.columnSpacingSmall,
                 CustomText(
                   "Some description",
-                  color: ref.theme.secondaryText.withValues(alpha: 0.6),
+                  color: theme.secondaryText.withValues(alpha: 0.6),
                 ),
 
                 ConstantSizing.columnSpacingExtraLarge,
@@ -42,23 +43,23 @@ class HomeDrawer extends ConsumerWidget {
                 ListTile(
                   leading: Icon(
                     Iconsax.profile_tick,
-                    color: ref.theme.secondaryText,
+                    color: theme.secondaryText,
                   ),
-                  title: CustomText("Profile", color: ref.theme.primaryText),
+                  title: CustomText("Profile", color: theme.primaryText),
                 ),
                 ListTile(
                   leading: Icon(
                     Iconsax.bookmark,
-                    color: ref.theme.secondaryText,
+                    color: theme.secondaryText,
                   ),
-                  title: CustomText("Bookmarks", color: ref.theme.primaryText),
+                  title: CustomText("Bookmarks", color: theme.primaryText),
                 ),
                 ListTile(
                   leading: Icon(
                     Iconsax.setting,
-                    color: ref.theme.secondaryText,
+                    color: theme.secondaryText,
                   ),
-                  title: CustomText("Settings", color: ref.theme.primaryText),
+                  title: CustomText("Settings", color: theme.primaryText),
                   onTap: () {
                     AppNavigator.to(context).settingsRoute();
                   },
@@ -66,9 +67,9 @@ class HomeDrawer extends ConsumerWidget {
                 ListTile(
                   leading: Icon(
                     Iconsax.information_copy,
-                    color: ref.theme.secondaryText,
+                    color: theme.secondaryText,
                   ),
-                  title: CustomText("Help", color: ref.theme.primaryText),
+                  title: CustomText("Help", color: theme.primaryText),
                 ),
               ],
             ),

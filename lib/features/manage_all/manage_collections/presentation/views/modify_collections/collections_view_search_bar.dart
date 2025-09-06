@@ -12,6 +12,7 @@ class CollectionsViewSearchBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return ClipRRect(
       child: ColoredBox(
         color: context.scaffoldBackgroundColor.withValues(alpha: 0.6),
@@ -27,14 +28,14 @@ class CollectionsViewSearchBar extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10.0),
                     child: CustomTextfield(
                       hint: "Search collections",
-                      hintStyle: TextStyle(color: ref.theme.secondaryText),
-                      selectionHandleColor: ref.theme.primaryColor,
-                      inputTextStyle: TextStyle(fontSize: 15, color: ref.theme.primaryText),
-                      backgroundColor: ref.isDarkMode ? ref.theme.surfaceLight : ref.theme.surfaceDark,
+                      hintStyle: TextStyle(color: theme.secondaryText),
+                      selectionHandleColor: theme.primaryColor,
+                      inputTextStyle: TextStyle(fontSize: 15, color: theme.primaryText),
+                      backgroundColor: ref.isDarkMode ? theme.surfaceLight : theme.surfaceDark,
                       border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.zero),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 12.0, right: 10.0, top: 12.0, bottom: 12.0),
-                        child: Icon(Iconsax.search_normal_copy, size: 20, color: ref.theme.secondaryText),
+                        child: Icon(Iconsax.search_normal_copy, size: 20, color: theme.secondaryText),
                       ),
                     ),
                   ),
@@ -43,7 +44,7 @@ class CollectionsViewSearchBar extends ConsumerWidget {
                 CustomElevatedButton(
                   pixelHeight: 48,
                   shape: CircleBorder(),
-                  backgroundColor: ref.theme.altBackgroundPrimary,
+                  backgroundColor: theme.altBackgroundPrimary,
                   child: Icon(Iconsax.filter_copy, size: 20, color: AppColors.secondaryText(context)),
                 ),
               ],

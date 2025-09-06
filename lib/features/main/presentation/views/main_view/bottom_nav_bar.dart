@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -12,38 +13,35 @@ class BottomNavBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final bool isScrolled = ref.watch(isMainScrolledProvider);
-    final int currentIndex = ref.watch(mainTabViewIndexProvider);
+    final theme = ref.theme;
+    final int currentIndex = ref.watch(MainProviders.mainTabViewIndexProvider);
 
-    return Container(
+    return Material(
+      type: MaterialType.transparency,
       clipBehavior: Clip.antiAlias,
-
-      // margin: EdgeInsets.only(bottom: context.bottomPadding, left: 8, right: 8),
-      decoration: BoxDecoration(
-        // borderRadius: BorderRadius.circular(kBottomNavigationBarHeight),
-        // color: ref.theme.background..withValues(alpha: 0.8),
-        border: Border(top: BorderSide(color: ref.theme.bgText.withAlpha(80))),
-      ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: currentIndex,
-          unselectedItemColor: ref.theme.secondaryText,
-          selectedItemColor: ref.theme.primaryColor,
-          onTap: (index) => onTap(index),
-          backgroundColor: ref.theme.background.withValues(alpha: 0.8),
-          elevation: 0,
-          landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
-            BottomNavigationBarItem(
-              icon: Icon(Iconsax.folder),
-              label: "Library",
-              tooltip: "Library holding all your courses",
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore courses"),
-          ],
+      shape: Border(top: BorderSide(color: theme.bgText.withAlpha(40))),
+      child: RepaintBoundary(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: currentIndex,
+            unselectedItemColor: theme.secondaryText,
+            selectedItemColor: theme.primaryColor,
+            onTap: (index) => onTap(index),
+            backgroundColor: theme.background.withValues(alpha: 0.8),
+            elevation: 0,
+            landscapeLayout: BottomNavigationBarLandscapeLayout.linear,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Iconsax.home), label: "Home", tooltip: "Home"),
+              BottomNavigationBarItem(
+                icon: Icon(Iconsax.folder),
+                label: "Library",
+                tooltip: "Library holding all your courses",
+              ),
+              BottomNavigationBarItem(icon: Icon(Icons.explore_rounded), label: "Explore", tooltip: "Explore courses"),
+            ],
+          ),
         ),
       ),
     );

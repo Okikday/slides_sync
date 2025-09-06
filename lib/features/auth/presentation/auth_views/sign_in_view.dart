@@ -21,8 +21,9 @@ class SignInView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const Color primaryPurple = Color(0xFF7D19FF);
+    final theme = ref.theme;
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(ref.theme.background, context.isDarkMode),
+      value: UiUtils.getSystemUiOverlayStyle(theme.background, context.isDarkMode),
       child: Scaffold(
         body: Stack(
           fit: StackFit.expand,
@@ -45,11 +46,11 @@ class SignInView extends ConsumerWidget {
                 children: [
                   Container(
                     width: context.deviceWidth/2,
-                    decoration: BoxDecoration(color: ref.theme.background, shape: BoxShape.circle),
+                    decoration: BoxDecoration(color: theme.background, shape: BoxShape.circle),
                     child: Image.asset("assets/logo/tinted_white_transparent.png")),
                   ConstantSizing.columnSpacing(kToolbarHeight),
 
-                  CustomText("Sign in to Slide..Sync and Simplify your learning journey", color: ref.theme.primaryText, textAlign: TextAlign.center,),
+                  CustomText("Sign in to Slide..Sync and Simplify your learning journey", color: theme.primaryText, textAlign: TextAlign.center,),
                   ConstantSizing.columnSpacing(kToolbarHeight),
                   CustomElevatedButton(
                     label: "Sign in",
@@ -57,7 +58,7 @@ class SignInView extends ConsumerWidget {
                     pixelHeight: 60,
                     borderRadius: 100,
                     backgroundColor: primaryPurple,
-                    textColor: ref.theme.onPrimaryText,
+                    textColor: theme.onPrimaryText,
                     onClick: () async {
                       UiUtils.showCustomDialog(
                         context,
@@ -68,7 +69,7 @@ class SignInView extends ConsumerWidget {
                           fit: StackFit.expand,
                           alignment: Alignment.center,
                           children: [
-                            Positioned.fill(child: OrganicBackgroundEffect(gradientColors: [ref.theme.primaryColor, Color(0xFF008080)], gradientOpacity: 0.1,)),
+                            Positioned.fill(child: OrganicBackgroundEffect(gradientColors: [theme.primaryColor, Color(0xFF008080)], gradientOpacity: 0.1,)),
                             Positioned.fill(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -83,12 +84,12 @@ class SignInView extends ConsumerWidget {
                                         values: [
                                           ValueDelegate.colorFilter([
                                             "**",
-                                          ], value: ColorFilter.mode(ref.theme.primaryColor, BlendMode.srcIn)),
+                                          ], value: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn)),
                                         ],
                                       ),
                                     ),
                                   ),
-                                  CustomText("Signing you in...Just a moment", color: ref.theme.onPrimaryText, fontSize: 20, fontWeight: FontWeight.bold,)
+                                  CustomText("Signing you in...Just a moment", color: theme.onPrimaryText, fontSize: 20, fontWeight: FontWeight.bold,)
                                 ],
                               ),
                             ),

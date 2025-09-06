@@ -17,6 +17,7 @@ class WelcomeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -30,7 +31,7 @@ class WelcomeView extends ConsumerWidget {
               right: 0,
               child: Image.asset(
                 Assets.images.clouds,
-                color: ref.theme.primaryColor.withAlpha(10),
+                color: theme.primaryColor.withAlpha(10),
                 colorBlendMode: BlendMode.srcIn,
               ),
             ),
@@ -69,7 +70,7 @@ class WelcomeView extends ConsumerWidget {
                             "Welcome to Slide",
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: ref.theme.primaryText,
+                            color: theme.primaryText,
                           ),
                           CustomTextSpanData(
                             "Sync",
@@ -83,7 +84,7 @@ class WelcomeView extends ConsumerWidget {
                       CustomText(
                         "Where learning meets flow. Organized, always",
                         fontSize: 14,
-                        color: ref.theme.secondaryText,
+                        color: theme.secondaryText,
                       ),
                     ],
                   ),

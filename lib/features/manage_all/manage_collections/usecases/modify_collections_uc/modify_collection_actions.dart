@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/core/routes/routes.dart';

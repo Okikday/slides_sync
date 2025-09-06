@@ -21,6 +21,7 @@ class CourseMaterialGridCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Heroine(
       tag: "CourseMaterialGridCard=>ContentViewGate=>${courseContent.contentId}",
       adjustToRouteTransitionDuration: true,
@@ -37,7 +38,7 @@ class CourseMaterialGridCard extends ConsumerWidget {
             decoration: BoxDecoration(
               color: AppColors.bgBlendColor(context),
               borderRadius: BorderRadius.circular(16),
-              border: Border.fromBorderSide(BorderSide(color: ref.theme.altBackgroundSecondary.withAlpha(100))),
+              border: Border.fromBorderSide(BorderSide(color: theme.altBackgroundSecondary.withAlpha(100))),
             ),
             child: Column(
               children: [
@@ -59,7 +60,7 @@ class CourseMaterialGridCard extends ConsumerWidget {
                   children: [
                     LinearProgressIndicator(
                       value: 0.4,
-                      color: ref.theme.primaryColor.withAlpha(60),
+                      color: theme.primaryColor.withAlpha(60),
                       backgroundColor: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
                     ),
           
@@ -74,7 +75,7 @@ class CourseMaterialGridCard extends ConsumerWidget {
                           Flexible(
                             child: CustomText(
                               courseContent.title,
-                              color: ref.theme.primaryText,
+                              color: theme.primaryText,
                               fontWeight: FontWeight.w600,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -82,7 +83,7 @@ class CourseMaterialGridCard extends ConsumerWidget {
                           CustomText(
                             Formatter.formatEnumName(courseContent.courseContentType.name),
                             fontSize: 11,
-                            color: ref.theme.secondaryText,
+                            color: theme.secondaryText,
                           ),
                         ],
                       ),

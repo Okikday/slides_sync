@@ -20,6 +20,7 @@ class ModifyContentsHeader extends ConsumerWidget {
     final padding6 = hPadding * .6;
 
     final btnDimension = context.defaultBtnDimension * .8;
+    final theme = ref.theme;
     return PinnedHeaderSliver(
       child: ClipRRect(
         child: BackdropFilter(
@@ -36,18 +37,18 @@ class ModifyContentsHeader extends ConsumerWidget {
                     children: [
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
-                        backgroundColor: ref.theme.altBackgroundPrimary,
+                        backgroundColor: theme.altBackgroundPrimary,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding7),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onSelect,
                         child: CustomText(
                           "Select",
-                          color: ref.theme.secondaryText,
+                          color: theme.secondaryText,
                         ),
                       ),
                       CustomElevatedButton(
                         pixelHeight: btnDimension,
-                        backgroundColor: ref.theme.altBackgroundPrimary,
+                        backgroundColor: theme.altBackgroundPrimary,
                         contentPadding: EdgeInsets.symmetric(horizontal: padding6),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onClickFilter,
@@ -57,11 +58,11 @@ class ModifyContentsHeader extends ConsumerWidget {
                             Icon(
                               Icons.keyboard_arrow_down,
                               size: 22,
-                              color: ref.theme.secondaryText,
+                              color: theme.secondaryText,
                             ),
                             CustomText(
                               "Filter",
-                              color: ref.theme.secondaryText,
+                              color: theme.secondaryText,
                             ),
                           ],
                         ),
@@ -71,13 +72,13 @@ class ModifyContentsHeader extends ConsumerWidget {
                         pixelHeight: btnDimension,
                         pixelWidth: btnDimension,
                         shape: CircleBorder(),
-                        backgroundColor: ref.theme.altBackgroundPrimary,
+                        backgroundColor: theme.altBackgroundPrimary,
                         contentPadding: EdgeInsets.all(padding4),
                         borderRadius: ConstantSizing.borderRadiusCircle,
                         onClick: onSearch,
                         child: Icon(
                           Iconsax.search_normal_copy,
-                          color: ref.theme.secondaryText,
+                          color: theme.secondaryText,
                         ),
                       ),
                     ],

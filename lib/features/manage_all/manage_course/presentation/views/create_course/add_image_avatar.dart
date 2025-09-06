@@ -17,19 +17,20 @@ class AddImageAvatar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final String? courseImagePath = ref.watch(courseImagePathProvider);
     final double imgRadius = context.deviceHeight > context.deviceWidth ? context.deviceWidth * 0.4 : context.deviceHeight * 0.4;
+    final theme = ref.theme;
 
     return Container(
           width: imgRadius,
           height: imgRadius,
           clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: ref.theme.altBackgroundPrimary),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: theme.altBackgroundPrimary),
           child: InkWell(
             customBorder: CircleBorder(),
             onTap: () async {
               UiUtils.showLoadingDialog(context, message: "Selecting image...", backgroundColor: Colors.white10, blurSigma: Offset(2, 2));
               ImagePicker imagePicker = ImagePicker();
               final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
-              if (context.mounted) CustomDialog.hide(context);
+              if (context.mounted) UiUtils.hideDialog(context);
               if (pickedImage == null) {
                 if (context.mounted) UiUtils.showFlushBar(context, msg: "Oops, you didn't select an image");
                 return;
@@ -50,7 +51,7 @@ class AddImageAvatar extends ConsumerWidget {
             },
             child:
                 courseImagePath == null
-                    ? Icon(Iconsax.folder_add, size: 72, color: ref.theme.primaryColor)
+                    ? Icon(Iconsax.folder_add, size: 72, color: theme.primaryColor)
                     : Image.file(File(courseImagePath), fit: BoxFit.cover, width: imgRadius, height: imgRadius)
                         .animate()
                         .scale(

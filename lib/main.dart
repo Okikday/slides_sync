@@ -8,17 +8,18 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
 import 'package:slides_sync/core/storage/isar_data/isar_schemas.dart';
 import 'package:slides_sync/core/utils/app_engine.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Firebase.initializeApp();
   await AppHiveData.instance.initialize();
-  
-  if (!kIsWeb) await IsarData.initialize(collectionSchemas: isarSchemas);
 
-  final container = ProviderContainer();
+  if (!kIsWeb) await IsarData.initialize(collectionSchemas: isarSchemas);
 
   await AppEngine().loadTheme(container);
 
   runApp(UncontrolledProviderScope(container: container, child: const App()));
 }
+
+final ProviderContainer container = ProviderContainer();

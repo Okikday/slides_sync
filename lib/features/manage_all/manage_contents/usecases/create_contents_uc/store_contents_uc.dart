@@ -18,20 +18,23 @@ import 'package:uuid/uuid.dart';
 class StoreContentsUc {
   static CourseCollection collectionFromJson(String source) => CourseCollection.fromJson(source);
 
-  static Future<String?> storeCourseContents(Map<String, dynamic> args) async {
-    final Result<String?> outcome = await Result.tryRunAsync<String?>(() async {
-      CourseCollection collection = collectionFromJson(args['collectionJson']);
-      final selectedContentPaths = args['selectedContentsPaths'];
-      final List<File> selectedContents = [for (final value in selectedContentPaths) File(value)];
+  /// Returns a List of Map containing...[..duplicate, ..success, ..fileName, ..contentId]
+  static Future<List<Map<String, dynamic>>> storeCourseContents(Map<String, dynamic> args) async {
+    List<Map<String, dynamic>> addContentResultList = [];
+    final Result<dynamic> outcome = await Result.tryRunAsync(() async {
+      final List<String> selectedContentPaths = args['selectedContentsPaths'];
       final RootIsolateToken rootIsolateToken = args['rootIsolateToken'] as RootIsolateToken;
       BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-      await IsarData.initialize(collectionSchemas: isarSchemas);
+      await IsarData.initialize(collectionSchemas: isarSchemas, inspector: false);
+
+      CourseCollection? collection = await CourseCollectionRepo.getById(args['collectionId']);
+      if (collection == null) return "Unable to load collection";
 
       final String dirToStoreAt = collection.absolutePath;
-      // This would be a list that holds the paths of the purge in case the operation fails
-      List<CourseContent> contentList = [];
 
-      for (var file in selectedContents) {
+      for (var filePath in selectedContentPaths) {
+        final file = File(filePath);
+
         // potentialPurgePaths.add(file.path);
         final fileName = p.basename(file.path);
         final fileNameWithoutExt = p.basenameWithoutExtension(fileName);
@@ -39,49 +42,64 @@ class StoreContentsUc {
         final CourseContent? sameHashedContent = await CourseContentRepo.getByHash(hash);
         final CourseContentType contentType = checkContentType(fileName);
 
-        if (sameHashedContent != null) {
-          final CourseContent content = CourseContent.create(
-            contentHash: hash,
-            title: fileNameWithoutExt,
-            parentId: collection.collectionId,
-            path: sameHashedContent.path.fileDetails,
-            courseContentType: contentType,
-          );
-          contentList.add(content);
-          continue;
-        } else {
-          final String contentId = const Uuid().v4();
-          final File storedAt = File(
-            await FileUtils.storeFile(file: file, folderPath: dirToStoreAt, newFileName: p.setExtension(contentId, p.extension(file.path))),
-          );
+        final Result<String?> addContentResult = await Result.tryRunAsync(() async {
+          if (sameHashedContent != null) {
+            // final CourseContent content = CourseContent.create(
+            //   contentHash: hash,
+            //   title: fileNameWithoutExt,
+            //   parentId: collection.collectionId,
+            //   path: sameHashedContent.path.fileDetails,
+            //   courseContentType: contentType,
+            // );
+            log("A duplicate exists!");
+            // await CourseCollectionRepo.addContent(content);
+            return '';
+          } else {
+            final String contentId = const Uuid().v4();
+            final File storedAt = File(
+              await FileUtils.storeFile(
+                file: file,
+                folderPath: dirToStoreAt,
+                newFileName: p.setExtension(contentId, p.extension(file.path)),
+              ),
+            );
 
-          final CourseContent content = CourseContent.create(
-            contentHash: hash,
-            contentId: contentId,
-            title: fileNameWithoutExt,
-            parentId: collection.collectionId,
-            path: FileDetails(filePath: storedAt.path),
-            courseContentType: contentType,
-          );
-          await CreateContentPreviewImage.createPreviewImageForContent(
-            storedAt.path,
-            courseContentType: contentType,
-            genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt.path),
-          );
-          contentList.add(content);
+            final CourseContent content = CourseContent.create(
+              contentHash: hash,
+              contentId: contentId,
+              title: fileNameWithoutExt,
+              parentId: collection.collectionId,
+              path: FileDetails(filePath: storedAt.path),
+              courseContentType: contentType,
+            );
+            await CreateContentPreviewImage.createPreviewImageForContent(
+              storedAt.path,
+              courseContentType: contentType,
+              genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt.path),
+            );
+            await CourseCollectionRepo.addContent(content);
+            return content.contentId;
+          }
+        });
+        final String? contentId = addContentResult.data;
+
+        if (addContentResult.isSuccess && (addContentResult.data != null && addContentResult.data!.isNotEmpty)) {
+          addContentResultList.add({'success': true, 'fileName': p.basename(filePath), 'contentId': contentId});
+        } else {
+          addContentResultList.add({
+            'success': false,
+            'fileName': p.basename(filePath),
+            'duplicate': (contentId != null && contentId.isEmpty) ? true : null,
+          });
         }
       }
-      await CourseCollectionRepo.addMultipleContents(contentList);
-      return null;
+
+      return addContentResultList;
     });
-    if (outcome.isSuccess && outcome.data == null) {
-      return null;
-    } else if (outcome.isSuccess) {
-      return outcome.data;
-    } else {
+    if (!outcome.isSuccess) {
       log("${outcome.message}");
-      return "An error occured while storing content!";
     }
+    return addContentResultList;
   }
 
   /// Returns the CourseContentType for a file extension or path.

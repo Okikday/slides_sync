@@ -18,6 +18,7 @@ class Onboarding1 extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final shapeRadius = context.deviceWidth < context.deviceHeight ? context.deviceWidth : context.deviceHeight;
     const Color primaryPurple = Color(0xFF7D19FF);
+    final theme = ref.theme;
     return Heroine(
       tag: "Welcome-to-Onboarding1",
       child: Scaffold(
@@ -52,7 +53,7 @@ class Onboarding1 extends ConsumerWidget {
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   shape: BoxShape.circle,
-                  border: Border.fromBorderSide(BorderSide(color: ref.theme.primaryColor.withAlpha(10), width: 1)),
+                  border: Border.fromBorderSide(BorderSide(color: theme.primaryColor.withAlpha(10), width: 1)),
                 ),
                 child: ClipOval(
                   child: ColoredBox(
@@ -120,7 +121,7 @@ class Onboarding1 extends ConsumerWidget {
                 backgroundColor: primaryPurple,
                 pixelWidth: 60,
                 pixelHeight: 60,
-                child: Icon(Iconsax.arrow_right_1_copy, size: 32, color: ref.theme.onPrimaryText),
+                child: Icon(Iconsax.arrow_right_1_copy, size: 32, color: theme.onPrimaryText),
                 onClick: () {
                  
                   Navigator.push(context, PageAnimation.pageRouteBuilder(SignInView(), type: TransitionType.fade));

@@ -50,7 +50,7 @@ class GridCourseCard extends ConsumerWidget {
           //     image: Assets.images.bookSparkleTransparentBg.asImageProvider,
           //   opacity: 0.05,
           //     colorFilter: ColorFilter.mode(
-          //       ref.theme.primaryColor,
+          //       theme.primaryColor,
           //       BlendMode.srcIn,
           //     ),
           // ),
@@ -100,7 +100,7 @@ class GridCourseCard extends ConsumerWidget {
                                 courseCode,
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
-                                color: ref.theme.primaryColor.withAlpha(200),
+                                color: theme.primaryColor.withAlpha(200),
                               ),
                             ),
                           ),
@@ -119,7 +119,7 @@ class GridCourseCard extends ConsumerWidget {
                       overflow: TextOverflow.fade,
                       fontWeight: FontWeight.bold,
                       fontSize: 13.5,
-                      color: ref.theme.primaryText,
+                      color: theme.primaryText,
                     ),
                   ),
                 ),
@@ -133,7 +133,7 @@ class GridCourseCard extends ConsumerWidget {
                   child: CustomText(
                     "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
                     fontSize: 12,
-                    color: ref.theme.secondaryText.withValues(alpha: 0.8),
+                    color: theme.secondaryText.withValues(alpha: 0.8),
                   ),
                 ),
 

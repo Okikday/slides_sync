@@ -31,6 +31,7 @@ class EditCourseTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
@@ -46,7 +47,7 @@ class EditCourseTile extends ConsumerWidget {
             ClipOval(
               // borderRadius: BorderRadius.circular(13),
               child: ColoredBox(
-                color: ref.theme.primaryColor.withAlpha(80),
+                color: theme.primaryColor.withAlpha(80),
                 child: Padding(
                   padding: EdgeInsets.all(2),
                   child: ClipOval(
@@ -62,7 +63,7 @@ class EditCourseTile extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (courseCode.isNotEmpty) CustomTextButton(
-                      backgroundColor: ref.theme.primaryColor.withAlpha(80),
+                      backgroundColor: theme.primaryColor.withAlpha(80),
                     pixelHeight: 24,
                     borderRadius: 12,
                     contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -76,7 +77,7 @@ class EditCourseTile extends ConsumerWidget {
                       courseName,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: ref.theme.primaryText,
+                      color: theme.primaryText,
                     ),
                   ),
 
@@ -89,7 +90,7 @@ class EditCourseTile extends ConsumerWidget {
                       CustomText(
                         "$categoriesCount items",
                         fontSize: 12,
-                        color: ref.theme.secondaryText,
+                        color: theme.secondaryText,
                       ),
                     ],
                   ),
@@ -109,9 +110,9 @@ class EditCourseTile extends ConsumerWidget {
                     selectionState.isSelecting && !selectionState.selected
                         ? Colors.grey
                         : (selectionState.isSelecting && selectionState.selected
-                            ? ref.theme.primaryColor
+                            ? theme.primaryColor
                             :
-                            ref.theme.primaryColor),
+                            theme.primaryColor),
                 size: 26,
               ),
             ).animate().scale(begin: Offset(0, 0), end: Offset(1, 1), curve: CustomCurves.bouncySpring, duration: Durations.extralong4),

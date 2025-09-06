@@ -8,7 +8,6 @@ import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/viewmodels/recent_dialog_model.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {
@@ -23,7 +22,8 @@ class RecentDialog extends ConsumerStatefulWidget {
 class _RecentDialogState extends ConsumerState<RecentDialog> {
   @override
   Widget build(BuildContext context) {
-    var divider = Divider(color: context.theme.colorScheme.secondary.withAlpha(40), height: 0);
+    final theme = ref.theme;
+    var divider = Divider(color: theme.primaryColor.withAlpha(40), height: 0);
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),
       child: ColoredBox(
@@ -40,7 +40,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
               decoration: BoxDecoration(
                 color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: ref.theme.altBackgroundPrimary),
+                border: Border.all(color: theme.altBackgroundPrimary),
               ),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
@@ -73,7 +73,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   child: Icon(
                                     Iconsax.star_copy,
                                     size: 26,
-                                    color: ref.theme.secondaryText,
+                                    color: theme.secondaryText,
                                   ),
                                 ),
                                 CustomElevatedButton(
@@ -83,7 +83,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   child: Icon(
                                     Iconsax.note_add_copy,
                                     size: 26,
-                                    color: ref.theme.secondaryText,
+                                    color: theme.secondaryText,
                                   ),
                                 ),
                               ],
@@ -106,13 +106,13 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                               widget.recentDialogModel.title,
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
-                              color: ref.theme.primaryText,
+                              color: theme.primaryText,
                             ),
                             ConstantSizing.columnSpacingSmall,
                             CustomText(
                               "Short detail",
                               fontSize: 12.0,
-                              color: ref.theme.secondaryText,
+                              color: theme.secondaryText,
                             ),
                           ],
                         ),
@@ -136,7 +136,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                 "Description",
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                color: ref.theme.primaryText,
+                                color: theme.primaryText,
                               ),
                               ConstantSizing.columnSpacingSmall,
                               CustomText(
@@ -144,7 +144,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                     .substring(0, widget.recentDialogModel.description.length.clamp(0, 128))
                                     .padRight(3, "."),
                                 fontSize: 13,
-                                color: ref.theme.secondaryText,
+                                color: theme.secondaryText,
                               ),
                             ],
                           ),
@@ -160,8 +160,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Continue reading",
-                          icon: Icon(Iconsax.play_copy, size: 24, color: ref.theme.secondaryText,),
-                          textStyle: TextStyle(fontSize: 16, color: ref.theme.primaryText),
+                          icon: Icon(Iconsax.play_copy, size: 24, color: theme.secondaryText,),
+                          textStyle: TextStyle(fontSize: 16, color: theme.primaryText),
                           onTap: () {},
                         ),
 
@@ -169,8 +169,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Share",
-                          icon: Icon(Icons.share_outlined, size: 24, color: ref.theme.secondaryText),
-                          textStyle: TextStyle(fontSize: 15, color: ref.theme.primaryText),
+                          icon: Icon(Icons.share_outlined, size: 24, color: theme.secondaryText),
+                          textStyle: TextStyle(fontSize: 15, color: theme.primaryText),
                           onTap: () {},
                         ),
 
@@ -179,7 +179,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                         BuildPlainActionButton(
                           title: "Remove from recents",
                           icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                          textStyle: TextStyle(fontSize: 15, color: ref.theme.primaryText),
+                          textStyle: TextStyle(fontSize: 15, color: theme.primaryText),
                           onTap: () {},
                         ),
 

@@ -11,8 +11,9 @@ class AddContentFAB extends ConsumerWidget {
   const AddContentFAB({super.key, required this.collection});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return FloatingActionButton(
-      backgroundColor: ref.theme.primaryColor,
+      backgroundColor: theme.primaryColor,
       shape: CircleBorder(),
       onPressed: () {
         CustomDialog.show(
@@ -25,7 +26,7 @@ class AddContentFAB extends ConsumerWidget {
           child: AddContentsBottomSheet(collection: collection),
         );
       },
-      child: Icon(Iconsax.add_copy, color: ref.theme.onPrimaryText),
+      child: Icon(Iconsax.add_copy, color: theme.onPrimaryText),
     );
   }
 }

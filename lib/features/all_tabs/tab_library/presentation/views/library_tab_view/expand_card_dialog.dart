@@ -14,27 +14,26 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
-class ExpandCardDialog extends ConsumerStatefulWidget {
-  final Size? widgetSize;
+class ExpandCardDialog extends ConsumerWidget {
   final Offset tapPosition;
   final Course course;
   final void Function() onOpen;
 
-  const ExpandCardDialog({super.key, this.widgetSize, required this.tapPosition, required this.course, required this.onOpen});
+  const ExpandCardDialog({super.key, required this.tapPosition, required this.course, required this.onOpen});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ExpandCardDialogState();
-}
-
-class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    final Size widgetSize = widget.widgetSize ?? Size(180, 150);
-    final boundedOffset = repositionOffset(tapPosition: widget.tapPosition, screenSize: context.screenSize, widgetSize: widgetSize);
-    final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
+    final Size widgetSize = const Size(180, 150);
+    final boundedOffset = repositionOffset(
+      tapPosition: tapPosition,
+      screenSize: context.screenSize,
+      widgetSize: widgetSize,
+    );
+    final double dimension =
+        (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     final divider = Divider(color: AppColors.bgBlendColor(context), height: 0);
-    
+
     return Stack(
       clipBehavior: Clip.hardEdge,
       children: [
@@ -55,7 +54,7 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
           child: InkWell(
             borderRadius: BorderRadius.circular(16),
             onTap: () {
-              widget.onOpen();
+              onOpen();
             },
             child: Container(
               height: kToolbarHeight + 4,
@@ -64,7 +63,9 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                 color: AppColors.bgBlendColor(context, .88, .12),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .86, .14)),
-                boxShadow: [BoxShadow(blurStyle: BlurStyle.outer, blurRadius: 1, offset: Offset(1, 1), color: Colors.black12)],
+                boxShadow: [
+                  BoxShadow(blurStyle: BlurStyle.outer, blurRadius: 1, offset: Offset(1, 1), color: Colors.black12),
+                ],
               ),
               child: Row(
                 spacing: 12,
@@ -74,8 +75,7 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                     children: [
                       CircleAvatar(
                         radius: dimension / 2 - 3,
-                        backgroundColor: theme.altBackgroundSecondary
-                            .withValues(alpha: 0.4),
+                        backgroundColor: theme.altBackgroundSecondary.withValues(alpha: 0.4),
                         child: ClipOval(
                           child: CircleAvatar(
                             radius: dimension / 2 - 4,
@@ -83,12 +83,8 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                             child: SizedBox.square(
                               dimension: dimension - 8,
                               child: BuildImagePathWidget(
-                                fileDetails: widget.course.imageLocationJson.fileDetails,
-                                fallbackWidget: Icon(
-                                  Iconsax.document_1,
-                                  size: 16,
-                                  color: ref.theme.primaryText,
-                                ),
+                                fileDetails: course.imageLocationJson.fileDetails,
+                                fallbackWidget: Icon(Iconsax.document_1, size: 16, color: theme.primaryText),
                               ),
                             ),
                           ),
@@ -96,20 +92,19 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                       ),
 
                       Positioned(
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    child: IgnorePointer(
-                      child: CircularProgressIndicator(
-                        value: 0.01,
-                        strokeCap: StrokeCap.round,
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: IgnorePointer(
+                          child: CircularProgressIndicator(
+                            value: 0.01,
+                            strokeCap: StrokeCap.round,
                             color: theme.primaryColor,
-                            backgroundColor: theme.altBackgroundSecondary
-                                .withValues(alpha: 0.6),
+                            backgroundColor: theme.altBackgroundSecondary.withValues(alpha: 0.6),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
                     ],
                   ),
                   Expanded(
@@ -120,29 +115,24 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                       children: [
                         Flexible(
                           child: CustomText(
-                            widget.course.courseName,
+                            course.courseName,
                             fontSize: 14,
-                            color: ref.theme.primaryText,
+                            color: theme.primaryText,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (widget.course.courseCode.isNotEmpty)
-                          CustomText(
-                            widget.course.courseCode,
-                            fontSize: 10,
-                            color: ref.theme.secondaryText,
-                          ),
+                        if (course.courseCode.isNotEmpty)
+                          CustomText(course.courseCode, fontSize: 10, color: theme.secondaryText),
                       ],
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                    decoration: BoxDecoration(color: AppColors.bgBlendColor(context, .86, .14), borderRadius: BorderRadius.circular(4)),
-                    child: CustomText(
-                      widget.course.collections.length.toString(),
-                      fontSize: 12,
-                      color: ref.theme.secondaryText,
+                    decoration: BoxDecoration(
+                      color: AppColors.bgBlendColor(context, .86, .14),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    child: CustomText(course.collections.length.toString(), fontSize: 12, color: theme.secondaryText),
                   ),
                 ],
               ),
@@ -155,6 +145,7 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
             ),
           ),
         ),
+
         Positioned(
           left: boundedOffset.dx,
           top: boundedOffset.dy,
@@ -180,8 +171,8 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
                   title: "Modify course",
                   iconData: Iconsax.grid_edit,
                   onTap: () {
-                    CustomDialog.hide(context);
-                    AppNavigator.to(context).modifyCourseRoute(widget.course);
+                    UiUtils.hideDialog(context);
+                    AppNavigator.to(context).modifyCourseRoute(course);
                   },
                 ),
                 divider,
@@ -191,7 +182,11 @@ class _ExpandCardDialogState extends ConsumerState<ExpandCardDialog> {
               ],
             ),
           ).animate().fadeIn().scaleXY(
-            alignment: calculateAnimationAlignment(tapPosition: widget.tapPosition, screenSize: context.screenSize, widgetSize: widgetSize),
+            alignment: calculateAnimationAlignment(
+              tapPosition: tapPosition,
+              screenSize: context.screenSize,
+              widgetSize: widgetSize,
+            ),
             begin: 0.1,
             end: 1,
             curve: CustomCurves.defaultIosSpring,
@@ -237,7 +232,11 @@ Offset repositionOffset({required Size screenSize, required Size widgetSize, req
   return Offset(dx, dy);
 }
 
-Alignment calculateAnimationAlignment({required Size screenSize, required Size widgetSize, required Offset tapPosition}) {
+Alignment calculateAnimationAlignment({
+  required Size screenSize,
+  required Size widgetSize,
+  required Offset tapPosition,
+}) {
   final bool fitsRight = tapPosition.dx + widgetSize.width <= screenSize.width;
   // final bool fitsLeft = tapPosition.dx - widgetSize.width >= 0;
   final bool fitsBelow = tapPosition.dy + widgetSize.height <= screenSize.height;

@@ -36,13 +36,14 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: widget.onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: ref.theme.bgSupportText.withAlpha(10),
-          border: Border.all(color: ref.theme.bgSupportText.withAlpha(12)),
+          color: theme.bgSupportText.withAlpha(10),
+          border: Border.all(color: theme.bgSupportText.withAlpha(12)),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -64,7 +65,7 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
               padding: const EdgeInsets.all(8.0),
               child: ClipPath(
                 clipper: MorphClipper(path: shape.toPath(), size: Size(20, 20)),
-                    child: ColoredBox(color: ref.theme.primaryColor),
+                    child: ColoredBox(color: theme.primaryColor),
               ),
             ),
               ),
@@ -78,12 +79,12 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
                     CustomText(
                       widget.title,
                       fontSize: 15,
-                      color: ref.theme.primaryText,
+                      color: theme.primaryText,
                     ),
                     CustomText(
                       "${widget.contentCount == 0 ? "No" : "${widget.contentCount}"} ${widget.contentCount == 1 ? "item" : "items"}",
                       fontSize: 12,
-                      color: ref.theme.secondaryText,
+                      color: theme.secondaryText,
                     ),
                   ],
                 ),

@@ -11,6 +11,7 @@ class PositionedCourseOptions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Positioned(
       bottom: context.bottomPadding + 16,
       left: 10,
@@ -22,19 +23,19 @@ class PositionedCourseOptions extends ConsumerWidget {
           CustomElevatedButton(
             borderRadius: 16,
             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            backgroundColor: ref.theme.bgSupportText.withAlpha(10),
+            backgroundColor: theme.bgSupportText.withAlpha(10),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 4,
               children: [
                 Flexible(
-                  child: Icon(Iconsax.play, color: ref.theme.secondaryText),
+                  child: Icon(Iconsax.play, color: theme.secondaryText),
                 ),
                 Flexible(
                   child: CustomText(
                     "Continue from last content",
                     fontSize: 13,
-                    color: ref.theme.primaryText,
+                    color: theme.primaryText,
                   ),
                 ),
               ],
@@ -45,8 +46,8 @@ class PositionedCourseOptions extends ConsumerWidget {
             pixelHeight: 48,
             pixelWidth: 48,
             borderRadius: 16,
-            backgroundColor: ref.theme.altBackgroundPrimary,
-            child: Icon(Icons.download_rounded, color: ref.theme.secondaryText),
+            backgroundColor: theme.altBackgroundPrimary,
+            child: Icon(Icons.download_rounded, color: theme.secondaryText),
           ),
         ],
       ),

@@ -28,6 +28,7 @@ class HomeDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Container(
       constraints: BoxConstraints(maxHeight: 100, maxWidth: 400),
       width: context.deviceWidth,
@@ -35,14 +36,14 @@ class HomeDashboard extends ConsumerWidget {
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
       margin: EdgeInsets.only(left: isFirst  == null ? 8 : 12, right: isFirst == null ? 0 : (isFirst! ? 0 : 12)),
       decoration: BoxDecoration(
-        color: ref.theme.background.blendColor(
-          context.isDarkMode ? 0.09 : 0.91,
+        color: theme.background.blendColor(
+          ref.isDarkMode ? 0.09 : 0.91,
         ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           width: 2,
-          color: ref.theme.background.blendColor(
-            context.isDarkMode ? 0.1 : 0.9,
+          color: theme.background.blendColor(
+            ref.isDarkMode ? 0.1 : 0.9,
           ),
         ),
         image: DecorationImage(
@@ -50,7 +51,7 @@ class HomeDashboard extends ConsumerWidget {
           fit: BoxFit.cover,
           opacity: 0.03,
           colorFilter: ColorFilter.mode(
-            ref.theme.primaryColor,
+            theme.primaryColor,
             BlendMode.srcIn,
           ),
         ),
@@ -70,7 +71,7 @@ class HomeDashboard extends ConsumerWidget {
                     courseName,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: ref.theme.primaryText,
+                    color: theme.primaryText,
                   ),
                 ),
               ),
@@ -81,7 +82,7 @@ class HomeDashboard extends ConsumerWidget {
             CustomText(
               detail,
               fontSize: 13,
-              color: ref.theme.secondaryText.withValues(alpha: 0.9),
+              color: theme.secondaryText.withValues(alpha: 0.9),
             ),
           ConstantSizing.columnSpacingSmall,
 
@@ -97,7 +98,7 @@ class HomeDashboard extends ConsumerWidget {
           //           borderRadius: BorderRadius.circular(36),
           //           value: progressValue,
           //           backgroundColor: Colors.black.withAlpha(40),
-          //           color: ref.theme.primaryColor.withValues(alpha: 0.6),
+          //           color: theme.primaryColor.withValues(alpha: 0.6),
           //         ),
           //       ),
           //     ),
@@ -117,11 +118,11 @@ class HomeDashboard extends ConsumerWidget {
                     elevation: 100,
                     borderRadius: 0,
                     overlayColor: context.theme.colorScheme.onPrimary.withAlpha(20),
-                    backgroundColor: ref.theme.primaryColor,
+                    backgroundColor: theme.primaryColor,
                     child: CustomText(
                       completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
                       fontSize: 15,
-                      color: ref.theme.onPrimaryText,
+                      color: theme.onPrimaryText,
                     ),
                     onClick: () {
                       if (onReadingBtnTapped != null) onReadingBtnTapped!();
@@ -138,13 +139,13 @@ class HomeDashboard extends ConsumerWidget {
                     pixelHeight: 46,
                     contentPadding: EdgeInsets.zero,
                     shape: CircleBorder(),
-                    backgroundColor: ref.theme.background,
+                    backgroundColor: theme.background,
                     onClick: () {},
                     child: CustomText(
                       "10%",
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: ref.theme.primaryText,
+                      color: theme.primaryText,
                     ),
                   ),
 
@@ -157,8 +158,8 @@ class HomeDashboard extends ConsumerWidget {
                       child: CircularProgressIndicator(
                         value: 0.1,
                         strokeCap: StrokeCap.round,
-                        color: ref.theme.primaryColor,
-                        backgroundColor: ref.theme.altBackgroundSecondary
+                        color: theme.primaryColor,
+                        backgroundColor: theme.altBackgroundSecondary
                             .withValues(alpha: 0.5),
                       ),
                     ),
@@ -171,7 +172,7 @@ class HomeDashboard extends ConsumerWidget {
               //   borderRadius: 12,
               //   elevation: 10,
               //   overlayColor: Colors.white.withAlpha(50),
-              //   backgroundColor: context.isDarkMode ? ref.theme.primaryColor.withAlpha(160) : Colors.black,
+              //   backgroundColor: context.isDarkMode ? theme.primaryColor.withAlpha(160) : Colors.black,
               //   onClick: () {
               //     if (onShareTapped != null) onShareTapped!();
               //   },

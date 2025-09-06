@@ -14,10 +14,10 @@ class HomeOuterScrollView extends ConsumerWidget {
       physics: NeverScrollableScrollPhysics(),
       headerSliverBuilder: (context, isInnerBoxScrolled) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (ref.read(mainTabViewIndexProvider.notifier).state == 0) {
-            final currValue = ref.read(isMainScrolledProvider.notifier).state;
+          if (ref.read(MainProviders.mainTabViewIndexProvider.notifier).state == 0) {
+            final currValue = ref.read(MainProviders.isMainScrolledProvider.notifier).state;
             if (currValue != isInnerBoxScrolled) {
-              ref.read(isMainScrolledProvider.notifier).update((cb) => isInnerBoxScrolled);
+              ref.read(MainProviders.isMainScrolledProvider.notifier).update((cb) => isInnerBoxScrolled);
             }
           }
         });

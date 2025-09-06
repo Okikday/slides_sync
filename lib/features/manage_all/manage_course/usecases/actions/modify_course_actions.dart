@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_uc.dart';
@@ -128,11 +129,13 @@ class ModifyCourseActions {
   }
 
   /// When the course image is clicked, it shows some options in a dialog the user can choose from.
-  void onClickCourseImage(BuildContext context, {required Course course}) {
+  void onClickCourseImage(WidgetRef ref, {required Course course}) {
+    final context = ref.context;
+    final iconColor = ref.theme.secondaryText;
     final List<AppActionDialogModel> dialogModels = [
       AppActionDialogModel(
         title: "View image",
-        icon: Icon(Iconsax.crop, size: 28),
+        icon: Icon(Iconsax.crop, size: 28, color: iconColor),
         onTap: () async {
           CustomDialog.hide(context);
           await Future.delayed(Durations.short2);
@@ -141,7 +144,7 @@ class ModifyCourseActions {
       ),
       AppActionDialogModel(
         title: "Change image",
-        icon: Icon(Iconsax.edit, size: 28),
+        icon: Icon(Iconsax.edit, size: 28, color: iconColor),
         onTap: () async {
           CustomDialog.hide(context);
           await Future.delayed(Durations.short2);
@@ -150,7 +153,7 @@ class ModifyCourseActions {
       ),
       AppActionDialogModel(
         title: "Remove image",
-        icon: Icon(Iconsax.trash, size: 28),
+        icon: Icon(Iconsax.trash, size: 28, color: iconColor),
         onTap: () async {
           CustomDialog.hide(context);
           await Future.delayed(Durations.short2);
@@ -168,7 +171,10 @@ class ModifyCourseActions {
       curve: CustomCurves.defaultIosSpring,
       barrierColor: Colors.black.withAlpha(220),
       child: AppActionDialog(
-        title: "What would you like to do?",
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12, bottom: 16),
+          child: CustomText("Adjust image", fontSize: 16, fontWeight: FontWeight.bold),
+        ),
         actions: dialogModels,
       ).animate().fadeIn().scaleXY(
         begin: 0.9,

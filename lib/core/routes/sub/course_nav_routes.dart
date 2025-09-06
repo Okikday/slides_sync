@@ -58,7 +58,7 @@ class CourseNavRoutes {
       pageBuilder:
           (context, state) => PageAnimation.buildCustomTransitionPage(
             state.pageKey,
-            type: TransitionType.fade,
+            type: TransitionType.rightToLeftWithFade,
             duration: Durations.extralong1,
             reverseDuration: Durations.medium1,
             curve: CustomCurves.defaultIosSpring,

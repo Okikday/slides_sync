@@ -4,7 +4,6 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class AppCustomizableDialog extends ConsumerWidget {
   final Widget? leading;
@@ -27,6 +26,7 @@ class AppCustomizableDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Stack(
       alignment: alignment,
       clipBehavior: Clip.hardEdge,
@@ -51,10 +51,10 @@ class AppCustomizableDialog extends ConsumerWidget {
             clipBehavior: Clip.hardEdge,
             constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
             decoration: BoxDecoration(
-              color: backgroundColor ?? ref.theme.frostedPrimaryBase,
+              color: backgroundColor ?? theme.altBackgroundPrimary,
               borderRadius: BorderRadius.circular(16.0),
               border: Border.fromBorderSide(
-                BorderSide(color: ref.theme.secondaryText.withAlpha(40), strokeAlign: BorderSide.strokeAlignOutside),
+                BorderSide(color: theme.secondaryText.withAlpha(40), strokeAlign: BorderSide.strokeAlignOutside),
               )
             ),
             padding: EdgeInsets.only(top: 16.0, bottom: 8.0),

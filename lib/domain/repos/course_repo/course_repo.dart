@@ -7,6 +7,7 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 class CourseRepo {
   static final IsarData<Course> _isarData = IsarData.instance<Course>();
   static Future<Isar> get _isar async => await IsarData.isarFuture;
+  static IsarData<Course> get isarData => _isarData;
 
   static Future<QueryBuilder<Course, Course, QFilterCondition>> get filter async=> (await _isar).courses.filter();
 

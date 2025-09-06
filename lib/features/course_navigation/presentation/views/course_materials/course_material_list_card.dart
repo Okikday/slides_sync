@@ -60,6 +60,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
     });
 
     final CourseContent courseContent = widget.courseContent;
+    final theme = ref.theme;
     return AnimatedContainer(
       duration: Durations.extralong4,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -68,7 +69,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
         type: MaterialType.transparency,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          overlayColor: WidgetStatePropertyAll(ref.theme.altBackgroundPrimary),
+          overlayColor: WidgetStatePropertyAll(theme.altBackgroundPrimary),
           onTap: widget.onTapCard,
           onLongPress: widget.onLongPressed,
           child: Padding(
@@ -84,9 +85,9 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                       height: 50,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        color: ref.theme.primaryColor.withAlpha(40),
+                        color: theme.primaryColor.withAlpha(40),
                         borderRadius: BorderRadius.circular(12),
-                        // boxShadow: [BoxShadow(color: ref.theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
+                        // boxShadow: [BoxShadow(color: theme.primaryColor.withAlpha(80), blurRadius: 2, spreadRadius: 2)],
                       ),
                       child: BuildImagePathWidget(
                         fileDetails: FileDetails(
@@ -112,7 +113,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                               child: CustomText(
                                 courseContent.title,
                                 fontSize: 13,
-                                color: ref.theme.primaryText,
+                                color: theme.primaryText,
                                 fontWeight: FontWeight.w600,
                                 overflow: TextOverflow.fade,
                               ),
@@ -121,7 +122,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                             CustomText(
                               Formatter.formatEnumName(courseContent.courseContentType.name),
                               fontSize: 11,
-                              color: ref.theme.secondaryText,
+                              color: theme.secondaryText,
                             ),
                             // ConstantSizing.columnSpacing(8),
                             // LinearProgressIndicator(
@@ -129,7 +130,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                             //   borderRadius: BorderRadius.circular(36),
                             //   value: math.Random().nextDouble(),
                             //   backgroundColor: Colors.black.withAlpha(40),
-                            //   color: ref.theme.primaryColor, //.withAlpha(40)
+                            //   color: theme.primaryColor, //.withAlpha(40)
                             // ),
                           ],
                         ),
@@ -170,6 +171,7 @@ class _AnimatedCourseMaterialListCardMenuState
     extends ConsumerState<AnimatedCourseMaterialListCardMenu> {
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     return Builder(
       builder: (context) {
         final cam = widget.CourseMaterialListCardActionModels;
@@ -178,14 +180,14 @@ class _AnimatedCourseMaterialListCardMenuState
             scale: widget.expandAnim,
             child: CustomElevatedButton(
               borderRadius: 24,
-              backgroundColor: ref.theme.primaryColor.withAlpha(40),
+              backgroundColor: theme.primaryColor.withAlpha(40),
               onClick: cam[index].onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(cam[index].icon, color: ref.theme.secondaryText),
+                  Icon(cam[index].icon, color: theme.secondaryText),
                   ConstantSizing.rowSpacingSmall,
-                  CustomText(cam[index].label, color: ref.theme.primaryText),
+                  CustomText(cam[index].label, color: theme.primaryText),
                 ],
               ),
             ),

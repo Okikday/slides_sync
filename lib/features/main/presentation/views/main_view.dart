@@ -27,7 +27,9 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
   void initState() {
     super.initState();
     pageController = PageController(initialPage: widget.tabIndex);
-    WidgetsBinding.instance.addPostFrameCallback((_) => ref.read(mainTabViewIndexProvider.notifier).update((cb) => widget.tabIndex));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => ref.read(MainProviders.mainTabViewIndexProvider.notifier).update((cb) => widget.tabIndex),
+    );
   }
 
   @override
@@ -50,21 +52,21 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
           extendBodyBehindAppBar: true,
           bottomNavigationBar: BottomNavBar(
             onTap: (index) {
-              if (index != ref.read(mainTabViewIndexProvider.notifier).state) {
-                ref.read(mainTabViewIndexProvider.notifier).update((cb) => index);
+              if (index != ref.read(MainProviders.mainTabViewIndexProvider.notifier).state) {
+                ref.read(MainProviders.mainTabViewIndexProvider.notifier).update((cb) => index);
                 pageController.animateToPage(index, duration: Duration(milliseconds: 600), curve: CustomCurves.defaultIosSpring);
               }
             },
           ),
 
-          drawer: HomeDrawer(),
+          drawer: const HomeDrawer(),
           
           body: PageView(
             controller: pageController,
             onPageChanged: (index) {
-              ref.read(mainTabViewIndexProvider.notifier).update((cb) => index);
+              ref.read(MainProviders.mainTabViewIndexProvider.notifier).update((cb) => index);
             },
-            children: [HomeTabView(), LibraryTabView(), ExploreTabView()],
+            children: const [HomeTabView(), LibraryTabView(), ExploreTabView()],
           ),
 
         ),

@@ -30,6 +30,7 @@ class AppBarContainerChild extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Material(
       type: MaterialType.transparency,
       shape: LinearBorder(
@@ -59,7 +60,7 @@ class AppBarContainerChild extends ConsumerWidget {
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
-                              color: ref.theme.primaryText,
+                              color: theme.primaryText,
                             ),
                             CustomText(
                               subtitle!,
@@ -76,7 +77,7 @@ class AppBarContainerChild extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                           style: titleStyle,
-                          color: ref.theme.primaryText,
+                          color: theme.primaryText,
                         ),
               ),
               if (trailing == null) ConstantSizing.rowSpacingMedium,

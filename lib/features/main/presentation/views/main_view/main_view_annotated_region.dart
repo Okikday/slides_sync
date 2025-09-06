@@ -10,11 +10,12 @@ class MainViewAnnotatedRegion extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDarkMode = context.isDarkMode;
-    final Brightness brightness = isDarkMode ? Brightness.light : Brightness.dark;
+    final theme = ref.theme;
+    final Brightness brightness = theme.brightness;
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        statusBarColor: ref.watch(isMainScrolledProvider) ? context.theme.colorScheme.secondary.withAlpha(100) : context.scaffoldBackgroundColor,
+        statusBarColor:
+            ref.watch(MainProviders.isMainScrolledProvider) ? theme.secondaryColor.withAlpha(100) : theme.background,
         statusBarBrightness: brightness,
         statusBarIconBrightness: brightness,
         systemNavigationBarIconBrightness: brightness,

@@ -112,30 +112,11 @@ class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDia
 
               ConstantSizing.columnSpacingMedium,
 
-              CustomElevatedButton(label: "Generate theme", textColor: ref.theme.onPrimaryText, backgroundColor: ref.theme.primaryColor, onClick: () {
-                Navigator.push(context, PageAnimation.pageRouteBuilder(ThemeGeneratorView()));
-              },),
+              // CustomElevatedButton(label: "Generate theme", textColor: ref.theme.onPrimaryText, backgroundColor: ref.theme.primaryColor, onClick: () {
+              //   Navigator.push(context, PageAnimation.pageRouteBuilder(ThemeGeneratorView()));
+              // },),
 
-              ConstantSizing.columnSpacingMedium,
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CustomElevatedButton(
-                    label: 'Cancel',
-                    backgroundColor: ref.watch(appThemeProvider).altBackgroundPrimary,
-                    textColor: ref.watch(appThemeProvider).primaryText,
-                    onClick: () => Navigator.of(context).pop(),
-                  ),
-                  const SizedBox(width: 12),
-                  CustomElevatedButton(
-                    label: 'Close',
-                    backgroundColor: ref.watch(appThemeProvider).primaryColor,
-                    textColor: ref.watch(appThemeProvider).onPrimaryText,
-                    onClick: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
+              
             ],
           ),
         ),
@@ -176,21 +157,17 @@ class ThemePairPicker extends ConsumerWidget {
 
   Brightness _resolveBrightness(BuildContext context, Brightness? forced) {
     if (forced != null) return forced;
-    // read current theme brightness (follow app)
     return Theme.of(context).brightness;
   }
 
   Future<void> _applyPair(BuildContext context, WidgetRef ref, ThemePair pair, Brightness chosen) async {
     final AppThemeModel modelToApply = (chosen == Brightness.dark) ? pair.darkModel : pair.lightModel;
 
-    // Apply via your app theme provider (keep your existing method)
     try {
       ref.read(appThemeProvider.notifier).update(modelToApply);
     } catch (_) {
-      // If your provider API differs, replace the above with your update logic
     }
 
-    // persist selection (same approach as your current code)
     try {
       await AppHiveData.instance.setData(key: "appTheme", value: modelToApply.toJson());
     } catch (_) {}
@@ -199,7 +176,6 @@ class ThemePairPicker extends ConsumerWidget {
   }
 
   Widget _buildSwatchPair(BuildContext context, ThemePair pair) {
-    // Small preview: left = light, right = dark
     return Row(
       children: [
         Expanded(

@@ -19,6 +19,7 @@ class RecentsSectionBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     if (recentCourses.isEmpty) {
       return SliverToBoxAdapter(
         child: ListView(
@@ -31,12 +32,12 @@ class RecentsSectionBody extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: CustomElevatedButton(
-                backgroundColor: ref.theme.primaryColor,
+                backgroundColor: theme.primaryColor,
                 borderRadius: 12,
                 pixelHeight: 44,
                 label: "Explore Courses",
                 textSize: 15,
-                textColor: ref.theme.onPrimaryText,
+                textColor: theme.onPrimaryText,
               ),
             ),
           ],

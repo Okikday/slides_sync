@@ -45,7 +45,7 @@ class ListCourseCard extends ConsumerWidget {
           //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
           //   opacity: 0.05,
           //   fit: BoxFit.cover,
-          //   colorFilter: ColorFilter.mode(ref.theme.primaryColor, BlendMode.srcIn),
+          //   colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
           // ),
         ),
         child: Row(

@@ -9,7 +9,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_link_bottom_sheet.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/add_contents_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/add_contents_actions.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -40,7 +40,7 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned.fill(child: GestureDetector(onTap: () => CustomDialog.hide(context))),
+        Positioned.fill(child: GestureDetector(onTap: () => UiUtils.hideDialog(context))),
         Positioned(
           left: 0,
           right: 0,
@@ -73,6 +73,7 @@ class AddContentCardSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Map<int, CourseContentType> typeMap = {0: CourseContentType.unknown, 1: CourseContentType.image, 2: CourseContentType.document};
+    final theme = ref.theme;
     return Container(
       width: context.deviceWidth,
       constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
@@ -80,7 +81,7 @@ class AddContentCardSection extends ConsumerWidget {
       padding: EdgeInsets.only(bottom: 4.0),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: AppColors.bgBlendColor(context).withValues(alpha: 0.8),
+        color: AppColors.bgBlendColor(context).withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(24),
         border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(20))),
       ),
@@ -97,7 +98,7 @@ class AddContentCardSection extends ConsumerWidget {
                 "What kind of content do you want to add?",
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: ref.theme.primaryText,
+                color: theme.primaryText,
               ).animate().fadeIn().slideX(begin: -0.05),
             ),
             // ConstantSizing.columnSpacingSmall,
@@ -117,11 +118,11 @@ class AddContentCardSection extends ConsumerWidget {
                             title: "Document",
                                 icon: Icon(
                                   Iconsax.document,
-                                  color: ref.theme.primaryColor,
+                                  color: theme.primaryColor,
                                 ),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
-                                  context,
+                                  ref,
                                   collection: collection,
                                   type: typeMap[2] ?? typeMap[0]!,
                                 ),
@@ -131,11 +132,11 @@ class AddContentCardSection extends ConsumerWidget {
                             title: "Auto",
                                 icon: Icon(
                                   Iconsax.autobrightness,
-                                  color: ref.theme.primaryColor,
+                                  color: theme.primaryColor,
                                 ),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
-                                  context,
+                                  ref,
                                   collection: collection,
                                   type: typeMap[0] ?? typeMap[0]!,
                                 ),
@@ -145,11 +146,11 @@ class AddContentCardSection extends ConsumerWidget {
                             title: "Image",
                                 icon: Icon(
                                   Iconsax.image,
-                                  color: ref.theme.primaryColor,
+                                  color: theme.primaryColor,
                                 ),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
-                                  context,
+                                  ref,
                                   collection: collection,
                                   type: typeMap[1] ?? typeMap[0]!,
                                 ),
@@ -170,7 +171,7 @@ class AddContentCardSection extends ConsumerWidget {
                             // final createdNote = await AddContentsUc.createNote(collection);
                             // log("created note: ${createdNote.toString()}");
                           },
-                          backgroundColor: ref.theme.altBackgroundPrimary,
+                          backgroundColor: theme.altBackgroundPrimary,
                           pixelHeight: 40,
                           borderRadius: 16,
                           child: Row(
@@ -178,11 +179,11 @@ class AddContentCardSection extends ConsumerWidget {
                             children: [
                               Icon(
                                 Iconsax.note_add,
-                                color: ref.theme.secondaryText,
+                                color: theme.secondaryText,
                               ),
                               CustomText(
                                 "Add note",
-                                color: ref.theme.primaryText,
+                                color: theme.primaryText,
                               ),
                             ],
                           ),
@@ -191,14 +192,14 @@ class AddContentCardSection extends ConsumerWidget {
                       Flexible(
                         child: CustomElevatedButton(
                           onClick: () {
-                            CustomDialog.hide(context);
+                            UiUtils.hideDialog(context);
                             UiUtils.showCustomDialog(
                               context,
                               transitionType: TransitionType.fade,
                               child: AddLinkBottomSheet(collection: collection),
                             );
                           },
-                          backgroundColor: ref.theme.altBackgroundPrimary,
+                          backgroundColor: theme.altBackgroundPrimary,
                           pixelHeight: 40,
                           borderRadius: 16,
                           child: Row(
@@ -206,9 +207,9 @@ class AddContentCardSection extends ConsumerWidget {
                             children: [
                               Icon(
                                 Iconsax.link_circle,
-                                color: ref.theme.secondaryText,
+                                color: theme.secondaryText,
                               ),
-                              CustomText("Add link", color: ref.theme.primaryText),
+                              CustomText("Add link", color: theme.primaryText),
                             ],
                           ),
                         ),

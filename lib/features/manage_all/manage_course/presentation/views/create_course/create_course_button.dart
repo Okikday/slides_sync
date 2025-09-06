@@ -67,7 +67,7 @@ class CreateCourseButton extends ConsumerWidget {
             courseImagePath: courseImagePath,
           );
 
-          if (context.mounted) CustomDialog.hide(context);
+          if (context.mounted) UiUtils.hideDialog(context);
 
           createCourseOutcome
               .doNext((value) async {

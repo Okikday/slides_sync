@@ -39,6 +39,7 @@ class ContentListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Padding(
       padding: EdgeInsets.only(top: 12, left: 8, right: 8),
       child: DecoratedBox(
@@ -65,7 +66,7 @@ class ContentListTile extends ConsumerWidget {
                   child: Icon(
                     Iconsax.star_1,
                     size: 16,
-                    color: ref.theme.primaryColor,
+                    color: theme.primaryColor,
                   ),
                 ),
                 offset:  Offset(0, -2),
@@ -98,7 +99,7 @@ class ContentListTile extends ConsumerWidget {
                           title,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: ref.theme.primaryText,
+                          color: theme.primaryText,
                           height: 1.0,
                         ),
                       ),
@@ -106,14 +107,14 @@ class ContentListTile extends ConsumerWidget {
                         child: CustomText(
                           subtitle,
                           fontSize: extraContent.isEmpty ? 14 : 12,
-                          color: ref.theme.secondaryText,
+                          color: theme.secondaryText,
                         ),
                       ),
                       if (extraContent.isNotEmpty)
                         CustomText(
                           extraContent,
                           fontSize: 13,
-                          color: ref.theme.primaryText,
+                          color: theme.primaryText,
                         ),
                     ],
                   ),
@@ -138,14 +139,14 @@ class ContentListTile extends ConsumerWidget {
                     progress == null
                             ? Icon(
                               Iconsax.arrow_right_2_copy,
-                              color: ref.theme.primaryText,
+                              color: theme.primaryText,
                               size: 26,
                             )
                             : CustomText(
                               "${(progress! * 100).truncate()}%",
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: ref.theme.primaryText,
+                              color: theme.primaryText,
                             ),
                   ),
 

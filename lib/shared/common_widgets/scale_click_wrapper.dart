@@ -24,6 +24,7 @@ class _ScaleClickWrapperState extends ConsumerState<ScaleClickWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     updateScaleClickProvider(bool newValue) => ref.read(scaleClickProvider.notifier).update((cb) => newValue);
     return AnimatedScale(
       scale: ref.watch(scaleClickProvider) ? 0.9 : 1.0,
@@ -33,8 +34,8 @@ class _ScaleClickWrapperState extends ConsumerState<ScaleClickWrapper> {
         type: MaterialType.transparency,
         child: InkWell(
           borderRadius: BorderRadius.circular(widget.borderRadius),
-          overlayColor: WidgetStatePropertyAll(ref.theme.altBackgroundPrimary),
-          splashColor: ref.theme.altBackgroundPrimary,
+          overlayColor: WidgetStatePropertyAll(theme.altBackgroundPrimary),
+          splashColor: theme.altBackgroundPrimary,
           onTapDown: (details) {
             updateScaleClickProvider(true);
           },

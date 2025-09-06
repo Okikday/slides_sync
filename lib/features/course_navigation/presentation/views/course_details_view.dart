@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,6 +77,7 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
   @override
   Widget build(BuildContext context) {
     final AsyncValue<Course> courseAsyncValue = ref.watch(CourseProviders.courseProvider);
+    
 
     return Stack(
       clipBehavior: Clip.hardEdge,

@@ -14,6 +14,7 @@ class RecentsSectionHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium, vertical: 0),
@@ -24,14 +25,14 @@ class RecentsSectionHeader extends ConsumerWidget {
                 "Recents",
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: ref.theme.primaryText,
+                color: theme.primaryText,
               ),
             ),
       
             CustomTextButton(
               label: "See all",
               contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              textColor: ref.theme.secondaryText.withValues(alpha: 0.9),
+              textColor: theme.secondaryText.withValues(alpha: 0.9),
               textSize: 14,
               pixelHeight: 32,
               onClick: onClickSeeAll,

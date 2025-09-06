@@ -24,7 +24,8 @@ class HomeAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topPadding = context.topPadding;
-    final bool isScrolled = ref.watch(isMainScrolledProvider);
+    final theme = ref.theme;
+    final bool isScrolled = ref.watch(MainProviders.isMainScrolledProvider);
     return SliverAppBar(
       elevation: 64,
       pinned: true,
@@ -62,7 +63,7 @@ class HomeAppBar extends ConsumerWidget {
                     ? LinearBorder(
                       bottom: LinearBorderEdge(),
                       side: BorderSide(
-                        color: ref.theme.altBackgroundSecondary.withValues(
+                        color: theme.altBackgroundSecondary.withValues(
                           alpha: 0.4,
                         ),
                       ),
@@ -73,8 +74,8 @@ class HomeAppBar extends ConsumerWidget {
               clipBehavior: Clip.hardEdge,
               color:
                   isScrolled
-                      ? ref.theme.altBackgroundPrimary.withValues(alpha: 0.75)
-                      : ref.theme.background,
+                      ? theme.altBackgroundPrimary.withValues(alpha: 0.75)
+                      : theme.background,
               child:
                   isScrolled
                       ? BackdropFilter(
@@ -111,17 +112,17 @@ class HomeAppBar extends ConsumerWidget {
                       overlayColor: context.theme.colorScheme.secondary
                           .withAlpha(40),
                       contentPadding: EdgeInsets.zero,
-                      backgroundColor: ref.theme.altBackgroundPrimary,
+                      backgroundColor: theme.altBackgroundPrimary,
                       shape: CircleBorder(
                         side: BorderSide(
-                          color: ref.theme.altBackgroundSecondary.withValues(
+                          color: theme.altBackgroundSecondary.withValues(
                             alpha: 0.4,
                           ),
                         ),
                       ),
                       child: Icon(
                         Iconsax.menu_1_copy,
-                        color: ref.theme.background.blendColor(
+                        color: theme.background.blendColor(
                           context.isDarkMode ? 0.88 : 0.1,
                         ),
                         size: context.defaultBtnDimension * 0.5,
@@ -134,16 +135,16 @@ class HomeAppBar extends ConsumerWidget {
                         title,
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
-                        color: ref.theme.primaryText,
+                        color: theme.primaryText,
                       ),
                     ),
 
                     // CustomElevatedButton(
                     //   shape: CircleBorder(),
                     //   backgroundColor: context.theme.secondary.withAlpha(40),
-                    //   overlayColor: ref.theme.primaryColor.withAlpha(20),
+                    //   overlayColor: theme.primaryColor.withAlpha(20),
                     //   onClick: onToggleFullScreen,
-                    //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : ref.theme.primaryColor),
+                    //   child: Icon(Iconsax.crop, color: context.isDarkMode ? Colors.white : theme.primaryColor),
                     // ),
                     CustomElevatedButton(
                       onClick: onClickNotification,
@@ -151,12 +152,12 @@ class HomeAppBar extends ConsumerWidget {
                           .withAlpha(40),
                       shape: CircleBorder(
                         side: BorderSide(
-                          color: ref.theme.altBackgroundSecondary.withValues(
+                          color: theme.altBackgroundSecondary.withValues(
                             alpha: 0.4,
                           ),
                         ),
                       ),
-                      backgroundColor: ref.theme.altBackgroundPrimary,
+                      backgroundColor: theme.altBackgroundPrimary,
                       child: Badge(
                         backgroundColor: Colors.transparent,
                         offset: Offset(-1, -1),
@@ -171,7 +172,7 @@ class HomeAppBar extends ConsumerWidget {
                         // ),
                         child: Icon(
                           Iconsax.moon,
-                          color: ref.theme.secondaryText,
+                          color: theme.secondaryText,
                           size: 24,
                         ),
                       ),

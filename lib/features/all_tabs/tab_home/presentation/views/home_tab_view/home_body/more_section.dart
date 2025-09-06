@@ -10,11 +10,12 @@ class MoreSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: ref.theme.altBackgroundPrimary,
+        color: theme.altBackgroundPrimary,
         borderRadius: BorderRadius.circular(24),
         border: Border.fromBorderSide(BorderSide(color: Colors.black.withAlpha(5))),
         image: DecorationImage(
@@ -22,7 +23,7 @@ class MoreSection extends ConsumerWidget {
           fit: BoxFit.cover,
           opacity: 0.01,
           colorFilter: ColorFilter.mode(
-            ref.theme.primaryColor,
+            theme.primaryColor,
             BlendMode.srcIn,
           ),
         ),
@@ -58,6 +59,7 @@ class MoreSectionOption extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 6.0,
@@ -67,10 +69,10 @@ class MoreSectionOption extends ConsumerWidget {
           pixelWidth: 48,
           // contentPadding: EdgeInsets.all(0),
           shape: const CircleBorder(),
-          backgroundColor: ref.theme.background,
-          child: Icon(iconData, color: ref.theme.secondaryText)
+          backgroundColor: theme.background,
+          child: Icon(iconData, color: theme.secondaryText)
         ),
-        CustomText(title, color: ref.theme.secondaryText, fontSize: 12),
+        CustomText(title, color: theme.secondaryText, fontSize: 12),
       ],
     );
   }

@@ -21,6 +21,7 @@ class EmptyLibraryView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     final child = SingleChildScrollView(
       physics: NeverScrollableScrollPhysics(),
       child: Column(
@@ -39,12 +40,12 @@ class EmptyLibraryView extends ConsumerWidget {
               onClick: () {
                 AppNavigator.to(context).createCourseRoute();
               },
-              backgroundColor: ref.theme.altBackgroundPrimary,
+              backgroundColor: theme.altBackgroundPrimary,
               borderRadius: 12,
               pixelHeight: 44,
               label: "Create your course",
               textSize: 15,
-              textColor: ref.theme.primaryText,
+              textColor: theme.primaryText,
             ),
           ),
 
@@ -53,7 +54,7 @@ class EmptyLibraryView extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: CustomElevatedButton(
-              backgroundColor: ref.theme.primaryColor,
+              backgroundColor: theme.primaryColor,
               borderRadius: 12,
               pixelHeight: 44,
               label: "Explore Courses",

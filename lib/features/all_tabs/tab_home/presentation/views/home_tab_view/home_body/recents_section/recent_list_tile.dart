@@ -26,12 +26,13 @@ class RecentListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Padding(
       padding: EdgeInsets.only(top: 0, left: 8, right: 8),
       child: CustomElevatedButton(
         backgroundColor: Colors.transparent,
         // backgroundColor: context.isDarkMode ? HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor() : HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.9).toColor(),
-        overlayColor: ref.theme.altBackgroundPrimary,
+        overlayColor: theme.altBackgroundPrimary,
         contentPadding: EdgeInsets.all(tilePadding),
         borderRadius: 12,
         onClick: () {
@@ -51,7 +52,7 @@ class RecentListTile extends ConsumerWidget {
                 child: Icon(
                   Iconsax.star_1,
                   size: 16,
-                  color: ref.theme.primaryColor,
+                  color: theme.primaryColor,
                 ),
               ),
               offset: Offset(0, -2),
@@ -62,7 +63,7 @@ class RecentListTile extends ConsumerWidget {
                 pixelHeight: 48,
                 pixelWidth: 48,
                 shape: CircleBorder(),
-                backgroundColor: ref.theme.altBackgroundPrimary.withValues(
+                backgroundColor: theme.altBackgroundPrimary.withValues(
                   alpha: 1,
                 ),
                 child: Icon(Iconsax.document_1, size: 26, color: AppColors.primary(context)),
@@ -88,7 +89,7 @@ class RecentListTile extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           height: 1.0,
-                          color: ref.theme.primaryText,
+                          color: theme.primaryText,
                         ),
                       ),
                     ),
@@ -96,7 +97,7 @@ class RecentListTile extends ConsumerWidget {
                       child: CustomText(
                         dataModel.subtitle,
                         fontSize: dataModel.extraContent.isEmpty ? 14 : 12,
-                        color: ref.theme.secondaryText.withValues(alpha: 0.8),
+                        color: theme.secondaryText.withValues(alpha: 0.8),
                       ),
                     ),
                     if (dataModel.extraContent.isNotEmpty) Flexible(child: CustomText(dataModel.extraContent, fontSize: 13)),
@@ -126,7 +127,7 @@ class RecentListTile extends ConsumerWidget {
                             "${(dataModel.progress! * 100).truncate()}%",
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: ref.theme.secondaryText.withValues(
+                            color: theme.secondaryText.withValues(
                               alpha: 0.5,
                             ),
                           ),
@@ -143,7 +144,7 @@ class RecentListTile extends ConsumerWidget {
                         value: dataModel.progress,
                         strokeCap: StrokeCap.round,
                         color: _resolveLevelColor(ref, dataModel.progressLevel),
-                        backgroundColor: ref.theme.altBackgroundSecondary
+                        backgroundColor: theme.altBackgroundSecondary
                             .withValues(alpha: 0.4),
                       ),
                     ),

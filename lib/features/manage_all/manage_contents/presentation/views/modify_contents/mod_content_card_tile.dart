@@ -7,7 +7,7 @@ import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/actions/modify_contents_action.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
 import 'package:slides_sync/shared/common_widgets/modifying_list_tile.dart';
@@ -45,6 +45,7 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
   Widget build(BuildContext context) {
     final CourseContent? currContent = ref.watch(contentProvider).value;
     final actions = getActions(context, currContent: currContent ?? widget.content);
+    final theme = ref.theme;
     return Padding(
       padding: EdgeInsets.only(bottom: context.hPadding7),
       child: ModifyingListTile(
@@ -53,22 +54,22 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
           fallbackWidget: Icon(
             WidgetHelper.resolveIconData(widget.content.courseContentType),
             size: 22,
-            color: ref.theme.primaryColor,
+            color: theme.primaryColor,
           ),
         ),
         trailing: PopupMenuTheme(
           data: PopupMenuThemeData(
-            color: ref.theme.background.withValues(alpha: 0.95),
+            color: theme.background.withValues(alpha: 0.95),
             shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
             shadowColor: Colors.white.withAlpha(10),
           ),
           child: CircleAvatar(
-            backgroundColor: ref.theme.altBackgroundPrimary,
+            backgroundColor: theme.altBackgroundPrimary,
             child: PopupMenuButton<int>(
               tooltip: "Show options",
               clipBehavior: Clip.hardEdge,
               menuPadding: EdgeInsets.zero,
-              icon: Icon(Iconsax.more_copy, color: ref.theme.secondaryText),
+              icon: Icon(Iconsax.more_copy, color: theme.secondaryText),
               onSelected: (value) => actions[value].onTap(),
               itemBuilder: (context) {
                 return List<PopupMenuItem<int>>.generate(actions.length, (index) {
@@ -93,12 +94,13 @@ class PopupMenuItemChild extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Row(
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        Icon(iconData, color: ref.theme.secondaryText),
-        CustomText(title, color: ref.theme.primaryText),
+        Icon(iconData, color: theme.secondaryText),
+        CustomText(title, color: theme.primaryText),
         ConstantSizing.rowSpacingSmall,
       ],
     );
@@ -123,7 +125,7 @@ List<ModContentCardTileAction> getActions(BuildContext context, {required Course
             defaultText: currContent.title,
             onSubmitted: (String text) async {
               await mca.onRenameContent(currContent, newTitle: text.trim());
-              if (context.mounted) CustomDialog.hide(context);
+              if (context.mounted) UiUtils.hideDialog(context);
             },
           ).animate().fadeIn().scaleY(
             begin: 0.1,

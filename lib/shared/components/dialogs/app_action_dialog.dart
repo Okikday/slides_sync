@@ -40,7 +40,8 @@ class AppActionDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final divider = Divider(color: ref.theme.secondaryText.withAlpha(60), height: 0);
+    final theme = ref.theme;
+    final divider = Divider(color: theme.secondaryText.withAlpha(60), height: 0);
     return AppCustomizableDialog(
       blurSigma: blurSigma,
       backgroundColor: backgroundColor,
@@ -59,7 +60,7 @@ class AppActionDialog extends ConsumerWidget {
                     child: Center(
                       child: CustomText(
                         title!,
-                        color: ref.theme.primaryText,
+                        color: theme.primaryText,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         textAlign: TextAlign.center,

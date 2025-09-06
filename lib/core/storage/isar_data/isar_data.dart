@@ -22,10 +22,14 @@ class IsarData<T> {
   IsarData._();
 
   /// Initializes the shared database only once
-  static Future<void> initialize({String dbName = 'default', List<CollectionSchema> collectionSchemas = const []}) async {
+  static Future<void> initialize({
+    String dbName = 'default',
+    List<CollectionSchema> collectionSchemas = const [],
+    bool inspector = true,
+  }) async {
     if (_openDb == null) {
       final dir = await getApplicationDocumentsDirectory();
-      _openDb = Isar.open(collectionSchemas, directory: dir.path, name: dbName);
+      _openDb = Isar.open(collectionSchemas, directory: dir.path, name: dbName, inspector: inspector);
       log("Initialized Isar");
     }
   }
@@ -89,6 +93,11 @@ class IsarData<T> {
     return isar.collection<T>().where().watchLazy(fireImmediately: true).asyncMap((_) => getAll());
   }
 
+  Future<Stream<void>> watchForChanges({bool fireImmediately = true}) async {
+    final isar = await isarFuture;
+    return isar.collection<T>().where().watchLazy(fireImmediately: fireImmediately);
+  }
+
   /// Stream specific object by ID in real-time.
   Stream<T?> watchById(int id, {bool fireImmediately = true}) async* {
     final isar = await isarFuture;
@@ -96,7 +105,9 @@ class IsarData<T> {
   }
 
   /// Stream query results in real-time.
-  Stream<List<T>> watchQuery(QueryBuilder<T, T, QAfterWhereClause> Function(QueryBuilder<T, T, QWhereClause>) builder) async* {
+  Stream<List<T>> watchQuery(
+    QueryBuilder<T, T, QAfterWhereClause> Function(QueryBuilder<T, T, QWhereClause>) builder,
+  ) async* {
     final isar = await isarFuture;
     final queryBuilder = isar.collection<T>().where();
     yield* builder(queryBuilder).watch(fireImmediately: true);

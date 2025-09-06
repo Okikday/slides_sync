@@ -7,7 +7,7 @@ import 'package:slides_sync/core/routes/routes_strings.dart';
 class AppNavigator {
   final BuildContext context;
   final bool _isPushedAsReplacement;
-  AppNavigator(this.context, {bool isPushedAsReplacement = false}) : _isPushedAsReplacement = isPushedAsReplacement;
+  const AppNavigator(this.context, {bool isPushedAsReplacement = false}) : _isPushedAsReplacement = isPushedAsReplacement;
   static AppNavigator to(BuildContext context, {bool isPushedAsReplacement = false}) {
     return AppNavigator(context, isPushedAsReplacement: isPushedAsReplacement);
   }

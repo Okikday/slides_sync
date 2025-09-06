@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/modify_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
@@ -103,14 +103,14 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
               child: ConfirmDeletionDialog(
                 content: "Deleting this course will delete it's collections and contents",
                 onDelete: () async {
-                  CustomDialog.hide(context);
+                  UiUtils.hideDialog(context);
                   await Future.delayed(Durations.medium1);
 
                   if (context.mounted) {
                     UiUtils.showLoadingDialog(context, message: "Deleting course...");
                   }
                   await modifyCourseActions.onDeleteCourse(id: course.id, courseId: course.courseId);
-                  if (context.mounted) CustomDialog.hide(context);
+                  if (context.mounted) UiUtils.hideDialog(context);
                   if (context.mounted) context.pop();
                   if (context.mounted) UiUtils.showFlushBar(context, msg: "Successfully deleted course");
                 },
@@ -125,7 +125,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
               return;
             }
 
-            modifyCourseActions.onClickCourseImage(context, course: course);
+            modifyCourseActions.onClickCourseImage(ref, course: course);
           },
 
           onLongPressImage: () async {

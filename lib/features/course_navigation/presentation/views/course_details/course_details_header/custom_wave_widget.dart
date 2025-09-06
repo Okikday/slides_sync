@@ -26,6 +26,7 @@ class CustomShapeWaveFilledWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return Stack(
       children: [
         Positioned(
@@ -33,7 +34,7 @@ class CustomShapeWaveFilledWidget extends ConsumerWidget {
           height: waveSize.height,
           child: Wave(
             value: progress.clamp(0.2, 1.0),
-            color: waveColor ?? ref.theme.primaryColor.withAlpha(40),
+            color: waveColor ?? theme.primaryColor.withAlpha(40),
             direction: Axis.vertical,
           ),
         ),
@@ -63,6 +64,7 @@ class CustomWaveWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     final double fill;
     if (progress < 0.0 || progress > 1.0) {
       fill = 0.0;
@@ -72,14 +74,14 @@ class CustomWaveWidget extends ConsumerWidget {
     return WaveWidget(
       config: CustomConfig(
         colors: [
-          ref.theme.primaryColor.withAlpha(50),
-          ref.theme.primaryColor.withAlpha(80),
-          ref.theme.primaryColor.withAlpha(30),
+          theme.primaryColor.withAlpha(50),
+          theme.primaryColor.withAlpha(80),
+          theme.primaryColor.withAlpha(30),
         ],
         durations: [5000, 4000, 3000],
         heightPercentages: [fill - 0.01, fill + 0.01, fill + 0.05],
       ),
-      backgroundColor: backgroundColor ?? ref.theme.primaryColor.withAlpha(40),
+      backgroundColor: backgroundColor ?? theme.primaryColor.withAlpha(40),
       size: Size(double.infinity, double.infinity),
       waveAmplitude: 10,
     );

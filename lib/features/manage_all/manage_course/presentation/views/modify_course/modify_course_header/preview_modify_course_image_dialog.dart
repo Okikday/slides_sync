@@ -32,9 +32,7 @@ class PreviewModifyCourseImageDialog extends ConsumerWidget {
                 fallbackWidget: Icon(
                   Iconsax.document,
                   color:
-                      context.isDarkMode
-                          ? ref.theme.primaryColor
-                          : ref.theme.primaryColor,
+                      ref.theme.primaryColor,
                 ),
               ),
             ),

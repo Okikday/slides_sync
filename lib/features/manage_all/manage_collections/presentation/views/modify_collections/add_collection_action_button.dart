@@ -13,6 +13,7 @@ class AddCollectionActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return FloatingActionButton.extended(
       shape: isScrolled ? CircleBorder() : null,
       backgroundColor: context.isDarkMode ? Colors.white : Colors.black,
@@ -35,12 +36,12 @@ class AddCollectionActionButton extends ConsumerWidget {
               : CustomText(
                 "Add a collection",
                 fontWeight: FontWeight.bold,
-                color: ref.theme.primaryColor,
+                color: theme.primaryColor,
               ),
       icon: Icon(
         isScrolled ? Iconsax.arrow_up : Iconsax.add_circle,
         size: 32,
-        color: ref.theme.primaryColor,
+        color: theme.primaryColor,
       ),
     );
   }

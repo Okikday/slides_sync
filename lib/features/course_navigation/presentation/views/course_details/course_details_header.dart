@@ -29,11 +29,12 @@ class CourseDetailsHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appBarCollapsedHeight = kToolbarHeight;
+    final theme = ref.theme;
 
-    // final topGradColor = ref.theme.background.blendColor(
+    // final topGradColor = theme.background.blendColor(
     //   context.isDarkMode ? .2 : .8,
     // );
-    final topGradColor = ref.theme.altBackgroundPrimary;
+    final topGradColor = theme.altBackgroundPrimary;
     final firstStop = ((appBarHeight + context.topPadding) / context.deviceHeight);
     return SliverAppBar(
       pinned: true,
@@ -84,6 +85,7 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final topPadding = context.topPadding;
     final shapeSize = kToolbarHeight * 2;
+    final theme = ref.theme;
 
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
@@ -107,14 +109,14 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
 
                         (course.courseCode.isNotEmpty)
                             ? CustomTextButton(
-                              backgroundColor: ref.theme.altBackgroundPrimary,
+                              backgroundColor: theme.altBackgroundPrimary,
                               pixelHeight: 28,
                               contentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                               child: CustomText(
                                 course.courseCode,
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
-                                color: ref.theme.primaryColor,
+                                color: theme.primaryColor,
                               ),
                             ).animate().scaleXY(duration: Durations.extralong4, curve: CustomCurves.defaultIosSpring)
                             : const SizedBox(),
@@ -191,7 +193,7 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                         },
                         child: CustomText(
                           course.description.isEmpty ? "No description" : course.description,
-                          color: ref.theme.secondaryText.withValues(alpha: .9),
+                          color: theme.secondaryText.withValues(alpha: .9),
                           overflow: TextOverflow.fade,
                         ),
                       ),
@@ -255,6 +257,7 @@ class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTi
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     final textWidget = Tooltip(
       message: widget.courseName,
       triggerMode: TooltipTriggerMode.tap,
@@ -262,7 +265,7 @@ class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTi
         widget.courseName,
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: ref.theme.primaryText,
+        color: theme.primaryText,
         overflow: TextOverflow.fade,
       ),
     );

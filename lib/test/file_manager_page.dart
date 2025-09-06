@@ -70,6 +70,7 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     final dirName = _currentDir?.path.split(Platform.pathSeparator).last ?? '';
     return PopScope(
       canPop: false,
@@ -81,7 +82,7 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
         appBar: AppBar(
           title: Text(
             'File Manager: $dirName',
-            style: TextStyle(color: ref.theme.primaryText),
+            style: TextStyle(color: theme.primaryText),
           ),
           leading: IconButton(
                   icon: Icon(Icons.arrow_back),
@@ -106,7 +107,7 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
                 ? Center(
                   child: Text(
                     'Empty',
-                    style: TextStyle(color: ref.theme.primaryText),
+                    style: TextStyle(color: theme.primaryText),
                   ),
                 )
                 : ListView.separated(
@@ -128,13 +129,13 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
                           leading: Icon(isDir ? Icons.folder : Icons.insert_drive_file),
                           title: Text(
                             name,
-                            style: TextStyle(color: ref.theme.primaryText),
+                            style: TextStyle(color: theme.primaryText),
                           ),
                           subtitle: Text(
                             isDir ? modified : '$modified • $size',
                             style: TextStyle(
                               fontSize: 12,
-                              color: ref.theme.primaryText,
+                              color: theme.primaryText,
                             ),
                           ),
                           onTap: isDir ? () => _listDir(ent) : null,

@@ -38,6 +38,7 @@ class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionT
   Widget build(BuildContext context) {
     final ModifyCollectionActions modifyCollectionActions = ModifyCollectionActions();
     final collection = widget.collection;
+    final theme = ref.theme;
     
 
     return Stack(
@@ -58,7 +59,7 @@ class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionT
                   child: CustomText(
                     "Rename Collection",
                     fontSize: 13,
-                    color: ref.theme.primaryColor,
+                    color: theme.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -68,7 +69,7 @@ class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionT
                   hint: "Edit Collection name",
                   defaultText: collection.collectionTitle,
                   focusNode: focusNode,
-                  selectionHandleColor: ref.theme.primaryColor,
+                  selectionHandleColor: theme.primaryColor,
                   // onTapOutside: () {},
                   onSubmitted: (text) async {
                     
@@ -112,19 +113,19 @@ class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionT
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(
                     fontSize: 15,
-                    color: ref.theme.primaryText,
+                    color: theme.primaryText,
                   ),
-                  cursorColor: ref.theme.primaryColor,
+                  cursorColor: theme.primaryColor,
                   backgroundColor: Colors.transparent,
                   border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ref.theme.primaryColor),
+                    borderSide: BorderSide(color: theme.primaryColor),
                   ),
                   // alwaysShowSuffixIcon: true,
                   // suffixIcon: Padding(
                   //   padding: const EdgeInsets.only(left: 8.0, right: 10.0),
                   //   child: CustomElevatedButton(
                   //     onClick: () {},
-                  //     backgroundColor: ref.theme.primaryColor,
+                  //     backgroundColor: theme.primaryColor,
                   //     contentPadding: EdgeInsets.all(2.0),
                   //     shape: CircleBorder(),
                   //     child: Icon(Iconsax.add_circle, size: 20, color: context.isDarkMode ? Colors.white : Colors.white),

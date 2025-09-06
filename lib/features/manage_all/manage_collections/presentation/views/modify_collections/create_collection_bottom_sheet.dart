@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
 import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -32,6 +32,7 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
   @override
   Widget build(BuildContext context) {
     final ModifyCollectionActions modifyCollectionActions = ModifyCollectionActions();
+    final theme = ref.theme;
 
     return Stack(
       children: [
@@ -51,7 +52,7 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   child: CustomText(
                     "New Collection",
                     fontSize: 13,
-                    color: ref.theme.primaryColor,
+                    color: theme.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -60,7 +61,7 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   autoDispose: false,
                   hint: "Enter a Collection name",
                   focusNode: focusNode,
-                  selectionHandleColor: ref.theme.primaryColor,
+                  selectionHandleColor: theme.primaryColor,
                   onTapOutside: () {},
                   onSubmitted: (text) async {
                     // Create new collection
@@ -105,19 +106,19 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(
                     fontSize: 15,
-                    color: ref.theme.primaryText,
+                    color: theme.primaryText,
                   ),
-                  cursorColor: ref.theme.primaryColor,
+                  cursorColor: theme.primaryColor,
                   backgroundColor: Colors.transparent,
                   border: UnderlineInputBorder(
-                    borderSide: BorderSide(color: ref.theme.primaryColor),
+                    borderSide: BorderSide(color: theme.primaryColor),
                   ),
                   // alwaysShowSuffixIcon: true,
                   // suffixIcon: Padding(
                   //   padding: const EdgeInsets.only(left: 8.0, right: 10.0),
                   //   child: CustomElevatedButton(
                   //     onClick: () {},
-                  //     backgroundColor: ref.theme.primaryColor,
+                  //     backgroundColor: theme.primaryColor,
                   //     contentPadding: EdgeInsets.all(2.0),
                   //     shape: CircleBorder(),
                   //     child: Icon(Iconsax.add_circle, size: 20, color: context.isDarkMode ? Colors.white : Colors.white),

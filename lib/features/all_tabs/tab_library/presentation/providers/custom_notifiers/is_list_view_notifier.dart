@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 
 
-class IsListViewNotifier extends AsyncNotifier<bool> {
+class IsListViewNotifier extends AutoDisposeAsyncNotifier<bool> {
   final String _key = "library_tab/isListView";
 
   @override
@@ -17,4 +17,5 @@ class IsListViewNotifier extends AsyncNotifier<bool> {
     state = AsyncData(updated);
     await AppHiveData.instance.setData(key: _key, value: updated);
   }
+  
 }

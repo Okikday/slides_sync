@@ -35,7 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.6.1
-  custom_widgets_toolkit: ^0.0.66
+  custom_widgets_toolkit: ^0.0.76
   iconsax_flutter: ^1.0.0
   flutter_animate: ^4.5.2
   heroine: ^0.4.0
@@ -66,7 +66,6 @@ dependencies:
   open_filex: ^4.7.0
   permission_handler: ^12.0.0+1
   photo_view: ^0.15.0
-  flutter_link_previewer: ^3.2.2
   archive: ^4.0.7
   flutter_pdfview: ^1.4.0+1
   pdfx: ^2.9.1
@@ -78,9 +77,6 @@ dependencies:
 
   collection: any
   flutter_image_compress: ^2.3.0
-
-  just_audio: any
-  video_player: any
 
   # External Git package
   material_shapes:
@@ -100,6 +96,11 @@ dependencies:
   firebase_storage: ^13.0.0
   google_sign_in: ^6.3.0
   infinite_scroll_pagination: ^5.1.1
+  any_link_preview: ^3.0.3
+  flutter_link_previewer: ^3.2.2
+  clipboard: ^2.0.2
+
+  #docx_file_viewer: ^0.0.1
 
 flutter_native_splash:
   android: true

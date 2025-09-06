@@ -26,6 +26,7 @@ class AppAlertDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return AppCustomizableDialog(
       backgroundColor: backgroundColor,
       onPop: onPop,
@@ -42,7 +43,7 @@ class AppAlertDialog extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 17,
                 textAlign: TextAlign.center,
-                color: ref.theme.primaryText,
+                color: theme.primaryText,
               ),
             ),
           ),
@@ -54,7 +55,7 @@ class AppAlertDialog extends ConsumerWidget {
             child: CustomText(
               content,
               fontSize: 14.5,
-              color: ref.theme.primaryText,
+              color: theme.primaryText,
             ),
           ),
           ConstantSizing.columnSpacingExtraLarge,
@@ -81,8 +82,8 @@ class AppAlertDialog extends ConsumerWidget {
                       label: "Confirm",
                       textSize: 14,
                       pixelHeight: 44,
-                      textColor: ref.theme.primaryColor,
-                      backgroundColor: ref.theme.primaryColor.withAlpha(80),
+                      textColor: theme.primaryColor,
+                      backgroundColor: theme.primaryColor.withAlpha(80),
                       borderRadius: ConstantSizing.borderRadiusCircle,
                       onClick: () {
                         if (onConfirm != null) onConfirm!();
