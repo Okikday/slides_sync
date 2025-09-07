@@ -135,7 +135,7 @@ class HomeAppBar extends ConsumerWidget {
                         title,
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
-                        color: theme.primaryText,
+                        color: theme.onBackground,
                       ),
                     ),
 
@@ -172,7 +172,7 @@ class HomeAppBar extends ConsumerWidget {
                         // ),
                         child: Icon(
                           Iconsax.moon,
-                          color: theme.secondaryText,
+                          color: theme.supportingText,
                           size: 24,
                         ),
                       ),

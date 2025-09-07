@@ -28,14 +28,14 @@ class CollectionsViewSearchBar extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10.0),
                     child: CustomTextfield(
                       hint: "Search collections",
-                      hintStyle: TextStyle(color: theme.secondaryText),
+                      hintStyle: TextStyle(color: theme.supportingText),
                       selectionHandleColor: theme.primaryColor,
-                      inputTextStyle: TextStyle(fontSize: 15, color: theme.primaryText),
-                      backgroundColor: ref.isDarkMode ? theme.surfaceLight : theme.surfaceDark,
+                      inputTextStyle: TextStyle(fontSize: 15, color: theme.onBackground),
+                      backgroundColor: theme.surface,
                       border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.zero),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 12.0, right: 10.0, top: 12.0, bottom: 12.0),
-                        child: Icon(Iconsax.search_normal_copy, size: 20, color: theme.secondaryText),
+                        child: Icon(Iconsax.search_normal_copy, size: 20, color: theme.supportingText),
                       ),
                     ),
                   ),

@@ -3,11 +3,8 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pdfx/pdfx.dart';
-import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
@@ -99,7 +96,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
                 _showPageNavigator(context);
               },
               shape: const CircleBorder(),
-              child: Icon(Iconsax.menu, color: AppColors.primaryText(context)),
+              child: Icon(Iconsax.menu, color: ref.theme.onBackground),
             ),
             const SizedBox(height: 8),
             FloatingActionButton(
@@ -107,7 +104,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
               onPressed: () {},
               shape: const CircleBorder(),
               mini: true,
-              child: Icon(Iconsax.maximize_4, color: AppColors.primaryText(context)),
+              child: Icon(Iconsax.maximize_4, color: ref.theme.onBackground),
             ),
           ],
         ),
@@ -120,7 +117,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
                     children: [
                       CircularProgressIndicator(color: AppColors.primary(context)),
                       const SizedBox(height: 16),
-                      CustomText("Loading document...", color: ref.theme.primaryText),
+                      CustomText("Loading document...", color: ref.theme.onBackground),
                     ],
                   ),
                 )
@@ -129,9 +126,9 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Iconsax.document, size: 64, color: AppColors.primaryText(context).withOpacity(0.3)),
+                      Icon(Iconsax.document, size: 64, color: ref.theme.onBackground.withValues(alpha: 0.3)),
                       const SizedBox(height: 16),
-                      CustomText("Failed to load document", color: ref.theme.primaryText),
+                      CustomText("Failed to load document", color: ref.theme.onBackground),
                     ],
                   ),
                 )
@@ -169,12 +166,12 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryText(context).withOpacity(0.3),
+                    color: ref.theme.onBackground.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 const SizedBox(height: 20),
-                CustomText("Navigate to Page", color: ref.theme.primaryText),
+                CustomText("Navigate to Page", color: ref.theme.onBackground),
                 const SizedBox(height: 20),
                 Row(
                   children: [
@@ -265,7 +262,7 @@ class _NavigationButton extends StatelessWidget {
       icon: Icon(icon, size: 18),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary(context).withOpacity(0.1),
+        backgroundColor: AppColors.primary(context).withValues(alpha: 0.1),
         foregroundColor: AppColors.primary(context),
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12),

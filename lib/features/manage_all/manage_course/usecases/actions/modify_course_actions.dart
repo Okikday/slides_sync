@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_uc.dart';
@@ -131,7 +131,7 @@ class ModifyCourseActions {
   /// When the course image is clicked, it shows some options in a dialog the user can choose from.
   void onClickCourseImage(WidgetRef ref, {required Course course}) {
     final context = ref.context;
-    final iconColor = ref.theme.secondaryText;
+    final iconColor = ref.theme.supportingText;
     final List<AppActionDialogModel> dialogModels = [
       AppActionDialogModel(
         title: "View image",

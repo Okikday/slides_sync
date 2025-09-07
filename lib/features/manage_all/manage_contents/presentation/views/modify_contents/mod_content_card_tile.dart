@@ -69,7 +69,7 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
               tooltip: "Show options",
               clipBehavior: Clip.hardEdge,
               menuPadding: EdgeInsets.zero,
-              icon: Icon(Iconsax.more_copy, color: theme.secondaryText),
+              icon: Icon(Iconsax.more_copy, color: theme.supportingText),
               onSelected: (value) => actions[value].onTap(),
               itemBuilder: (context) {
                 return List<PopupMenuItem<int>>.generate(actions.length, (index) {
@@ -99,8 +99,8 @@ class PopupMenuItemChild extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        Icon(iconData, color: theme.secondaryText),
-        CustomText(title, color: theme.primaryText),
+        Icon(iconData, color: theme.supportingText),
+        CustomText(title, color: theme.onBackground),
         ConstantSizing.rowSpacingSmall,
       ],
     );

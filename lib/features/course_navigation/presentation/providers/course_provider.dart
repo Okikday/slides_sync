@@ -35,7 +35,8 @@ class CourseNotifier extends AsyncNotifier<Course> {
   }
 
   void updateByDate(Course value) async {
-    if (state.value?.lastUpdated != value.lastUpdated)
+    if (state.value?.lastUpdated != value.lastUpdated) {
       ref.read(_activeCourseDbIdProvider.notifier).update((cb) => value.id);
+    }
   }
 }

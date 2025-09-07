@@ -73,7 +73,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   child: Icon(
                                     Iconsax.star_copy,
                                     size: 26,
-                                    color: theme.secondaryText,
+                                    color: theme.supportingText,
                                   ),
                                 ),
                                 CustomElevatedButton(
@@ -83,7 +83,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   child: Icon(
                                     Iconsax.note_add_copy,
                                     size: 26,
-                                    color: theme.secondaryText,
+                                    color: theme.supportingText,
                                   ),
                                 ),
                               ],
@@ -106,13 +106,13 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                               widget.recentDialogModel.title,
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
-                              color: theme.primaryText,
+                              color: theme.onBackground,
                             ),
                             ConstantSizing.columnSpacingSmall,
                             CustomText(
                               "Short detail",
                               fontSize: 12.0,
-                              color: theme.secondaryText,
+                              color: theme.supportingText,
                             ),
                           ],
                         ),
@@ -136,7 +136,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                 "Description",
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
-                                color: theme.primaryText,
+                                color: theme.onBackground,
                               ),
                               ConstantSizing.columnSpacingSmall,
                               CustomText(
@@ -144,7 +144,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                     .substring(0, widget.recentDialogModel.description.length.clamp(0, 128))
                                     .padRight(3, "."),
                                 fontSize: 13,
-                                color: theme.secondaryText,
+                                color: theme.supportingText,
                               ),
                             ],
                           ),
@@ -160,8 +160,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Continue reading",
-                          icon: Icon(Iconsax.play_copy, size: 24, color: theme.secondaryText,),
-                          textStyle: TextStyle(fontSize: 16, color: theme.primaryText),
+                          icon: Icon(Iconsax.play_copy, size: 24, color: theme.supportingText),
+                          textStyle: TextStyle(fontSize: 16, color: theme.onBackground),
                           onTap: () {},
                         ),
 
@@ -169,8 +169,8 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 
                         BuildPlainActionButton(
                           title: "Share",
-                          icon: Icon(Icons.share_outlined, size: 24, color: theme.secondaryText),
-                          textStyle: TextStyle(fontSize: 15, color: theme.primaryText),
+                          icon: Icon(Icons.share_outlined, size: 24, color: theme.supportingText),
+                          textStyle: TextStyle(fontSize: 15, color: theme.onBackground),
                           onTap: () {},
                         ),
 
@@ -179,7 +179,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                         BuildPlainActionButton(
                           title: "Remove from recents",
                           icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
-                          textStyle: TextStyle(fontSize: 15, color: theme.primaryText),
+                          textStyle: TextStyle(fontSize: 15, color: theme.onBackground),
                           onTap: () {},
                         ),
 

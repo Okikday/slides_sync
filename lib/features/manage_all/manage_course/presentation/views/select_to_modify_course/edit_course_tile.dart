@@ -77,7 +77,7 @@ class EditCourseTile extends ConsumerWidget {
                       courseName,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: theme.primaryText,
+                      color: theme.onBackground,
                     ),
                   ),
 
@@ -90,7 +90,7 @@ class EditCourseTile extends ConsumerWidget {
                       CustomText(
                         "$categoriesCount items",
                         fontSize: 12,
-                        color: theme.secondaryText,
+                        color: theme.supportingText,
                       ),
                     ],
                   ),

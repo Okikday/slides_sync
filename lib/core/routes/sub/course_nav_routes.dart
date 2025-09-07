@@ -8,6 +8,7 @@ import 'package:slides_sync/features/content_viewer/presentation/views/viewers/d
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseNavRoutes {
   static List<GoRoute> routes = [
@@ -43,6 +44,8 @@ class CourseNavRoutes {
                     duration: Durations.extralong1,
                     reverseDuration: Durations.medium1,
                     curve: CustomCurves.defaultIosSpring,
+                    opaque: false,
+                    barrierColor: context.theme.scaffoldBackgroundColor.withValues(alpha: 0.5),
                     child: ContentViewGate(content: state.extra as CourseContent),
                   ),
             ),

@@ -56,7 +56,7 @@ class _InputTextBottomSheetState extends ConsumerState<InputTextBottomSheet> {
             padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 4.0),
             decoration: BoxDecoration(
               color: theme.background,
-              border: Border(top: BorderSide(color: ref.theme.bgSupportText.withValues(alpha: 0.1))),
+              border: Border(top: BorderSide(color: ref.theme.supportingText.withValues(alpha: 0.1))),
             ),
 
             child: Column(
@@ -78,7 +78,7 @@ class _InputTextBottomSheetState extends ConsumerState<InputTextBottomSheet> {
                   onSubmitted: widget.onSubmitted,
 
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
-                  inputTextStyle: TextStyle(fontSize: 15, color: theme.primaryText),
+                  inputTextStyle: TextStyle(fontSize: 15, color: theme.onBackground),
                   cursorColor: theme.primaryColor,
                   selectionHandleColor: theme.primaryColor,
                   backgroundColor: Colors.transparent,

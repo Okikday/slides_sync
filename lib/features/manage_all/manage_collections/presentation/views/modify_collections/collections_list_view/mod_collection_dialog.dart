@@ -7,9 +7,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
-import 'package:slides_sync/domain/models/file_details.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
@@ -19,7 +18,6 @@ import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ModCollectionDialog extends ConsumerStatefulWidget {
   final int courseDbId;
@@ -58,7 +56,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
     final mca = ModifyCollectionActions();
     return AppActionDialog(
       blurSigma: Offset(4, 4),
-      backgroundColor: theme.frostedPrimaryBase.withAlpha(200),
+      backgroundColor: theme.surface.withAlpha(200),
 
       leading: Padding(
         padding: const EdgeInsets.only(bottom: ConstantSizing.spaceLarge),
@@ -97,7 +95,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                     collection.collectionTitle,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: theme.primaryText,
+                    color: theme.onBackground,
                   ),
                 ),
               ),
@@ -110,16 +108,16 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
       actions: [
         AppActionDialogModel(
           title: "Select",
-          icon: Icon(Iconsax.tick_circle_copy, size: 24, color: theme.secondaryText),
+          icon: Icon(Iconsax.tick_circle_copy, size: 24, color: theme.supportingText),
           onTap: () {},
         ),
 
         AppActionDialogModel(
           title: "View contents",
-          icon: Icon(Iconsax.forward_copy, size: 24, color: theme.secondaryText),
+          icon: Icon(Iconsax.forward_copy, size: 24, color: theme.supportingText),
           onTap: () {
             CustomDialog.hide(context);
-            AppNavigator.to(context).modifyContentsRoute((
+            AppRouteNavigator.to(context).modifyContentsRoute((
               collection: collection,
               courseDbId: widget.courseDbId,
               courseTitle: (courseCode: "", courseName: "CourseName"),
@@ -129,7 +127,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
 
         AppActionDialogModel(
           title: "Share",
-          icon: Icon(Icons.share_outlined, size: 24, color: theme.secondaryText),
+          icon: Icon(Icons.share_outlined, size: 24, color: theme.supportingText),
           onTap: () {},
         ),
         AppActionDialogModel(

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -8,11 +9,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/providers/add_contents_bs_provider.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_from_clipboard_dialog/add_from_clipboard_dialog.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_link_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/add_contents_actions.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class AddContentsBottomSheet extends ConsumerStatefulWidget {
   final CourseCollection collection;
@@ -24,11 +26,57 @@ class AddContentsBottomSheet extends ConsumerStatefulWidget {
 
 class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet> {
   late final FixedExtentScrollController fixedExtentScrollController;
+
   @override
   void initState() {
     super.initState();
     fixedExtentScrollController = FixedExtentScrollController(initialItem: 1);
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        if (!mounted) return;
+
+        final lastClipboardDataProvider = ref.read(AddContentsBsProvider.lastClipboardData.notifier);
+        final newClipboardData = await AddContentsActions.scanClipboardForData();
+
+        if (!mounted) return;
+
+        if (lastClipboardDataProvider.state != null) {
+          if (AddContentsActions.isDataEqual(
+            lastClipboardDataProvider.state!,
+            newClipboardData.data,
+            newClipboardData.contentType,
+          )) {
+            return;
+          } else {
+            if (!mounted) return;
+            lastClipboardDataProvider.update((cb) => newClipboardData);
+          }
+        } else {
+          if (!mounted) return;
+          lastClipboardDataProvider.update((cb) => newClipboardData);
+        }
+
+        if (!mounted) return;
+        final overlayEntryProvider = ref.read(AddContentsBsProvider.addFromClipboardOverlayEntry.notifier);
+
+        if (overlayEntryProvider.state != null) return;
+
+        final OverlayEntry addFromClipboardOverlayEntry = OverlayEntry(
+          builder: (context) => AddFromClipboardOverlay(clipboardData: newClipboardData),
+        );
+
+        if (!mounted) return;
+        overlayEntryProvider.update((cb) => addFromClipboardOverlayEntry);
+
+        if (mounted) {
+          final OverlayState overlay = Overlay.of(context);
+          overlay.insert(addFromClipboardOverlayEntry);
+        }
+      } catch (e) {
+        log('Error in initState callback: $e');
+      }
+    });
+}
 
   @override
   void dispose() {
@@ -38,28 +86,35 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(child: GestureDetector(onTap: () => UiUtils.hideDialog(context))),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 8,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AddContentCardSection(
-              fixedExtentScrollController: fixedExtentScrollController,
-              collection: widget.collection,
-            ).animate().scale(
-              alignment: Alignment.bottomRight,
-              begin: Offset(0.9, 0.6),
-              end: Offset(1, 1),
-              duration: Durations.extralong1,
-              curve: CustomCurves.bouncySpring,
+    final canPop = ref.watch(AddContentsBsProvider.addFromClipboardOverlayEntry) == null;
+    return PopScope(
+      canPop: canPop,
+      child: Stack(
+        children: [
+          Positioned.fill(child: GestureDetector(onTap: () => UiUtils.hideDialog(context))),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 8,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: AddContentCardSection(
+                    fixedExtentScrollController: fixedExtentScrollController,
+                    collection: widget.collection,
+                  )
+                  .animate()
+                  .scale(
+                    alignment: Alignment.bottomRight,
+                    begin: Offset(0.9, 0.6),
+                    end: Offset(1, 1),
+                    duration: Durations.extralong1,
+                    curve: CustomCurves.bouncySpring,
+                  )
+                  .scaleY(begin: canPop ? 0.8 : 1, end: canPop ? 1 : 0.8),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -72,18 +127,22 @@ class AddContentCardSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Map<int, CourseContentType> typeMap = {0: CourseContentType.unknown, 1: CourseContentType.image, 2: CourseContentType.document};
+    final Map<int, CourseContentType> typeMap = {
+      0: CourseContentType.unknown,
+      1: CourseContentType.image,
+      2: CourseContentType.document,
+    };
     final theme = ref.theme;
     return Container(
       width: context.deviceWidth,
-      constraints: BoxConstraints(maxWidth: 500, maxHeight: 500),
-      margin: EdgeInsets.only(bottom: context.bottomPadding + context.viewInsets.bottom, left: 24, right: 24),
-      padding: EdgeInsets.only(bottom: 4.0),
+      constraints: BoxConstraints(maxWidth: 400, maxHeight: 340),
+      margin: EdgeInsets.only(bottom: context.bottomPadding + context.viewInsets.bottom, left: 20, right: 20),
+      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: AppColors.bgBlendColor(context).withValues(alpha: 0.85),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.fromBorderSide(BorderSide(color: context.theme.colorScheme.secondary.withAlpha(20))),
+        color: theme.background,
+        borderRadius: BorderRadius.circular(30),
+        border: Border.fromBorderSide(BorderSide(color: theme.onBackground.withAlpha(20))),
       ),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
@@ -91,14 +150,13 @@ class AddContentCardSection extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ConstantSizing.columnSpacing(4.0),
             Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
               child: CustomText(
-                "What kind of content do you want to add?",
+                "What kind of content would you like to add?",
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: theme.primaryText,
+                color: theme.onBackground,
               ).animate().fadeIn().slideX(begin: -0.05),
             ),
             // ConstantSizing.columnSpacingSmall,
@@ -116,10 +174,7 @@ class AddContentCardSection extends ConsumerWidget {
                         [
                           BuildPlainActionButton(
                             title: "Document",
-                                icon: Icon(
-                                  Iconsax.document,
-                                  color: theme.primaryColor,
-                                ),
+                            icon: Icon(Iconsax.document, color: theme.primaryColor),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
                                   ref,
@@ -130,10 +185,7 @@ class AddContentCardSection extends ConsumerWidget {
 
                           BuildPlainActionButton(
                             title: "Auto",
-                                icon: Icon(
-                                  Iconsax.autobrightness,
-                                  color: theme.primaryColor,
-                                ),
+                            icon: Icon(Iconsax.autobrightness, color: theme.primaryColor),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
                                   ref,
@@ -144,10 +196,7 @@ class AddContentCardSection extends ConsumerWidget {
 
                           BuildPlainActionButton(
                             title: "Image",
-                                icon: Icon(
-                                  Iconsax.image,
-                                  color: theme.primaryColor,
-                                ),
+                            icon: Icon(Iconsax.image, color: theme.primaryColor),
                             onTap:
                                 () => AddContentsActions.onClickToAddContent(
                                   ref,
@@ -163,32 +212,27 @@ class AddContentCardSection extends ConsumerWidget {
                   padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                   child: Row(
                     spacing: 8.0,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Flexible(
-                        child: CustomElevatedButton(
-                          onClick: () async {
-                            // CustomDialog.hide(context);
-                            // final createdNote = await AddContentsUc.createNote(collection);
-                            // log("created note: ${createdNote.toString()}");
-                          },
-                          backgroundColor: theme.altBackgroundPrimary,
-                          pixelHeight: 40,
-                          borderRadius: 16,
-                          child: Row(
-                            spacing: 4.0,
-                            children: [
-                              Icon(
-                                Iconsax.note_add,
-                                color: theme.secondaryText,
-                              ),
-                              CustomText(
-                                "Add note",
-                                color: theme.primaryText,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Flexible(
+                      //   child: CustomElevatedButton(
+                      //     onClick: () async {
+                      //       // CustomDialog.hide(context);
+                      //       // final createdNote = await AddContentsUc.createNote(collection);
+                      //       // log("created note: ${createdNote.toString()}");
+                      //     },
+                      //     backgroundColor: theme.altBackgroundSecondary,
+                      //     pixelHeight: 40,
+                      //     borderRadius: 16,
+                      //     child: Row(
+                      //       spacing: 8.0,
+                      //       children: [
+                      //         Icon(Iconsax.note_add, color: theme.supportingText),
+                      //         CustomText("Add note", color: theme.onBackground),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       Flexible(
                         child: CustomElevatedButton(
                           onClick: () {
@@ -199,18 +243,21 @@ class AddContentCardSection extends ConsumerWidget {
                               child: AddLinkBottomSheet(collection: collection),
                             );
                           },
-                          backgroundColor: theme.altBackgroundPrimary,
-                          pixelHeight: 40,
+                          backgroundColor: theme.altBackgroundSecondary,
+                          pixelHeight: 44,
                           borderRadius: 16,
-                          child: Row(
-                            spacing: 4.0,
-                            children: [
-                              Icon(
-                                Iconsax.link_circle,
-                                color: theme.secondaryText,
-                              ),
-                              CustomText("Add link", color: theme.primaryText),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Row(
+                              spacing: 8.0,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Iconsax.link_circle, color: theme.supportingText),
+                                CustomText("Add link", color: theme.onBackground),
+                                const SizedBox(width: 4),
+                              ],
+                            ),
                           ),
                         ),
                       ),

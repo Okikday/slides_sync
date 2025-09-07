@@ -17,7 +17,7 @@ class BuildButton extends ConsumerWidget {
       backgroundColor: theme.altBackgroundPrimary,
       shape: CircleBorder(),
       onClick: onTap,
-      child: Icon(iconData, size: 20, color: theme.secondaryText),
+      child: Icon(iconData, size: 20, color: theme.supportingText),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -106,7 +106,7 @@ class _CreateCollectionBottomSheetState extends ConsumerState<CreateCollectionBo
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(
                     fontSize: 15,
-                    color: theme.primaryText,
+                    color: theme.onBackground,
                   ),
                   cursorColor: theme.primaryColor,
                   backgroundColor: Colors.transparent,

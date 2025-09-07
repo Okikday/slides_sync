@@ -11,6 +11,7 @@ class ConfirmDeletionDialog extends ConsumerWidget {
   final void Function()? onCancel;
   final void Function() onDelete;
   final void Function()? onPop;
+  final Alignment? animateFrom;
   const ConfirmDeletionDialog({
     super.key,
     this.title = "Confirm deletion",
@@ -18,21 +19,23 @@ class ConfirmDeletionDialog extends ConsumerWidget {
     this.onCancel,
     required this.onDelete,
     this.onPop,
+    this.animateFrom
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return AppAlertDialog(
       title: title,
       content: content,
 
-      backgroundColor: context.scaffoldBackgroundColor.withValues(alpha: 0.5),
+      backgroundColor: theme.background.withValues(alpha: 0.9),
       onPop: onPop,
       actions: [
         _buildDialogButton(
           label: "Cancel",
-          textColor: context.isDarkMode ? Colors.white : Colors.black,
-          backgroundColor: Colors.blueGrey.withAlpha(40),
+          textColor: theme.primary,
+          backgroundColor: theme.primary.withAlpha(40),
           onClick: () {
             if (onCancel == null) {
               CustomDialog.hide(context);
@@ -44,10 +47,10 @@ class ConfirmDeletionDialog extends ConsumerWidget {
 
         _buildDialogButton(label: "Delete", textColor: Colors.red, backgroundColor: Colors.red.withAlpha(40), onClick: onDelete),
       ],
-    ).animate().fadeIn().scaleY(
+    ).animate().fadeIn().scaleXY(
       begin: 0.4,
       end: 1,
-      alignment: Alignment.bottomRight,
+      alignment: animateFrom ?? Alignment.bottomCenter,
       duration: Duration(milliseconds: 500),
       curve: CustomCurves.defaultIosSpring,
     );

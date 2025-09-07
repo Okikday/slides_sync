@@ -193,7 +193,7 @@ class CourseDetailsHeaderContent extends ConsumerWidget {
                         },
                         child: CustomText(
                           course.description.isEmpty ? "No description" : course.description,
-                          color: theme.secondaryText.withValues(alpha: .9),
+                          color: theme.supportingText.withValues(alpha: .9),
                           overflow: TextOverflow.fade,
                         ),
                       ),
@@ -265,7 +265,7 @@ class _CourseDetailsHeaderTitleState extends ConsumerState<CourseDetailsHeaderTi
         widget.courseName,
         fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: theme.primaryText,
+        color: theme.onBackground,
         overflow: TextOverflow.fade,
       ),
     );

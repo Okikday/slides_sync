@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view/mod_collection_card_tile.dart';
@@ -129,7 +129,7 @@ class _CollectionsSectionState extends ConsumerState<CollectionsSection> {
                                               );
                                             },
                                             onTap: () async {
-                                              AppNavigator.to(context).modifyContentsRoute((
+                                              AppRouteNavigator.to(context).modifyContentsRoute((
                                                 collection: collection,
                                                 courseDbId: widget.courseDbId,
                                                 courseTitle: (courseCode: "", courseName: "CourseName"),
@@ -173,7 +173,7 @@ Widget _buildNewCollectionTile(WidgetRef ref, {required void Function() onTap}) 
             children: [
               Icon(Iconsax.add_circle, size: 30),
               ConstantSizing.rowSpacingMedium,
-              Expanded(child: CustomText("New Collection", color: ref.theme.primaryText)),
+              Expanded(child: CustomText("New Collection", color: ref.theme.onBackground)),
             ],
           ),
         ),

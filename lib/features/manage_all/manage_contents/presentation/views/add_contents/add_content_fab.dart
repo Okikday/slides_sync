@@ -26,7 +26,7 @@ class AddContentFAB extends ConsumerWidget {
           child: AddContentsBottomSheet(collection: collection),
         );
       },
-      child: Icon(Iconsax.add_copy, color: theme.onPrimaryText),
+      child: Icon(Iconsax.add_copy, color: theme.onPrimary),
     );
   }
 }

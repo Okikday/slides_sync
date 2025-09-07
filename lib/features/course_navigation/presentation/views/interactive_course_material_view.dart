@@ -9,7 +9,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 
@@ -31,7 +30,12 @@ class InteractiveCourseMaterialView extends ConsumerWidget {
           child: Column(
             children: [
               ConstantSizing.columnSpacing(kToolbarHeight + context.topPadding),
-              CustomText(collection.collectionTitle, fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryText(context)),
+              CustomText(
+                collection.collectionTitle,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: ref.theme.onBackground,
+              ),
               Expanded(
                 child: Center(
                   child: CupertinoPicker(
@@ -91,7 +95,7 @@ class InteractiveCourseMaterialView extends ConsumerWidget {
                     shape: const CircleBorder(),
                     pixelHeight: 56,
                     pixelWidth: 56,
-                    child: Icon(Iconsax.edit_copy, color: AppColors.primaryText(context)),
+                    child: Icon(Iconsax.edit_copy, color: ref.theme.onBackground),
                   ),
                 ],
               ),

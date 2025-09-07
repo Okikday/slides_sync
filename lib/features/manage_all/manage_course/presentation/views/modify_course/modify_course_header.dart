@@ -5,7 +5,6 @@ import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ModifyCourseHeader extends ConsumerWidget {
@@ -79,7 +78,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                             title,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: theme.primaryText,
+                            color: theme.onBackground,
                           ),
                         ),
                       ),
@@ -96,7 +95,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                               onClick: onClickAddDescription,
                               child: CustomText(
                                 description.isEmpty ? "Add description" : description,
-                                color: theme.secondaryText.withValues(alpha: 0.9),
+                                color: theme.supportingText.withValues(alpha: 0.9),
                               ),
                             ),
                           ),
@@ -164,7 +163,7 @@ class ModifyCourseHeader extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText("Edit course", color: theme.primaryColor),
-                        Icon(Iconsax.edit_2, color: theme.secondaryText),
+                        Icon(Iconsax.edit_2, color: theme.supportingText),
                       ],
                     ),
                   ),

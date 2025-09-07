@@ -32,7 +32,7 @@ class CollectionsSectionHeader extends ConsumerWidget {
                   "Collections",
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: ref.theme.primaryText,
+                  color: ref.theme.onBackground,
                 ),
               ),
 

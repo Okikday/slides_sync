@@ -89,7 +89,7 @@
 //           decoration: BoxDecoration(
 //             color: c,
 //             borderRadius: BorderRadius.circular(8),
-//             border: Border.all(color: Colors.black.withOpacity(0.06)),
+//             border: Border.all(color: Colors.black.withValues(alpha: 0.06)),
 //           ),
 //           child: Center(
 //             child: Text(
@@ -131,7 +131,7 @@
 //             decoration: BoxDecoration(
 //               color: Colors.transparent,
 //               borderRadius: BorderRadius.circular(3),
-//               border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.6)),
+//               border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.6)),
 //             ),
 //             child: Center(
 //               child: Text(

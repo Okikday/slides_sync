@@ -25,7 +25,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 6.0,
         children: [
-          CustomText("Description", fontSize: 13, color: theme.primaryText),
+          CustomText("Description", fontSize: 13, color: theme.onBackground),
           SizedBox(
             width: context.deviceWidth,
             child: CustomTextfield(
@@ -53,7 +53,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: BorderSide(color: theme.primaryColor),
               ),
-              hintStyle: TextStyle(color: theme.secondaryText.withAlpha(80)),
+              hintStyle: TextStyle(color: theme.supportingText.withAlpha(80)),
               maxLength: 1024,
               counterText: null,
 
@@ -62,7 +62,7 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               maxLines: 6,
               inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               hint: "Enter new description",
-              inputTextStyle: TextStyle(color: theme.primaryText),
+              inputTextStyle: TextStyle(color: theme.onBackground),
             ),
           ),
         ],

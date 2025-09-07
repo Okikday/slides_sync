@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class AppActionDialogModel {
   final String title;
@@ -41,7 +40,7 @@ class AppActionDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    final divider = Divider(color: theme.secondaryText.withAlpha(60), height: 0);
+    final divider = Divider(color: theme.supportingText.withAlpha(60), height: 0);
     return AppCustomizableDialog(
       blurSigma: blurSigma,
       backgroundColor: backgroundColor,
@@ -60,7 +59,7 @@ class AppActionDialog extends ConsumerWidget {
                     child: Center(
                       child: CustomText(
                         title!,
-                        color: theme.primaryText,
+                        color: theme.onBackground,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         textAlign: TextAlign.center,
@@ -124,7 +123,7 @@ class BuildPlainActionButton extends ConsumerWidget {
           Expanded(
             child: CustomText(
               title,
-              color: ref.theme.primaryText,
+              color: ref.theme.onBackground,
               style: textStyle,
             ),
           ),

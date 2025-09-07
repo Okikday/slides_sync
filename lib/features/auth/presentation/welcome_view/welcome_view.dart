@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -10,7 +9,6 @@ import 'package:slides_sync/features/auth/presentation/onboarding_views/onboardi
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/common_widgets/scale_click_wrapper.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/test/file_manager_page.dart';
 
 class WelcomeView extends ConsumerWidget {
   const WelcomeView({super.key});
@@ -70,7 +68,7 @@ class WelcomeView extends ConsumerWidget {
                             "Welcome to Slide",
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: theme.primaryText,
+                            color: theme.onBackground,
                           ),
                           CustomTextSpanData(
                             "Sync",
@@ -84,7 +82,7 @@ class WelcomeView extends ConsumerWidget {
                       CustomText(
                         "Where learning meets flow. Organized, always",
                         fontSize: 14,
-                        color: theme.secondaryText,
+                        color: theme.supportingText,
                       ),
                     ],
                   ),

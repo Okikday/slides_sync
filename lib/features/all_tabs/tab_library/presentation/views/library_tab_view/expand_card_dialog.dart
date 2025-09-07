@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -84,7 +84,7 @@ class ExpandCardDialog extends ConsumerWidget {
                               dimension: dimension - 8,
                               child: BuildImagePathWidget(
                                 fileDetails: course.imageLocationJson.fileDetails,
-                                fallbackWidget: Icon(Iconsax.document_1, size: 16, color: theme.primaryText),
+                                fallbackWidget: Icon(Iconsax.document_1, size: 16, color: theme.onBackground),
                               ),
                             ),
                           ),
@@ -117,12 +117,12 @@ class ExpandCardDialog extends ConsumerWidget {
                           child: CustomText(
                             course.courseName,
                             fontSize: 14,
-                            color: theme.primaryText,
+                            color: theme.onBackground,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         if (course.courseCode.isNotEmpty)
-                          CustomText(course.courseCode, fontSize: 10, color: theme.secondaryText),
+                          CustomText(course.courseCode, fontSize: 10, color: theme.supportingText),
                       ],
                     ),
                   ),
@@ -132,7 +132,7 @@ class ExpandCardDialog extends ConsumerWidget {
                       color: AppColors.bgBlendColor(context, .86, .14),
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: CustomText(course.collections.length.toString(), fontSize: 12, color: theme.secondaryText),
+                    child: CustomText(course.collections.length.toString(), fontSize: 12, color: theme.supportingText),
                   ),
                 ],
               ),
@@ -172,7 +172,7 @@ class ExpandCardDialog extends ConsumerWidget {
                   iconData: Iconsax.grid_edit,
                   onTap: () {
                     UiUtils.hideDialog(context);
-                    AppNavigator.to(context).modifyCourseRoute(course);
+                    AppRouteNavigator.to(context).modifyCourseRoute(course);
                   },
                 ),
                 divider,
@@ -208,7 +208,7 @@ class BuildExpandCardButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BuildPlainActionButton(
       title: title,
-      icon: Icon(iconData, color: ref.theme.secondaryText),
+      icon: Icon(iconData, color: ref.theme.supportingText),
       contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       onTap: onTap,
     );

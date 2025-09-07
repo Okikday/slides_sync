@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
@@ -74,7 +74,7 @@ class CreateCourseButton extends ConsumerWidget {
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   log("${context.mounted}");
-                  AppNavigator.to(context).modifyCourseRoute(value);
+                  AppRouteNavigator.to(context).modifyCourseRoute(value);
                   await Future.delayed(Durations.short4);
                   if (rootNavigatorKey.currentContext != null && rootNavigatorKey.currentContext!.mounted) {
                     await UiUtils.showFlushBar(

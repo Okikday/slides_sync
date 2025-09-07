@@ -31,6 +31,7 @@ class CreateContentPreviewImage {
         await file.delete();
         return copyToPath;
       }
+      return null;
     });
 
     return result.data;
@@ -38,20 +39,53 @@ class CreateContentPreviewImage {
 
   static Future<String?> _createForTypeDocument(String path, PreviewImagePathRecord previewPathRecord) async {
     final Result<String?> result = await Result.tryRunAsync(() async {
+      log("Creating preview for Type Document");
+
       final doc = await PdfDocument.openFile(path);
       final page = await doc.getPage(1);
 
-      final pageImage = await page.render(width: page.width, height: page.height, format: PdfPageImageFormat.png);
-
-      await Directory(previewPathRecord.previewDirPath).create(recursive: true);
-      final file = File(previewPathRecord.previewPath);
-      await file.writeAsBytes(pageImage?.bytes ?? []);
+      final pageImage = await page.render(width: page.width, height: page.height, format: PdfPageImageFormat.jpeg);
 
       await page.close();
       await doc.close();
-      log("Created preview for document: ${file.path}");
-      return file.path;
+
+      if (pageImage?.bytes == null) {
+        log("Failed to render PDF page");
+        return null;
+      }
+
+      // Create temporary file for the rendered PDF page
+      final tempDir = await Directory.systemTemp.createTemp('pdf_preview_');
+      final tempFile = File('${tempDir.path}/temp_pdf_page.jpg');
+      await tempFile.writeAsBytes(pageImage!.bytes);
+
+      // Compress the rendered PDF image
+      final Result<File> compressionResult = await ImageUtils.compressImage(
+        inputFile: tempFile,
+        targetMB: 0.05,
+        outputFormat: 'png',
+      );
+
+      if (compressionResult.isSuccess) {
+        await Directory(previewPathRecord.previewDirPath).create(recursive: true);
+        final compressedFile = compressionResult.data!;
+        final copyToPath = previewPathRecord.previewPath;
+        await compressedFile.copy(copyToPath);
+
+        // Clean up temporary files
+        await compressedFile.delete();
+        await tempDir.delete(recursive: true);
+
+        log("Created compressed preview for document: $copyToPath");
+        return copyToPath;
+      } else {
+        // Clean up temp directory if compression failed
+        await tempDir.delete(recursive: true);
+        log("Failed to compress PDF preview");
+        return null;
+      }
     });
+
     return result.data;
   }
 

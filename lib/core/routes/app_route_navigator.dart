@@ -4,12 +4,12 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
 
-class AppNavigator {
+class AppRouteNavigator {
   final BuildContext context;
   final bool _isPushedAsReplacement;
-  const AppNavigator(this.context, {bool isPushedAsReplacement = false}) : _isPushedAsReplacement = isPushedAsReplacement;
-  static AppNavigator to(BuildContext context, {bool isPushedAsReplacement = false}) {
-    return AppNavigator(context, isPushedAsReplacement: isPushedAsReplacement);
+  const AppRouteNavigator(this.context, {bool isPushedAsReplacement = false}) : _isPushedAsReplacement = isPushedAsReplacement;
+  static AppRouteNavigator to(BuildContext context, {bool isPushedAsReplacement = false}) {
+    return AppRouteNavigator(context, isPushedAsReplacement: isPushedAsReplacement);
   }
 
   void _push(String location, {Object? extra}) => context.push(location, extra: extra);

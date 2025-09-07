@@ -10,9 +10,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/utils/file_utils.dart';
-import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class BuildImagePathWidget extends ConsumerStatefulWidget {

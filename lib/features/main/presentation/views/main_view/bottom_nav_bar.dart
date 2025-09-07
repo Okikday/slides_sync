@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -19,14 +18,14 @@ class BottomNavBar extends ConsumerWidget {
     return Material(
       type: MaterialType.transparency,
       clipBehavior: Clip.antiAlias,
-      shape: Border(top: BorderSide(color: theme.bgText.withAlpha(40))),
+      shape: Border(top: BorderSide(color: theme.onBackground.withAlpha(40))),
       child: RepaintBoundary(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex,
-            unselectedItemColor: theme.secondaryText,
+            unselectedItemColor: theme.supportingText,
             selectedItemColor: theme.primaryColor,
             onTap: (index) => onTap(index),
             backgroundColor: theme.background.withValues(alpha: 0.8),

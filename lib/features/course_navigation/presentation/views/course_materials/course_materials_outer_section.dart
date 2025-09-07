@@ -1,17 +1,12 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
-import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_material_list_card.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_material_grid_card.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/helpers/formatter.dart';
-import 'package:slides_sync/shared/helpers/widget_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class CourseMaterialsOuterSection extends ConsumerStatefulWidget {
   final CourseCollection collection;
@@ -42,7 +37,7 @@ class _CourseMaterialsOuterSectionState extends ConsumerState<CourseMaterialsOut
     final courseContents = widget.collection.contents.toList();
 
     if (courseContents.isEmpty) {
-      return Center(child: CustomText("No content found", color: AppColors.primaryText(context)));
+      return Center(child: CustomText("No content found", color: ref.theme.onBackground));
     }
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -53,7 +48,20 @@ class _CourseMaterialsOuterSectionState extends ConsumerState<CourseMaterialsOut
       itemCount: courseContents.length,
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       itemBuilder: (context, index) {
-        return CourseMaterialGridCard(courseContent: courseContents[index]);
+        final Duration duration = Duration(
+          milliseconds: (1500 * ((index).clamp(4, courseContents.length) / courseContents.length) + 4).truncate(),
+        );
+        return CourseMaterialGridCard(content: courseContents[index])
+            .animate()
+            .scaleXY(
+              alignment: Alignment.bottomCenter,
+              begin: 0.97,
+              end: 1,
+              curve: CustomCurves.defaultIosSpring,
+              duration: duration,
+            )
+            .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
+            .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: duration);
       },
     );
     // return ListView.builder(

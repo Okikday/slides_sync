@@ -1,9 +1,7 @@
-import 'dart:math' as math;
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
@@ -113,7 +111,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                               child: CustomText(
                                 courseContent.title,
                                 fontSize: 13,
-                                color: theme.primaryText,
+                                color: theme.onBackground,
                                 fontWeight: FontWeight.w600,
                                 overflow: TextOverflow.fade,
                               ),
@@ -122,7 +120,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                             CustomText(
                               Formatter.formatEnumName(courseContent.courseContentType.name),
                               fontSize: 11,
-                              color: theme.secondaryText,
+                              color: theme.supportingText,
                             ),
                             // ConstantSizing.columnSpacing(8),
                             // LinearProgressIndicator(
@@ -144,7 +142,7 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
                 SizeTransition(sizeFactor: expandAnim, child: ConstantSizing.columnSpacingMedium),
 
                 AnimatedCourseMaterialListCardMenu(
-                  CourseMaterialListCardActionModels: widget.courseMaterialListCardActionModels,
+                  courseMaterialListCardActionModels: widget.courseMaterialListCardActionModels,
                   expandAnim: expandAnim,
                 ),
               ],
@@ -157,9 +155,9 @@ class _CourseMaterialListCardState extends ConsumerState<CourseMaterialListCard>
 }
 
 class AnimatedCourseMaterialListCardMenu extends ConsumerStatefulWidget {
-  const AnimatedCourseMaterialListCardMenu({super.key, required this.CourseMaterialListCardActionModels, required this.expandAnim});
+  const AnimatedCourseMaterialListCardMenu({super.key, required this.courseMaterialListCardActionModels, required this.expandAnim});
 
-  final List<CourseMaterialListCardActionModel> CourseMaterialListCardActionModels;
+  final List<CourseMaterialListCardActionModel> courseMaterialListCardActionModels;
   final Animation<double> expandAnim;
 
   @override
@@ -174,7 +172,7 @@ class _AnimatedCourseMaterialListCardMenuState
     final theme = ref.theme;
     return Builder(
       builder: (context) {
-        final cam = widget.CourseMaterialListCardActionModels;
+        final cam = widget.courseMaterialListCardActionModels;
         final List<Widget> genCardFuncs = List.generate(cam.length, (index) {
           return ScaleTransition(
             scale: widget.expandAnim,
@@ -185,9 +183,9 @@ class _AnimatedCourseMaterialListCardMenuState
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(cam[index].icon, color: theme.secondaryText),
+                  Icon(cam[index].icon, color: theme.supportingText),
                   ConstantSizing.rowSpacingSmall,
-                  CustomText(cam[index].label, color: theme.primaryText),
+                  CustomText(cam[index].label, color: theme.onBackground),
                 ],
               ),
             ),

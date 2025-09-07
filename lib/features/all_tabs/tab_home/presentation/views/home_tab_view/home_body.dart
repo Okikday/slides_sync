@@ -56,7 +56,7 @@ class HomeBody extends ConsumerWidget {
                   body: Center(
                     child: CustomText(
                       "No recent reads",
-                      color: ref.theme.primaryText,
+                      color: ref.theme.onBackground,
                     ),
                   ),
                 ),

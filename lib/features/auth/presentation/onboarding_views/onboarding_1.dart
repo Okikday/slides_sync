@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -121,7 +120,7 @@ class Onboarding1 extends ConsumerWidget {
                 backgroundColor: primaryPurple,
                 pixelWidth: 60,
                 pixelHeight: 60,
-                child: Icon(Iconsax.arrow_right_1_copy, size: 32, color: theme.onPrimaryText),
+                child: Icon(Iconsax.arrow_right_1_copy, size: 32, color: theme.onPrimary),
                 onClick: () {
                  
                   Navigator.push(context, PageAnimation.pageRouteBuilder(SignInView(), type: TransitionType.fade));

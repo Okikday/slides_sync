@@ -52,9 +52,9 @@ class AppCustomizableDialog extends ConsumerWidget {
             constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
             decoration: BoxDecoration(
               color: backgroundColor ?? theme.altBackgroundPrimary,
-              borderRadius: BorderRadius.circular(16.0),
+              borderRadius: BorderRadius.circular(30.0),
               border: Border.fromBorderSide(
-                BorderSide(color: theme.secondaryText.withAlpha(40), strokeAlign: BorderSide.strokeAlignOutside),
+                BorderSide(color: theme.supportingText.withAlpha(40), strokeAlign: BorderSide.strokeAlignOutside),
               )
             ),
             padding: EdgeInsets.only(top: 16.0, bottom: 8.0),

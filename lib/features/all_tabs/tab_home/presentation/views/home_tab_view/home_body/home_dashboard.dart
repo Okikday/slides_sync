@@ -71,7 +71,7 @@ class HomeDashboard extends ConsumerWidget {
                     courseName,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: theme.primaryText,
+                    color: theme.onBackground,
                   ),
                 ),
               ),
@@ -82,7 +82,7 @@ class HomeDashboard extends ConsumerWidget {
             CustomText(
               detail,
               fontSize: 13,
-              color: theme.secondaryText.withValues(alpha: 0.9),
+              color: theme.supportingText.withValues(alpha: 0.9),
             ),
           ConstantSizing.columnSpacingSmall,
 
@@ -122,7 +122,7 @@ class HomeDashboard extends ConsumerWidget {
                     child: CustomText(
                       completed != null ? (completed! ? "Read next slide" : "Continue reading...") : "Start Reading",
                       fontSize: 15,
-                      color: theme.onPrimaryText,
+                      color: theme.onPrimary,
                     ),
                     onClick: () {
                       if (onReadingBtnTapped != null) onReadingBtnTapped!();
@@ -145,7 +145,7 @@ class HomeDashboard extends ConsumerWidget {
                       "10%",
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
-                      color: theme.primaryText,
+                      color: theme.onBackground,
                     ),
                   ),
 

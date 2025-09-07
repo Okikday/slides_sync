@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/select_to_modify_course/empty_courses_view.dart';
@@ -90,7 +90,7 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
                       Navigator.of(context).pop();
 
                       // ref.read(ModifyCourseProviders.modifyCourseProvider.notifier).update(course);
-                      AppNavigator.to(context).modifyCourseRoute(course);
+                      AppRouteNavigator.to(context).modifyCourseRoute(course);
                     },
                     onSelected: () {
                       log("Selection");

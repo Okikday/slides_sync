@@ -570,7 +570,7 @@
 //         child: Column(
 //           mainAxisAlignment: MainAxisAlignment.center,
 //           children: [
-//             Icon(Icons.inbox_outlined, size: 64, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+//             Icon(Icons.inbox_outlined, size: 64, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
 //             const SizedBox(height: 12),
 //             Text('No items found', style: Theme.of(context).textTheme.titleLarge),
 //             const SizedBox(height: 8),
@@ -1285,7 +1285,7 @@
 // //                   color: Theme.of(context)
 // //                       .colorScheme
 // //                       .onSurface
-// //                       .withOpacity(0.6),
+// //                       .withValues(alpha: 0.6),
 // //                 ),
 // //                 const SizedBox(height: 16),
 // //                 Text(
@@ -1299,7 +1299,7 @@
 // //                         color: Theme.of(context)
 // //                             .colorScheme
 // //                             .onSurface
-// //                             .withOpacity(0.6),
+// //                             .withValues(alpha: 0.6),
 // //                       ),
 // //                 ),
 // //               ],
@@ -2081,7 +2081,7 @@
 // //                   color: Theme.of(context)
 // //                       .colorScheme
 // //                       .onSurface
-// //                       .withOpacity(0.6),
+// //                       .withValues(alpha: 0.6),
 // //                 ),
 // //                 const SizedBox(height: 16),
 // //                 Text(
@@ -2095,7 +2095,7 @@
 // //                         color: Theme.of(context)
 // //                             .colorScheme
 // //                             .onSurface
-// //                             .withOpacity(0.6),
+// //                             .withValues(alpha: 0.6),
 // //                       ),
 // //                 ),
 // //               ],
@@ -2730,13 +2730,13 @@
 // //             child: Column(
 // //               mainAxisAlignment: MainAxisAlignment.center,
 // //               children: [
-// //                 Icon(Icons.inbox_outlined, size: 64, color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+// //                 Icon(Icons.inbox_outlined, size: 64, color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
 // //                 const SizedBox(height: 16),
 // //                 Text('No items found', style: Theme.of(context).textTheme.headlineSmall),
 // //                 const SizedBox(height: 8),
 // //                 Text(
 // //                   'Pull down to refresh',
-// //                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+// //                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
 // //                 ),
 // //               ],
 // //             ),

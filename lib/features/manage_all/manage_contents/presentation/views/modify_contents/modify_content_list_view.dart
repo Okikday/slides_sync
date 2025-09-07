@@ -1,5 +1,4 @@
 
-import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';

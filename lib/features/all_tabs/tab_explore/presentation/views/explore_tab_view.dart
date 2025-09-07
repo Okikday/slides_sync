@@ -4,7 +4,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -27,7 +27,7 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
     isCourseClickedNotifier.update((cb) => true);
 
     await Future.delayed(Durations.short4);
-    if (mounted) AppNavigator.to(context).courseDetailsRoute(course);
+    if (mounted) AppRouteNavigator.to(context).courseDetailsRoute(course);
     if (mounted) isCourseClickedNotifier.update((cb) => false);
   }
 
@@ -42,9 +42,9 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
           CustomElevatedButton(
             backgroundColor: AppColors.lightenColor(context.theme.colorScheme.secondary, context.isDarkMode ? 0.5 : 0.5),
             onClick: () {
-              AppNavigator.to(context).createCourseRoute();
+              AppRouteNavigator.to(context).createCourseRoute();
             },
-            child: CustomText('Offline Mode(Create Course)', color: AppColors.primaryText(context)),
+            child: CustomText('Offline Mode(Create Course)', color: ref.theme.onBackground),
           ),
 
          if(kDebugMode) Padding(
@@ -54,7 +54,7 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
               onClick: () {
                 Navigator.push(context, PageAnimation.pageRouteBuilder(FileManagerPage()));
               },
-              child: CustomText('File Manager page', color: AppColors.primaryText(context)),
+                child: CustomText('File Manager page', color: ref.theme.onBackground),
             ),
          ),
         ],

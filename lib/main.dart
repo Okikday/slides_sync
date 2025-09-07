@@ -7,7 +7,6 @@ import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
 import 'package:slides_sync/core/storage/isar_data/isar_schemas.dart';
-import 'package:slides_sync/core/utils/app_engine.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,9 +16,6 @@ void main() async {
 
   if (!kIsWeb) await IsarData.initialize(collectionSchemas: isarSchemas);
 
-  await AppEngine().loadTheme(container);
-
-  runApp(UncontrolledProviderScope(container: container, child: const App()));
+  runApp(ProviderScope(child: const App()));
 }
 
-final ProviderContainer container = ProviderContainer();

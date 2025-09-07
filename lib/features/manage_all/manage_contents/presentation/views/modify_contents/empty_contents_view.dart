@@ -44,7 +44,7 @@ class EmptyContentsView extends ConsumerWidget {
                 pixelHeight: 44,
                 label: "Add a content",
                 textSize: 15,
-                textColor: ref.theme.onPrimaryText,
+                textColor: ref.theme.onPrimary,
               ),
             ),
 

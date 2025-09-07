@@ -37,7 +37,7 @@ class RecentsSectionBody extends ConsumerWidget {
                 pixelHeight: 44,
                 label: "Explore Courses",
                 textSize: 15,
-                textColor: theme.onPrimaryText,
+                textColor: theme.onPrimary,
               ),
             ),
           ],

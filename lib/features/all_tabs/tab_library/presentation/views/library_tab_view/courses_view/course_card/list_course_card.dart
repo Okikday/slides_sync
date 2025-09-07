@@ -203,7 +203,7 @@ class ListCourseCardTitleColumn extends ConsumerWidget {
               courseName,
               fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: theme.primaryText,
+              color: theme.onBackground,
             ),
           ),
         ),
@@ -215,7 +215,7 @@ class ListCourseCardTitleColumn extends ConsumerWidget {
           child: CustomText(
             "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "category" : "categories"}",
             fontSize: 11,
-            color: theme.secondaryText.withValues(alpha: 0.8),
+            color: theme.supportingText.withValues(alpha: 0.8),
           ),
         ),
       ],
@@ -247,7 +247,7 @@ class ListCourseCardProgressIndicator extends ConsumerWidget {
               "${((progress?.clamp(0, 100) ?? 0.0) * 100.0).toInt()}%",
               fontSize: 11,
               fontWeight: FontWeight.bold,
-              color: theme.secondaryText.withValues(alpha: 0.5),
+              color: theme.supportingText.withValues(alpha: 0.5),
             ),
           ),
 

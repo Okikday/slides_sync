@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/sub/library_floating_action_button.dart';
 import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
 import 'package:slides_sync/features/main/presentation/views/main_view/main_view_annotated_region.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_drawer.dart';
@@ -60,6 +61,7 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
           ),
 
           drawer: const HomeDrawer(),
+          floatingActionButton: const LibraryFloatingActionButton(),
           
           body: PageView(
             controller: pageController,

@@ -1,9 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course_view.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EmptyCoursesView extends ConsumerWidget {
@@ -30,14 +28,14 @@ class EmptyCoursesView extends ConsumerWidget {
                 onClick: () {
                   Navigator.pop(context);
     
-                  AppNavigator.to(context).createCourseRoute();
+                  AppRouteNavigator.to(context).createCourseRoute();
                 },
                 backgroundColor: ref.theme.altBackgroundPrimary,
                 borderRadius: 12,
                 pixelHeight: 44,
                 label: "Create your course",
                 textSize: 15,
-                textColor: ref.theme.primaryText,
+                textColor: ref.theme.onBackground,
               ),
             ),
           ],

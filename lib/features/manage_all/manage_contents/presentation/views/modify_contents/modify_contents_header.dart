@@ -43,7 +43,7 @@ class ModifyContentsHeader extends ConsumerWidget {
                         onClick: onSelect,
                         child: CustomText(
                           "Select",
-                          color: theme.secondaryText,
+                          color: theme.supportingText,
                         ),
                       ),
                       CustomElevatedButton(
@@ -58,11 +58,11 @@ class ModifyContentsHeader extends ConsumerWidget {
                             Icon(
                               Icons.keyboard_arrow_down,
                               size: 22,
-                              color: theme.secondaryText,
+                              color: theme.supportingText,
                             ),
                             CustomText(
                               "Filter",
-                              color: theme.secondaryText,
+                              color: theme.supportingText,
                             ),
                           ],
                         ),
@@ -78,7 +78,7 @@ class ModifyContentsHeader extends ConsumerWidget {
                         onClick: onSearch,
                         child: Icon(
                           Iconsax.search_normal_copy,
-                          color: theme.secondaryText,
+                          color: theme.supportingText,
                         ),
                       ),
                     ],

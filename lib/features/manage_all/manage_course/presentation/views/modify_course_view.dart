@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/modify_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
@@ -100,8 +100,10 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
           onClickDelete: () {
             UiUtils.showCustomDialog(
               context,
+              barrierColor: Colors.black.withAlpha(140),
               child: ConfirmDeletionDialog(
                 content: "Deleting this course will delete it's collections and contents",
+                animateFrom: Alignment.topRight,
                 onDelete: () async {
                   UiUtils.hideDialog(context);
                   await Future.delayed(Durations.medium1);
@@ -153,12 +155,12 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
                 child: CreateCollectionBottomSheet(courseDbId: course.id),
               ).then((value) {
                 if (course.collections.isNotEmpty) {
-                  if (context.mounted) AppNavigator.to(context).modifyCollectionsRoute(course);
+                  if (context.mounted) AppRouteNavigator.to(context).modifyCollectionsRoute(course);
                 }
               });
               return;
             }
-            AppNavigator.to(context).modifyCollectionsRoute(course);
+            AppRouteNavigator.to(context).modifyCollectionsRoute(course);
           },
         ),
 
@@ -171,7 +173,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
             sliver: SliverToBoxAdapter(
               child: CustomElevatedButton(
                 onClick: () {
-                  AppNavigator.to(context).modifyCollectionsRoute(course);
+                  AppRouteNavigator.to(context).modifyCollectionsRoute(course);
                 },
                 borderRadius: 48,
                 pixelHeight: 56,

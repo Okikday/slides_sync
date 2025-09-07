@@ -1,21 +1,11 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/app.dart';
-import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
-import 'package:slides_sync/core/storage/hive_data/hive_data.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart' hide CustomDialog;
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/settings/presentation/views/sub/settings_appearance_dialog.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
-import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
-import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
 class SettingsView extends ConsumerWidget {
   const SettingsView({super.key});
@@ -36,7 +26,7 @@ class SettingsView extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
           child: ListView(
             children: [
-              CustomText("Appearance", color: theme.secondaryText),
+              CustomText("Appearance", color: theme.supportingText),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -47,7 +37,7 @@ class SettingsView extends ConsumerWidget {
                 trailing: CustomElevatedButton(
                   label: "Change",
                   backgroundColor: theme.altBackgroundPrimary,
-                  textColor: theme.secondaryText,
+                  textColor: theme.supportingText,
                   textSize: 14,
                   onClick: () {
                     CustomDialog.show(context, barrierColor: Colors.black26, blurSigma: Offset(2, 2), child: SettingsAppearanceDialog());
@@ -66,7 +56,7 @@ class SettingsView extends ConsumerWidget {
 
               ConstantSizing.columnSpacingLarge,
 
-              CustomText("Technical", color: theme.secondaryText),
+              CustomText("Technical", color: theme.supportingText),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -79,7 +69,7 @@ class SettingsView extends ConsumerWidget {
 
               ConstantSizing.columnSpacingLarge,
 
-              CustomText("Language", color: theme.secondaryText),
+              CustomText("Language", color: theme.supportingText),
 
               ConstantSizing.columnSpacingMedium,
 
@@ -103,7 +93,7 @@ class SettingsCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
     return Container(
-      decoration: BoxDecoration(color: theme.bgSupportText.withAlpha(10), borderRadius: BorderRadius.circular(24)),
+      decoration: BoxDecoration(color: theme.supportingText.withAlpha(10), borderRadius: BorderRadius.circular(24)),
       child: Column(
         children: [
           Padding(
@@ -120,12 +110,12 @@ class SettingsCard extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 2,
                     children: [
-                      CustomText(title, color: theme.primaryText),
+                      CustomText(title, color: theme.onBackground),
                       if (content != null)
                         CustomText(
                           content!,
                           fontSize: 11,
-                          color: theme.secondaryText,
+                          color: theme.supportingText,
                         ),
                     ],
                   ),

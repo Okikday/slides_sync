@@ -98,7 +98,7 @@ dependencies:
   infinite_scroll_pagination: ^5.1.1
   any_link_preview: ^3.0.3
   flutter_link_previewer: ^3.2.2
-  clipboard: ^2.0.2
+  super_clipboard: ^0.9.1
 
   #docx_file_viewer: ^0.0.1
 

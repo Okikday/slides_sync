@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -7,10 +6,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -31,13 +29,11 @@ class _ContentViewGateState extends ConsumerState<ContentViewGate> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(Durations.medium4);
-     if(mounted) AppNavigator.to(context, isPushedAsReplacement: true).contentViewerRoute(widget.content);
+      if (mounted) AppRouteNavigator.to(context, isPushedAsReplacement: true).contentViewerRoute(widget.content);
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,76 +81,79 @@ class _ContentViewGateState extends ConsumerState<ContentViewGate> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
-                  clipBehavior: Clip.antiAlias,
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: AppColors.bgBlendColor(context),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.fromBorderSide(BorderSide(color: theme.altBackgroundSecondary.withAlpha(100))),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: SizedBox.expand(
-                          child: BuildImagePathWidget(
-                            fileDetails: FileDetails(
-                              filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath),
-                            ),
-                            fit: BoxFit.cover,
-                            fallbackWidget: Icon(
-                              WidgetHelper.resolveIconData(content.courseContentType, false),
-                              size: 36,
+                Heroine(
+                  tag: "CourseMaterialGridCard=>ContentViewGate=>${content.contentId}",
+                  child: Container(
+                    constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
+                    clipBehavior: Clip.antiAlias,
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: AppColors.bgBlendColor(context),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.fromBorderSide(BorderSide(color: theme.altBackgroundSecondary.withAlpha(100))),
+                    ),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: SizedBox.expand(
+                            child: BuildImagePathWidget(
+                              fileDetails: FileDetails(
+                                filePath: CreateContentPreviewImage.genPreviewImagePath(
+                                  filePath: content.path.filePath,
+                                ),
+                              ),
+                              fit: BoxFit.cover,
+                              fallbackWidget: Icon(
+                                WidgetHelper.resolveIconData(content.courseContentType, false),
+                                size: 36,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          LinearProgressIndicator(
-                            value: 0.4,
-                            color: theme.primaryColor.withAlpha(60),
-                            backgroundColor: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
-                          ),
-
-                          Container(
-                            width: double.infinity,
-                            color: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
-                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Flexible(
-                                  child: CustomText(
-                                    content.title,
-                                    color: theme.primaryText,
-                                    fontWeight: FontWeight.w600,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                CustomText(
-                                  Formatter.formatEnumName(content.courseContentType.name),
-                                  fontSize: 11,
-                                  color: theme.secondaryText,
-                                ),
-                              ],
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            LinearProgressIndicator(
+                              value: 0.4,
+                              color: theme.primaryColor.withAlpha(60),
+                              backgroundColor: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+
+                            Container(
+                              width: double.infinity,
+                              color: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
+                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: CustomText(
+                                      content.title,
+                                      color: theme.onBackground,
+                                      fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  CustomText(
+                                    Formatter.formatEnumName(content.courseContentType.name),
+                                    fontSize: 11,
+                                    color: theme.supportingText,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ).animate().fadeIn().fadeOut(delay: Durations.short4),
+                ),
               ],
             ),
           ),
-
-          
         ],
       ),
-    );
+    ).animate().blurXY(begin: 0, end: 2, duration: Durations.medium4);
   }
 }

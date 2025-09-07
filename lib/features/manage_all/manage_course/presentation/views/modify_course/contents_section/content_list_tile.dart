@@ -99,7 +99,7 @@ class ContentListTile extends ConsumerWidget {
                           title,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: theme.primaryText,
+                          color: theme.onBackground,
                           height: 1.0,
                         ),
                       ),
@@ -107,14 +107,14 @@ class ContentListTile extends ConsumerWidget {
                         child: CustomText(
                           subtitle,
                           fontSize: extraContent.isEmpty ? 14 : 12,
-                          color: theme.secondaryText,
+                          color: theme.supportingText,
                         ),
                       ),
                       if (extraContent.isNotEmpty)
                         CustomText(
                           extraContent,
                           fontSize: 13,
-                          color: theme.primaryText,
+                          color: theme.onBackground,
                         ),
                     ],
                   ),
@@ -139,14 +139,14 @@ class ContentListTile extends ConsumerWidget {
                     progress == null
                             ? Icon(
                               Iconsax.arrow_right_2_copy,
-                              color: theme.primaryText,
+                              color: theme.onBackground,
                               size: 26,
                             )
                             : CustomText(
                               "${(progress! * 100).truncate()}%",
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: theme.primaryText,
+                              color: theme.onBackground,
                             ),
                   ),
 

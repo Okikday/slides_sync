@@ -89,7 +89,7 @@ class RecentListTile extends ConsumerWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           height: 1.0,
-                          color: theme.primaryText,
+                          color: theme.onBackground,
                         ),
                       ),
                     ),
@@ -97,7 +97,7 @@ class RecentListTile extends ConsumerWidget {
                       child: CustomText(
                         dataModel.subtitle,
                         fontSize: dataModel.extraContent.isEmpty ? 14 : 12,
-                        color: theme.secondaryText.withValues(alpha: 0.8),
+                        color: theme.supportingText.withValues(alpha: 0.8),
                       ),
                     ),
                     if (dataModel.extraContent.isNotEmpty) Flexible(child: CustomText(dataModel.extraContent, fontSize: 13)),
@@ -127,7 +127,7 @@ class RecentListTile extends ConsumerWidget {
                             "${(dataModel.progress! * 100).truncate()}%",
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: theme.secondaryText.withValues(
+                            color: theme.supportingText.withValues(
                               alpha: 0.5,
                             ),
                           ),

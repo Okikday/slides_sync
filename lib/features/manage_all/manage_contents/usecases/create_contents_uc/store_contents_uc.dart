@@ -44,16 +44,24 @@ class StoreContentsUc {
 
         final Result<String?> addContentResult = await Result.tryRunAsync(() async {
           if (sameHashedContent != null) {
-            // final CourseContent content = CourseContent.create(
-            //   contentHash: hash,
-            //   title: fileNameWithoutExt,
-            //   parentId: collection.collectionId,
-            //   path: sameHashedContent.path.fileDetails,
-            //   courseContentType: contentType,
-            // );
-            log("A duplicate exists!");
-            // await CourseCollectionRepo.addContent(content);
-            return '';
+            final CourseContent? sameHashedContentInColl = await CourseCollectionRepo.findFirstDuplicateByHash(
+              collection,
+              hash,
+            );
+            if (sameHashedContentInColl == null) {
+              final CourseContent content = CourseContent.create(
+                contentHash: hash,
+                title: fileNameWithoutExt,
+                parentId: collection.collectionId,
+                path: sameHashedContent.path.fileDetails,
+                courseContentType: contentType,
+              );
+              await CourseCollectionRepo.addContent(content);
+              return content.contentId;
+            } else {
+              log("A duplicate exists!");
+              return '';
+            }
           } else {
             final String contentId = const Uuid().v4();
             final File storedAt = File(

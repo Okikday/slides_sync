@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +118,7 @@ class GridCourseCard extends ConsumerWidget {
                       overflow: TextOverflow.fade,
                       fontWeight: FontWeight.bold,
                       fontSize: 13.5,
-                      color: theme.primaryText,
+                      color: theme.onBackground,
                     ),
                   ),
                 ),
@@ -133,7 +132,7 @@ class GridCourseCard extends ConsumerWidget {
                   child: CustomText(
                     "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
                     fontSize: 12,
-                    color: theme.secondaryText.withValues(alpha: 0.8),
+                    color: theme.supportingText.withValues(alpha: 0.8),
                   ),
                 ),
 

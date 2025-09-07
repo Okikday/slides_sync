@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
@@ -113,7 +112,7 @@ class _EditCollectionTitleBottomSheetState extends ConsumerState<EditCollectionT
                   inputContentPadding: EdgeInsets.symmetric(horizontal: 12.0),
                   inputTextStyle: TextStyle(
                     fontSize: 15,
-                    color: theme.primaryText,
+                    color: theme.onBackground,
                   ),
                   cursorColor: theme.primaryColor,
                   backgroundColor: Colors.transparent,

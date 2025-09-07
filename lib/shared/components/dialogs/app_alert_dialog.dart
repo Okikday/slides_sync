@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 
 class AppAlertDialog extends ConsumerWidget {
   final String title;
@@ -36,31 +35,24 @@ class AppAlertDialog extends ConsumerWidget {
         children: [
           ConstantSizing.columnSpacingSmall,
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Center(
-              child: CustomText(
-                title,
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-                textAlign: TextAlign.center,
-                color: theme.primaryText,
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: CustomText(title, fontWeight: FontWeight.bold, fontSize: 17, color: theme.onBackground,
             ),
           ),
           ConstantSizing.columnSpacingSmall,
-          Divider(color: AppColors.bgBlendColor(context)),
-          ConstantSizing.columnSpacingSmall,
+          Divider(color: theme.supportingText.withValues(alpha: 0.1)),
+          ConstantSizing.columnSpacing(4),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.only(left: 20, right: 16),
             child: CustomText(
               content,
               fontSize: 14.5,
-              color: theme.primaryText,
+              color: theme.onBackground,
             ),
           ),
           ConstantSizing.columnSpacingExtraLarge,
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 4),
             child: Row(
               spacing: 16.0,
               children: [

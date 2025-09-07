@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +7,6 @@ import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/features/auth/data/firebase_auth_data.dart';
 import 'package:slides_sync/features/auth/domain/services/user_auth/firebase_google_auth.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
@@ -50,7 +47,11 @@ class SignInView extends ConsumerWidget {
                     child: Image.asset("assets/logo/tinted_white_transparent.png")),
                   ConstantSizing.columnSpacing(kToolbarHeight),
 
-                  CustomText("Sign in to Slide..Sync and Simplify your learning journey", color: theme.primaryText, textAlign: TextAlign.center,),
+                  CustomText(
+                    "Sign in to Slide..Sync and Simplify your learning journey",
+                    color: theme.onBackground,
+                    textAlign: TextAlign.center,
+                  ),
                   ConstantSizing.columnSpacing(kToolbarHeight),
                   CustomElevatedButton(
                     label: "Sign in",
@@ -58,7 +59,7 @@ class SignInView extends ConsumerWidget {
                     pixelHeight: 60,
                     borderRadius: 100,
                     backgroundColor: primaryPurple,
-                    textColor: theme.onPrimaryText,
+                    textColor: theme.onPrimary,
                     onClick: () async {
                       UiUtils.showCustomDialog(
                         context,
@@ -89,7 +90,12 @@ class SignInView extends ConsumerWidget {
                                       ),
                                     ),
                                   ),
-                                  CustomText("Signing you in...Just a moment", color: theme.onPrimaryText, fontSize: 20, fontWeight: FontWeight.bold,)
+                                  CustomText(
+                                    "Signing you in...Just a moment",
+                                    color: theme.onPrimary,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  )
                                 ],
                               ),
                             ),
@@ -104,7 +110,7 @@ class SignInView extends ConsumerWidget {
                         rootNavigatorKey.currentContext?.pop();
                       }
 
-                     if(result.isSuccess) context.go(RoutesStrings.homeView);
+                     if(result.isSuccess && context.mounted) context.go(RoutesStrings.homeView);
                     },
                   ),
                 ],

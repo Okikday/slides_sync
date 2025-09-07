@@ -60,7 +60,7 @@ class AppBarContainerChild extends ConsumerWidget {
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
-                              color: theme.primaryText,
+                              color: theme.onBackground,
                             ),
                             CustomText(
                               subtitle!,
@@ -77,7 +77,7 @@ class AppBarContainerChild extends ConsumerWidget {
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                           style: titleStyle,
-                          color: theme.primaryText,
+                          color: theme.onBackground,
                         ),
               ),
               if (trailing == null) ConstantSizing.rowSpacingMedium,
@@ -99,7 +99,7 @@ class AppBackButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
     return IconButton(
-      color: theme.secondaryText,
+      color: theme.supportingText,
       onPressed: () {
         if (onPressed == null) {
           context.pop();
@@ -111,7 +111,7 @@ class AppBackButton extends ConsumerWidget {
       icon: Icon(
         Icons.arrow_back_ios_new_rounded,
         size: 20,
-        color: theme.secondaryText,
+        color: theme.supportingText,
       ),
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(

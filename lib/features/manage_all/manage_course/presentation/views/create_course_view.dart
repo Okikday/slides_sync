@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +69,6 @@ class _CreateCourseOuterSectionState extends ConsumerState<CreateCourseOuterSect
 
   @override
   Widget build(BuildContext context) {
-    log("Build create course view");
     return SizedBox(
       height: context.deviceHeight,
       width: context.deviceWidth,

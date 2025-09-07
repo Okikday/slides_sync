@@ -10,7 +10,7 @@ import 'package:slides_sync/features/manage_all/manage_collections/presentation/
 import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
-import '../../../../../core/utils/ui_utils.dart' hide CustomDialog;
+import '../../../../../core/utils/ui_utils.dart';
 import '../../../../../shared/components/app_bar_container.dart';
 
 class ModifyCollectionsView extends ConsumerStatefulWidget {

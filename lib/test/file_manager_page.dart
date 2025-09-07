@@ -82,7 +82,7 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
         appBar: AppBar(
           title: Text(
             'File Manager: $dirName',
-            style: TextStyle(color: theme.primaryText),
+            style: TextStyle(color: theme.onBackground),
           ),
           leading: IconButton(
                   icon: Icon(Icons.arrow_back),
@@ -107,7 +107,7 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
                 ? Center(
                   child: Text(
                     'Empty',
-                    style: TextStyle(color: theme.primaryText),
+                    style: TextStyle(color: theme.onBackground),
                   ),
                 )
                 : ListView.separated(
@@ -129,13 +129,13 @@ class _FileManagerPageState extends ConsumerState<FileManagerPage> {
                           leading: Icon(isDir ? Icons.folder : Icons.insert_drive_file),
                           title: Text(
                             name,
-                            style: TextStyle(color: theme.primaryText),
+                            style: TextStyle(color: theme.onBackground),
                           ),
                           subtitle: Text(
                             isDir ? modified : '$modified • $size',
                             style: TextStyle(
                               fontSize: 12,
-                              color: theme.primaryText,
+                              color: theme.onBackground,
                             ),
                           ),
                           onTap: isDir ? () => _listDir(ent) : null,

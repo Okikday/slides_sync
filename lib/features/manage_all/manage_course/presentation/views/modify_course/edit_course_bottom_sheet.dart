@@ -113,7 +113,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               spacing: 6.0,
                               children: [
-                                CustomText("Title", fontSize: 13, color: ref.theme.primaryText),
+                                CustomText("Title", fontSize: 13, color: ref.theme.onBackground),
                                 InputCourseTitleField(
                                   courseNameController: courseNameTextController,
                                   isCourseCodeFieldVisible: isCourseCodeFieldVisible,
@@ -221,7 +221,7 @@ class PositionedUpdateDetailsButton extends ConsumerWidget {
           },
           contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           label: "Update details",
-          textColor: theme.onPrimaryText,
+          textColor: theme.onPrimary,
           textSize: 15,
           pixelHeight: 48,
           backgroundColor: theme.primaryColor,

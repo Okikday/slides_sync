@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart'
@@ -37,12 +36,14 @@ class UiUtils {
     Color? barrierColor,
     Offset? blurSigma,
   }) async {
+    final normalColor = context.theme.colorScheme.onSurface;
+    final bgColor = context.theme.colorScheme.surface;
     await CustomDialog.showLoadingDialog(
       context,
       canPop: canPop,
       msg: message,
-      msgTextColor: context.isDarkMode ? Colors.white : Colors.black,
-      backgroundColor: backgroundColor ?? Colors.transparent,
+      msgTextColor: normalColor,
+      backgroundColor: backgroundColor ?? bgColor,
       barrierColor: barrierColor ?? Colors.black.withAlpha(140),
       transitionDuration: Durations.medium2,
       blurSigma: blurSigma,
@@ -92,14 +93,14 @@ class UiUtils {
 
     await Flushbar(
       message: msg,
-      icon: Icon(_resolveIconData(vibe)),
+      icon: Icon(_resolveIconData(vibe), color: colors[0]),
       messageColor: messageColor ?? colors[0],
       duration: duration,
       dismissDirection: FlushbarDismissDirection.VERTICAL,
       flushbarPosition: flushbarPosition,
       backgroundColor: backgroundColor ?? colors[1],
       borderRadius: BorderRadius.circular(ConstantSizing.borderRadiusCircle),
-      borderColor: Colors.grey.withValues(alpha: 0.1),
+      borderColor: colors[0].withValues(alpha: 0.2),
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       margin:
           margin ??
@@ -143,7 +144,7 @@ List<Color> _resolveFlushbarVibe(BuildContext context, FlushbarVibe vibe) {
   //         ? const Color(0xFF1E1E2C).withValues(alpha: 0.85) // Darker, muted blue-gray
   //         : const Color(0xFFF5F5F7).withValues(alpha: 0.85); // Soft off-white
 
-  final normalColor = context.theme.colorScheme.onPrimary;
+  final normalColor = context.theme.colorScheme.onSurface;
   final normalBgColor = context.theme.colorScheme.surface.withValues(alpha: 0.4);
 
   switch (vibe) {

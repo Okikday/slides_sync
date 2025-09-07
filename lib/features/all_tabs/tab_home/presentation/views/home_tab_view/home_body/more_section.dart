@@ -70,9 +70,9 @@ class MoreSectionOption extends ConsumerWidget {
           // contentPadding: EdgeInsets.all(0),
           shape: const CircleBorder(),
           backgroundColor: theme.background,
-          child: Icon(iconData, color: theme.secondaryText)
+          child: Icon(iconData, color: theme.supportingText)
         ),
-        CustomText(title, color: theme.secondaryText, fontSize: 12),
+        CustomText(title, color: theme.supportingText, fontSize: 12),
       ],
     );
   }

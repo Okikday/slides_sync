@@ -45,7 +45,7 @@ class ModCollectionCardTile extends ConsumerWidget {
           child: Icon(
             Iconsax.edit_copy,
             size: 20,
-            color: ref.theme.secondaryText,
+            color: ref.theme.supportingText,
           ),
         ),
         title: title,

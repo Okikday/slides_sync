@@ -4,9 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/app.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
-import 'package:slides_sync/features/settings/presentation/views/sub/theme_generator_view.dart';
 import 'package:slides_sync/shared/components/dialogs/app_customizable_dialog.dart';
-import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 
@@ -18,31 +16,11 @@ class SettingsAppearanceDialog extends ConsumerStatefulWidget {
 }
 
 class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDialog> {
-  bool followSystem = true; // when true, ThemePairPicker follows current app brightness
-  Brightness forcedBrightness = Brightness.light; // used only when followSystem == false
+  bool followSystem = true;
+  Brightness forcedBrightness = Brightness.light;
 
-  // Build ThemePair list from your defaultAppThemeModels
-  List<ThemePair> _buildPairsFromModels(List<AppThemeModel> models) {
-    final Map<String, AppThemeModel> lightMap = {};
-    final Map<String, AppThemeModel> darkMap = {};
-
-    for (final m in models) {
-      final key = m.title.replaceAll(RegExp(r'\s*\(Light\)|\s*\(Dark\)', caseSensitive: false), '').trim();
-      if (m.brightness == Brightness.light) {
-        // prefer explicit "(Light)" items for the light slot
-        lightMap[key] = m;
-      } else {
-        darkMap[key] = m;
-      }
-    }
-
-    final List<ThemePair> pairs = [];
-    for (final key in {...lightMap.keys, ...darkMap.keys}) {
-      final light = lightMap[key] ?? darkMap[key]!; // fallback to opposite if missing
-      final dark = darkMap[key] ?? lightMap[key]!;
-      pairs.add(ThemePair(id: key, title: key, lightModel: light, darkModel: dark));
-    }
-    return pairs;
+  List<ThemePair> _buildPairsFromUnified(List<UnifiedThemeModel> models) {
+    return models.map((unified) => ThemePair.fromUnified(unified)).toList();
   }
 
   Brightness? _resolveForceBrightness() {
@@ -51,12 +29,15 @@ class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDia
 
   @override
   Widget build(BuildContext context) {
-    final pairs = _buildPairsFromModels(defaultAppThemeModels);
+    final pairs = _buildPairsFromUnified(defaultUnifiedThemeModels);
 
     return AppCustomizableDialog(
       blurSigma: const Offset(2, 2),
       leading: Center(
-        child: CustomText("Adjust Theme(${followSystem ? 'Auto' : 'Manual'})", color: ref.watch(appThemeProvider).primaryText),
+        child: CustomText(
+          "Adjust Theme(${followSystem ? 'Auto' : 'Manual'})",
+          color: ref.watch(appThemeProvider).onSurface,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -68,7 +49,6 @@ class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDia
             children: [
               ConstantSizing.columnSpacingSmall,
 
-              // Control row: follow system? if not, force light/dark
               Wrap(
                 spacing: 8,
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -98,25 +78,17 @@ class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDia
 
               ConstantSizing.columnSpacingSmall,
 
-              // Theme picker grid (passes resolved forceBrightness)
               ThemePairPicker(
                 pairs: pairs,
                 forceBrightness: _resolveForceBrightness(),
                 crossAxisCount: 2,
                 spacing: 12,
                 onSelected: (pair, chosen) {
-                  // Optional: additional side-effects after selection
-                  // e.g. show a snack, analytics event, etc.
+                  
                 },
               ),
 
               ConstantSizing.columnSpacingMedium,
-
-              // CustomElevatedButton(label: "Generate theme", textColor: ref.theme.onPrimaryText, backgroundColor: ref.theme.primaryColor, onClick: () {
-              //   Navigator.push(context, PageAnimation.pageRouteBuilder(ThemeGeneratorView()));
-              // },),
-
-              
             ],
           ),
         ),
@@ -125,20 +97,35 @@ class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDia
   }
 }
 
-/// A simple wrapper for a theme pair (light & dark)
 class ThemePair {
   final String id;
   final String title;
+  final UnifiedThemeModel unifiedModel;
   final AppThemeModel lightModel;
   final AppThemeModel darkModel;
 
-  ThemePair({required this.id, required this.title, required this.lightModel, required this.darkModel});
+  ThemePair({
+    required this.id,
+    required this.title,
+    required this.unifiedModel,
+    required this.lightModel,
+    required this.darkModel,
+  });
+
+  factory ThemePair.fromUnified(UnifiedThemeModel unified) {
+    final light = AppThemeModel.of(unified, Brightness.light);
+    final dark = AppThemeModel.of(unified, Brightness.dark);
+
+    return ThemePair(
+      id: unified.title,
+      title: unified.title,
+      unifiedModel: unified,
+      lightModel: light,
+      darkModel: dark,
+    );
+  }
 }
 
-/// A grid widget to pick theme pairs (shows both light + dark swatches).
-/// - [pairs] list of ThemePair
-/// - [forceBrightness] if non-null, forces using that brightness on selection. If null, uses current app brightness.
-/// - [onSelected] callback with selected pair + chosen brightness
 class ThemePairPicker extends ConsumerWidget {
   final List<ThemePair> pairs;
   final Brightness? forceBrightness;
@@ -161,16 +148,17 @@ class ThemePairPicker extends ConsumerWidget {
   }
 
   Future<void> _applyPair(BuildContext context, WidgetRef ref, ThemePair pair, Brightness chosen) async {
-    final AppThemeModel modelToApply = (chosen == Brightness.dark) ? pair.darkModel : pair.lightModel;
-
     try {
-      ref.read(appThemeProvider.notifier).update(modelToApply);
+      ref.read(appThemeProvider.notifier).update(chosen, pair.unifiedModel);
     } catch (_) {
+      debugPrint('Failed to update theme provider');
     }
 
     try {
-      await AppHiveData.instance.setData(key: "appTheme", value: modelToApply.toJson());
-    } catch (_) {}
+      await AppHiveData.instance.setData(key: "appTheme", value: pair.unifiedModel.toJson());
+    } catch (e) {
+      debugPrint('Failed to save theme to Hive: $e');
+    }
 
     if (onSelected != null) onSelected!(pair, chosen);
   }
@@ -186,18 +174,21 @@ class ThemePairPicker extends ConsumerWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [pair.lightModel.primaryColor, pair.lightModel.secondaryColor],
+                colors: [pair.lightModel.primary, pair.lightModel.secondary],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: pair.lightModel.primaryColor.withOpacity(0.18),
+                  color: pair.lightModel.primary.withValues(alpha: 0.18),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: Center(
-              child: Text('L', style: TextStyle(color: pair.lightModel.onPrimaryText, fontWeight: FontWeight.bold)),
+              child: Text(
+                'L',
+                style: TextStyle(color: pair.lightModel.onPrimary, fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
           ),
         ),
@@ -210,12 +201,17 @@ class ThemePairPicker extends ConsumerWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [pair.darkModel.primaryColor, pair.darkModel.secondaryColor],
+                colors: [pair.darkModel.primary, pair.darkModel.secondary],
               ),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 8, offset: const Offset(0, 6))],
+              boxShadow: [
+                BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 6)),
+              ],
             ),
             child: Center(
-              child: Text('D', style: TextStyle(color: pair.darkModel.onPrimaryText, fontWeight: FontWeight.bold)),
+              child: Text(
+                'D',
+                style: TextStyle(color: pair.darkModel.onPrimary, fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
           ),
         ),
@@ -225,7 +221,7 @@ class ThemePairPicker extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Brightness resolved = _resolveBrightness(context, forceBrightness);
+    final currentTheme = ref.watch(appThemeProvider);
 
     return GridView.builder(
       shrinkWrap: true,
@@ -239,6 +235,8 @@ class ThemePairPicker extends ConsumerWidget {
       ),
       itemBuilder: (context, index) {
         final pair = pairs[index];
+        final isSelected = currentTheme.title == pair.title;
+        
         return GestureDetector(
           onTap: () async {
             final chosen = _resolveBrightness(context, forceBrightness);
@@ -247,30 +245,40 @@ class ThemePairPicker extends ConsumerWidget {
           child: Material(
             color: Theme.of(context).colorScheme.surface,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  Expanded(child: _buildSwatchPair(context, pair)),
-                  const SizedBox(height: 8),
-                  Text(
-                    pair.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.circle, size: 10, color: pair.lightModel.primaryColor),
-                      const SizedBox(width: 6),
-                      Icon(Icons.circle, size: 10, color: pair.darkModel.primaryColor),
-                    ],
-                  ),
-                ],
+            elevation: isSelected ? 4 : 2,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                border: isSelected ? Border.all(color: currentTheme.primary, width: 2.5) : null,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    Expanded(child: _buildSwatchPair(context, pair)),
+                    const SizedBox(height: 8),
+                    Text(
+                      pair.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+                        color: isSelected ? currentTheme.primary : null,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.circle, size: 10, color: pair.lightModel.primary),
+                        const SizedBox(width: 6),
+                        Icon(Icons.circle, size: 10, color: pair.darkModel.primary),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

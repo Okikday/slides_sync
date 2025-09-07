@@ -4,10 +4,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
-import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/empty_collections_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -26,7 +25,7 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
         if (collections.isEmpty) {
           return EmptyCollectionsView(
             onClickAddCollection: () async {
-              // AppNavigator.to(context).modifyCollectionsRoute(course);
+              // AppRouteNavigator.to(context).modifyCollectionsRoute(course);
               // await Future.delayed(Durations.short1);
               if (context.mounted) {
                 CustomDialog.show(
@@ -62,7 +61,7 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
                   //     ),
                   //   );
 
-                  AppNavigator.to(context).courseMaterialsRoute(list[index]);
+                  AppRouteNavigator.to(context).courseMaterialsRoute(list[index]);
                 },
               ).animate().fadeIn().slideY(
                 begin: (index / collections.length + 1) * 0.4,

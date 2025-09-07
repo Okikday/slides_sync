@@ -4,7 +4,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class HomeDrawer extends ConsumerWidget {
@@ -28,14 +28,14 @@ class HomeDrawer extends ConsumerWidget {
                 CircleAvatar(
                   radius: 40,
                   backgroundColor: theme.altBackgroundPrimary,
-                  child: Icon(Iconsax.user, color: theme.secondaryText),
+                  child: Icon(Iconsax.user, color: theme.supportingText),
                 ),
                 ConstantSizing.columnSpacingMedium,
-                CustomText("Username", color: theme.primaryText),
+                CustomText("Username", color: theme.onBackground),
                 ConstantSizing.columnSpacingSmall,
                 CustomText(
                   "Some description",
-                  color: theme.secondaryText.withValues(alpha: 0.6),
+                  color: theme.supportingText.withValues(alpha: 0.6),
                 ),
 
                 ConstantSizing.columnSpacingExtraLarge,
@@ -43,33 +43,33 @@ class HomeDrawer extends ConsumerWidget {
                 ListTile(
                   leading: Icon(
                     Iconsax.profile_tick,
-                    color: theme.secondaryText,
+                    color: theme.supportingText,
                   ),
-                  title: CustomText("Profile", color: theme.primaryText),
+                  title: CustomText("Profile", color: theme.onBackground),
                 ),
                 ListTile(
                   leading: Icon(
                     Iconsax.bookmark,
-                    color: theme.secondaryText,
+                    color: theme.supportingText,
                   ),
-                  title: CustomText("Bookmarks", color: theme.primaryText),
+                  title: CustomText("Bookmarks", color: theme.onBackground),
                 ),
                 ListTile(
                   leading: Icon(
                     Iconsax.setting,
-                    color: theme.secondaryText,
+                    color: theme.supportingText,
                   ),
-                  title: CustomText("Settings", color: theme.primaryText),
+                  title: CustomText("Settings", color: theme.onBackground),
                   onTap: () {
-                    AppNavigator.to(context).settingsRoute();
+                    AppRouteNavigator.to(context).settingsRoute();
                   },
                 ),
                 ListTile(
                   leading: Icon(
                     Iconsax.information_copy,
-                    color: theme.secondaryText,
+                    color: theme.supportingText,
                   ),
-                  title: CustomText("Help", color: theme.primaryText),
+                  title: CustomText("Help", color: theme.onBackground),
                 ),
               ],
             ),

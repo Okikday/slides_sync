@@ -1,8 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/utils/app_navigator.dart';
+import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
@@ -23,7 +22,7 @@ class CourseCardActions {
 
     await Future.delayed(Durations.short4);
     ref.read(CourseProviders.courseProvider.notifier).updateCourse(course);
-    if (context.mounted) AppNavigator.to(context).courseDetailsRoute(course);
+    if (context.mounted) AppRouteNavigator.to(context).courseDetailsRoute(course);
     if (context.mounted) isCourseCardAnimating.update((cb) => false);
   }
 

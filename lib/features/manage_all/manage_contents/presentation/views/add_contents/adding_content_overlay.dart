@@ -33,7 +33,7 @@ class LoadingOverlay extends ConsumerWidget {
                   message ?? "Loading",
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  color: theme.bgSupportText,
+                  color: theme.supportingText,
                 ),
                 SizedBox.square(
                   dimension: 14,

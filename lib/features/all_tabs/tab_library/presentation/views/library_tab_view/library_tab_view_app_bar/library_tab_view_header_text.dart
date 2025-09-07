@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class LibraryTabViewHeaderText extends ConsumerWidget {
       fontSize: (minHeight * percentScroll).clamp(20.0, 26),
       fontWeight: FontWeight.bold,
       textAlign: TextAlign.center,
-      color: ref.theme.primaryText,
+      color: ref.theme.onBackground,
     );
     final Size textSize = UtilFunctions.getTextSize(textWidget.data, textWidget.effectiveStyle(context));
 

@@ -42,8 +42,8 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
       onTap: widget.onTap,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: theme.bgSupportText.withAlpha(10),
-          border: Border.all(color: theme.bgSupportText.withAlpha(12)),
+          color: theme.supportingText.withAlpha(10),
+          border: Border.all(color: theme.supportingText.withAlpha(12)),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -79,12 +79,12 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
                     CustomText(
                       widget.title,
                       fontSize: 15,
-                      color: theme.primaryText,
+                      color: theme.onBackground,
                     ),
                     CustomText(
                       "${widget.contentCount == 0 ? "No" : "${widget.contentCount}"} ${widget.contentCount == 1 ? "item" : "items"}",
                       fontSize: 12,
-                      color: theme.secondaryText,
+                      color: theme.supportingText,
                     ),
                   ],
                 ),

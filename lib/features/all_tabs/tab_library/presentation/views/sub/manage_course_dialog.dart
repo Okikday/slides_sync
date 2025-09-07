@@ -71,7 +71,7 @@
 //                     height: 51,
 //                     child: Icon(
 //                       Iconsax.close_circle,
-//                       color: theme.primaryText,
+//                       color: theme.onBackground,
 //                     ),
 //                   ),
 //                 ),
@@ -146,8 +146,8 @@
 //                               icon: Icon(Iconsax.creative_commons, size: 24, color: context.theme.colorScheme.outline),
 //                               onTap: () {
 //                                 CustomDialog.hide(context);
-//                                 // AppNavigator.to(context).modifyExistingCoursesRoute();
-//                                 AppNavigator.to(context).createCourseRoute();
+//                                 // AppRouteNavigator.to(context).modifyExistingCoursesRoute();
+//                                 AppRouteNavigator.to(context).createCourseRoute();
 //                               },
 //                             ),
 //                           ),
@@ -162,7 +162,7 @@
 //                               icon: Icon(Iconsax.edit, size: 24, color: context.theme.colorScheme.outline),
 //                               onTap: () {
 //                                 CustomDialog.hide(context);
-//                                 AppNavigator.to(context).modifyExistingCoursesRoute();
+//                                 AppRouteNavigator.to(context).modifyExistingCoursesRoute();
 //                               },
 //                             ),
 //                           ),
@@ -177,7 +177,7 @@
 //                               icon: Icon(Iconsax.folder, size: 24, color: context.theme.colorScheme.outline),
 //                               onTap: () {
 //                                 CustomDialog.hide(context);
-//                                 // AppNavigator.to(context).modifyExistingCoursesRoute();
+//                                 // AppRouteNavigator.to(context).modifyExistingCoursesRoute();
 //                                 Navigator.push(
 //                                   context,
 //                                   CupertinoSheetRoute(

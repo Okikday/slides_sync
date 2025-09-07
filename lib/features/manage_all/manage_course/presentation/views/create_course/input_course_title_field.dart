@@ -33,12 +33,12 @@ class InputCourseTitleField extends ConsumerWidget {
         borderSide: BorderSide(color: theme.primaryColor,
         ),
       ),
-      hintStyle: TextStyle(color: theme.secondaryText.withAlpha(80)),
+      hintStyle: TextStyle(color: theme.supportingText.withAlpha(80)),
       pixelWidth: context.deviceWidth,
       pixelHeight: 60,
       inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
       hint: "Enter course title",
-      inputTextStyle: TextStyle(fontSize: 16, color: theme.primaryText),
+      inputTextStyle: TextStyle(fontSize: 16, color: theme.onBackground),
       onTapOutside: () {},
       autoDispose: false,
       suffixIcon: CustomElevatedButton(
@@ -62,7 +62,11 @@ class InputCourseTitleField extends ConsumerWidget {
         child: Tooltip(
           message: "Add Optional Course code",
           triggerMode: TooltipTriggerMode.longPress,
-          child: Icon(ref.watch(isCourseCodeFieldVisible) ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded, size: 30),
+          child: Icon(
+            ref.watch(isCourseCodeFieldVisible) ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+            size: 30,
+            color: theme.supportingText,
+          ),
         ),
       ),
       alwaysShowSuffixIcon: true,

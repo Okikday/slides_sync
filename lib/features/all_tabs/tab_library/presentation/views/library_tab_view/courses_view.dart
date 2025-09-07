@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:isar/isar.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
-import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/courses_view_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/courses_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
@@ -55,13 +53,12 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
     ref.listen<AsyncValue<void>>(CoursesViewProviders.watchChanges, (previous, next) {
       if (next.hasValue) {
         log("refreshing page controller!");
-        if(!(CoursesViewProviders.pagingState.pages == null)){
-          pagingController.refresh();
-        }
+        pagingController.refresh();
       }
     });
 
     return SliverPadding(
+       
       padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
       sliver: PagingListener(
         controller: pagingController,
@@ -72,23 +69,9 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
               fetchNextPage: fetchNextPage,
               builderDelegate: PagedChildBuilderDelegate(
                 noItemsFoundIndicatorBuilder: (context) => EmptyLibraryView(asSliver: false),
-                newPageProgressIndicatorBuilder: (context) => Center(child: LoadingView(msg: "")),
+                newPageProgressIndicatorBuilder: (context) => LoadingListCourseCardSkeletonizer(count: 2),
                 firstPageProgressIndicatorBuilder: (context) {
-                  return SizedBox(
-                    height: 400,
-                    child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        for (int i = 0; i < 4; i++)
-                          Skeletonizer(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 12.0),
-                              child: ListCourseCard(defaultCourse, onTapIcon: () {}),
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
+                  return LoadingListCourseCardSkeletonizer();
                 },
                 firstPageErrorIndicatorBuilder: (context) {
                   // log(pagingState.error.toString());
@@ -117,21 +100,7 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
                 noItemsFoundIndicatorBuilder: (context) => EmptyLibraryView(asSliver: false),
                 newPageProgressIndicatorBuilder: (context) => Center(child: LoadingView(msg: "")),
                 firstPageProgressIndicatorBuilder: (context) {
-                  return SizedBox(
-                    height: 400,
-                    child: GridView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: context.deviceHeight > context.deviceWidth ? 2 : 3,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                      ),
-                      children: [
-                        for (int i = 0; i < 4; i++)
-                          Skeletonizer(child: GridCourseCard(defaultCourse, onTapIcon: () {})),
-                      ],
-                    ),
-                  );
+                  return LoadingGridCourseCardSkeletonizer(count: 2);
                 },
                 firstPageErrorIndicatorBuilder: (context) {
                   // log(pagingState.error.toString());
@@ -149,6 +118,53 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
             );
           }
         },
+      ),
+    );
+  }
+}
+
+class LoadingGridCourseCardSkeletonizer extends StatelessWidget {
+  final int count;
+  const LoadingGridCourseCardSkeletonizer({super.key, this.count = 3});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 400,
+      child: GridView(
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: context.deviceHeight > context.deviceWidth ? 2 : 3,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+        ),
+        children: [
+          for (int i = 0; i < count; i++) Skeletonizer(child: GridCourseCard(defaultCourse, onTapIcon: () {})),
+        ],
+      ),
+    );
+  }
+}
+
+class LoadingListCourseCardSkeletonizer extends StatelessWidget {
+  final int count;
+  const LoadingListCourseCardSkeletonizer({super.key, this.count = 3});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 400,
+      child: ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          for (int i = 0; i < count; i++)
+            Skeletonizer(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: ListCourseCard(defaultCourse, onTapIcon: () {}),
+              ),
+            ),
+        ],
       ),
     );
   }
