@@ -40,7 +40,7 @@ class EditCourseTile extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 90, maxHeight: 140),
         decoration: BoxDecoration(
-          color: AppColors.bgBlendColor(context, .88, .12)
+          color: theme.bgLightenColor(.88, .12)
         ),
         child: Row(
           children: [

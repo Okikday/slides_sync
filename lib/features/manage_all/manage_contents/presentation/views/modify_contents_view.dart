@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_content_fab.dart';
@@ -31,10 +32,10 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
   @override
   Widget build(BuildContext context) {
     // ref.listen(syncCourseProvider, syncCourseWithStorage);
-    CourseCollection? stateCollection = ref
-        .watch(ModifyCourseProviders.modifyCourseProvider)
+    CourseCollection? stateCollection = (ref.watch(CourseProviders.courseProvider).value ?? defaultCourse)
         .collections
         .firstWhereOrNull((e) => e.collectionId == widget.record.collection.collectionId);
+    final theme = ref.theme;
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -46,7 +47,7 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
             context.isDarkMode,
             title: widget.record.collection.collectionTitle,
             subtitle: "Collection",
-            subtitleStyle: TextStyle(fontSize: 12, color: AppColors.bgBlendColor(context, .6, .4)),
+            subtitleStyle: TextStyle(fontSize: 12, color: theme.bgLightenColor(.6, .4)),
           ),
         ),
 

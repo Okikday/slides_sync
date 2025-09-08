@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
@@ -34,10 +35,11 @@ class _ModifyCourseState extends ConsumerState<ModifyCourseView> with TickerProv
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final modifyCourseNotifier = ref.read(ModifyCourseProviders.modifyCourseProvider.notifier);
-      if (modifyCourseNotifier.value != widget.course) {
-        modifyCourseNotifier.update(widget.course);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final modifyCourseNotifier = ref.read(CourseProviders.courseProvider.notifier);
+
+      if ((await ref.read(CourseProviders.courseProvider.future)) != widget.course) {
+        modifyCourseNotifier.updateByDate(widget.course);
       }
     });
 
@@ -78,7 +80,7 @@ class ModifyCourseViewOuterSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Course course = ref.watch(ModifyCourseProviders.modifyCourseProvider);
+    final Course course = ref.watch(CourseProviders.courseProvider).value ?? defaultCourse;
     final ModifyCourseActions modifyCourseActions = ModifyCourseActions();
     return CustomScrollView(
       slivers: [

@@ -230,7 +230,6 @@ class UnifiedThemeModel {
   }
 }
 
-
 class AppThemeModel {
   final String title;
   final String? fontFamily;
@@ -324,6 +323,17 @@ class AppThemeModel {
   Color get onPrimaryColor => onPrimary;
   Color get onSecondaryColor => onSecondary;
 
+  Color bgLightenColor([double? value, double? darkValue]) {
+    return HSLColor.fromColor(
+      background,
+    ).withLightness(brightness == Brightness.dark ? (darkValue ?? 0.1) : (value ?? 0.9)).toColor();
+  }
+
+  static Color lightenColor(Color color, double value) => HSLColor.fromColor(color).withLightness(value).toColor();
+
+  Color get adjustBgAndPrimaryWithLerp => Color.lerp(primary, background, 0.85)!.withValues(alpha: primary.a);
+  Color get adjustBgAndPrimaryWithLerpExtra => Color.lerp(primary, background, 0.82)!.withValues(alpha: primary.a);
+
   List<Color> get backgroundGradientColors {
     if (brightness == Brightness.dark) {
       return [primary.withValues(alpha: 0.15), secondary.withValues(alpha: 0.08), background];
@@ -332,31 +342,23 @@ class AppThemeModel {
     }
   }
 
- LinearGradient get accentGradient {
-  if (brightness == Brightness.dark) {
-    return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [
-        primary.withValues(alpha: 0.85),
-        secondary.withValues(alpha: 0.75),
-        primary.withValues(alpha: 0.65),
-      ],
-      stops: const [0.0, 0.5, 1.0],
-    );
-  } else {
-    return LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [
-        primary.withValues(alpha: 0.90),
-        secondary.withValues(alpha: 0.80),
-        primary.withValues(alpha: 0.70),
-      ],
-      stops: const [0.0, 0.5, 1.0],
-    );
+  LinearGradient get accentGradient {
+    if (brightness == Brightness.dark) {
+      return LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [primary.withValues(alpha: 0.85), secondary.withValues(alpha: 0.75), primary.withValues(alpha: 0.65)],
+        stops: const [0.0, 0.5, 1.0],
+      );
+    } else {
+      return LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [primary.withValues(alpha: 0.90), secondary.withValues(alpha: 0.80), primary.withValues(alpha: 0.70)],
+        stops: const [0.0, 0.5, 1.0],
+      );
+    }
   }
-}
 
   AppThemeModel copyWith({
     String? title,
@@ -435,3 +437,8 @@ class AppThemeModel {
 extension AppThemeModelExtension on AppThemeModel {
   ThemeData get themeData => resolveThemeData(this);
 }
+
+// extension ColorsExtension on Color {
+//   Color blendColor(double? value) =>
+//       HSLColor.fromColor(this).withLightness((value ?? 0.9)).toColor();
+// }

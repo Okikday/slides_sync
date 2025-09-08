@@ -4,8 +4,10 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';
+import 'package:slides_sync/features/course_navigation/presentation/providers/course_materials_providers.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_content_fab.dart';
-import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/course_materials_outer_section.dart';
+import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/materials_view.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -18,11 +20,11 @@ class CourseMaterialsView extends ConsumerStatefulWidget {
 }
 
 class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
-  late final AutoDisposeStreamProvider<CourseCollection?> streamedCollection;
+  // late final AutoDisposeStreamProvider<CourseCollection?> streamedCollection;
   @override
   void initState() {
     super.initState();
-    streamedCollection = AutoDisposeStreamProvider((cb) => CourseCollectionRepo.watchByDbId(widget.collection.id));
+    // streamedCollection = AutoDisposeStreamProvider((cb) => CourseCollectionRepo.watchByDbId(widget.collection.id));
   }
 
   @override
@@ -32,7 +34,8 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
 
   @override
   Widget build(BuildContext context) {
-    final CourseCollection collection = ref.watch(streamedCollection).value ?? widget.collection;
+    // ref.watch(streamedCollection).value ?? 
+    final CourseCollection collection = widget.collection;
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
       child: Scaffold(
@@ -45,7 +48,10 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                IconButton(onPressed: () {}, icon: Icon(Iconsax.menu_board)),
+                LibraryTabViewLayoutButton(
+                  isListLayoutProvider: CourseMaterialsProviders.isListLayout,
+                  backgroundColor: Colors.transparent,
+                ),
                 IconButton(onPressed: () {}, icon: Icon(Iconsax.search_normal_copy)),
               ],
             ),
@@ -54,7 +60,7 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
 
         floatingActionButton: AddContentFAB(collection: collection),
 
-        body: CourseMaterialsOuterSection(collection: collection),
+        body: CustomScrollView(slivers: [MaterialsView(collection: collection)]),
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers
 class LibraryTabViewProviders {
   static final AutoDisposeStateProvider<double> scrollPosition = AutoDisposeStateProvider<double>((ref) => 0.0);
   static final AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool> isListLayout =
-      AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool>(IsListViewNotifier.new);
+      AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool>(() => IsListViewNotifier("library_tab/isListView"));
 
   static final AutoDisposeStateProviderFamily<bool, int> isCourseCardTappedDownFamily = AutoDisposeStateProviderFamily(
     (ref, index) => false,

@@ -9,6 +9,8 @@ class CourseCollectionRepo {
   static final IsarData<CourseCollection> _isarData = IsarData.instance<CourseCollection>();
   static Future<Isar> get _isar async => await IsarData.isarFuture;
 
+  static IsarData<CourseCollection> get isarData => _isarData;
+
   static Future<QueryBuilder<CourseCollection, CourseCollection, QAfterFilterCondition>> _queryById(
     String collectionId,
   ) async {
@@ -16,6 +18,9 @@ class CourseCollectionRepo {
       (q) => q.idGreaterThan(0),
     )).filter().collectionIdEqualTo(collectionId);
   }
+
+  static Future<QueryBuilder<CourseCollection, CourseCollection, QFilterCondition>> get filter async =>
+      (await _isar).courseCollections.filter();
 
   static Future<void> deleteByDbId(int dbId) async => await _isarData.deleteById(dbId);
 

@@ -72,7 +72,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
             children: [
               Positioned.fill(
                 child: LinearProgressIndicator(
-                  color: AppColors.primary(context).withAlpha(20),
+                  color: ref.theme.primary.withAlpha(20),
                   value: totalPages > 0 ? currentPage / totalPages : 0.0,
                   backgroundColor: Colors.transparent,
                 ),
@@ -115,7 +115,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircularProgressIndicator(color: AppColors.primary(context)),
+                      CircularProgressIndicator(color: ref.theme.primary),
                       const SizedBox(height: 16),
                       CustomText("Loading document...", color: ref.theme.onBackground),
                     ],
@@ -199,7 +199,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
                     ElevatedButton(
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary(context),
+                        backgroundColor: ref.theme.primary,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       ),
@@ -248,7 +248,7 @@ class _DocumentViewerState extends ConsumerState<DocumentViewer> {
   }
 }
 
-class _NavigationButton extends StatelessWidget {
+class _NavigationButton extends ConsumerWidget {
   final IconData icon;
   final String label;
   final VoidCallback? onPressed;
@@ -256,14 +256,15 @@ class _NavigationButton extends StatelessWidget {
   const _NavigationButton({required this.icon, required this.label, this.onPressed});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.theme;
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon, size: 18),
       label: Text(label),
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary(context).withValues(alpha: 0.1),
-        foregroundColor: AppColors.primary(context),
+        backgroundColor: theme.primary.withValues(alpha: 0.1),
+        foregroundColor: theme.primary,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12),
         ),

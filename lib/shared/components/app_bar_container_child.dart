@@ -35,7 +35,7 @@ class AppBarContainerChild extends ConsumerWidget {
       type: MaterialType.transparency,
       shape: LinearBorder(
         bottom: LinearBorderEdge(),
-        side: BorderSide(color: AppColors.bgBlendColor(context, .89, .11)),
+        side: BorderSide(color: theme.bgLightenColor(.89, .11)),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
@@ -65,7 +65,7 @@ class AppBarContainerChild extends ConsumerWidget {
                             CustomText(
                               subtitle!,
                               fontSize: 12,
-                              color: AppColors.bgBlendColor(context, .6, .4),
+                              color: theme.bgLightenColor(.6, .4),
                               overflow: TextOverflow.ellipsis,
                               style: subtitleStyle,
                             ),
@@ -115,7 +115,7 @@ class AppBackButton extends ConsumerWidget {
       ),
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(
-          backgroundColor ?? theme.altBackgroundPrimary,
+          backgroundColor ?? theme.altBackgroundPrimary.withValues(alpha: 0.9),
         ),
       ),
     );

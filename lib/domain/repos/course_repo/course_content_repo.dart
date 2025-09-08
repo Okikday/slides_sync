@@ -10,6 +10,8 @@ class CourseContentRepo {
     return (await _isarData.query<CourseContent>((q) => q.idGreaterThan(0))).filter().contentHashEqualTo(contentHash);
   }
 
+  static Future<QueryBuilder<CourseContent, CourseContent, QFilterCondition>> get filter async=> (await _isar).courseContents.filter();
+
   static Future<void> deleteByDbId(int dbId) async => await _isarData.deleteById(dbId);
 
   static Future<CourseContent?> getByDbId(int dbId) => _isarData.getById(dbId);

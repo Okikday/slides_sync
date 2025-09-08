@@ -81,74 +81,69 @@ class _ContentViewGateState extends ConsumerState<ContentViewGate> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Heroine(
-                  tag: "CourseMaterialGridCard=>ContentViewGate=>${content.contentId}",
-                  child: Container(
-                    constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
-                    clipBehavior: Clip.antiAlias,
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                    decoration: BoxDecoration(
-                      color: AppColors.bgBlendColor(context),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.fromBorderSide(BorderSide(color: theme.altBackgroundSecondary.withAlpha(100))),
-                    ),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SizedBox.expand(
-                            child: BuildImagePathWidget(
-                              fileDetails: FileDetails(
-                                filePath: CreateContentPreviewImage.genPreviewImagePath(
-                                  filePath: content.path.filePath,
-                                ),
-                              ),
-                              fit: BoxFit.cover,
-                              fallbackWidget: Icon(
-                                WidgetHelper.resolveIconData(content.courseContentType, false),
-                                size: 36,
-                              ),
+                Container(
+                  constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
+                  clipBehavior: Clip.antiAlias,
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: theme.bgLightenColor(),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.fromBorderSide(BorderSide(color: theme.altBackgroundSecondary.withAlpha(100))),
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SizedBox.expand(
+                          child: BuildImagePathWidget(
+                            fileDetails: FileDetails(
+                              filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath),
+                            ),
+                            fit: BoxFit.cover,
+                            fallbackWidget: Icon(
+                              WidgetHelper.resolveIconData(content.courseContentType, false),
+                              size: 36,
                             ),
                           ),
                         ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            LinearProgressIndicator(
-                              value: 0.4,
-                              color: theme.primaryColor.withAlpha(60),
-                              backgroundColor: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
-                            ),
+                      ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          LinearProgressIndicator(
+                            value: 0.4,
+                            color: theme.primaryColor.withAlpha(60),
+                            backgroundColor: theme.bgLightenColor(0.85, 0.15).withAlpha(200),
+                          ),
 
-                            Container(
-                              width: double.infinity,
-                              color: AppColors.bgBlendColor(context, 0.85, 0.15).withAlpha(200),
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: CustomText(
-                                      content.title,
-                                      color: theme.onBackground,
-                                      fontWeight: FontWeight.w600,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                          Container(
+                            width: double.infinity,
+                            color: theme.bgLightenColor(0.85, 0.15).withAlpha(200),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: CustomText(
+                                    content.title,
+                                    color: theme.onBackground,
+                                    fontWeight: FontWeight.w600,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  CustomText(
-                                    Formatter.formatEnumName(content.courseContentType.name),
-                                    fontSize: 11,
-                                    color: theme.supportingText,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                CustomText(
+                                  Formatter.formatEnumName(content.courseContentType.name),
+                                  fontSize: 11,
+                                  color: theme.supportingText,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
+                ).animate().scaleXY(begin: 1.05, end: 1, curve: Curves.fastOutSlowIn),
               ],
             ),
           ),

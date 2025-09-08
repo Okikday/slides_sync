@@ -13,7 +13,7 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/lib
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/empty_library_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/course_card.dart';
 
-import 'package:slides_sync/features/course_navigation/presentation/providers/course_provider.dart';
+import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 import 'courses_view/course_card/grid_course_card.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -58,7 +58,6 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
     });
 
     return SliverPadding(
-       
       padding: EdgeInsetsGeometry.symmetric(horizontal: 12),
       sliver: PagingListener(
         controller: pagingController,
@@ -139,7 +138,13 @@ class LoadingGridCourseCardSkeletonizer extends StatelessWidget {
           crossAxisSpacing: 12,
         ),
         children: [
-          for (int i = 0; i < count; i++) Skeletonizer(child: GridCourseCard(defaultCourse, onTapIcon: () {})),
+          for (int i = 0; i < count; i++)
+            Skeletonizer(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: GridCourseCard(defaultCourse, onTapIcon: () {}),
+              ),
+            ),
         ],
       ),
     );
@@ -161,7 +166,10 @@ class LoadingListCourseCardSkeletonizer extends StatelessWidget {
             Skeletonizer(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
-                child: ListCourseCard(defaultCourse, onTapIcon: () {}),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(24),
+                  child: ListCourseCard(defaultCourse, onTapIcon: () {}),
+                ),
               ),
             ),
         ],

@@ -45,7 +45,7 @@ class CollectionsViewSearchBar extends ConsumerWidget {
                   pixelHeight: 48,
                   shape: CircleBorder(),
                   backgroundColor: theme.altBackgroundPrimary,
-                  child: Icon(Iconsax.filter_copy, size: 20, color: AppColors.secondaryText(context)),
+                  child: Icon(Iconsax.filter_copy, size: 20, color: theme.supportingText),
                 ),
               ],
             ),

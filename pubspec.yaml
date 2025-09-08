@@ -91,7 +91,7 @@ dependencies:
   skeletonizer: ^2.1.0+1
   cloud_firestore: ^6.0.0
   firebase_auth: ^6.0.1
-  firebase_core: ^4.0.0
+  firebase_core: ^4.1.0
   firebase_database: ^12.0.0
   firebase_storage: ^13.0.0
   google_sign_in: ^6.3.0
@@ -99,6 +99,7 @@ dependencies:
   any_link_preview: ^3.0.3
   flutter_link_previewer: ^3.2.2
   super_clipboard: ^0.9.1
+  firebase_ai: ^3.2.0
 
   #docx_file_viewer: ^0.0.1
 

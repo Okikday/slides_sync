@@ -15,7 +15,7 @@ class MoreSection extends ConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       margin: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: theme.altBackgroundPrimary,
+        color: theme.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.fromBorderSide(BorderSide(color: Colors.black.withAlpha(5))),
         image: DecorationImage(

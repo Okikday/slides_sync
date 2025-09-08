@@ -30,7 +30,7 @@ class LoadingView extends ConsumerWidget {
                     ValueDelegate.colorFilter(
                       ["**"],
                       value: ColorFilter.mode(
-                        AppColors.primary(context),
+                        ref.theme.primary,
                         BlendMode.srcIn,
                       ),
                     ),

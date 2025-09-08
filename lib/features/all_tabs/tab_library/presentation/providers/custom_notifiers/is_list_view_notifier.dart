@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 
-
 class IsListViewNotifier extends AutoDisposeAsyncNotifier<bool> {
-  final String _key = "library_tab/isListView";
+  IsListViewNotifier(this._key);
+
+  final String _key;
 
   @override
   Future<bool> build() async {
@@ -17,5 +18,4 @@ class IsListViewNotifier extends AutoDisposeAsyncNotifier<bool> {
     state = AsyncData(updated);
     await AppHiveData.instance.setData(key: _key, value: updated);
   }
-  
 }

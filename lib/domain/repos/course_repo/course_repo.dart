@@ -85,6 +85,9 @@ class CourseRepo {
       await course.collections.load();
       
       await isar.writeTxn(() async {
+        // TODO: bE MORE ACCURATE
+        collection.contents.clear();
+        await collection.contents.save();
         if (!(await isar.courseCollections.delete(collection.id))) {
           await isar.courseCollections.filter().collectionIdEqualTo(collection.collectionId).deleteFirst();
         }

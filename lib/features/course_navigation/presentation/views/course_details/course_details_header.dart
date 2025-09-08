@@ -54,7 +54,7 @@ class CourseDetailsHeader extends ConsumerWidget {
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
               stops: [double.parse(firstStop.toStringAsFixed(2)), 1],
-              colors: [AppColors.backgroundColor(context), topGradColor],
+              colors: [theme.background, topGradColor],
             ),
           ),
         ),

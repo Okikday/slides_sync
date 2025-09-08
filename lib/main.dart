@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,11 +12,10 @@ import 'package:slides_sync/core/storage/isar_data/isar_schemas.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AppHiveData.instance.initialize();
 
   if (!kIsWeb) await IsarData.initialize(collectionSchemas: isarSchemas);
 
   runApp(ProviderScope(child: const App()));
 }
-

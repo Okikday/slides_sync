@@ -18,61 +18,49 @@ class HomeDrawer extends ConsumerWidget {
         Scaffold.of(context).closeDrawer();
       },
       child: Drawer(
-        backgroundColor: context.scaffoldBackgroundColor.withAlpha(200),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ConstantSizing.columnSpacing(kToolbarHeight + 24),
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: theme.altBackgroundPrimary,
-                  child: Icon(Iconsax.user, color: theme.supportingText),
-                ),
-                ConstantSizing.columnSpacingMedium,
-                CustomText("Username", color: theme.onBackground),
-                ConstantSizing.columnSpacingSmall,
-                CustomText(
-                  "Some description",
-                  color: theme.supportingText.withValues(alpha: 0.6),
-                ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ConstantSizing.columnSpacing(kToolbarHeight + 24),
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: theme.altBackgroundPrimary,
+                child: Icon(Iconsax.user, color: theme.supportingText),
+              ),
+              ConstantSizing.columnSpacingMedium,
+              CustomText("Username", color: theme.onBackground),
+              ConstantSizing.columnSpacingSmall,
+              CustomText("Some description", color: theme.supportingText.withValues(alpha: 0.6)),
 
-                ConstantSizing.columnSpacingExtraLarge,
+              ConstantSizing.columnSpacingExtraLarge,
 
-                ListTile(
-                  leading: Icon(
-                    Iconsax.profile_tick,
-                    color: theme.supportingText,
-                  ),
-                  title: CustomText("Profile", color: theme.onBackground),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Iconsax.bookmark,
-                    color: theme.supportingText,
-                  ),
-                  title: CustomText("Bookmarks", color: theme.onBackground),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Iconsax.setting,
-                    color: theme.supportingText,
-                  ),
-                  title: CustomText("Settings", color: theme.onBackground),
-                  onTap: () {
-                    AppRouteNavigator.to(context).settingsRoute();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Iconsax.information_copy,
-                    color: theme.supportingText,
-                  ),
-                  title: CustomText("Help", color: theme.onBackground),
-                ),
-              ],
-            ),
+              ListTile(
+                leading: Icon(Iconsax.profile_tick, color: theme.supportingText),
+                title: CustomText("Profile", color: theme.onBackground),
+              ),
+              ListTile(
+                leading: Icon(Iconsax.bookmark, color: theme.supportingText),
+                title: CustomText("Bookmarks", color: theme.onBackground),
+              ),
+              ListTile(
+                leading: Icon(Iconsax.setting, color: theme.supportingText),
+                title: CustomText("Settings", color: theme.onBackground),
+                onTap: () {
+                  AppRouteNavigator.to(context).settingsRoute();
+                },
+              ),
+              ListTile(
+                leading: Icon(Iconsax.pen_tool, color: theme.supportingText),
+                title: CustomText("Tools", color: theme.onBackground),
+                onTap: () {
+                  // Tools like Calculate gpa, etc
+                },
+              ),
+              ListTile(
+                leading: Icon(Iconsax.information_copy, color: theme.supportingText),
+                title: CustomText("Help", color: theme.onBackground),
+              ),
+            ],
           ),
         ),
       ),

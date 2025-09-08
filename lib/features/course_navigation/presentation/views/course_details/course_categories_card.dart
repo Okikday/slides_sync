@@ -57,9 +57,9 @@ class _CourseCategoriesCardState extends ConsumerState<CourseCategoriesCard> {
                 clipBehavior: Clip.hardEdge,
                 padding: EdgeInsets.all(1),
                 decoration: BoxDecoration(
-                  color: AppColors.primary(context).withValues(alpha: 0.1),
+                  color: ref.theme.primary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
-                  border: Border.fromBorderSide(BorderSide(color: AppColors.primary(context).withAlpha(40), width: 1.0)),
+                  border: Border.fromBorderSide(BorderSide(color: ref.theme.primary.withAlpha(40), width: 1.0)),
                 ),
                 child: Padding(
               padding: const EdgeInsets.all(8.0),

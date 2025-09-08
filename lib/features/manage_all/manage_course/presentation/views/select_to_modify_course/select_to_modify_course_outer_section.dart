@@ -89,7 +89,7 @@ class _SelectToModifyCourseOuterSectionState extends ConsumerState<SelectToModif
                       }
                       Navigator.of(context).pop();
 
-                      // ref.read(ModifyCourseProviders.modifyCourseProvider.notifier).update(course);
+                      // ref.read(CourseProviders.courseProvider.notifier).update(course);
                       AppRouteNavigator.to(context).modifyCourseRoute(course);
                     },
                     onSelected: () {

@@ -10,9 +10,12 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/add_contents_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/add_link_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/repos/get_content_repo/get_content_repo.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
+
+
 
 class AddLinkBottomSheet extends ConsumerStatefulWidget {
   final CourseCollection collection;
@@ -25,12 +28,14 @@ class AddLinkBottomSheet extends ConsumerStatefulWidget {
 class _AddLinkBottomSheetState extends ConsumerState<AddLinkBottomSheet> {
   late final TextEditingController linkInputController;
   late final ValueNotifier<String?> previewDataNotifier;
+  late final ValueNotifier<PreviewLinkDetails> additionalDetails;
 
   @override
   void initState() {
     super.initState();
     linkInputController = TextEditingController();
     previewDataNotifier = ValueNotifier(null);
+    additionalDetails = ValueNotifier((title: null, description: null, previewUrl: null));
     linkInputController.addListener(updateLinkInput);
   }
 
@@ -40,6 +45,7 @@ class _AddLinkBottomSheetState extends ConsumerState<AddLinkBottomSheet> {
   void dispose() {
     linkInputController.dispose();
     previewDataNotifier.dispose();
+    additionalDetails.dispose();
     super.dispose();
   }
 
@@ -52,13 +58,22 @@ class _AddLinkBottomSheetState extends ConsumerState<AddLinkBottomSheet> {
           hintText: "https.youtube.com/learn",
           textEditingController: linkInputController,
           onSubmitted: (String text) async {
-            // if (text.isEmpty) return;
             if (text.isEmpty || text.length < 4 || text.length > 256) {
               UiUtils.showFlushBar(context, msg: "Invalid link input!");
               return;
             }
             rootNavigatorKey.currentContext?.pop();
-            await AddContentsActions.onClickToAddLinkContent(text, collection: widget.collection);
+
+            final bool result = await AddLinkActions.onClickToAddLinkContent(
+              text,
+              collection: widget.collection,
+              previewLinkDetails: additionalDetails.value,
+            );
+            if (result) {
+              if (context.mounted) UiUtils.showFlushBar(context, msg: "Successfully added link");
+            } else {
+              if (context.mounted) UiUtils.showFlushBar(context, msg: "Couldn't add link to collections");
+            }
           },
         ),
         Positioned(
@@ -76,11 +91,21 @@ class _AddLinkBottomSheetState extends ConsumerState<AddLinkBottomSheet> {
               valueListenable: previewDataNotifier,
               builder: (context, value, child) {
                 return FutureBuilder(
-                  future: getPreviewData(value ?? ''),
+                  future: GetContentRepo.getLinkPreviewData(value),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null && snapshot.data?.image != null) {
+                    if (snapshot.hasData &&
+                        snapshot.data != null &&
+                        !snapshot.data!.isEmpty &&
+                        snapshot.data?.previewUrl != null) {
+                      final previewData = snapshot.data;
+                      final prevDetails = additionalDetails.value;
+                      additionalDetails.value = (
+                        title: previewData?.title ?? prevDetails.title,
+                        description: previewData?.description ?? prevDetails.description,
+                        previewUrl: previewData?.previewUrl ?? prevDetails.previewUrl,
+                      );
                       return BuildImagePathWidget(
-                        fileDetails: FileDetails(urlPath: snapshot.data!.image!.url),
+                        fileDetails: FileDetails(urlPath: snapshot.data!.previewUrl!),
                         fit: BoxFit.cover,
                         width: 100,
                         height: 100,

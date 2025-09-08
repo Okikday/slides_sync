@@ -307,21 +307,5 @@ class AddContentsActions {
     }
   }
 
-  static Future<bool> onClickToAddLinkContent(String link, {required CourseCollection collection, String? title}) async{
-    final contentHash = BasicUtils.calculateStringHash(link);
-    final CourseContent? sameHashedContent = await CourseCollectionRepo.findFirstDuplicateByHash(collection, contentHash);
-    if(sameHashedContent != null){
-      log("Duplicate link exists");
-      return false;
-    }
 
-    final CourseContent newContent = CourseContent.create(
-      contentHash: contentHash,
-      parentId: collection.collectionId,
-      title: title ?? "Unknown link",
-      path: FileDetails(),
-      courseContentType: CourseContentType.link,
-    );
-    return await CourseCollectionRepo.addContent(newContent);
-  }
 }

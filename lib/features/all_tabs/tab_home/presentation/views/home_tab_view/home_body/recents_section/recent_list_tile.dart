@@ -66,7 +66,7 @@ class RecentListTile extends ConsumerWidget {
                 backgroundColor: theme.altBackgroundPrimary.withValues(
                   alpha: 1,
                 ),
-                child: Icon(Iconsax.document_1, size: 26, color: AppColors.primary(context)),
+                child: Icon(Iconsax.document_1, size: 26, color: ref.theme.primary),
               ),
             ),
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/edit_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_code_field.dart';
@@ -41,7 +42,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
   }
 
   void initPostFrame() {
-    final readCourse = ref.watch(ModifyCourseProviders.modifyCourseProvider);
+    final readCourse = ref.watch(CourseProviders.courseProvider).value ?? defaultCourse;
     courseNameTextController.text = readCourse.courseName;
     if (readCourse.courseCode.isNotEmpty) courseCodeController.text = readCourse.courseCode;
 
@@ -62,8 +63,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final Course course = ref.watch(ModifyCourseProviders.modifyCourseProvider);
-    final editCourseActions = EditCourseActions();
+    final Course course = ref.watch(CourseProviders.courseProvider).value ?? defaultCourse;
 
     final double keyboardInsets = double.parse(
       (context.viewInsets.bottom / context.deviceHeight).toStringAsFixed(2),
@@ -72,7 +72,7 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
     return PopScope(
       canPop: ref.watch(canExitProvider),
       onPopInvokedWithResult:
-          (_, __) => editCourseActions.onPopInvokedWithResult(context, ref.read(canExitProvider.notifier)),
+          (_, __) => EditCourseActions.of(ref).onPopInvokedWithResult(context, ref.read(canExitProvider.notifier)),
 
       child: AnimatedSize(
         duration: Durations.extralong1,
@@ -134,14 +134,13 @@ class _EditCourseBottomSheetState extends ConsumerState<EditCourseBottomSheet> {
                             course: course,
                             descriptionFocusNode: widget.isEditingDescription ? descriptionFocusNode : null,
                           ),
-                                      
+
                           SliverToBoxAdapter(child: AnimatedSpacing()),
                         ],
                       ),
                     ),
-              
+
                     PositionedUpdateDetailsButton(
-                      editCourseActions: editCourseActions,
                       courseNameTextController: courseNameTextController,
                       courseCodeController: courseCodeController,
                       descriptionTextController: descriptionTextController,
@@ -176,7 +175,6 @@ class AnimatedSpacing extends StatelessWidget {
 class PositionedUpdateDetailsButton extends ConsumerWidget {
   const PositionedUpdateDetailsButton({
     super.key,
-    required this.editCourseActions,
     required this.courseNameTextController,
     required this.courseCodeController,
     required this.descriptionTextController,
@@ -184,7 +182,6 @@ class PositionedUpdateDetailsButton extends ConsumerWidget {
     required this.canExitProvider,
   });
 
-  final EditCourseActions editCourseActions;
   final TextEditingController courseNameTextController;
   final TextEditingController courseCodeController;
   final TextEditingController descriptionTextController;
@@ -206,17 +203,13 @@ class PositionedUpdateDetailsButton extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: CustomElevatedButton(
           onClick: () async {
-            final ModifyCourseNotifier modifyCourseNotifier = ref.read(
-              ModifyCourseProviders.modifyCourseProvider.notifier,
-            );
-            editCourseActions.onUpdateDetails(
-              context,
+            EditCourseActions.of(ref).onUpdateDetails(
               courseName: courseNameTextController.text,
               courseCode: courseCodeController.text,
               description: descriptionTextController.text,
               isCourseCodeFieldVisible: ref.read(isCourseCodeFieldVisible.notifier).state,
               canExitProvider: ref.read(canExitProvider.notifier),
-              modifyCourseProvider: modifyCourseNotifier,
+              modifyCourseProvider: CourseProviders.courseProvider,
             );
           },
           contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

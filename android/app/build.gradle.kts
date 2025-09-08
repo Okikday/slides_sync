@@ -70,4 +70,7 @@ flutter {
 dependencies{
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-ai")
+    // To recognize Latin script
+    implementation(platform("com.google.mlkit:text-recognition:16.0.1"))
 }

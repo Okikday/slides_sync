@@ -4,7 +4,7 @@ import 'dart:convert';
 class FileDetails {
   final String urlPath;
   final String filePath;
-  FileDetails({this.urlPath = '', this.filePath = ''});
+  const FileDetails({this.urlPath = '', this.filePath = ''});
 
   bool get containsFilePath => urlPath.isNotEmpty || filePath.isNotEmpty;
 

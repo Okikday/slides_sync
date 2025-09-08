@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
@@ -12,6 +13,10 @@ import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 
 class EditCourseActions {
+  final WidgetRef ref;
+  const EditCourseActions(this.ref);
+  static EditCourseActions of(WidgetRef ref) => EditCourseActions(ref);
+
   /// Logic to check if the inputs are valid
   String? checkIfCanUpdateCourse({
     required String courseName,
@@ -56,15 +61,15 @@ class EditCourseActions {
   }
 
   /// Logic to call when user is trying to update details or saving changes
-  void onUpdateDetails(
-    BuildContext context, {
+  Future<void> onUpdateDetails({
     required String courseName,
     required String courseCode,
     required String description,
     required bool isCourseCodeFieldVisible,
     required StateController<bool> canExitProvider,
-    required ModifyCourseNotifier modifyCourseProvider,
+    required AsyncNotifierProvider<CourseNotifier, Course> modifyCourseProvider,
   }) async {
+    final context = ref.context;
     final String? errorMsg = checkIfCanUpdateCourse(
       courseName: courseName,
       courseCode: courseCode,
@@ -77,9 +82,9 @@ class EditCourseActions {
       return;
     }
     final String courseTitle = CourseFormatter.joinCodeToTitle(courseCode, courseName);
-    final Course currCourse = modifyCourseProvider.value;
+    final Course currCourse = (await ref.read(modifyCourseProvider.future));
     final Course updatedCourse = currCourse.copyWith(courseTitle: courseTitle, description: description);
-    modifyCourseProvider.update(updatedCourse);
+    ref.read(modifyCourseProvider.notifier).updateCourse(updatedCourse);
     await CourseRepo.addCourse(updatedCourse);
     canExitProvider.update((cb) => true);
     if (context.mounted) Navigator.pop(context);

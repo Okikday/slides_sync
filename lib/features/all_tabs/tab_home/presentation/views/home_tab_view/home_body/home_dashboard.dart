@@ -36,25 +36,21 @@ class HomeDashboard extends ConsumerWidget {
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
       margin: EdgeInsets.only(left: isFirst  == null ? 8 : 12, right: isFirst == null ? 0 : (isFirst! ? 0 : 12)),
       decoration: BoxDecoration(
-        color: theme.background.blendColor(
-          ref.isDarkMode ? 0.09 : 0.91,
-        ),
+        color: theme.adjustBgAndPrimaryWithLerp,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           width: 2,
-          color: theme.background.blendColor(
-            ref.isDarkMode ? 0.1 : 0.9,
-          ),
+          color: theme.adjustBgAndPrimaryWithLerpExtra,
         ),
-        image: DecorationImage(
-          image: Assets.images.bookSparkleTransparentBg.asImageProvider,
-          fit: BoxFit.cover,
-          opacity: 0.03,
-          colorFilter: ColorFilter.mode(
-            theme.primaryColor,
-            BlendMode.srcIn,
-          ),
-        ),
+        // image: DecorationImage(
+        //   image: Assets.images.bookSparkleTransparentBg.asImageProvider,
+        //   fit: BoxFit.cover,
+        //   opacity: 0.03,
+        //   colorFilter: ColorFilter.mode(
+        //     theme.primaryColor,
+        //     BlendMode.srcIn,
+        //   ),
+        // ),
         // boxShadow: [BoxShadow(color: HSLColor.fromColor(context.theme.scaffoldBackgroundColor).withLightness(0.1).toColor(), blurRadius: 4, spreadRadius: 2)],
       ),
       child: Column(

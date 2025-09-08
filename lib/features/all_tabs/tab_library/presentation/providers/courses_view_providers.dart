@@ -7,7 +7,7 @@ const int limit = 10;
 
 class CoursesViewProviders {
   static final AutoDisposeStreamProvider<void> watchChanges = AutoDisposeStreamProvider<void>((ref) async* {
-    final stream = await CourseRepo.isarData.watchForChanges();
+    final stream = await CourseRepo.isarData.watchForChanges(fireImmediately: false);
     yield* stream; // forward the inner Stream<void> events
   });
 

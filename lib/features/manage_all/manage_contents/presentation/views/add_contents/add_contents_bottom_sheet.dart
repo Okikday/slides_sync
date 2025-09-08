@@ -110,7 +110,7 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
                     duration: Durations.extralong1,
                     curve: CustomCurves.bouncySpring,
                   )
-                  .scaleY(begin: canPop ? 0.8 : 1, end: canPop ? 1 : 0.8),
+              // .scaleY(begin: canPop ? 0.8 : 1, end: canPop ? 1 : 0.8),
             ),
           ),
         ],
@@ -212,7 +212,7 @@ class AddContentCardSection extends ConsumerWidget {
                   padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                   child: Row(
                     spacing: 8.0,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // Flexible(
                       //   child: CustomElevatedButton(
@@ -243,11 +243,11 @@ class AddContentCardSection extends ConsumerWidget {
                               child: AddLinkBottomSheet(collection: collection),
                             );
                           },
-                          backgroundColor: theme.altBackgroundSecondary,
+                          backgroundColor: theme.altBackgroundPrimary,
                           pixelHeight: 44,
                           borderRadius: 16,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Row(
                               spacing: 8.0,
                               mainAxisSize: MainAxisSize.min,

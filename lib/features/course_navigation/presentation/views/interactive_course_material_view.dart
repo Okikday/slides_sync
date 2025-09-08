@@ -20,11 +20,12 @@ class InteractiveCourseMaterialView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double boxDimension =
         context.deviceHeight > context.deviceWidth ? context.deviceWidth.clamp(120, 250) : context.deviceHeight.clamp(120, 250);
+        final theme = ref.theme;
 
     return AnnotatedRegion(
-      value: UiUtils.getSystemUiOverlayStyle(AppColors.backgroundColor(context).withValues(alpha: 0.4), context.isDarkMode),
+      value: UiUtils.getSystemUiOverlayStyle(theme.background.withValues(alpha: 0.4), context.isDarkMode),
       child: Scaffold(
-        backgroundColor: AppColors.backgroundColor(context).withValues(alpha: 0.4),
+        backgroundColor: theme.background.withValues(alpha: 0.4),
         body: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
           child: Column(

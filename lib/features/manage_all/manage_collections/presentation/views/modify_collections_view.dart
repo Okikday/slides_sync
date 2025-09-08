@@ -1,13 +1,13 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/add_collection_action_button.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_list_view.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/empty_collections_view.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 import '../../../../../core/utils/ui_utils.dart';
@@ -52,7 +52,7 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
 
   @override
   Widget build(BuildContext context) {
-    final Course course = ref.watch(ModifyCourseProviders.modifyCourseProvider);
+    final Course course = ref.watch(CourseProviders.courseProvider).value ?? defaultCourse;
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),

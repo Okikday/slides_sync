@@ -34,13 +34,14 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
   @override
   Widget build(BuildContext context) {
     log("Explore tab view build");
+    final theme = ref.theme;
 
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           CustomElevatedButton(
-            backgroundColor: AppColors.lightenColor(context.theme.colorScheme.secondary, context.isDarkMode ? 0.5 : 0.5),
+            backgroundColor: theme.primary,
             onClick: () {
               AppRouteNavigator.to(context).createCourseRoute();
             },
@@ -50,7 +51,7 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
          if(kDebugMode) Padding(
            padding: const EdgeInsets.all(8.0),
            child: CustomElevatedButton(
-              backgroundColor: AppColors.lightenColor(context.theme.colorScheme.secondary, context.isDarkMode ? 0.5 : 0.5),
+                backgroundColor: theme.primary,
               onClick: () {
                 Navigator.push(context, PageAnimation.pageRouteBuilder(FileManagerPage()));
               },

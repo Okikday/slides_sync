@@ -26,7 +26,6 @@ class ListCourseCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    final isDarkMode = ref.isDarkMode;
     return Badge(
       backgroundColor: Colors.transparent,
       label: CircleAvatar(radius: 5, backgroundColor: dotColor),
@@ -35,11 +34,11 @@ class ListCourseCard extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 100, maxHeight: 140, maxWidth: 500),
         decoration: BoxDecoration(
-          color: theme.background.blendColor(isDarkMode ? 0.09 : 0.91),
+          color: theme.bgLightenColor(.91, .09),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             width: 2,
-            color: theme.background.blendColor(isDarkMode ? 0.1 : 0.9),
+            color: theme.bgLightenColor(),
           ),
           //   image: DecorationImage(
           //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
@@ -115,7 +114,7 @@ class ListCourseCardIcon extends ConsumerWidget {
           padding: EdgeInsets.all(2),
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color:  theme.background.blendColor(context.isDarkMode ? 0.15 : 0.85),
+            color:  theme.bgLightenColor(.85, .15),
             borderRadius: BorderRadius.circular(20),
           ),
           child: ClipRRect(

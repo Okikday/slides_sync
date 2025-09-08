@@ -15,23 +15,21 @@ dynamic defaultTransition(
   pageKey, {
   required Widget child,
   TransitionType defaultIncoming = TransitionType.rightToLeft,
-  Duration? defaultIncomingDuration,
-  Curve? defaultIncomingCurve,
 }) {
   return PageAnimation.buildCustomTransitionPage(
     pageKey,
     type: TransitionType.paired(
       incoming: defaultIncoming,
-      outgoing: TransitionType.leftToRight,
-      outgoingDuration: Durations.extralong1,
-      reverseDuration: Durations.extralong1,
-      curve: Curves.fastEaseInToSlowEaseOut,
-      reverseCurve: Curves.fastEaseInToSlowEaseOut,
+      outgoing: TransitionType.slide(begin: const Offset(-0.4, 0), end: const Offset(0, 0)),
+      outgoingDuration: Durations.short4,
+      reverseDuration: Durations.short4,
+      curve: Curves.decelerate,
+      reverseCurve: Curves.decelerate,
     ),
-    duration: defaultIncomingDuration ?? Durations.medium4,
+    duration: Durations.medium3,
     reverseDuration: Durations.medium2,
-    curve: defaultIncomingCurve ?? Curves.fastEaseInToSlowEaseOut,
-    reverseCurve: Curves.fastEaseInToSlowEaseOut,
+    curve: CustomCurves.defaultIosSpring,
+    reverseCurve: CustomCurves.defaultIosSpring,
     child: child,
   );
 }
@@ -63,7 +61,7 @@ class Routes {
         pageBuilder:
             (context, state) => PageAnimation.buildCustomTransitionPage(
               state.pageKey,
-              type: TransitionType.scale(alignment: Alignment.centerLeft),
+              type: TransitionType.rightToLeft,
               duration: Durations.extralong1,
               reverseDuration: Durations.medium1,
               curve: CustomCurves.defaultIosSpring,

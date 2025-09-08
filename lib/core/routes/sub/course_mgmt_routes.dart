@@ -55,8 +55,8 @@ class CourseMgmtRoutes {
           pageBuilder:
               (context, state) => defaultTransition(
                 state.pageKey,
-                defaultIncomingDuration: Durations.medium2,
-                defaultIncomingCurve: CustomCurves.decelerate,
+                // defaultIncomingDuration: Durations.medium2,
+                // defaultIncomingCurve: CustomCurves.decelerate,
                 defaultIncoming: TransitionType.slide(begin: const Offset(0, 0.6), end: Offset(0, 0), fade: true),
                 child: ModifyCollectionsView(courseDbId: (state.extra as Course).id),
               ),

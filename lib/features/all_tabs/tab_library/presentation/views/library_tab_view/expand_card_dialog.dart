@@ -32,7 +32,7 @@ class ExpandCardDialog extends ConsumerWidget {
     );
     final double dimension =
         (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
-    final divider = Divider(color: AppColors.bgBlendColor(context), height: 0);
+    final divider = Divider(color: theme.bgLightenColor(), height: 0);
 
     return Stack(
       clipBehavior: Clip.hardEdge,
@@ -60,9 +60,9 @@ class ExpandCardDialog extends ConsumerWidget {
               height: kToolbarHeight + 4,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: AppColors.bgBlendColor(context, .88, .12),
+                color: theme.bgLightenColor(.88, .12),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(width: 2, color: AppColors.bgBlendColor(context, .86, .14)),
+                border: Border.all(width: 2, color: theme.bgLightenColor(.86, .14)),
                 boxShadow: [
                   BoxShadow(blurStyle: BlurStyle.outer, blurRadius: 1, offset: Offset(1, 1), color: Colors.black12),
                 ],
@@ -79,7 +79,7 @@ class ExpandCardDialog extends ConsumerWidget {
                         child: ClipOval(
                           child: CircleAvatar(
                             radius: dimension / 2 - 4,
-                            backgroundColor: AppColors.bgBlendColor(context, .86, .14),
+                            backgroundColor: theme.bgLightenColor(.86, .14),
                             child: SizedBox.square(
                               dimension: dimension - 8,
                               child: BuildImagePathWidget(
@@ -129,7 +129,7 @@ class ExpandCardDialog extends ConsumerWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     decoration: BoxDecoration(
-                      color: AppColors.bgBlendColor(context, .86, .14),
+                      color: theme.bgLightenColor(.86, .14),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: CustomText(course.collections.length.toString(), fontSize: 12, color: theme.supportingText),
@@ -154,7 +154,7 @@ class ExpandCardDialog extends ConsumerWidget {
             padding: EdgeInsets.symmetric(vertical: 8),
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
-              color: AppColors.bgBlendColor(context, 0.84, 0.16).withValues(alpha: 0.7),
+              color: theme.bgLightenColor(0.84, 0.16).withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(blurStyle: BlurStyle.outer, blurRadius: 1, offset: Offset(1, 1), color: Colors.black12),

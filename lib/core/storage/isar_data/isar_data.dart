@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:slides_sync/domain/models/course_model/course.dart';
 
 /// Utility class for generic Isar database operations.
 /// Pass in the Isar CollectionSchema for your model to interact with the DB easily.
@@ -96,6 +97,11 @@ class IsarData<T> {
   Future<Stream<void>> watchForChanges({bool fireImmediately = true}) async {
     final isar = await isarFuture;
     return isar.collection<T>().where().watchLazy(fireImmediately: fireImmediately);
+  }
+
+  Future<Stream<void>> watchForChangesById(String collectionId, {bool fireImmediately = true}) async {
+    final isar = await isarFuture;
+    return isar.courseCollections.filter().collectionIdEqualTo(collectionId).watchLazy();
   }
 
   /// Stream specific object by ID in real-time.

@@ -28,12 +28,13 @@ class ModifyingListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final buttonPadding = context.hPadding5;
     final btnDimension = context.defaultBtnDimension;
+    final theme = ref.theme;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: ColoredBox(
         // color: context.isDarkMode ? Color.fromARGB(255, 52, 33, 79) : Color(0xFFDBF3FF),
-        color: AppColors.bgBlendColor(context),
+        color: theme.bgLightenColor(),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: CustomElevatedButton(
@@ -43,7 +44,7 @@ class ModifyingListTile extends ConsumerWidget {
 
             contentPadding: EdgeInsets.all(buttonPadding),
             // backgroundColor: context.isDarkMode ? Color.fromARGB(255, 46, 29, 70) : Color(0xFFDBF3FF).withValues(alpha: 0.89),
-            backgroundColor: AppColors.bgBlendColor(context, .89, .11),
+            backgroundColor: theme.bgLightenColor(.89, .11),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 120),
               child: Row(
@@ -53,7 +54,7 @@ class ModifyingListTile extends ConsumerWidget {
                   Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      color: AppColors.lightenColor(AppColors.primary(context).withValues(alpha: 0.2), context.isDarkMode ? 0.6 : 0.4),
+                      color: theme.bgLightenColor(0.6, 0.4),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: SizedBox.square(dimension: btnDimension, child: leading),
@@ -72,11 +73,7 @@ class ModifyingListTile extends ConsumerWidget {
                           overflow: TextOverflow.fade,
                         ),
                         ConstantSizing.columnSpacing(4),
-                        CustomText(
-                          subtitle,
-                          fontSize: 12,
-                          color: ref.theme.supportingText,
-                        ),
+                        CustomText(subtitle, fontSize: 12, color: ref.theme.supportingText),
                       ],
                     ),
                   ),

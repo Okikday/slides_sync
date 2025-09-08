@@ -34,7 +34,7 @@ List<UnifiedThemeModel> defaultUnifiedThemeModels = [
 
   const UnifiedThemeModel(
     title: 'Twilight Academia',
-    fontFamily: 'Nuninto',
+    fontFamily: 'Nunito',
     // Primary remains the same
     primary: Color(0xFF6A4BD6),
     // Secondary: Warm amber for academic feel
@@ -63,7 +63,7 @@ List<UnifiedThemeModel> defaultUnifiedThemeModels = [
 
   const UnifiedThemeModel(
     title: 'Monochrome Minimal',
-    fontFamily: 'Roboto',
+    fontFamily: 'IBM Plex Sans',
     // Primary remains the same
     primary: Color(0xFF424242),
     // Secondary: Blue accent for minimal contrast
@@ -202,35 +202,6 @@ List<UnifiedThemeModel> defaultUnifiedThemeModels = [
     onBackgroundDark: Color(0xFFE0E0E0),
     altBackgroundPrimaryDark: Color(0xFF3D1A00),
     altBackgroundSecondaryDark: Color(0xFF3D1A3D),
-    onPrimaryDark: Color(0xFF000000),
-    onSecondaryDark: Color(0xFF000000),
-  ),
-
-  const UnifiedThemeModel(
-    title: "Find One",
-    fontFamily: 'Inter',
-    // Primary remains the same
-    primary: Color(0xFFFFFFFF),
-    // Secondary: Subtle blue for contrast
-    secondary: Color(0xFF607D8B),
-    // Light theme
-    surface: Color(0xFFFFFFFF),
-    onSurface: Color(0xFF1F1F1F),
-    background: Color(0xFFF5F5F5),
-    onBackground: Color(0xFF1F1F1F),
-    altBackgroundPrimary: Color(0xFFF0F0F0),
-    altBackgroundSecondary: Color(0xFFE8EAF0),
-    onPrimary: Color(0xFF1F1F1F),
-    onSecondary: Color(0xFFFFFFFF),
-    // Dark theme
-    primaryDark: Color(0xFFE0E0E0),
-    secondaryDark: Color(0xFF90A4AE),
-    surfaceDark: Color(0xFF1E1E1E),
-    onSurfaceDark: Color(0xFFE0E0E0),
-    backgroundDark: Color(0xFF1F1F1F),
-    onBackgroundDark: Color(0xFFE0E0E0),
-    altBackgroundPrimaryDark: Color(0xFF2A2A2A),
-    altBackgroundSecondaryDark: Color(0xFF2A3037),
     onPrimaryDark: Color(0xFF000000),
     onSecondaryDark: Color(0xFF000000),
   ),
