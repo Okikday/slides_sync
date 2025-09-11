@@ -54,7 +54,7 @@ class ModifyingListTile extends ConsumerWidget {
                   Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      color: theme.bgLightenColor(0.6, 0.4),
+                      color: theme.primary.withAlpha(50),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: SizedBox.square(dimension: btnDimension, child: leading),

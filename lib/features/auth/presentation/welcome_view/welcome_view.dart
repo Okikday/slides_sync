@@ -98,28 +98,26 @@ class WelcomeView extends ConsumerWidget {
                 children: [
                   CustomText("Begin your journey", fontWeight: FontWeight.bold, color: Color(0xFF008080)),
                   ConstantSizing.columnSpacing(48),
-                  Heroine(
-                    tag: "Welcome-to-Onboarding1",
-                    
-                    child: ScaleClickWrapper(
-                      borderRadius: 24,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          PageAnimation.pageRouteBuilder(
-                            Onboarding1(),
-                            type: TransitionType.none,
-                          ),
-                        );
-                      },
-                      child: CustomElevatedButton(
-                        label: "Get started",
-                        textColor: Colors.white,
-                        textSize: 14,
-                        borderRadius: 48,
-                        backgroundColor: Color(0xFF7D19FF),
-                        pixelHeight: 56,
-                      ),
+                  ScaleClickWrapper(
+                    borderRadius: 24,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageAnimation.pageRouteBuilder(
+                          const Onboarding1(),
+                          type: TransitionType.rightToLeft,
+                          duration: Durations.extralong1,
+                          curve: CustomCurves.defaultIosSpring,
+                        ),
+                      );
+                    },
+                    child: CustomElevatedButton(
+                      label: "Get started",
+                      textColor: Colors.white,
+                      textSize: 14,
+                      borderRadius: 48,
+                      backgroundColor: Color(0xFF7D19FF),
+                      pixelHeight: 56,
                     ),
                   ),
                 ],

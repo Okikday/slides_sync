@@ -100,6 +100,8 @@ dependencies:
   flutter_link_previewer: ^3.2.2
   super_clipboard: ^0.9.1
   firebase_ai: ^3.2.0
+  syncfusion_flutter_pdf: ^31.1.17
+  syncfusion_flutter_pdfviewer: ^31.1.17
 
   #docx_file_viewer: ^0.0.1
 

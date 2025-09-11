@@ -23,6 +23,7 @@ class CourseContent {
   @Index()
   late String contentId;
 
+  @Index()
   late String parentId;
   late String title;
 
@@ -30,6 +31,7 @@ class CourseContent {
   late String path;
 
   DateTime? createdAt;
+  DateTime? lastModified;
   late String description;
 
   @Enumerated(EnumType.ordinal)
@@ -46,6 +48,7 @@ class CourseContent {
     required String title,
     required FileDetails path,
     DateTime? createdAt,
+    DateTime? lastModified,
     required CourseContentType courseContentType,
     String description = '',
     String metadataJson = '{}',
@@ -58,6 +61,7 @@ class CourseContent {
           ..title = title
           ..path = path.toJson()
           ..createdAt = createdAt ?? DateTime.now()
+          ..lastModified = lastModified ?? DateTime.now()
           ..courseContentType = courseContentType
           ..description = description
           ..metadataJson = metadataJson;
@@ -70,6 +74,7 @@ class CourseContent {
     String? title,
     FileDetails? path,
     DateTime? createdAt,
+    DateTime? lastModified,
     String? description,
     CourseContentType? courseContentType,
     String? metadataJson,
@@ -82,6 +87,7 @@ class CourseContent {
       ..title = title ?? this.title
       ..path = path?.toJson() ?? this.path
       ..createdAt = createdAt ?? this.createdAt
+      ..lastModified = lastModified ?? this.lastModified
       ..description = description ?? this.description
       ..courseContentType = courseContentType ?? this.courseContentType
       ..metadataJson = metadataJson ?? this.metadataJson;
@@ -96,6 +102,7 @@ class CourseContent {
       'title': title,
       'path': path,
       'createdAt': createdAt?.toIso8601String(),
+      'lastModified': lastModified?.toIso8601String(),
       'description': description,
       'courseContentType': courseContentType.index,
       'metadataJson': metadataJson,
@@ -111,6 +118,7 @@ class CourseContent {
     content.title = map['title'] ?? '';
     content.path = map['path'] ?? '';
     content.createdAt = map['createdAt'] != null ? DateTime.tryParse(map['createdAt']) : null;
+    content.lastModified = map['lastModified'] != null ? DateTime.tryParse(map['lastModified']) : null;
     content.description = map['description'] ?? '';
     content.courseContentType = CourseContentType.values[map['courseContentType'] ?? 0];
     content.metadataJson = map['metadataJson'] ?? '{}';
@@ -132,6 +140,7 @@ class CourseContent {
         other.title == title &&
         other.path == path &&
         other.createdAt == createdAt &&
+        other.lastModified == lastModified &&
         other.description == description &&
         other.courseContentType == courseContentType &&
         other.metadataJson == metadataJson;
@@ -146,6 +155,7 @@ class CourseContent {
         title.hashCode ^
         path.hashCode ^
         createdAt.hashCode ^
+        lastModified.hashCode ^
         description.hashCode ^
         courseContentType.hashCode ^
         metadataJson.hashCode;
@@ -153,7 +163,7 @@ class CourseContent {
 
   @override
   String toString() {
-    return 'CourseContent(id: $id, contentHash: $contentHash, contentId: $contentId, parentId: $parentId, title: $title, path: $path, createdAt: $createdAt, description: $description, courseContentType: $courseContentType, metadataJson: $metadataJson)';
+    return 'CourseContent(id: $id, contentHash: $contentHash, contentId: $contentId, parentId: $parentId, title: $title, path: $path, createdAt: $createdAt, lastModified: $lastModified, description: $description, courseContentType: $courseContentType, metadataJson: $metadataJson)';
   }
 }
 

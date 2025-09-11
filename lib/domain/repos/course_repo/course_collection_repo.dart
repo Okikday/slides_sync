@@ -42,7 +42,7 @@ class CourseCollectionRepo {
     return await (await _isar).courseCollections.filter().collectionIdEqualTo(collectionId).findFirst();
   }
 
-  static Stream<CourseCollection?> watchCourseById(String collectionId) async* {
+  static Stream<CourseCollection?> watchCollectionById(String collectionId) async* {
     yield* (await _isar).courseCollections
         .filter()
         .collectionIdEqualTo(collectionId)

@@ -87,9 +87,9 @@ class _BuildImagePathWidgetState extends ConsumerState<BuildImagePathWidget> {
     if (!fileDetails.containsFilePath) return fallbackWidget;
 
     if (fileDetails.filePath.isNotEmpty && imageBytes != null) {
-      return ImageFromMemory(imageBytes: imageBytes, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
+      return ImageFromMemory(imageBytes: imageBytes, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget).animate().fadeIn();
     } else if (fileDetails.urlPath.isNotEmpty) {
-      return ImageFromNetwork(fileDetails: fileDetails, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget);
+      return ImageFromNetwork(fileDetails: fileDetails, fit: fit, width: width, height: height, fallbackWidget: fallbackWidget).animate().fadeIn();;
     }
 
     return fallbackWidget;

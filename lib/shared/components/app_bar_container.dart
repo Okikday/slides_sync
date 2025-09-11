@@ -71,7 +71,7 @@ class _AppBarContainerWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final double topPadding = MediaQuery.paddingOf(context).top;
     return ColoredBox(
-      color: context.scaffoldBackgroundColor,
+      color: scaffoldBgColor ?? context.scaffoldBackgroundColor,
       child: Padding(
         padding: EdgeInsets.only(top: this.topPadding ?? topPadding),
         child: SizedBox(

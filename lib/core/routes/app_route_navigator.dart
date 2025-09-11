@@ -7,7 +7,8 @@ import 'package:slides_sync/core/routes/routes_strings.dart';
 class AppRouteNavigator {
   final BuildContext context;
   final bool _isPushedAsReplacement;
-  const AppRouteNavigator(this.context, {bool isPushedAsReplacement = false}) : _isPushedAsReplacement = isPushedAsReplacement;
+  const AppRouteNavigator(this.context, {bool isPushedAsReplacement = false})
+    : _isPushedAsReplacement = isPushedAsReplacement;
   static AppRouteNavigator to(BuildContext context, {bool isPushedAsReplacement = false}) {
     return AppRouteNavigator(context, isPushedAsReplacement: isPushedAsReplacement);
   }
@@ -71,11 +72,15 @@ class AppRouteNavigator {
     _isPushedAsReplacement ? _pushAsReplacement(route) : _push(route);
   }
 
-
   /// Viewers
-  void contentViewerRoute(CourseContent content) {
+  void documentViewerRoute(CourseContent content) {
     // resolve viewer
     final route = RoutesStrings.documentViewer;
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: content) : _push(route, extra: content);
+  }
+
+  void imageViewerRoute(CourseContent content) {
+    final route = RoutesStrings.imageViewer;
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: content) : _push(route, extra: content);
   }
 }

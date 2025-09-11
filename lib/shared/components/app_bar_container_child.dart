@@ -17,6 +17,7 @@ class AppBarContainerChild extends ConsumerWidget {
     this.tooltipMessage,
     this.onBackButtonClicked,
     this.trailing,
+    this.padding
   });
 
   final bool isDarkMode;
@@ -27,6 +28,7 @@ class AppBarContainerChild extends ConsumerWidget {
   final String? tooltipMessage;
   final void Function()? onBackButtonClicked;
   final Widget? trailing;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,7 +40,7 @@ class AppBarContainerChild extends ConsumerWidget {
         side: BorderSide(color: theme.bgLightenColor(.89, .11)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12),
+        padding: padding ?? EdgeInsets.symmetric(horizontal: 12),
         child: Tooltip(
           triggerMode: TooltipTriggerMode.tap,
           message: tooltipMessage ?? title,

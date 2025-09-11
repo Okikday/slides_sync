@@ -15,7 +15,7 @@ class CourseCollection {
 
   @Index()
   late String collectionId;
-
+  
   late String parentId;
   late String collectionTitle;
 

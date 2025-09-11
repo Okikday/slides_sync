@@ -23,13 +23,12 @@ dynamic defaultTransition(
       outgoing: TransitionType.slide(begin: const Offset(-0.4, 0), end: const Offset(0, 0)),
       outgoingDuration: Durations.short4,
       reverseDuration: Durations.short4,
-      curve: Curves.decelerate,
-      reverseCurve: Curves.decelerate,
+      curve: CustomCurves.defaultIosSpring,
+      reverseCurve: CustomCurves.defaultIosSpring,
     ),
-    duration: Durations.medium3,
-    reverseDuration: Durations.medium2,
-    curve: CustomCurves.defaultIosSpring,
-    reverseCurve: CustomCurves.defaultIosSpring,
+    duration: Durations.medium4,
+    reverseDuration: Durations.medium1,
+
     child: child,
   );
 }
@@ -71,3 +70,5 @@ class Routes {
     ],
   );
 }
+
+

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -20,21 +22,35 @@ class CourseMaterialsView extends ConsumerStatefulWidget {
 }
 
 class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
+  late final ScrollController scrollController;
   // late final AutoDisposeStreamProvider<CourseCollection?> streamedCollection;
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController();
+    scrollController.addListener(scrollListener);
     // streamedCollection = AutoDisposeStreamProvider((cb) => CourseCollectionRepo.watchByDbId(widget.collection.id));
+  }
+
+  void scrollListener() {
+    final scrollOffsetNotifier = ref.read(CourseMaterialsProviders.scrollOffsetProvider.notifier);
+    final prevOffset = scrollOffsetNotifier.state;
+    final currOffset = scrollController.offset;
+    if (currOffset != prevOffset) {
+      scrollOffsetNotifier.update((cb) => currOffset);
+    }
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(scrollListener);
+    scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // ref.watch(streamedCollection).value ?? 
+    // ref.watch(streamedCollection).value ??
     final CourseCollection collection = widget.collection;
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -58,9 +74,16 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
           ),
         ),
 
-        floatingActionButton: AddContentFAB(collection: collection),
+        floatingActionButton: AddContentFAB(
+          collection: collection,
+          scrollOffsetProvider: CourseMaterialsProviders.scrollOffsetProvider,
+        ),
 
-        body: CustomScrollView(slivers: [MaterialsView(collection: collection)]),
+        body: CustomScrollView(
+          controller: scrollController,
+          physics: const BouncingScrollPhysics(),
+          slivers: [MaterialsView(collection: collection, scrollController: scrollController)],
+        ),
       ),
     );
   }

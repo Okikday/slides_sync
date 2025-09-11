@@ -7,8 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heroine/heroine.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/features/content_viewer/presentation/actions/content_view_gate_actions.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/custom_wave_widget.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -26,12 +28,16 @@ class ContentViewGate extends ConsumerStatefulWidget {
 }
 
 class _ContentViewGateState extends ConsumerState<ContentViewGate> {
+  bool isPushed = false;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(Durations.medium4);
-      if (mounted) AppRouteNavigator.to(context, isPushedAsReplacement: true).contentViewerRoute(widget.content);
+      if (isPushed) return;
+      await ContentViewGateActions.redirectToViewer(context, widget.content);
+      setState(() {
+        isPushed = true;
+      });
     });
   }
 

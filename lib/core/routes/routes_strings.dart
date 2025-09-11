@@ -20,6 +20,10 @@ class RoutesStrings {
   static const modifyContentsView = "/modifyContentsView";
 
   static const documentViewer = "/documentViewer";
+  static const imageViewer = "/imageViewer";
+  // static const driveLinkViewer = "/driveLinkViewer";
+  // static const youtubeLinkViewer = "/youtubeLinkViewer";
+  // static const fileLinkViewer = "/fileLinkViewer";
 
   
   

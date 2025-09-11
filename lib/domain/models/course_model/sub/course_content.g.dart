@@ -48,23 +48,28 @@ const CourseContentSchema = CollectionSchema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'metadataJson': PropertySchema(
+    r'lastModified': PropertySchema(
       id: 6,
+      name: r'lastModified',
+      type: IsarType.dateTime,
+    ),
+    r'metadataJson': PropertySchema(
+      id: 7,
       name: r'metadataJson',
       type: IsarType.string,
     ),
     r'parentId': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'parentId',
       type: IsarType.string,
     ),
     r'path': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'path',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'title',
       type: IsarType.string,
     )
@@ -96,6 +101,19 @@ const CourseContentSchema = CollectionSchema(
       properties: [
         IndexPropertySchema(
           name: r'contentId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'parentId': IndexSchema(
+      id: -809199838039056779,
+      name: r'parentId',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'parentId',
           type: IndexType.hash,
           caseSensitive: true,
         )
@@ -138,10 +156,11 @@ void _courseContentSerialize(
   writer.writeDateTime(offsets[3], object.createdAt);
   writer.writeString(offsets[4], object.description);
   writer.writeLong(offsets[5], object.hashCode);
-  writer.writeString(offsets[6], object.metadataJson);
-  writer.writeString(offsets[7], object.parentId);
-  writer.writeString(offsets[8], object.path);
-  writer.writeString(offsets[9], object.title);
+  writer.writeDateTime(offsets[6], object.lastModified);
+  writer.writeString(offsets[7], object.metadataJson);
+  writer.writeString(offsets[8], object.parentId);
+  writer.writeString(offsets[9], object.path);
+  writer.writeString(offsets[10], object.title);
 }
 
 CourseContent _courseContentDeserialize(
@@ -159,10 +178,11 @@ CourseContent _courseContentDeserialize(
   object.createdAt = reader.readDateTimeOrNull(offsets[3]);
   object.description = reader.readString(offsets[4]);
   object.id = id;
-  object.metadataJson = reader.readString(offsets[6]);
-  object.parentId = reader.readString(offsets[7]);
-  object.path = reader.readString(offsets[8]);
-  object.title = reader.readString(offsets[9]);
+  object.lastModified = reader.readDateTimeOrNull(offsets[6]);
+  object.metadataJson = reader.readString(offsets[7]);
+  object.parentId = reader.readString(offsets[8]);
+  object.path = reader.readString(offsets[9]);
+  object.title = reader.readString(offsets[10]);
   return object;
 }
 
@@ -188,12 +208,14 @@ P _courseContentDeserializeProp<P>(
     case 5:
       return (reader.readLong(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
       return (reader.readString(offset)) as P;
     case 9:
+      return (reader.readString(offset)) as P;
+    case 10:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -396,6 +418,51 @@ extension CourseContentQueryWhere
               indexName: r'contentId',
               lower: [],
               upper: [contentId],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterWhereClause> parentIdEqualTo(
+      String parentId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'parentId',
+        value: [parentId],
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterWhereClause>
+      parentIdNotEqualTo(String parentId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'parentId',
+              lower: [],
+              upper: [parentId],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'parentId',
+              lower: [parentId],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'parentId',
+              lower: [parentId],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'parentId',
+              lower: [],
+              upper: [parentId],
               includeUpper: false,
             ));
       }
@@ -1054,6 +1121,80 @@ extension CourseContentQueryFilter
   }
 
   QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      lastModifiedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'lastModified',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      lastModifiedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'lastModified',
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      lastModifiedEqualTo(DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastModified',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      lastModifiedGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastModified',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      lastModifiedLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastModified',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
+      lastModifiedBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastModified',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>
       metadataJsonEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1685,6 +1826,20 @@ extension CourseContentQuerySortBy
   }
 
   QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      sortByLastModified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastModified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      sortByLastModifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastModified', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
       sortByMetadataJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'metadataJson', Sort.asc);
@@ -1830,6 +1985,20 @@ extension CourseContentQuerySortThenBy
   }
 
   QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      thenByLastModified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastModified', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
+      thenByLastModifiedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastModified', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CourseContent, CourseContent, QAfterSortBy>
       thenByMetadataJson() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'metadataJson', Sort.asc);
@@ -1923,6 +2092,13 @@ extension CourseContentQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CourseContent, CourseContent, QDistinct>
+      distinctByLastModified() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastModified');
+    });
+  }
+
   QueryBuilder<CourseContent, CourseContent, QDistinct> distinctByMetadataJson(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1994,6 +2170,13 @@ extension CourseContentQueryProperty
   QueryBuilder<CourseContent, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hashCode');
+    });
+  }
+
+  QueryBuilder<CourseContent, DateTime?, QQueryOperations>
+      lastModifiedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastModified');
     });
   }
 

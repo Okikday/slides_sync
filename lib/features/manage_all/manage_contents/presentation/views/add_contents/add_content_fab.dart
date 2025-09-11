@@ -8,10 +8,13 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class AddContentFAB extends ConsumerWidget {
   final CourseCollection collection;
-  const AddContentFAB({super.key, required this.collection});
+  final StateProvider<double>? scrollOffsetProvider;
+  const AddContentFAB({super.key, required this.collection, this.scrollOffsetProvider});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
+    final isScrolled = scrollOffsetProvider == null ? false : ref.watch(scrollOffsetProvider!) < 100.0;
+
     return FloatingActionButton(
       backgroundColor: theme.primaryColor,
       shape: CircleBorder(),

@@ -27,21 +27,22 @@ class CoursesView extends ConsumerStatefulWidget {
 
 class _CoursesViewState extends ConsumerState<CoursesView> {
   late final PagingController<int, Course> pagingController;
-  final int limit = 10;
+  final int limit = 20;
+  final cva = CoursesViewActions.of();
 
   @override
   void initState() {
     super.initState();
-    pagingController = PagingController(
-      value: CoursesViewProviders.pagingState,
+    pagingController = PagingController<int, Course>(
       getNextPageKey: CoursesViewActions.getNextPageKey,
-      fetchPage: (pageKey) async => await CoursesViewActions.fetchPage(pageKey, limit),
+      fetchPage: (pageKey) => cva.fetchPage(pageKey, limit),
     );
   }
 
   @override
   void dispose() {
     pagingController.dispose();
+    cva.clearQueue();
     super.dispose();
   }
 
@@ -53,7 +54,11 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
     ref.listen<AsyncValue<void>>(CoursesViewProviders.watchChanges, (previous, next) {
       if (next.hasValue) {
         log("refreshing page controller!");
-        pagingController.refresh();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          cva.lastItemSortId = null;
+          cva.clearQueue();
+          pagingController.refresh();
+        });
       }
     });
 

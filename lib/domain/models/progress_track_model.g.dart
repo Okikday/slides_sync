@@ -33,28 +33,33 @@ const ProgressTrackModelSchema = CollectionSchema(
       name: r'contentId',
       type: IsarType.string,
     ),
-    r'firstRead': PropertySchema(
+    r'count': PropertySchema(
       id: 3,
+      name: r'count',
+      type: IsarType.long,
+    ),
+    r'firstRead': PropertySchema(
+      id: 4,
       name: r'firstRead',
       type: IsarType.dateTime,
     ),
     r'hashCode': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'lastRead': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'lastRead',
       type: IsarType.dateTime,
     ),
     r'metadataJson': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'metadataJson',
       type: IsarType.string,
     ),
     r'progress': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'progress',
       type: IsarType.double,
     )
@@ -127,11 +132,12 @@ void _progressTrackModelSerialize(
   writer.writeString(offsets[0], object.additionalDetail);
   writer.writeString(offsets[1], object.contentHash);
   writer.writeString(offsets[2], object.contentId);
-  writer.writeDateTime(offsets[3], object.firstRead);
-  writer.writeLong(offsets[4], object.hashCode);
-  writer.writeDateTime(offsets[5], object.lastRead);
-  writer.writeString(offsets[6], object.metadataJson);
-  writer.writeDouble(offsets[7], object.progress);
+  writer.writeLong(offsets[3], object.count);
+  writer.writeDateTime(offsets[4], object.firstRead);
+  writer.writeLong(offsets[5], object.hashCode);
+  writer.writeDateTime(offsets[6], object.lastRead);
+  writer.writeString(offsets[7], object.metadataJson);
+  writer.writeDouble(offsets[8], object.progress);
 }
 
 ProgressTrackModel _progressTrackModelDeserialize(
@@ -144,11 +150,12 @@ ProgressTrackModel _progressTrackModelDeserialize(
   object.additionalDetail = reader.readStringOrNull(offsets[0]);
   object.contentHash = reader.readString(offsets[1]);
   object.contentId = reader.readString(offsets[2]);
-  object.firstRead = reader.readDateTimeOrNull(offsets[3]);
+  object.count = reader.readLong(offsets[3]);
+  object.firstRead = reader.readDateTimeOrNull(offsets[4]);
   object.id = id;
-  object.lastRead = reader.readDateTimeOrNull(offsets[5]);
-  object.metadataJson = reader.readString(offsets[6]);
-  object.progress = reader.readDouble(offsets[7]);
+  object.lastRead = reader.readDateTimeOrNull(offsets[6]);
+  object.metadataJson = reader.readString(offsets[7]);
+  object.progress = reader.readDoubleOrNull(offsets[8]);
   return object;
 }
 
@@ -166,15 +173,17 @@ P _progressTrackModelDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 4:
       return (reader.readLong(offset)) as P;
-    case 5:
+    case 4:
       return (reader.readDateTimeOrNull(offset)) as P;
+    case 5:
+      return (reader.readLong(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -793,6 +802,62 @@ extension ProgressTrackModelQueryFilter
   }
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      countEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'count',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      countGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'count',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      countLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'count',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      countBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'count',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
       firstReadIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1189,8 +1254,26 @@ extension ProgressTrackModelQueryFilter
   }
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      progressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'progress',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      progressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'progress',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
       progressEqualTo(
-    double value, {
+    double? value, {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1204,7 +1287,7 @@ extension ProgressTrackModelQueryFilter
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
       progressGreaterThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -1220,7 +1303,7 @@ extension ProgressTrackModelQueryFilter
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
       progressLessThan(
-    double value, {
+    double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
   }) {
@@ -1236,8 +1319,8 @@ extension ProgressTrackModelQueryFilter
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
       progressBetween(
-    double lower,
-    double upper, {
+    double? lower,
+    double? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     double epsilon = Query.epsilon,
@@ -1302,6 +1385,20 @@ extension ProgressTrackModelQuerySortBy
       sortByContentIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'contentId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      sortByCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'count', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      sortByCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'count', Sort.desc);
     });
   }
 
@@ -1421,6 +1518,20 @@ extension ProgressTrackModelQuerySortThenBy
   }
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      thenByCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'count', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      thenByCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'count', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
       thenByFirstRead() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'firstRead', Sort.asc);
@@ -1530,6 +1641,13 @@ extension ProgressTrackModelQueryWhereDistinct
   }
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QDistinct>
+      distinctByCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'count');
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QDistinct>
       distinctByFirstRead() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'firstRead');
@@ -1594,6 +1712,12 @@ extension ProgressTrackModelQueryProperty
     });
   }
 
+  QueryBuilder<ProgressTrackModel, int, QQueryOperations> countProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'count');
+    });
+  }
+
   QueryBuilder<ProgressTrackModel, DateTime?, QQueryOperations>
       firstReadProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1621,7 +1745,7 @@ extension ProgressTrackModelQueryProperty
     });
   }
 
-  QueryBuilder<ProgressTrackModel, double, QQueryOperations>
+  QueryBuilder<ProgressTrackModel, double?, QQueryOperations>
       progressProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'progress');

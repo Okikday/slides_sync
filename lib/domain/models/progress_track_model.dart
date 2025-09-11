@@ -14,8 +14,10 @@ class ProgressTrackModel {
 
   @Index()
   late String contentHash;
-  late double progress;
-  late String? additionalDetail;
+  double? progress;
+  int count = 0;
+  String? additionalDetail;
+
 
   DateTime? firstRead;
   DateTime? lastRead;
@@ -28,6 +30,7 @@ class ProgressTrackModel {
     required String contentId,
     required String contentHash,
     double? progress,
+    int? count,
     String? additionalDetail,
     String? metadataJson,
     DateTime? firstRead,
@@ -36,7 +39,8 @@ class ProgressTrackModel {
     return ProgressTrackModel()
       ..contentId = contentId
       ..contentHash = contentHash
-      ..progress = progress ?? 0.0
+      ..progress = progress
+      ..count = count ?? 0
       ..additionalDetail = additionalDetail
       ..firstRead = firstRead ?? DateTime.now()
       ..lastRead = lastRead ?? DateTime.now()
@@ -48,6 +52,7 @@ class ProgressTrackModel {
     String? contentId,
     String? contentHash,
     double? progress,
+    int? count,
     String? additionalDetail,
     DateTime? firstRead,
     DateTime? lastRead,
@@ -57,6 +62,7 @@ class ProgressTrackModel {
       ..contentId = contentId ?? this.contentId
       ..contentHash = contentHash ?? this.contentHash
       ..progress = progress ?? this.progress
+      ..count = count ?? this.count
       ..additionalDetail = additionalDetail ?? this.additionalDetail
       ..firstRead = firstRead ?? this.firstRead
       ..lastRead = lastRead ?? this.lastRead;
@@ -68,6 +74,7 @@ class ProgressTrackModel {
       'contentId': contentId,
       'contentHash': contentHash,
       'progress': progress,
+      'count': count,
       'additionalDetail': additionalDetail,
       'firstRead': firstRead?.toIso8601String(),
       'lastRead': lastRead?.toIso8601String(),
@@ -80,6 +87,7 @@ class ProgressTrackModel {
       ..contentId = map['contentId'] as String
       ..contentHash = map['contentHash'] as String? ?? ''
       ..progress = map['progress'] as double? ?? 0.0
+      ..count = map['count'] as int? ?? 0
       ..additionalDetail = map['additionalDetail'] as String? ?? ''
       ..firstRead = DateTime.tryParse(map['firstRead'] as String? ?? '') ?? DateTime.now()
       ..lastRead = DateTime.tryParse(map['lastRead'] as String? ?? '') ?? DateTime.now();
@@ -92,7 +100,7 @@ class ProgressTrackModel {
 
   @override
   String toString() {
-    return 'ProgressTrackModel(id: $id, contentId: $contentId, contentHash: $contentHash, progress: $progress, additionalDetail: $additionalDetail, firstRead: $firstRead, lastRead: $lastRead)';
+    return 'ProgressTrackModel(id: $id, contentId: $contentId, contentHash: $contentHash, progress: $progress, count: $count, additionalDetail: $additionalDetail, firstRead: $firstRead, lastRead: $lastRead)';
   }
 
   @override
@@ -103,6 +111,7 @@ class ProgressTrackModel {
         other.contentId == contentId &&
         other.contentHash == contentHash &&
         other.progress == progress &&
+        other.count == count &&
         other.additionalDetail == additionalDetail &&
         other.firstRead == firstRead &&
         other.lastRead == lastRead;
@@ -114,6 +123,7 @@ class ProgressTrackModel {
         contentId.hashCode ^
         contentHash.hashCode ^
         progress.hashCode ^
+        count.hashCode ^
         additionalDetail.hashCode ^
         firstRead.hashCode ^
         lastRead.hashCode;

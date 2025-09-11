@@ -69,7 +69,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Expanded(child: SizedBox()),
-                              LibraryTabViewSearchButton(),
+                              LibraryTabViewSearchButton(onTap: () {}),
                               LibraryTabViewLayoutButton(isListLayoutProvider: LibraryTabViewProviders.isListLayout,),
                             ],
                           ),

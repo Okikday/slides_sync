@@ -323,6 +323,8 @@ class AppThemeModel {
   Color get onPrimaryColor => onPrimary;
   Color get onSecondaryColor => onSecondary;
 
+  bool get isDarkTheme => brightness == Brightness.dark;
+
   Color bgLightenColor([double? value, double? darkValue]) {
     return HSLColor.fromColor(
       background,

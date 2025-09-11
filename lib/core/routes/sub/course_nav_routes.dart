@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/content_view_gate.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/pdf_document_viewer/pdf_document_viewer.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/image_viewer.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
@@ -65,7 +66,19 @@ class CourseNavRoutes {
             duration: Durations.extralong1,
             reverseDuration: Durations.medium1,
             curve: CustomCurves.defaultIosSpring,
-            child: DocumentViewer(content: state.extra as CourseContent),
+            child: PdfDocumentViewer(content: state.extra as CourseContent),
+          ),
+    ),
+    GoRoute(
+      path: RoutesStrings.imageViewer,
+      pageBuilder:
+          (context, state) => PageAnimation.buildCustomTransitionPage(
+            state.pageKey,
+            type: TransitionType.rightToLeftWithFade,
+            duration: Durations.extralong1,
+            reverseDuration: Durations.medium1,
+            curve: CustomCurves.defaultIosSpring,
+            child: ImageViewer(content: state.extra as CourseContent),
           ),
     ),
   ];
