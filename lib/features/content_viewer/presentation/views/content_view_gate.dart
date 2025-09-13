@@ -51,28 +51,30 @@ class _ContentViewGateState extends ConsumerState<ContentViewGate> {
         alignment: Alignment.center,
         children: [
           Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-              child: ColoredBox(
+            child: ColoredBox(
                 color: Colors.black.withAlpha(80),
                 child: GestureDetector(
-                  child: OrganicBackgroundEffect(),
+                // child: OrganicBackgroundEffect(),
                   onTap: () {
-                    context.pop();
+                  // context.pop();
                   },
                 ),
               ),
-            ),
+            // child: BackdropFilter(
+
+            //   filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            //   child:
+            // ),
           ),
 
-          Positioned(
-            bottom: 0,
-            child: SizedBox(
-              width: context.deviceWidth,
-              height: context.deviceHeight / 2,
-              child: Opacity(opacity: 0.2, child: CustomWaveWidget(progress: 0.9, backgroundColor: Colors.transparent)),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 0,
+          //   child: SizedBox(
+          //     width: context.deviceWidth,
+          //     height: context.deviceHeight / 2,
+          //     child: Opacity(opacity: 0.2, child: CustomWaveWidget(progress: 0.9, backgroundColor: Colors.transparent)),
+          //   ),
+          // ),
           Positioned(
             bottom: context.bottomPadding + 40,
             child: CustomText(

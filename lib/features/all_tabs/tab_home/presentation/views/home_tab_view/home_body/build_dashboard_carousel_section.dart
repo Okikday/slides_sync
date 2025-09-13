@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/domain/models/progress_track_model.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/providers/home_dashboard_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/home_dashboard.dart';
 import 'package:slides_sync/shared/helpers/device_helper.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -13,6 +15,7 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = context.deviceWidth;
     final bool isDesktop = context.deviceType == DeviceType.desktop;
+
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 160),
       child: AnimatedSize(
@@ -33,17 +36,6 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
               progressValue: 0.45,
               completed: false,
               isFirst: true,
-            ),
-            HomeDashboard(
-              courseName: 'Software Workshop II',
-              detail: '',
-              progressValue: 0.45,
-            ),
-            HomeDashboard(
-              courseName: 'Mathematical Methods I',
-              detail: 'MAT 233',
-              progressValue: 0.45,
-              isFirst: false,
             ),
           ],
         ),

@@ -6,7 +6,7 @@ import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 
 class ContentViewGateActions {
   static Future<void> redirectToViewer(BuildContext context, CourseContent content) async {
-    await Future.delayed(Durations.medium4);
+    await Future.delayed(Durations.medium2);
     if (!context.mounted) return;
     switch (content.courseContentType) {
       case CourseContentType.document:

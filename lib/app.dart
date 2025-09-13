@@ -52,3 +52,13 @@ class _AppState extends ConsumerState<App> {
     );
   }
 }
+
+
+class DummyApp extends ConsumerWidget {
+  const DummyApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp(home: Center(child: Text("This is a text"),));
+  }
+}

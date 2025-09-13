@@ -128,7 +128,8 @@ class HomeDashboard extends ConsumerWidget {
               ),
 
               // ConstantSizing.rowSpacing(4),
-              Stack(
+              if (completed != null)
+                Stack(
                 children: [
                   CustomElevatedButton(
                     pixelWidth: 46,

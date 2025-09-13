@@ -12,12 +12,14 @@ class ProgressTrackModel {
   @Index()
   late String contentId;
 
+  String? title;
+  String? description;
+
   @Index()
   late String contentHash;
   double? progress;
   int count = 0;
   String? additionalDetail;
-
 
   DateTime? firstRead;
   DateTime? lastRead;
@@ -28,6 +30,8 @@ class ProgressTrackModel {
 
   factory ProgressTrackModel.create({
     required String contentId,
+    String? title,
+    String? description,
     required String contentHash,
     double? progress,
     int? count,
@@ -38,6 +42,8 @@ class ProgressTrackModel {
   }) {
     return ProgressTrackModel()
       ..contentId = contentId
+      ..title = title
+      ..description = description
       ..contentHash = contentHash
       ..progress = progress
       ..count = count ?? 0
@@ -50,6 +56,8 @@ class ProgressTrackModel {
   ProgressTrackModel copyWith({
     Id? id,
     String? contentId,
+    String? title,
+    String? description,
     String? contentHash,
     double? progress,
     int? count,
@@ -60,6 +68,8 @@ class ProgressTrackModel {
     return ProgressTrackModel()
       ..id = id ?? this.id
       ..contentId = contentId ?? this.contentId
+      ..title = title ?? this.title
+      ..description = description ?? this.description
       ..contentHash = contentHash ?? this.contentHash
       ..progress = progress ?? this.progress
       ..count = count ?? this.count
@@ -72,6 +82,8 @@ class ProgressTrackModel {
     return <String, dynamic>{
       'id': id,
       'contentId': contentId,
+      'title': title,
+      'description': description,
       'contentHash': contentHash,
       'progress': progress,
       'count': count,
@@ -85,6 +97,8 @@ class ProgressTrackModel {
     return ProgressTrackModel()
       ..id = map['id'] as int
       ..contentId = map['contentId'] as String
+      ..title = map['title'] as String?
+      ..description = map['description'] as String?
       ..contentHash = map['contentHash'] as String? ?? ''
       ..progress = map['progress'] as double? ?? 0.0
       ..count = map['count'] as int? ?? 0
@@ -100,7 +114,7 @@ class ProgressTrackModel {
 
   @override
   String toString() {
-    return 'ProgressTrackModel(id: $id, contentId: $contentId, contentHash: $contentHash, progress: $progress, count: $count, additionalDetail: $additionalDetail, firstRead: $firstRead, lastRead: $lastRead)';
+    return 'ProgressTrackModel(id: $id, contentId: $contentId, title: $title, description: $description, contentHash: $contentHash, progress: $progress, count: $count, additionalDetail: $additionalDetail, firstRead: $firstRead, lastRead: $lastRead)';
   }
 
   @override
@@ -109,6 +123,8 @@ class ProgressTrackModel {
 
     return other.id == id &&
         other.contentId == contentId &&
+        other.title == title &&
+        other.description == description &&
         other.contentHash == contentHash &&
         other.progress == progress &&
         other.count == count &&
@@ -121,6 +137,8 @@ class ProgressTrackModel {
   int get hashCode {
     return id.hashCode ^
         contentId.hashCode ^
+        title.hashCode ^
+        description.hashCode ^
         contentHash.hashCode ^
         progress.hashCode ^
         count.hashCode ^

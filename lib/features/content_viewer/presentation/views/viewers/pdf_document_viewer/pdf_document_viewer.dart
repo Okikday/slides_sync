@@ -31,6 +31,7 @@ class PdfDocumentViewer extends ConsumerStatefulWidget {
 
 class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
   Timer? progressTrackTimer;
+  int trackCount = 0;
   late final PdfViewerController pdfViewerController;
   late final ValueNotifier<bool> isSearchingNotifier;
   late final ValueNotifier<bool> isAppBarVisibleNotifier;
@@ -43,72 +44,47 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
   @override
   void initState() {
     super.initState();
-
     pdfViewerController = PdfViewerController();
     isSearchingNotifier = ValueNotifier(false);
     isAppBarVisibleNotifier = ValueNotifier(true);
     isOptionsVisibleNotifier = ValueNotifier(false);
-    progressTrackNotifier = ValueNotifier<ProgressTrackModel?>(null);
-
-    // load saved progress after first frame, then start periodic tracker
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      initProgressTracking();
+    progressTrackNotifier = ValueNotifier(null);
+    progressTrackTimer = Timer.periodic(_trackInterval, pageNumberTracker);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (progressTrackNotifier.value != null) return;
+      final ProgressTrackModel? progressTrack = await PdfDocumentViewerActions.getLastProgressTrack(widget.content);
+      progressTrackNotifier.value = progressTrack;
+      if (progressTrack != null) {
+        pdfViewerController.jumpToPage(progressTrack.count);
+      }
     });
   }
 
-  Future<void> initProgressTracking() async {
-    final ProgressTrackModel? progressTrack =
-        await PdfDocumentViewerActions.getLastProgressTrack(widget.content);
-
-    if (!mounted) return;
-
-    progressTrackNotifier.value = progressTrack;
-
-    if (progressTrack != null) {
-      await Future<void>.delayed(Duration(milliseconds: 50));
-      if (!mounted) return;
-      final pageCount = pdfViewerController.pageCount;
-      if (pageCount > 0) {
-        final target = progressTrack.count.clamp(1, pageCount);
-        try {
-          pdfViewerController.jumpToPage(target);
-        } catch (e) {
-          log(e.toString());
-        }
-      }
-    }
-
-    progressTrackTimer?.cancel();
-    progressTrackTimer = Timer.periodic(_trackInterval, (_) => pageNumberTracker());
-  }
-
-  Future<void> pageNumberTracker() async {
+  void pageNumberTracker(Timer timer) async {
+    log("This shows up every 5 seconds");
+    // if (progressTrackTimer != null && progressTrackTimer!.isActive) return;
     if (isUpdatingProgressTrack) return;
-
     final progressTrack = progressTrackNotifier.value;
     if (progressTrack == null) return;
-
-    final pageCount = pdfViewerController.pageCount;
-    if (pageCount == 0) return;
-
     final pageNumber = pdfViewerController.pageNumber;
     if (progressTrack.count == pageNumber) return;
-
     isUpdatingProgressTrack = true;
-    try {
-      final updated = progressTrack.copyWith(
-        count: pageNumber,
-        progress: (pageNumber / pageCount).clamp(0.0, 1.0),
-        lastRead: DateTime.now(),
-      );
-      await PdfDocumentViewerActions.updateProgressTrack(updated);
-
-      if (mounted) progressTrackNotifier.value = updated;
-    } catch (e) {
-      log(e.toString());
-    } finally {
-      isUpdatingProgressTrack = false;
-    }
+    await PdfDocumentViewerActions.updateProgressTrack(
+      trackCount > 0
+          ? progressTrack.copyWith(
+            count: pageNumber,
+            progress: (pageNumber / pdfViewerController.pageCount).clamp(0.0, 1.0),
+            lastRead: DateTime.now(),
+          )
+          : progressTrack.copyWith(
+            title: widget.content.title,
+            description: widget.content.description,
+            count: pageNumber,
+            progress: (pageNumber / pdfViewerController.pageCount).clamp(0.0, 1.0),
+            lastRead: DateTime.now(),
+          ),
+    ).then(((onValue) => isUpdatingProgressTrack = false), onError: (onValue) => isUpdatingProgressTrack = false);
+    trackCount++;
   }
 
   @override

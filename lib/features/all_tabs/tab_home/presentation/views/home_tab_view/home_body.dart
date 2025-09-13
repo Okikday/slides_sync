@@ -52,14 +52,7 @@ class HomeBody extends ConsumerWidget {
             Navigator.push(
               context,
               PageAnimation.pageRouteBuilder(
-                Scaffold(
-                  body: Center(
-                    child: CustomText(
-                      "No recent reads",
-                      color: ref.theme.onBackground,
-                    ),
-                  ),
-                ),
+                Scaffold(body: Center(child: CustomText("No recent reads", color: ref.theme.onBackground))),
                 type: TransitionType.rightToLeft,
                 duration: Durations.extralong1,
                 curve: CustomCurves.defaultIosSpring,
@@ -68,22 +61,11 @@ class HomeBody extends ConsumerWidget {
           },
         ),
 
-        // SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingSmall),
 
         // Recents Section Body
-        RecentsSectionBody(
-          recentCourses: [
-            CourseContent.create(
-              contentHash: "Hello",
-              parentId: 'lol',
-              title: "Context Free Grammar",
-              path: FileDetails(),
-              courseContentType: CourseContentType.image,
-            ),
-          ],
-        ),
+        RecentsSectionBody(),
       ],
     );
   }
 }
-

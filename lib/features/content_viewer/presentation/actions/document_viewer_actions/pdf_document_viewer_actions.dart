@@ -21,6 +21,8 @@ class PdfDocumentViewerActions {
     final result = await Result.tryRunAsync(() async {
       final ProgressTrackModel newPtm = ProgressTrackModel.create(
         contentId: content.contentId,
+        title: content.title,
+        description: content.description.substring(0, content.description.length.clamp(0, 1024)),
         contentHash: content.contentHash,
         progress: 0.0,
       );

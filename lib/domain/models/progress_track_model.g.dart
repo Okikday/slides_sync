@@ -38,30 +38,40 @@ const ProgressTrackModelSchema = CollectionSchema(
       name: r'count',
       type: IsarType.long,
     ),
-    r'firstRead': PropertySchema(
+    r'description': PropertySchema(
       id: 4,
+      name: r'description',
+      type: IsarType.string,
+    ),
+    r'firstRead': PropertySchema(
+      id: 5,
       name: r'firstRead',
       type: IsarType.dateTime,
     ),
     r'hashCode': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'lastRead': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'lastRead',
       type: IsarType.dateTime,
     ),
     r'metadataJson': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'metadataJson',
       type: IsarType.string,
     ),
     r'progress': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'progress',
       type: IsarType.double,
+    ),
+    r'title': PropertySchema(
+      id: 10,
+      name: r'title',
+      type: IsarType.string,
     )
   },
   estimateSize: _progressTrackModelEstimateSize,
@@ -119,7 +129,19 @@ int _progressTrackModelEstimateSize(
   }
   bytesCount += 3 + object.contentHash.length * 3;
   bytesCount += 3 + object.contentId.length * 3;
+  {
+    final value = object.description;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.metadataJson.length * 3;
+  {
+    final value = object.title;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -133,11 +155,13 @@ void _progressTrackModelSerialize(
   writer.writeString(offsets[1], object.contentHash);
   writer.writeString(offsets[2], object.contentId);
   writer.writeLong(offsets[3], object.count);
-  writer.writeDateTime(offsets[4], object.firstRead);
-  writer.writeLong(offsets[5], object.hashCode);
-  writer.writeDateTime(offsets[6], object.lastRead);
-  writer.writeString(offsets[7], object.metadataJson);
-  writer.writeDouble(offsets[8], object.progress);
+  writer.writeString(offsets[4], object.description);
+  writer.writeDateTime(offsets[5], object.firstRead);
+  writer.writeLong(offsets[6], object.hashCode);
+  writer.writeDateTime(offsets[7], object.lastRead);
+  writer.writeString(offsets[8], object.metadataJson);
+  writer.writeDouble(offsets[9], object.progress);
+  writer.writeString(offsets[10], object.title);
 }
 
 ProgressTrackModel _progressTrackModelDeserialize(
@@ -151,11 +175,13 @@ ProgressTrackModel _progressTrackModelDeserialize(
   object.contentHash = reader.readString(offsets[1]);
   object.contentId = reader.readString(offsets[2]);
   object.count = reader.readLong(offsets[3]);
-  object.firstRead = reader.readDateTimeOrNull(offsets[4]);
+  object.description = reader.readStringOrNull(offsets[4]);
+  object.firstRead = reader.readDateTimeOrNull(offsets[5]);
   object.id = id;
-  object.lastRead = reader.readDateTimeOrNull(offsets[6]);
-  object.metadataJson = reader.readString(offsets[7]);
-  object.progress = reader.readDoubleOrNull(offsets[8]);
+  object.lastRead = reader.readDateTimeOrNull(offsets[7]);
+  object.metadataJson = reader.readString(offsets[8]);
+  object.progress = reader.readDoubleOrNull(offsets[9]);
+  object.title = reader.readStringOrNull(offsets[10]);
   return object;
 }
 
@@ -175,15 +201,19 @@ P _progressTrackModelDeserializeProp<P>(
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
-    case 6:
       return (reader.readDateTimeOrNull(offset)) as P;
+    case 6:
+      return (reader.readLong(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 8:
+      return (reader.readString(offset)) as P;
+    case 9:
       return (reader.readDoubleOrNull(offset)) as P;
+    case 10:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -858,6 +888,160 @@ extension ProgressTrackModelQueryFilter
   }
 
   QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'description',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'description',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      descriptionIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
       firstReadIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1336,6 +1520,160 @@ extension ProgressTrackModelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'title',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'title',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'title',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'title',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'title',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'title',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'title',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'title',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'title',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'title',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'title',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterFilterCondition>
+      titleIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'title',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension ProgressTrackModelQueryObject
@@ -1399,6 +1737,20 @@ extension ProgressTrackModelQuerySortBy
       sortByCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'count', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      sortByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      sortByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
     });
   }
 
@@ -1471,6 +1823,20 @@ extension ProgressTrackModelQuerySortBy
       return query.addSortBy(r'progress', Sort.desc);
     });
   }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      sortByTitle() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'title', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      sortByTitleDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'title', Sort.desc);
+    });
+  }
 }
 
 extension ProgressTrackModelQuerySortThenBy
@@ -1528,6 +1894,20 @@ extension ProgressTrackModelQuerySortThenBy
       thenByCountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'count', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      thenByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      thenByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
     });
   }
 
@@ -1614,6 +1994,20 @@ extension ProgressTrackModelQuerySortThenBy
       return query.addSortBy(r'progress', Sort.desc);
     });
   }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      thenByTitle() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'title', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QAfterSortBy>
+      thenByTitleDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'title', Sort.desc);
+    });
+  }
 }
 
 extension ProgressTrackModelQueryWhereDistinct
@@ -1644,6 +2038,13 @@ extension ProgressTrackModelQueryWhereDistinct
       distinctByCount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'count');
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QDistinct>
+      distinctByDescription({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
     });
   }
 
@@ -1679,6 +2080,13 @@ extension ProgressTrackModelQueryWhereDistinct
       distinctByProgress() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'progress');
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, ProgressTrackModel, QDistinct>
+      distinctByTitle({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1718,6 +2126,13 @@ extension ProgressTrackModelQueryProperty
     });
   }
 
+  QueryBuilder<ProgressTrackModel, String?, QQueryOperations>
+      descriptionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'description');
+    });
+  }
+
   QueryBuilder<ProgressTrackModel, DateTime?, QQueryOperations>
       firstReadProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1749,6 +2164,12 @@ extension ProgressTrackModelQueryProperty
       progressProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'progress');
+    });
+  }
+
+  QueryBuilder<ProgressTrackModel, String?, QQueryOperations> titleProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'title');
     });
   }
 }

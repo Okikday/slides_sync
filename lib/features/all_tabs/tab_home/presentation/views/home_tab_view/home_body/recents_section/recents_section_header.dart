@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/providers/home_dashboard_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class RecentsSectionHeader extends ConsumerWidget {
@@ -15,6 +18,10 @@ class RecentsSectionHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
+    final asyncRecentsValue = ref.watch(HomeDashboardProviders.recentProgressTrackProvider);
+    return asyncRecentsValue.when(
+      data: (data) {
+        if (data.isEmpty) return const SliverToBoxAdapter();
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: ConstantSizing.spaceMedium, vertical: 0),
@@ -41,5 +48,13 @@ class RecentsSectionHeader extends ConsumerWidget {
         ),
       ),
     );
+      },
+      error: (e, st) => const SliverToBoxAdapter(),
+      loading:
+          () => SliverToBoxAdapter(
+            child: Center(child: CustomText("Checking recents...", fontSize: 16, fontWeight: FontWeight.bold)),
+          ),
+    );
+    
   }
 }
