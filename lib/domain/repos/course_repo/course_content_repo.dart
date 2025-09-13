@@ -6,11 +6,14 @@ class CourseContentRepo {
   static final IsarData<CourseContent> _isarData = IsarData.instance<CourseContent>();
   static Future<Isar> get _isar async => await IsarData.isarFuture;
 
-  static Future<QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>> _queryById(String contentHash) async {
+  static Future<QueryBuilder<CourseContent, CourseContent, QAfterFilterCondition>> _queryById(
+    String contentHash,
+  ) async {
     return (await _isarData.query<CourseContent>((q) => q.idGreaterThan(0))).filter().contentHashEqualTo(contentHash);
   }
 
-  static Future<QueryBuilder<CourseContent, CourseContent, QFilterCondition>> get filter async=> (await _isar).courseContents.filter();
+  static Future<QueryBuilder<CourseContent, CourseContent, QFilterCondition>> get filter async =>
+      (await _isar).courseContents.filter();
 
   static Future<void> deleteByDbId(int dbId) async => await _isarData.deleteById(dbId);
 
@@ -27,6 +30,9 @@ class CourseContentRepo {
   static Stream<List<CourseContent>> watchAll() => _isarData.watchAll();
 
   static Future<Stream<List<CourseContent>>> watchAllLazily() async => await _isarData.watchAllLazily();
+
+  static Future<CourseContent?> getByContentId(String contentId) async =>
+      await (await _isar).courseContents.where().contentIdEqualTo(contentId).findFirst();
 
   static Future<CourseContent?> getByHash(String contentHash) async {
     return await (await _isar).courseContents.filter().contentHashEqualTo(contentHash).findFirst();

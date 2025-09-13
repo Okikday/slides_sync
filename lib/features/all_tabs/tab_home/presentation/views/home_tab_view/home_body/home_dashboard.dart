@@ -139,7 +139,7 @@ class HomeDashboard extends ConsumerWidget {
                     backgroundColor: theme.background,
                     onClick: () {},
                     child: CustomText(
-                      "10%",
+                        "${((progressValue.clamp(0, 100)) * 100.0).toInt()}%",
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
                       color: theme.onBackground,
@@ -153,7 +153,7 @@ class HomeDashboard extends ConsumerWidget {
                     bottom: 0,
                     child: IgnorePointer(
                       child: CircularProgressIndicator(
-                        value: 0.1,
+                          value: ((progressValue.clamp(0, 100))).toDouble(),
                         strokeCap: StrokeCap.round,
                         color: theme.primaryColor,
                         backgroundColor: theme.altBackgroundSecondary

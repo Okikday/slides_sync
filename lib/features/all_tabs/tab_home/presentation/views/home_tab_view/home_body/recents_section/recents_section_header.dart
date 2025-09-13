@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/features/all_tabs/tab_home/presentation/providers/home_dashboard_providers.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/providers/home_tab_view_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class RecentsSectionHeader extends ConsumerWidget {
@@ -18,7 +18,7 @@ class RecentsSectionHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    final asyncRecentsValue = ref.watch(HomeDashboardProviders.recentProgressTrackProvider);
+    final asyncRecentsValue = ref.watch(HomeTabViewProviders.recentProgressTrackProvider);
     return asyncRecentsValue.when(
       data: (data) {
         if (data.isEmpty) return const SliverToBoxAdapter();

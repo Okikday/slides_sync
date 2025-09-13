@@ -39,7 +39,7 @@ class _MaterialsViewState extends ConsumerState<MaterialsView> {
   Widget build(BuildContext context) {
     final bool isListView = ref.watch(CourseMaterialsProviders.isListLayout).value ?? false;
     final isGrid = !isListView;
-    final streamedContents = ref.watch(CourseMaterialsProviders.of(widget.collection.collectionId).watchChanges);
+    final streamedContents = ref.watch(CourseMaterialsProviders.of(widget.collection.collectionId).watchContents);
 
     return SliverPadding(
       padding: EdgeInsetsGeometry.fromLTRB(16, 12, 16, 64 + context.bottomPadding + context.viewInsets.bottom),
@@ -54,7 +54,7 @@ class _MaterialsViewState extends ConsumerState<MaterialsView> {
               ),
               delegate: SliverChildBuilderDelegate((context, index) {
                 final content = items[index];
-                return ContentCard(content: content)
+                return ContentCard(content: content.content, progress: content.progress?.progress)
                     .animate()
                     .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
                     .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong4);
@@ -66,7 +66,7 @@ class _MaterialsViewState extends ConsumerState<MaterialsView> {
                 final content = items[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
-                  child: ContentCard(content: content)
+                  child: ContentCard(content: content.content, progress: content.progress?.progress)
                       .animate()
                       .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
                       .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong4),

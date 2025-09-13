@@ -73,9 +73,9 @@ class AppRouteNavigator {
   }
 
   /// Viewers
-  void documentViewerRoute(CourseContent content) {
+  void pdfDocumentViewerRoute(CourseContent content) {
     // resolve viewer
-    final route = RoutesStrings.documentViewer;
+    final route = RoutesStrings.pdfDocumentViewer;
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: content) : _push(route, extra: content);
   }
 

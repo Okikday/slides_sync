@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/app.dart';
@@ -34,4 +36,8 @@ extension ResponsivenessExtension on BuildContext {
 extension AppProviderTheme on WidgetRef {
   AppThemeModel get theme => watch(appThemeProvider);
   bool get isDarkMode => theme.brightness == Brightness.dark;
+}
+
+extension StringExtension on String {
+  Map get decodeJson => jsonDecode(this);
 }

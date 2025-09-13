@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:isar/isar.dart';
 
 part 'progress_track_model.g.dart';
@@ -18,8 +19,9 @@ class ProgressTrackModel {
   @Index()
   late String contentHash;
   double? progress;
-  int count = 0;
+  int lastPosition = 0;
   String? additionalDetail;
+  List<String> pages = <String>[];
 
   DateTime? firstRead;
   DateTime? lastRead;
@@ -34,8 +36,9 @@ class ProgressTrackModel {
     String? description,
     required String contentHash,
     double? progress,
-    int? count,
+    int? lastPosition,
     String? additionalDetail,
+    List<String>? pages,
     String? metadataJson,
     DateTime? firstRead,
     DateTime? lastRead,
@@ -46,8 +49,9 @@ class ProgressTrackModel {
       ..description = description
       ..contentHash = contentHash
       ..progress = progress
-      ..count = count ?? 0
+      ..lastPosition = lastPosition ?? 0
       ..additionalDetail = additionalDetail
+      ..pages = pages ?? <String>[]
       ..firstRead = firstRead ?? DateTime.now()
       ..lastRead = lastRead ?? DateTime.now()
       ..metadataJson = metadataJson ?? '{}';
@@ -60,10 +64,12 @@ class ProgressTrackModel {
     String? description,
     String? contentHash,
     double? progress,
-    int? count,
+    int? lastPosition,
     String? additionalDetail,
+    List<String>? pages,
     DateTime? firstRead,
     DateTime? lastRead,
+    String? metadataJson,
   }) {
     return ProgressTrackModel()
       ..id = id ?? this.id
@@ -72,10 +78,12 @@ class ProgressTrackModel {
       ..description = description ?? this.description
       ..contentHash = contentHash ?? this.contentHash
       ..progress = progress ?? this.progress
-      ..count = count ?? this.count
+      ..lastPosition = lastPosition ?? this.lastPosition
       ..additionalDetail = additionalDetail ?? this.additionalDetail
+      ..pages = pages ?? this.pages
       ..firstRead = firstRead ?? this.firstRead
-      ..lastRead = lastRead ?? this.lastRead;
+      ..lastRead = lastRead ?? this.lastRead
+      ..metadataJson = metadataJson ?? this.metadataJson;
   }
 
   Map<String, dynamic> toMap() {
@@ -86,10 +94,12 @@ class ProgressTrackModel {
       'description': description,
       'contentHash': contentHash,
       'progress': progress,
-      'count': count,
+      'lastPosition': lastPosition,
       'additionalDetail': additionalDetail,
+      'pages': pages,
       'firstRead': firstRead?.toIso8601String(),
       'lastRead': lastRead?.toIso8601String(),
+      'metadataJson': metadataJson
     };
   }
 
@@ -101,10 +111,12 @@ class ProgressTrackModel {
       ..description = map['description'] as String?
       ..contentHash = map['contentHash'] as String? ?? ''
       ..progress = map['progress'] as double? ?? 0.0
-      ..count = map['count'] as int? ?? 0
+      ..lastPosition = map['lastPosition'] as int? ?? 0
       ..additionalDetail = map['additionalDetail'] as String? ?? ''
+      ..pages = map['pages'] as List<String>? ?? <String>[]
       ..firstRead = DateTime.tryParse(map['firstRead'] as String? ?? '') ?? DateTime.now()
-      ..lastRead = DateTime.tryParse(map['lastRead'] as String? ?? '') ?? DateTime.now();
+      ..lastRead = DateTime.tryParse(map['lastRead'] as String? ?? '') ?? DateTime.now()
+      ..metadataJson = map['metadataJson'] ?? '{}';
   }
 
   String toJson() => json.encode(toMap());
@@ -114,7 +126,7 @@ class ProgressTrackModel {
 
   @override
   String toString() {
-    return 'ProgressTrackModel(id: $id, contentId: $contentId, title: $title, description: $description, contentHash: $contentHash, progress: $progress, count: $count, additionalDetail: $additionalDetail, firstRead: $firstRead, lastRead: $lastRead)';
+    return 'ProgressTrackModel(id: $id, contentId: $contentId, title: $title, description: $description, contentHash: $contentHash, progress: $progress, lastPosition: $lastPosition, additionalDetail: $additionalDetail, pages: $pages, firstRead: $firstRead, lastRead: $lastRead, metadataJson: $metadataJson)';
   }
 
   @override
@@ -127,10 +139,12 @@ class ProgressTrackModel {
         other.description == description &&
         other.contentHash == contentHash &&
         other.progress == progress &&
-        other.count == count &&
+        other.lastPosition == lastPosition &&
         other.additionalDetail == additionalDetail &&
+        const ListEquality().equals(other.pages, pages) &&
         other.firstRead == firstRead &&
-        other.lastRead == lastRead;
+        other.lastRead == lastRead &&
+        other.metadataJson == metadataJson;
   }
 
   @override
@@ -141,9 +155,11 @@ class ProgressTrackModel {
         description.hashCode ^
         contentHash.hashCode ^
         progress.hashCode ^
-        count.hashCode ^
+        lastPosition.hashCode ^
         additionalDetail.hashCode ^
+        pages.hashCode ^
         firstRead.hashCode ^
-        lastRead.hashCode;
+        lastRead.hashCode ^
+        metadataJson.hashCode;
   }
 }

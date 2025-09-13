@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pdfrx/pdfrx.dart';
 import 'firebase_options.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ void main() async {
   await AppHiveData.instance.initialize();
 
   if (!kIsWeb) await IsarData.initialize(collectionSchemas: isarSchemas);
+  pdfrxFlutterInitialize();
 
   runApp(ProviderScope(child: const App()));
 }

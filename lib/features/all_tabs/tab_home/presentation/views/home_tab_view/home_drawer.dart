@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/features/auth/domain/usecases/auth_uc/user_data_functions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class HomeDrawer extends ConsumerWidget {
@@ -28,19 +29,35 @@ class HomeDrawer extends ConsumerWidget {
                 child: Icon(Iconsax.user, color: theme.supportingText),
               ),
               ConstantSizing.columnSpacingMedium,
-              CustomText("Username", color: theme.onBackground),
-              ConstantSizing.columnSpacingSmall,
-              CustomText("Some description", color: theme.supportingText.withValues(alpha: 0.6)),
+              FutureBuilder(
+                future: UserDataFunctions().getUserDetails(),
+                builder: (context, asyncSnapshot) {
+                  if (asyncSnapshot.hasData && asyncSnapshot.data != null && asyncSnapshot.data?.data != null) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomText(asyncSnapshot.data!.data!.displayName, color: theme.onBackground),
+                        ConstantSizing.columnSpacingSmall,
+                        CustomText(asyncSnapshot.data!.data!.email, color: theme.supportingText.withValues(alpha: 0.6)),
+                      ],
+                    );
+                  }
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomText("Username", color: theme.onBackground),
+                      ConstantSizing.columnSpacingSmall,
+                      CustomText("Email", color: theme.onBackground),
+                    ],
+                  );
+                },
+              ),
 
               ConstantSizing.columnSpacingExtraLarge,
 
               ListTile(
                 leading: Icon(Iconsax.profile_tick, color: theme.supportingText),
                 title: CustomText("Profile", color: theme.onBackground),
-              ),
-              ListTile(
-                leading: Icon(Iconsax.bookmark, color: theme.supportingText),
-                title: CustomText("Bookmarks", color: theme.onBackground),
               ),
               ListTile(
                 leading: Icon(Iconsax.setting, color: theme.supportingText),

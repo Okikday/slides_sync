@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/content_view_gate.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/viewers/pdf_document_viewer/pdf_document_viewer.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer/pdf_document_viewer/pdf_document_viewer.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/image_viewer.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
@@ -58,7 +58,7 @@ class CourseNavRoutes {
     // VIEWERS
     // DOCUMENT VIEWER ROUTE
     GoRoute(
-      path: RoutesStrings.documentViewer,
+      path: RoutesStrings.pdfDocumentViewer,
       pageBuilder:
           (context, state) => PageAnimation.buildCustomTransitionPage(
             state.pageKey,

@@ -8,7 +8,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   irondash_engine_context
   isar_flutter_libs
   super_native_extensions
-  syncfusion_pdfviewer_linux
   url_launcher_linux
 )
 

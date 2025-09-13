@@ -20,4 +20,6 @@ class ImageStrings {
 
   // Sign in screen
   String get signInViewBg => _withImagePrefix("sign_in_view_bg.png");
+
+  String get wpImage1 => _withImagePrefix("bg_1.jpg");
 }

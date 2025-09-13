@@ -17,8 +17,8 @@ class Result<T> {
     return Result._(status: ResultStatus.success, data: value);
   }
 
-  factory Result.error(String message, [StackTrace? st]) {
-    log("error: $message", error: message, stackTrace: st);
+  factory Result.error(String message, [StackTrace? st, bool logError = true]) {
+   if(logError) log("error: $message", error: message, stackTrace: st);
     return Result._(status: ResultStatus.error, message: message, stackTrace: st);
   }
 
@@ -39,21 +39,21 @@ class Result<T> {
   }
 
   /// Runs [operation] and wraps the result in a [Result.success] or [Result.error] if it throws.
-  static Future<Result<T?>> tryRunAsync<T>(Future<T?> Function() operation) async {
+  static Future<Result<T?>> tryRunAsync<T>(Future<T?> Function() operation, {bool logError = true}) async {
     try {
       final value = await operation();
       return Result.success(value);
     } catch (e, st) {
-      return Result.error(e.toString(), st);
+      return Result.error(e.toString(), st, logError);
     }
   }
 
-  static Result<T?> tryRun<T>(T? Function() operation) {
+  static Result<T?> tryRun<T>(T? Function() operation, {bool logError = true}) {
     try {
       final value = operation();
       return Result.success(value);
     } catch (e, st) {
-      return Result.error(e.toString(), st);
+      return Result.error(e.toString(), st, logError);
     }
   }
 

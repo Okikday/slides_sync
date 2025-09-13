@@ -19,7 +19,8 @@ class RoutesStrings {
   static const modifyCollectionsView = "/modifyCollectionsView";
   static const modifyContentsView = "/modifyContentsView";
 
-  static const documentViewer = "/documentViewer";
+  // static const documentViewer = "/documentViewer";
+  static const pdfDocumentViewer = "/pdfDocumentViewer";
   static const imageViewer = "/imageViewer";
   // static const driveLinkViewer = "/driveLinkViewer";
   // static const youtubeLinkViewer = "/youtubeLinkViewer";

@@ -110,19 +110,18 @@ class CourseContent {
   }
 
   factory CourseContent.fromMap(Map<String, dynamic> map) {
-    final content = CourseContent();
-    content.id = map['id'] ?? Isar.autoIncrement;
-    content.contentHash = map['contentHash'] ?? '';
-    content.contentId = map['contentId'] ?? '';
-    content.parentId = map['parentId'] ?? '';
-    content.title = map['title'] ?? '';
-    content.path = map['path'] ?? '';
-    content.createdAt = map['createdAt'] != null ? DateTime.tryParse(map['createdAt']) : null;
-    content.lastModified = map['lastModified'] != null ? DateTime.tryParse(map['lastModified']) : null;
-    content.description = map['description'] ?? '';
-    content.courseContentType = CourseContentType.values[map['courseContentType'] ?? 0];
-    content.metadataJson = map['metadataJson'] ?? '{}';
-    return content;
+    return CourseContent()
+      ..id = map['id'] ?? Isar.autoIncrement
+      ..contentHash = map['contentHash'] ?? ''
+      ..contentId = map['contentId'] ?? ''
+      ..parentId = map['parentId'] ?? ''
+      ..title = map['title'] ?? ''
+      ..path = map['path'] ?? ''
+      ..createdAt = map['createdAt'] != null ? DateTime.tryParse(map['createdAt']) : null
+      ..lastModified = map['lastModified'] != null ? DateTime.tryParse(map['lastModified']) : null
+      ..description = map['description'] ?? ''
+      ..courseContentType = CourseContentType.values[map['courseContentType'] ?? 0]
+      ..metadataJson = map['metadataJson'] ?? '{}';
   }
 
   String toJson() => jsonEncode(toMap());

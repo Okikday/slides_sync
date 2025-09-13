@@ -1,5 +1,5 @@
 // ignore_for_file: unused_field
-
+import 'package:googleapis/drive/v3.dart' as drive;
 import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,12 +13,15 @@ import 'package:slides_sync/features/auth/domain/usecases/auth_uc/user_data_func
 class FirebaseGoogleAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final CollectionReference _collectionReference = FirebaseFirestore.instance.collection('users');
-  final GoogleSignIn _googleAuth = GoogleSignIn(scopes: ['email', 'profile', 'openid']);
+  final GoogleSignIn _googleAuth = GoogleSignIn(
+    scopes: ['email', 'profile', 'openid', drive.DriveApi.driveMetadataReadonlyScope],
+  );
   final FirebaseAuthData _firebaseData = FirebaseAuthData();
   UserCredential? _userCredential;
   final UserDataFunctions userData = UserDataFunctions();
 
   Future<Result<UserCredentialModel>> signInWithGoogle({String? phoneNumber}) async {
+    
     try {
       // Triggering the authentication flow
       final GoogleSignInAccount? googleUser = await _googleAuth.signIn();

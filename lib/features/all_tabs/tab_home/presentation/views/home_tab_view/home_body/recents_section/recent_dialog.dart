@@ -32,12 +32,18 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
             onTap: () {},
             child: Container(
               clipBehavior: Clip.hardEdge,
-              margin: EdgeInsets.symmetric(horizontal: 32, vertical: context.deviceHeight > context.deviceWidth ? 0 : 32),
+              margin: EdgeInsets.symmetric(
+                horizontal: 32,
+                vertical: context.deviceHeight > context.deviceWidth ? 0 : 32,
+              ),
               width: context.deviceHeight > context.deviceWidth ? context.deviceWidth : context.deviceWidth * 0.5,
-              height: context.deviceHeight > context.deviceWidth ? (context.deviceWidth * 1.25) - 64 : context.deviceHeight * 0.9,
+              height:
+                  context.deviceHeight > context.deviceWidth
+                      ? (context.deviceWidth * 1.25) - 64
+                      : context.deviceHeight * 0.9,
               constraints: BoxConstraints(maxHeight: 320, maxWidth: 320),
               decoration: BoxDecoration(
-                color: context.scaffoldBackgroundColor.withValues(alpha: 0.8),
+                color: theme.surface.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: theme.altBackgroundPrimary),
               ),
@@ -54,12 +60,13 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                           Container(
                             width: 80,
                             height: 80,
+                            clipBehavior: Clip.hardEdge,
                             margin: EdgeInsets.only(left: 12),
                             decoration: BoxDecoration(
                               color: context.theme.colorScheme.onSecondary.withAlpha(40),
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: BuildImagePathWidget(fileDetails: FileDetails()),
+                            child: widget.recentDialogModel.imagePreview,
                           ),
                           Expanded(
                             child: Row(
@@ -69,21 +76,13 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                                   backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
                                   shape: CircleBorder(),
                                   contentPadding: EdgeInsets.all(12),
-                                  child: Icon(
-                                    Iconsax.star_copy,
-                                    size: 26,
-                                    color: theme.supportingText,
-                                  ),
+                                  child: Icon(Iconsax.star_copy, size: 26, color: theme.supportingText),
                                 ),
                                 CustomElevatedButton(
                                   backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
                                   shape: CircleBorder(),
                                   contentPadding: EdgeInsets.all(12),
-                                  child: Icon(
-                                    Iconsax.note_add_copy,
-                                    size: 26,
-                                    color: theme.supportingText,
-                                  ),
+                                  child: Icon(Iconsax.note_add_copy, size: 26, color: theme.supportingText),
                                 ),
                               ],
                             ),
@@ -108,11 +107,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                               color: theme.onBackground,
                             ),
                             ConstantSizing.columnSpacingSmall,
-                            CustomText(
-                              "Short detail",
-                              fontSize: 12.0,
-                              color: theme.supportingText,
-                            ),
+                            CustomText("Short detail", fontSize: 12.0, color: theme.supportingText),
                           ],
                         ),
                       ),
@@ -161,7 +156,11 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                           title: "Continue reading",
                           icon: Icon(Iconsax.play_copy, size: 24, color: theme.supportingText),
                           textStyle: TextStyle(fontSize: 16, color: theme.onBackground),
-                          onTap: () {},
+                          onTap: () {
+                            if (widget.recentDialogModel.onContinueReading != null) {
+                              widget.recentDialogModel.onContinueReading!();
+                            }
+                          },
                         ),
 
                         divider,
@@ -209,13 +208,12 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
   }
 }
 
-
-
 class RecentDialogModel {
   final Widget? imagePreview;
   final bool isStarred;
   final String title;
   final String description;
+  final void Function()? onContinueReading;
   final void Function()? onStar;
   final void Function()? onShare;
   final void Function()? onDelete;
@@ -225,6 +223,7 @@ class RecentDialogModel {
     required this.isStarred,
     required this.title,
     this.description = '',
+    this.onContinueReading,
     this.onShare,
     this.onDelete,
     this.onStar,
@@ -235,6 +234,7 @@ class RecentDialogModel {
     bool? isStarred,
     String? title,
     String? description,
+    void Function()? onContinueReading,
     void Function()? onShare,
     void Function()? onDelete,
   }) {
@@ -243,6 +243,7 @@ class RecentDialogModel {
       isStarred: isStarred ?? this.isStarred,
       title: title ?? this.title,
       description: description ?? this.description,
+      onContinueReading: onContinueReading ?? this.onContinueReading,
       onShare: onShare ?? this.onShare,
       onDelete: onDelete ?? this.onDelete,
     );

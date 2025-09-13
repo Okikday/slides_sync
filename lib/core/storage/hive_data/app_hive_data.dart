@@ -48,6 +48,17 @@ class AppHiveData {
 
   Future<void> deleteData({required String key}) async => await _box.delete(key);
 
+  Stream<dynamic> watchChanges<T>({required String key}) async* {
+    yield* _box.watch(key: key);
+  }
+
+  Stream<T> watchData<T>({required String key}) async* {
+    yield (await getData(key: key)) as T;
+    yield* _box.watch(key: key).asyncMap((_) async {
+      return (await getData(key: key)) as T;
+    });
+  }
+
   Future<void> setSecureData({required String key, required dynamic value}) async {
     final String? savedHiveKey = await _secureStorage.read(key: 'hiveKey');
     if (savedHiveKey != null) {

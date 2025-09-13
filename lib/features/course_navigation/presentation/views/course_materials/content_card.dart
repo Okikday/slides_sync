@@ -2,20 +2,23 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heroine/heroine.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:path/path.dart' as p;
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ContentCard extends ConsumerStatefulWidget {
-  const ContentCard({super.key, required this.content});
+  const ContentCard({super.key, required this.content, this.progress});
 
   final CourseContent content;
+  final double? progress;
 
   @override
   ConsumerState<ContentCard> createState() => _ContentCardState();
@@ -60,24 +63,27 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                                 topLeft: Radius.circular(15),
                                 topRight: Radius.circular(15),
                               ),
-                              child: BuildImagePathWidget(
-                                fileDetails: FileDetails(
-                                  filePath: CreateContentPreviewImage.genPreviewImagePath(
-                                    filePath: content.path.filePath,
+                              child: ImageFiltered(
+                                imageFilter: ColorFilter.mode(Colors.black.withAlpha(10), BlendMode.color),
+                                child: BuildImagePathWidget(
+                                  fileDetails: FileDetails(
+                                    filePath: CreateContentPreviewImage.genPreviewImagePath(
+                                      filePath: content.path.filePath,
+                                    ),
                                   ),
-                                ),
-                                fit: BoxFit.cover,
-                                fallbackWidget: Icon(
-                                  WidgetHelper.resolveIconData(content.courseContentType, false),
-                                  size: 36,
+                                  fit: BoxFit.cover,
+                                  fallbackWidget: Icon(
+                                    WidgetHelper.resolveIconData(content.courseContentType, false),
+                                    size: 36,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
                         LinearProgressIndicator(
-                          value: 0.4,
-                          color: theme.primaryColor.withAlpha(60),
+                          value: (widget.progress?.clamp(0, 100) ?? 0.0),
+                          color: theme.primaryColor,
                           backgroundColor: theme.bgLightenColor(0.85, 0.15).withAlpha(200),
                         ),
 
@@ -85,7 +91,6 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                           color: theme.bgLightenColor(0.85, 0.15).withAlpha(200),
                           padding: EdgeInsets.fromLTRB(12, 8, 4, 8),
                           child: Row(
-                            spacing: 4,
                             children: [
                               Expanded(
                                 child: Column(
@@ -94,24 +99,42 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                                   spacing: 2.5,
                                   children: [
                                     Flexible(
-                                      child: CustomText(
-                                        content.title,
-                                        color: theme.onBackground,
-                                        fontWeight: FontWeight.w600,
-                                        overflow: TextOverflow.ellipsis,
+                                      child: Tooltip(
+                                        message: content.title,
+                                        triggerMode: TooltipTriggerMode.tap,
+                                        child: CustomText(
+                                          content.title,
+                                          color: theme.onBackground,
+                                          fontWeight: FontWeight.w600,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
-                                    CustomText("75% read", fontSize: 10, color: theme.supportingText),
+                                    CustomText(
+                                      widget.progress == null || widget.progress == 0
+                                          ? "Start reading!"
+                                          : widget.progress == 1
+                                          ? "Completed!"
+                                          : "${((widget.progress?.clamp(0, 100) ?? 0.0) * 100.0).toInt()}% read",
+                                      fontSize: 10,
+                                      color: widget.progress == 1 ? theme.primary : theme.supportingText,
+                                    ),
                                   ],
                                 ),
                               ),
 
-                              CustomElevatedButton(
-                                backgroundColor: theme.bgLightenColor(0.85, 0.15),
-                                contentPadding: EdgeInsets.all(4),
-                                shape: CircleBorder(),
-                                child: Icon(Icons.more_vert, color: theme.onBackground),
-                                onClick: () {},
+                              AppPopupMenuButton(
+                                iconSize: 16,
+                                actions: [
+                                  PopupMenuAction(
+                                    title: "Pin",
+                                    iconData: Icons.check_box_outline_blank_rounded,
+                                    onTap: () {},
+                                  ),
+                                  PopupMenuAction(title: "Select", iconData: Iconsax.check, onTap: () {}),
+                                  PopupMenuAction(title: "Add to Group", iconData: Iconsax.additem, onTap: () {}),
+                                  PopupMenuAction(title: "Remove", iconData: Icons.delete, onTap: () {}),
+                                ],
                               ),
                             ],
                           ),

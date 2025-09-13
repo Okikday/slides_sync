@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
-import 'package:pdfx/pdfx.dart';
+import 'package:pdfrx/pdfrx.dart';
+
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/image_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
+import 'package:image/image.dart';
 
 typedef PreviewImagePathRecord<Record> = ({String previewDirPath, String previewPath});
 
@@ -16,11 +18,7 @@ class CreateContentPreviewImage {
   static Future<String?> _createForTypeImage(String path, PreviewImagePathRecord previewPathRecord) async {
     final Result<String?> result = await Result.tryRunAsync(() async {
       log("Creating preview for Type Image");
-      final Result<File> result = await ImageUtils.compressImage(
-        inputFile: File(path),
-        targetMB: 0.05,
-        outputFormat: 'png',
-      );
+      final Result<File> result = await ImageUtils.compressImage(inputFile: File(path), targetMB: 0.05, outputFormat: 'png');
 
       if (result.isSuccess) {
         final String cachePath = result.data!.path;
@@ -41,48 +39,69 @@ class CreateContentPreviewImage {
     final Result<String?> result = await Result.tryRunAsync(() async {
       log("Creating preview for Type Document");
 
-      final doc = await PdfDocument.openFile(path);
-      final page = await doc.getPage(1);
+      pdfrxFlutterInitialize();
 
-      final pageImage = await page.render(width: page.width, height: page.height, format: PdfPageImageFormat.jpeg);
+      final PdfDocument document = await PdfDocument.openFile(path);
+      try {
+        if (document.pages.isEmpty) {
+          log("PDF has no pages");
+          await document.dispose();
+          return null;
+        }
 
-      await page.close();
-      await doc.close();
+        // first page (pages list is zero-indexed)
+        final PdfPage page = document.pages[0];
 
-      if (pageImage?.bytes == null) {
-        log("Failed to render PDF page");
-        return null;
-      }
+        final int targetWidth = page.width.toInt();
+        final int targetHeight = page.height.toInt();
 
-      // Create temporary file for the rendered PDF page
-      final tempDir = await Directory.systemTemp.createTemp('pdf_preview_');
-      final tempFile = File('${tempDir.path}/temp_pdf_page.jpg');
-      await tempFile.writeAsBytes(pageImage!.bytes);
+        final PdfImage? pageImage = await page.render(width: targetWidth, height: targetHeight);
 
-      // Compress the rendered PDF image
-      final Result<File> compressionResult = await ImageUtils.compressImage(
-        inputFile: tempFile,
-        targetMB: 0.05,
-        outputFormat: 'png',
-      );
+        if (pageImage == null) {
+          log("Failed to render PDF page");
+          await document.dispose();
+          return null;
+        }
 
-      if (compressionResult.isSuccess) {
-        await Directory(previewPathRecord.previewDirPath).create(recursive: true);
-        final compressedFile = compressionResult.data!;
-        final copyToPath = previewPathRecord.previewPath;
-        await compressedFile.copy(copyToPath);
+        final imageObj = pageImage.createImageNF();
 
-        // Clean up temporary files
-        await compressedFile.delete();
-        await tempDir.delete(recursive: true);
+        final List<int> bytes = encodePng(imageObj);
 
-        log("Created compressed preview for document: $copyToPath");
-        return copyToPath;
-      } else {
-        // Clean up temp directory if compression failed
-        await tempDir.delete(recursive: true);
-        log("Failed to compress PDF preview");
-        return null;
+        pageImage.dispose();
+
+        // Create temporary file for the rendered PDF page
+        final tempDir = await Directory.systemTemp.createTemp('pdf_preview_');
+        final tempFile = File('${tempDir.path}/temp_pdf_page.png');
+        await tempFile.writeAsBytes(bytes);
+
+        // Compress the rendered PDF image
+        final Result<File> compressionResult = await ImageUtils.compressImage(inputFile: tempFile, targetMB: 0.05, outputFormat: 'png');
+
+        if (compressionResult.isSuccess) {
+          await Directory(previewPathRecord.previewDirPath).create(recursive: true);
+          final compressedFile = compressionResult.data!;
+          final copyToPath = previewPathRecord.previewPath;
+          await compressedFile.copy(copyToPath);
+
+          // Clean up temporary files
+          await compressedFile.delete();
+          await tempDir.delete(recursive: true);
+
+          await document.dispose();
+          log("Created compressed preview for document: $copyToPath");
+          return copyToPath;
+        } else {
+          await tempDir.delete(recursive: true);
+          await document.dispose();
+          log("Failed to compress PDF preview");
+          return null;
+        }
+      } catch (e, st) {
+        try {
+          await document.dispose();
+        } catch (_) {}
+        log('Error rendering PDF preview: $e\n$st');
+        rethrow;
       }
     });
 
@@ -110,8 +129,7 @@ class CreateContentPreviewImage {
     return;
   }
 
-  static String genPreviewImagePath({required String filePath}) =>
-      genPreviewImagePathRecord(filePath: filePath).previewPath;
+  static String genPreviewImagePath({required String filePath}) => genPreviewImagePathRecord(filePath: filePath).previewPath;
 
   static PreviewImagePathRecord genPreviewImagePathRecord({required String filePath}) {
     final int lastIndexOfPathSep = filePath.lastIndexOf(Platform.pathSeparator);
@@ -136,8 +154,7 @@ class CreateContentPreviewImage {
       final RootIsolateToken rootIsolateToken = args['rootIsolateToken'] as RootIsolateToken;
       BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
-      final List<CourseContent> allContents =
-          (args['courseContentsJsons'] as List<String>).map((e) => courseContentFromJson(e)).toList();
+      final List<CourseContent> allContents = (args['courseContentsJsons'] as List<String>).map((e) => courseContentFromJson(e)).toList();
 
       for (int i = 0; i < allContents.length; i++) {
         final content = allContents[i];

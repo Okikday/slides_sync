@@ -3,8 +3,10 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
+import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class RecentListTile extends ConsumerWidget {
   final bool isDarkMode;
@@ -48,15 +50,23 @@ class RecentListTile extends ConsumerWidget {
                 child: Icon(Iconsax.star_1, size: 16, color: theme.primaryColor),
               ),
               offset: Offset(0, -2),
-              child: CustomElevatedButton(
-                onClick: () {
-                  if (dataModel.onLongTapTile != null) dataModel.onLongTapTile!();
-                },
-                pixelHeight: 48,
-                pixelWidth: 48,
-                shape: CircleBorder(),
-                backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 1),
-                child: Icon(Iconsax.document_1, size: 26, color: ref.theme.primary),
+              child: ClipOval(
+                child: CustomElevatedButton(
+                  onClick: () {
+                    if (dataModel.onLongTapTile != null) dataModel.onLongTapTile!();
+                  },
+                  pixelHeight: 48,
+                  pixelWidth: 48,
+                  shape: CircleBorder(),
+                  contentPadding: EdgeInsets.zero,
+                  backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 1),
+                  child: BuildImagePathWidget(
+                    width: 48,
+                    height: 48,
+                    fileDetails: FileDetails(filePath: dataModel.previewPath ?? ''),
+                    fallbackWidget: Icon(Iconsax.document_1, size: 26, color: ref.theme.primary),
+                  ),
+                ),
               ),
             ),
 
@@ -152,6 +162,7 @@ class RecentListTileModel {
   final String title;
   final String subtitle;
   final String extraContent;
+  final String? previewPath;
   final double? progress;
   final ProgressLevel progressLevel;
   final bool isStarred;
@@ -163,6 +174,7 @@ class RecentListTileModel {
     required this.title,
     required this.subtitle,
     this.extraContent = "",
+    this.previewPath,
     this.progress,
     required this.progressLevel,
     required this.isStarred,
@@ -175,6 +187,7 @@ class RecentListTileModel {
     String? title,
     String? subtitle,
     String? extraContent,
+    String? previewPath,
     double? progress,
     ProgressLevel? progressLevel,
     bool? isStarred,
@@ -186,6 +199,7 @@ class RecentListTileModel {
       title: title ?? this.title,
       subtitle: subtitle ?? this.subtitle,
       extraContent: extraContent ?? this.extraContent,
+      previewPath: previewPath ?? this.previewPath,
       progress: progress ?? this.progress,
       progressLevel: progressLevel ?? this.progressLevel,
       isStarred: isStarred ?? this.isStarred,
@@ -202,6 +216,7 @@ class RecentListTileModel {
     return other.title == title &&
         other.subtitle == subtitle &&
         other.extraContent == extraContent &&
+        other.previewPath == previewPath &&
         other.progress == progress &&
         other.progressLevel == progressLevel &&
         other.isStarred == isStarred &&
@@ -215,6 +230,7 @@ class RecentListTileModel {
     return title.hashCode ^
         subtitle.hashCode ^
         extraContent.hashCode ^
+        previewPath.hashCode ^
         progress.hashCode ^
         progressLevel.hashCode ^
         isStarred.hashCode ^
