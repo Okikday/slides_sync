@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
+import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 
 import 'shared/styles/theme/themes.dart';
 
@@ -20,8 +21,10 @@ class _AppState extends ConsumerState<App> {
   Future<void> _loadThemeFromHive() async {
     try {
       final String? hiveTheme = (await AppHiveData.instance.getData(key: "appTheme")) as String?;
-      if (hiveTheme == null) return;
-
+      if (hiveTheme == null) {
+        ref.read(appThemeProvider.notifier).update(Brightness.dark, defaultUnifiedThemeModels[2]);
+        return;
+      }
       final UnifiedThemeModel unifiedTheme = UnifiedThemeModel.fromJson(hiveTheme);
 
       if (mounted) {
@@ -54,11 +57,11 @@ class _AppState extends ConsumerState<App> {
 }
 
 
-class DummyApp extends ConsumerWidget {
-  const DummyApp({super.key});
+// class DummyApp extends ConsumerWidget {
+//   const DummyApp({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp(home: Center(child: Text("This is a text"),));
-  }
-}
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     return MaterialApp(home: Center(child: Text("This is a text"),));
+//   }
+// }

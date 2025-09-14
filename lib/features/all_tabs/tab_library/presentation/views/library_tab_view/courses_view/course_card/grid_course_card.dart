@@ -31,11 +31,11 @@ class GridCourseCard extends ConsumerWidget {
     final theme = ref.theme;
     final courseCode = course.courseCode;
     final categoriesCount = course.collections.length;
-    final isDarkMode = context.isDarkMode;
+    final isDarkMode = theme.isDarkTheme;
     // final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     final dimension = 50;
     return DecoratedBox(
-      decoration: BoxDecoration(color: theme.bgLightenColor(.88, .12)),
+      decoration: BoxDecoration(color: theme.cardColor),
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: Badge(
@@ -46,8 +46,7 @@ class GridCourseCard extends ConsumerWidget {
             clipBehavior: Clip.hardEdge,
             constraints: BoxConstraints(maxWidth: 200, maxHeight: 200),
             decoration: BoxDecoration(
-              color: theme.bgLightenColor(.91, .09),
-              borderRadius: BorderRadius.circular(22),
+              color: theme.surface
               // border: Border.all(width: 2, color: theme.bgLightenColor(.88, .12)),
               //   image: DecorationImage(
               //     image: Assets.images.bookSparkleTransparentBg.asImageProvider,

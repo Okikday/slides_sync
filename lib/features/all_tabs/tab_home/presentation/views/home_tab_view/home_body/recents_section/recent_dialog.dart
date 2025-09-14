@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
+import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
@@ -178,7 +181,9 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                           title: "Remove from recents",
                           icon: Icon(Iconsax.box_remove_copy, size: 24, color: Colors.redAccent),
                           textStyle: TextStyle(fontSize: 15, color: theme.onBackground),
-                          onTap: () {},
+                          onTap: () {
+                            if (widget.recentDialogModel.onDelete != null) widget.recentDialogModel.onDelete!();
+                          },
                         ),
 
                         // BuildPlainActionButton(
@@ -209,6 +214,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
 }
 
 class RecentDialogModel {
+  final String contentId;
   final Widget? imagePreview;
   final bool isStarred;
   final String title;
@@ -219,6 +225,7 @@ class RecentDialogModel {
   final void Function()? onDelete;
 
   RecentDialogModel({
+    required this.contentId,
     this.imagePreview,
     required this.isStarred,
     required this.title,
@@ -228,46 +235,4 @@ class RecentDialogModel {
     this.onDelete,
     this.onStar,
   });
-
-  RecentDialogModel copyWith({
-    Widget? imagePreview,
-    bool? isStarred,
-    String? title,
-    String? description,
-    void Function()? onContinueReading,
-    void Function()? onShare,
-    void Function()? onDelete,
-  }) {
-    return RecentDialogModel(
-      imagePreview: imagePreview ?? this.imagePreview,
-      isStarred: isStarred ?? this.isStarred,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      onContinueReading: onContinueReading ?? this.onContinueReading,
-      onShare: onShare ?? this.onShare,
-      onDelete: onDelete ?? this.onDelete,
-    );
-  }
-
-  @override
-  bool operator ==(covariant RecentDialogModel other) {
-    if (identical(this, other)) return true;
-
-    return other.imagePreview == imagePreview &&
-        other.isStarred == isStarred &&
-        other.title == title &&
-        other.description == description &&
-        other.onShare == onShare &&
-        other.onDelete == onDelete;
-  }
-
-  @override
-  int get hashCode {
-    return imagePreview.hashCode ^
-        isStarred.hashCode ^
-        title.hashCode ^
-        description.hashCode ^
-        onShare.hashCode ^
-        onDelete.hashCode;
-  }
 }

@@ -31,8 +31,8 @@ class EditCourseActions {
       return "Kindly input a valid course title!";
     } else if (isVisible && (courseCode.length < 2 || courseCode.length > 16)) {
       return "Kindly input a valid course code or hide it";
-    } else if (description.length > 1024) {
-      return "Kindly input a valid description!";
+    } else if (description.length > 10000) {
+      return "Kindly input a shorter description!";
     }
     return null;
   }

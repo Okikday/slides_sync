@@ -22,12 +22,14 @@ class PdfDocumentViewerActions {
   int trackCount = 0;
   bool isUpdatingProgressTrack = false;
   static const _trackInterval = Duration(seconds: 10);
+  int? currentPageOffset;
   PdfDocumentViewerActions._(
     this.content,
     this.pdfViewerController,
     ValueNotifier<ProgressTrackModel?> progressTrackNotifier,
   ) {
     progressTrackTimer = Timer.periodic(_trackInterval, (timer) => pageNumberTracker(timer, progressTrackNotifier));
+    // currentPageOffset = null;
   }
   static PdfDocumentViewerActions of(
     CourseContent content, {
@@ -56,6 +58,10 @@ class PdfDocumentViewerActions {
         description: content.description.substring(0, content.description.length.clamp(0, 1024)),
         contentHash: content.contentHash,
         progress: 0.0,
+        metadataJson: jsonEncode({
+                'previewPath':
+                    CreateContentPreviewImage.genPreviewImagePathRecord(filePath: content.path.filePath).previewPath,
+              }),
       );
       return (await _isarData.getById(await _isarData.store(newPtm)));
     });
@@ -69,6 +75,13 @@ class PdfDocumentViewerActions {
     log("This shows up every ${_trackInterval.inSeconds} seconds");
 
     if (isUpdatingProgressTrack) return;
+    if (currentPageOffset != null && pdfViewerController.pageNumber == currentPageOffset) {
+      // Improve in the future with listeners
+      log("Progress not updated, still on same page!");
+      return;
+    } else {
+      currentPageOffset = pdfViewerController.pageNumber;
+    }
     final progressTrack = progressTrackNotifier.value;
     if (progressTrack == null) return;
     final pageNumber = pdfViewerController.pageNumber;
@@ -76,7 +89,6 @@ class PdfDocumentViewerActions {
     if (pageNumber == null) return;
     isUpdatingProgressTrack = true;
     final oldPages = progressTrack.pages.toSet();
-    log("data: ${(content.metadataJson.decodeJson)['previewPath']}");
     if (oldPages.contains(pageNumber.toString())) {
       await PdfDocumentViewerActions._updateProgressTrack(
         trackCount > 0
@@ -126,6 +138,7 @@ class PdfDocumentViewerActions {
   void dispose() {
     progressTrackTimer?.cancel();
     Future.microtask(() => Result.tryRunAsync(() async => await _addToRecentContents(content.contentId)));
+    log("Disposed pdf viewer actions ");
   }
 }
 

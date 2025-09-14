@@ -4,7 +4,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
-import 'package:slides_sync/features/manage_all/manage_course/usecases/actions/edit_course_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/actions/edit_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_code_field.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/create_course/input_course_title_field.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';

@@ -17,7 +17,7 @@ class MoreSection extends ConsumerWidget {
       decoration: BoxDecoration(
         color: theme.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border.fromBorderSide(BorderSide(color: Colors.black.withAlpha(5))),
+        border: Border.fromBorderSide(BorderSide(color: theme.backgroundSupportingText.withAlpha(10))),
         image: DecorationImage(
           image: Assets.images.zigzagWavy.asImageProvider,
           fit: BoxFit.cover,

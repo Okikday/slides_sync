@@ -19,21 +19,17 @@ class InputCourseTitleField extends ConsumerWidget {
     final theme = ref.theme;
     return CustomTextfield(
       controller: courseNameController,
-      backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.8),
+      backgroundColor: theme.surface.withValues(alpha: 0.8),
       cursorColor: theme.primaryColor,
       selectionHandleColor: theme.primaryColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(
-          color:
-              theme.altBackgroundPrimary),
+        borderSide: BorderSide(color: theme.altBackgroundPrimary.withAlpha(150)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
-        borderSide: BorderSide(color: theme.primaryColor,
-        ),
+        borderSide: BorderSide(color: theme.primaryColor),
       ),
-      hintStyle: TextStyle(color: theme.supportingText.withAlpha(80)),
       pixelWidth: context.deviceWidth,
       pixelHeight: 60,
       inputContentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
@@ -49,7 +45,9 @@ class InputCourseTitleField extends ConsumerWidget {
         onClick: () async {
           final bool isCourseCodeVisible = ref.read(isCourseCodeFieldVisible.notifier).state;
           if (isCourseCodeVisible) FocusScope.of(context).unfocus();
-          ref.read(isCourseCodeFieldVisible.notifier).update((cb) => !ref.read(isCourseCodeFieldVisible.notifier).state);
+          ref
+              .read(isCourseCodeFieldVisible.notifier)
+              .update((cb) => !ref.read(isCourseCodeFieldVisible.notifier).state);
           if (FocusScope.of(context).hasFocus && viewScrollController != null) {
             viewScrollController?.animateTo(
               viewScrollController!.position.maxScrollExtent + 150,

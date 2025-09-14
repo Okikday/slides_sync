@@ -7,10 +7,17 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 class PopupMenuAction {
   final String title;
   final IconData iconData;
+  final Widget? icon;
   final VoidCallback onTap;
   final bool enabled;
 
-  const PopupMenuAction({required this.title, required this.iconData, required this.onTap, this.enabled = true});
+  const PopupMenuAction({
+    required this.title,
+    required this.iconData,
+    this.icon,
+    required this.onTap,
+    this.enabled = true,
+  });
 }
 
 class AppPopupMenuButton extends ConsumerWidget {
@@ -34,6 +41,7 @@ class AppPopupMenuButton extends ConsumerWidget {
   final Widget? child;
   final double? splashRadius;
   final EdgeInsetsGeometry? padding;
+  final ButtonStyle? buttonStyle;
 
   const AppPopupMenuButton({
     super.key,
@@ -57,6 +65,7 @@ class AppPopupMenuButton extends ConsumerWidget {
     this.child,
     this.splashRadius,
     this.padding,
+    this.buttonStyle
   });
 
   @override
@@ -71,6 +80,7 @@ class AppPopupMenuButton extends ConsumerWidget {
       ),
       child: PopupMenuButton<int>(
         tooltip: tooltip,
+        style: buttonStyle,
         clipBehavior: clipBehavior ?? Clip.hardEdge,
         menuPadding: menuPadding ?? EdgeInsets.zero,
         icon: child ?? Icon(icon ?? Iconsax.more_copy, color: iconColor ?? theme.supportingText, size: iconSize),
@@ -97,7 +107,12 @@ class AppPopupMenuButton extends ConsumerWidget {
             return PopupMenuItem(
               value: index,
               enabled: action.enabled,
-              child: PopupMenuItemChild(title: action.title, iconData: action.iconData, enabled: action.enabled),
+              child: PopupMenuItemChild(
+                title: action.title,
+                icon: action.icon,
+                iconData: action.iconData,
+                enabled: action.enabled,
+              ),
             );
           });
         },
@@ -108,6 +123,7 @@ class AppPopupMenuButton extends ConsumerWidget {
 
 class PopupMenuItemChild extends ConsumerWidget {
   final IconData iconData;
+  final Widget? icon;
   final String title;
   final bool enabled;
   final Color? iconColor;
@@ -117,6 +133,7 @@ class PopupMenuItemChild extends ConsumerWidget {
   const PopupMenuItemChild({
     super.key,
     required this.title,
+    this.icon,
     required this.iconData,
     this.enabled = true,
     this.iconColor,
@@ -136,7 +153,7 @@ class PopupMenuItemChild extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: 8,
       children: [
-        Icon(iconData, color: effectiveIconColor, size: iconSize),
+        icon ?? Icon(iconData, color: effectiveIconColor, size: iconSize),
         CustomText(title, color: effectiveTextColor),
         ConstantSizing.rowSpacingSmall,
       ],

@@ -10,6 +10,7 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/c
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/course_card/grid_course_card.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/course_card/list_course_card.dart';
+import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseCard extends ConsumerStatefulWidget {
   final Course course;
@@ -37,40 +38,65 @@ class _CourseCardState extends ConsumerState<CourseCard> {
   @override
   Widget build(BuildContext context) {
     final Course streamedCourse = ref.watch(streamedCourseProvider).value ?? widget.course;
-
+    final theme = ref.theme;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: AnimatedScale(
         scale: ref.watch(widget.scaleClickProvider) ? 0.9 : 1.0,
         duration: Durations.medium2,
         curve: CustomCurves.defaultIosSpring,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
-          child: GestureDetector(
-            // overlayColor: WidgetStatePropertyAll(Colors.white.withAlpha(80)),
-            onTapDown: (details) {
-              if (!ref.read(widget.scaleClickProvider.notifier).state) {
-                updateTapDownDetailsProvider(details.globalPosition);
-              }
-              updateScaleClickProvider(true);
-            },
-            onTapCancel: () {
-              updateScaleClickProvider(false);
-            },
-            onTapUp: (details) async {
-              await Future.delayed(Durations.short2);
-              updateScaleClickProvider(false);
-            },
-            onLongPress: (){
-              log("Longpressed");
-              CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
-            },
-            onTap: (){CourseCardActions.of(ref).onTapCourseCard(streamedCourse);},
-            child: Center(
-              child:
-                  widget.isGrid
-                      ? GridCourseCard(streamedCourse, onTapIcon: (){CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);}, progress: 0.0)
-                      : ListCourseCard(streamedCourse, onTapIcon: (){CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);}, progress: 0.0),
+        child: ClipRSuperellipse(
+          borderRadius: BorderRadius.circular(26),
+          child: ColoredBox(
+            color:
+                theme.isDarkTheme
+                    ? theme.adjustBgAndPrimaryWithLerp
+                    : theme.adjustBgAndPrimaryWithLerp.withValues(alpha: 0.45),
+            child: Padding(
+              padding: const EdgeInsets.all(1.5),
+              child: ClipRSuperellipse(
+                borderRadius: BorderRadius.circular(24),
+                child: GestureDetector(
+                  // overlayColor: WidgetStatePropertyAll(Colors.white.withAlpha(80)),
+                  onTapDown: (details) {
+                    if (!ref.read(widget.scaleClickProvider.notifier).state) {
+                      updateTapDownDetailsProvider(details.globalPosition);
+                    }
+                    updateScaleClickProvider(true);
+                  },
+                  onTapCancel: () {
+                    updateScaleClickProvider(false);
+                  },
+                  onTapUp: (details) async {
+                    await Future.delayed(Durations.short2);
+                    updateScaleClickProvider(false);
+                  },
+                  onLongPress: () {
+                    CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
+                  },
+                  onTap: () {
+                    CourseCardActions.of(ref).onTapCourseCard(streamedCourse);
+                  },
+                  child: Center(
+                    child:
+                        widget.isGrid
+                            ? GridCourseCard(
+                              streamedCourse,
+                              onTapIcon: () {
+                                CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
+                              },
+                              progress: 0.0,
+                            )
+                            : ListCourseCard(
+                              streamedCourse,
+                              onTapIcon: () {
+                                CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
+                              },
+                              progress: 0.0,
+                            ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

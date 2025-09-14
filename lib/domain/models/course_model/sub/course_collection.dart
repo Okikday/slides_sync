@@ -48,25 +48,7 @@ class CourseCollection {
     return collection;
   }
 
-  CourseCollection copyWith({
-    String? collectionId,
-    String? parentId,
-    String? collectionTitle,
-    String? description,
-    DateTime? createdAt,
-    String? imageLocationJson,
-    String? collectionMetadataJson,
-  }) {
-    return CourseCollection()
-      ..id = id
-      ..collectionId = collectionId ?? this.collectionId
-      ..parentId = parentId ?? this.parentId
-      ..collectionTitle = collectionTitle ?? this.collectionTitle
-      ..description = description ?? this.description
-      ..createdAt = createdAt ?? this.createdAt
-      ..imageLocationJson = imageLocationJson ?? this.imageLocationJson
-      ..collectionMetadataJson = collectionMetadataJson ?? this.collectionMetadataJson;
-  }
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -136,4 +118,23 @@ extension CourseCollectionExtension on CourseCollection {
   String get relativePath => "$parentId${Platform.pathSeparator}$collectionId";
   String get absolutePath => "courses${Platform.pathSeparator}$relativePath";
   String get courseId => parentId;
+
+  CourseCollection copyWith({
+    String? collectionId,
+    String? parentId,
+    String? collectionTitle,
+    String? description,
+    DateTime? createdAt,
+    String? imageLocationJson,
+    String? collectionMetadataJson,
+  }) {
+    return CourseCollection()
+      ..collectionId = collectionId ?? this.collectionId
+      ..parentId = parentId ?? this.parentId
+      ..collectionTitle = collectionTitle ?? this.collectionTitle
+      ..description = description ?? this.description
+      ..createdAt = createdAt ?? this.createdAt
+      ..imageLocationJson = imageLocationJson ?? this.imageLocationJson
+      ..collectionMetadataJson = collectionMetadataJson ?? this.collectionMetadataJson;
+  }
 }

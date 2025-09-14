@@ -28,15 +28,21 @@ class CoursesView extends ConsumerStatefulWidget {
 class _CoursesViewState extends ConsumerState<CoursesView> {
   late final PagingController<int, Course> pagingController;
   final int limit = 20;
-  final cva = CoursesViewActions.of();
+  late CoursesViewActions cva;
 
   @override
   void initState() {
     super.initState();
+    cva = CoursesViewActions.of();
     pagingController = PagingController<int, Course>(
       getNextPageKey: CoursesViewActions.getNextPageKey,
       fetchPage: (pageKey) => cva.fetchPage(pageKey, limit),
     );
+  }
+
+  void setCourseSort(CoursesViewActions thisCva) {
+    cva = thisCva;
+    pagingController.refresh();
   }
 
   @override
@@ -51,6 +57,15 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
     final bool isListView = ref.watch(LibraryTabViewProviders.isListLayout).value ?? false;
     final isGrid = !isListView;
 
+    ref.listen(CoursesViewProviders.coursesFilterOptions, (prev, next) {
+      final oldCva = cva;
+      final newCva = CoursesViewActions.of(sortOption: next);
+      setCourseSort(newCva);
+      oldCva.dispose();
+      setState(() {
+        cva;
+      });
+    });
     ref.listen<AsyncValue<void>>(CoursesViewProviders.watchChanges, (previous, next) {
       if (next.hasValue) {
         log("refreshing page controller!");
@@ -73,9 +88,9 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
               fetchNextPage: fetchNextPage,
               builderDelegate: PagedChildBuilderDelegate(
                 noItemsFoundIndicatorBuilder: (context) => EmptyLibraryView(asSliver: false),
-                newPageProgressIndicatorBuilder: (context) => LoadingListCourseCardSkeletonizer(count: 2),
+                newPageProgressIndicatorBuilder: (context) => LoadingListCourseCardSkeletonizer(count: 1),
                 firstPageProgressIndicatorBuilder: (context) {
-                  return LoadingListCourseCardSkeletonizer();
+                  return LoadingListCourseCardSkeletonizer(count: 2);
                 },
                 firstPageErrorIndicatorBuilder: (context) {
                   // log(pagingState.error.toString());

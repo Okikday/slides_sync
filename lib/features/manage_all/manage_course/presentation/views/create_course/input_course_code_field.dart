@@ -24,18 +24,17 @@ class InputCourseCodeField extends ConsumerWidget {
               alignment: Alignment.centerRight,
               child: CustomTextfield(
                 controller: courseCodeController,
-                backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.8),
+                backgroundColor: theme.surface.withValues(alpha: 0.8),
                 cursorColor: theme.primaryColor,
                 selectionHandleColor: theme.primaryColor,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide(color: theme.altBackgroundPrimary),
+                  borderSide: BorderSide(color: theme.altBackgroundPrimary.withAlpha(150)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide(color: theme.primaryColor),
                 ),
-                hintStyle: TextStyle(color: theme.supportingText.withAlpha(80)),
                 autoDispose: false,
                 onTapOutside: () {},
                 constraints: BoxConstraints(maxWidth: 200),

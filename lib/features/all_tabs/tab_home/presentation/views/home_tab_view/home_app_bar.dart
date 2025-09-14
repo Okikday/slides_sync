@@ -85,9 +85,8 @@ class HomeAppBar extends ConsumerWidget {
                       onClick: onClickUserIcon,
                       pixelHeight: context.defaultBtnDimension,
                       pixelWidth: context.defaultBtnDimension,
-                      overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
                       contentPadding: EdgeInsets.zero,
-                      backgroundColor: theme.altBackgroundPrimary,
+                      backgroundColor: theme.adjustBgAndPrimaryWithLerp,
                       shape: CircleBorder(side: BorderSide(color: theme.altBackgroundSecondary.withValues(alpha: 0.4))),
                       child: Icon(
                         Iconsax.menu_1_copy,

@@ -31,6 +31,9 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
             child: CustomTextfield(
               ontap: () {
                 final descriptionText = descriptionTextController.text;
+                if (descriptionTextController.selection.extentOffset == descriptionText.length) {
+                  return;
+                }
                 if (descriptionText == course.description) {
                   descriptionTextController.selection = TextSelection(
                     baseOffset: 0,
@@ -42,21 +45,22 @@ class EditCourseInputDescriptionField extends ConsumerWidget {
               // onTapOutside: () {},
               focusNode: descriptionFocusNode,
               controller: descriptionTextController,
-              backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.8),
+              backgroundColor: theme.surface.withValues(alpha: 0.8),
               cursorColor: theme.primaryColor,
               selectionHandleColor: theme.primaryColor,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                borderSide: BorderSide(color: theme.altBackgroundPrimary),
+                borderSide: BorderSide(color: theme.altBackgroundPrimary.withAlpha(150)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: BorderSide(color: theme.primaryColor),
               ),
               hintStyle: TextStyle(color: theme.supportingText.withAlpha(80)),
-              maxLength: 1024,
+              maxLength: 10000,
               counterText: null,
-
+              alwaysShowSuffixIcon: true,
+              suffixIcon: SizedBox(width: 24, child: const SizedBox(child: Icon(Icons.expand))),
               pixelWidth: context.deviceWidth,
               minLines: 3,
               maxLines: 6,

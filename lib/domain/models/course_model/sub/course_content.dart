@@ -68,31 +68,6 @@ class CourseContent {
     return content;
   }
 
-  CourseContent copyWith({
-    required String contentHash,
-    String? parentId,
-    String? title,
-    FileDetails? path,
-    DateTime? createdAt,
-    DateTime? lastModified,
-    String? description,
-    CourseContentType? courseContentType,
-    String? metadataJson,
-  }) {
-    return CourseContent()
-      ..id = id
-      ..contentId = contentId
-      ..contentHash = contentHash
-      ..parentId = parentId ?? this.parentId
-      ..title = title ?? this.title
-      ..path = path?.toJson() ?? this.path
-      ..createdAt = createdAt ?? this.createdAt
-      ..lastModified = lastModified ?? this.lastModified
-      ..description = description ?? this.description
-      ..courseContentType = courseContentType ?? this.courseContentType
-      ..metadataJson = metadataJson ?? this.metadataJson;
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -167,7 +142,30 @@ class CourseContent {
 }
 
 extension CourseContentExtension on CourseContent {
-  String get relativePath => "$parentId${Platform.pathSeparator}$id";
+  String get relativePath => "$parentId${Platform.pathSeparator}$contentId";
   String get absolutePath => "courses${Platform.pathSeparator}$relativePath";
   String get collectionId => parentId;
+
+  CourseContent copyWith({
+    required String contentHash,
+    String? parentId,
+    String? title,
+    FileDetails? path,
+    DateTime? createdAt,
+    DateTime? lastModified,
+    String? description,
+    CourseContentType? courseContentType,
+    String? metadataJson,
+  }) {
+    return this
+      ..contentHash = contentHash
+      ..parentId = parentId ?? this.parentId
+      ..title = title ?? this.title
+      ..path = path?.toJson() ?? this.path
+      ..createdAt = createdAt ?? this.createdAt
+      ..lastModified = lastModified ?? this.lastModified
+      ..description = description ?? this.description
+      ..courseContentType = courseContentType ?? this.courseContentType
+      ..metadataJson = metadataJson ?? this.metadataJson;
+  }
 }

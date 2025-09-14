@@ -6,9 +6,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/actions/modify_course_view_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course_view.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/colors.dart';
@@ -170,7 +173,7 @@ class ExpandCardDialog extends ConsumerWidget {
                 BuildExpandCardButton(title: "Pin", iconData: Icons.pin_rounded, onTap: () {}),
                 divider,
                 BuildExpandCardButton(
-                  title: "Modify course",
+                  title: "Edit course",
                   iconData: Iconsax.grid_edit,
                   onTap: () {
                     UiUtils.hideDialog(context);
@@ -180,7 +183,16 @@ class ExpandCardDialog extends ConsumerWidget {
                 divider,
                 BuildExpandCardButton(title: "Share", iconData: Icons.share_outlined, onTap: () {}),
                 divider,
-                BuildExpandCardButton(title: "Remove", iconData: Iconsax.trash, onTap: () {}),
+                BuildExpandCardButton(
+                  title: "Remove",
+                  iconData: Iconsax.trash,
+                  onTap: () {
+                    UiUtils.hideDialog(context);
+                    if (rootNavigatorKey.currentContext != null && rootNavigatorKey.currentContext!.mounted) {
+                      ModifyCourseViewActions().showDeleteCourseDialog(rootNavigatorKey.currentContext!, course);
+                    }
+                  },
+                ),
               ],
             ),
           ).animate().fadeIn().scaleXY(

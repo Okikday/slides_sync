@@ -19,6 +19,7 @@ class HomeDrawer extends ConsumerWidget {
         Scaffold.of(context).closeDrawer();
       },
       child: Drawer(
+        backgroundColor: theme.background,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -56,25 +57,29 @@ class HomeDrawer extends ConsumerWidget {
               ConstantSizing.columnSpacingExtraLarge,
 
               ListTile(
-                leading: Icon(Iconsax.profile_tick, color: theme.supportingText),
+                tileColor: Colors.transparent,
+                leading: Icon(Iconsax.profile_tick, color: theme.supportingText.withValues(alpha: 0.5)),
                 title: CustomText("Profile", color: theme.onBackground),
               ),
               ListTile(
-                leading: Icon(Iconsax.setting, color: theme.supportingText),
+                tileColor: Colors.transparent,
+                leading: Icon(Iconsax.setting, color: theme.supportingText.withValues(alpha: 0.5)),
                 title: CustomText("Settings", color: theme.onBackground),
                 onTap: () {
                   AppRouteNavigator.to(context).settingsRoute();
                 },
               ),
               ListTile(
-                leading: Icon(Iconsax.pen_tool, color: theme.supportingText),
+                tileColor: Colors.transparent,
+                leading: Icon(Iconsax.pen_tool, color: theme.supportingText.withValues(alpha: 0.5)),
                 title: CustomText("Tools", color: theme.onBackground),
                 onTap: () {
                   // Tools like Calculate gpa, etc
                 },
               ),
               ListTile(
-                leading: Icon(Iconsax.information_copy, color: theme.supportingText),
+                tileColor: Colors.transparent,
+                leading: Icon(Iconsax.information_copy, color: theme.supportingText.withValues(alpha: 0.5)),
                 title: CustomText("Help", color: theme.onBackground),
               ),
             ],

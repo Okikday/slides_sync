@@ -51,7 +51,7 @@ class AppCustomizableDialog extends ConsumerWidget {
             clipBehavior: Clip.hardEdge,
             constraints: BoxConstraints(maxHeight: context.deviceHeight * 0.7, maxWidth: context.deviceWidth),
             decoration: BoxDecoration(
-              color: backgroundColor ?? theme.altBackgroundPrimary,
+              color: backgroundColor ?? theme.background,
               borderRadius: BorderRadius.circular(30.0),
               border: Border.fromBorderSide(
                 BorderSide(color: theme.supportingText.withAlpha(40), strokeAlign: BorderSide.strokeAlignOutside),

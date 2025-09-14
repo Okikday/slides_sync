@@ -62,12 +62,15 @@ class HomeDashboard extends ConsumerWidget {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: FittedBox(
+                child: Tooltip(
+                  message: courseName,
+                  triggerMode: TooltipTriggerMode.tap,
                   child: CustomText(
                     courseName,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: theme.onBackground,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),

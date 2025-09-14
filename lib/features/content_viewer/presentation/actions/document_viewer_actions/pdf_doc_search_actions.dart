@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -171,5 +173,6 @@ class PdfDocSearchActions {
     }
     isSearchInProgressNotifier.dispose();
     isSearchingNotifier.removeListener(_onSearchModeChanged);
+    log("Disposed pdf search actions ");
   }
 }

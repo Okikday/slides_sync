@@ -4,11 +4,15 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
+import 'package:slides_sync/domain/repos/progress_track_repo.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/actions/recent_dialog_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 
 class ModifyContentUc {
   Future<String?> deleteContentAction(CourseContent content) async {
     await CourseCollectionRepo.deleteContent(content);
+    await RecentDialogActions.removeIdFromRecents(content.contentId);
+    await ProgressTrackRepo.deleteByContentId(content.contentId);
     final CourseContent? sameHashedContent = await CourseContentRepo.getByHash(content.contentHash);
     if (sameHashedContent == null) {
       await FileUtils.deleteFileAtPath(content.path.filePath);

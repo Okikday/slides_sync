@@ -67,11 +67,15 @@ class SettingsView extends ConsumerWidget {
                 trailing: Switch(value: false, onChanged: (p) {}),
               ),
 
-              ConstantSizing.columnSpacingLarge,
-
-              CustomText("Language", color: theme.supportingText),
-
               ConstantSizing.columnSpacingMedium,
+
+              SettingsCard(
+                title: "Built-in viewer",
+                iconData: Iconsax.sun,
+                content:
+                    "When enabled, materials will open using the app’s built-in viewer instead of an external app.\nDoesn't apply for unsupported files*",
+                trailing: Switch(value: false, onChanged: (p) {}),
+              ),
 
               // ConstantSizing.columnSpacingMedium,
             ],

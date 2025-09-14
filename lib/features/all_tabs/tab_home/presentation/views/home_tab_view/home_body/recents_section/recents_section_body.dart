@@ -7,10 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
+import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
+import 'package:slides_sync/features/all_tabs/tab_home/presentation/actions/recent_dialog_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/providers/home_tab_view_providers.dart';
 import 'package:slides_sync/domain/models/progress_track_model.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
@@ -30,7 +33,7 @@ class RecentsSectionBody extends ConsumerWidget {
     final AsyncValue<List<ProgressTrackModel>> asyncProgressTrackValues = ref.watch(
       HomeTabViewProviders.recentProgressTrackProvider,
     );
-
+    final rda = RecentDialogActions.of(ref);
     return asyncProgressTrackValues.when(
       data: (data) {
         if (data.isEmpty) {
@@ -55,87 +58,7 @@ class RecentsSectionBody extends ConsumerWidget {
           //     ],
           //   ),
           // );
-          return SliverToBoxAdapter(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: 220),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 20,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: CustomText("Recommended", fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 10,
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      itemBuilder: (context, index) {
-                        return SizedBox.square(
-                          dimension: 180,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Positioned(
-                                top: 0,
-                                bottom: 0,
-                                left: 12,
-                                right: 12,
-                                child: Container(
-                                  width: 180,
-                                  height: 180,
-                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                  margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
-                                  decoration: BoxDecoration(
-                                    color: theme.surface.withValues(alpha: 0.6),
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                ),
-                              ),
-                              Positioned.fill(
-                                bottom: 12,
-                                child: Container(
-                                  width: 180,
-                                  height: 180,
-                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                  margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
-                                  decoration: BoxDecoration(
-                                    color: theme.surface,
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: AppThemeModel.lightenColor(theme.surface, 0.5),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
-                                        child: CustomText(
-                                          "Suggested $index",
-                                          fontWeight: FontWeight.bold,
-                                          color: theme.onSurface,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return SliverToBoxAdapter(child: RecommendedSection(theme: theme));
         }
         return SliverPadding(
           padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight + context.bottomPadding / 2),
@@ -167,6 +90,7 @@ class RecentsSectionBody extends ConsumerWidget {
                       reverseTransitionDuration: Durations.short4,
                       child: RecentDialog(
                         recentDialogModel: RecentDialogModel(
+                          contentId: content.contentId,
                           imagePreview: BuildImagePathWidget(
                             fileDetails: FileDetails(filePath: previewPath ?? ''),
                             fallbackWidget: Icon(Iconsax.document_1, size: 26, color: ref.theme.primary),
@@ -175,15 +99,10 @@ class RecentsSectionBody extends ConsumerWidget {
                           title: content.title ?? "No title",
                           description: content.description ?? "",
                           onContinueReading: () async {
-                            final newContent = await CourseContentRepo.getByContentId(content.contentId);
-                            if (context.mounted) UiUtils.hideDialog(context);
-                            if (newContent == null) {
-                              if (context.mounted) {
-                                UiUtils.showFlushBar(context, msg: "Unable to open material");
-                              }
-                              return;
-                            }
-                            if (context.mounted) AppRouteNavigator.to(context).contentViewGateRoute(newContent);
+                            await rda.onContinueReading(content.contentId);
+                          },
+                          onDelete: () async {
+                            await rda.onRemoveFromRecents(content.contentId);
                           },
                         ),
                       ),
@@ -212,27 +131,117 @@ class RecentsSectionBody extends ConsumerWidget {
         );
       },
       loading: () {
-        return SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              spacing: 12,
-              children: [
-                SizedBox.square(
-                  dimension: context.deviceWidth * 0.5,
-                  child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true),
-                ),
-                CustomText(
-                  "Looking around for your recents...Where could they be?",
-                  color: theme.onBackground,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+        return SliverToBoxAdapter(child: LoadingRecentsSection());
+      },
+    );
+  }
+}
+
+class LoadingRecentsSection extends ConsumerWidget {
+  const LoadingRecentsSection({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 12,
+        children: [
+          SizedBox.square(
+            dimension: context.deviceWidth * 0.5,
+            child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true),
+          ),
+          CustomText(
+            "Looking around for your recents...Where could they be?",
+            color: ref.theme.onBackground,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RecommendedSection extends StatelessWidget {
+  const RecommendedSection({super.key, required this.theme});
+
+  final AppThemeModel theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 220),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 20,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: CustomText("Recommended", fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 10,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (context, index) {
+                return SizedBox.square(
+                  dimension: 180,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        left: 12,
+                        right: 12,
+                        child: Container(
+                          width: 180,
+                          height: 180,
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
+                          decoration: BoxDecoration(
+                            color: theme.surface.withValues(alpha: 0.6),
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        bottom: 12,
+                        child: Container(
+                          width: 180,
+                          height: 180,
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          margin: EdgeInsets.only(left: index == 0 ? 0 : 12),
+                          decoration: BoxDecoration(color: theme.surface, borderRadius: BorderRadius.circular(32)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CircleAvatar(radius: 20, backgroundColor: AppThemeModel.lightenColor(theme.surface, 0.5)),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: CustomText(
+                                  "Suggested $index",
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }

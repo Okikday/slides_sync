@@ -16,7 +16,7 @@ class SettingsAppearanceDialog extends ConsumerStatefulWidget {
 }
 
 class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDialog> {
-  bool followSystem = true;
+  bool followSystem = false;
   Brightness forcedBrightness = Brightness.light;
 
   List<ThemePair> _buildPairsFromUnified(List<UnifiedThemeModel> models) {
@@ -47,18 +47,18 @@ class _SettingsAppearanceDialogState extends ConsumerState<SettingsAppearanceDia
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              ConstantSizing.columnSpacingSmall,
+              ConstantSizing.columnSpacingMedium,
 
               Wrap(
                 spacing: 8,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  const Icon(Icons.brightness_6),
-                  const SizedBox(width: 8),
-                  const Text('Theme mode:'),
-                  const SizedBox(width: 8),
-                  Switch(value: followSystem, onChanged: (v) => setState(() => followSystem = v)),
-                  const SizedBox(width: 6),
+                  // const Icon(Icons.brightness_6),
+                  // const SizedBox(width: 8),
+                  // const Text('Theme mode:'),
+                  // const SizedBox(width: 8),
+                  // Switch(value: followSystem, onChanged: (v) => setState(() => followSystem = v)),
+                  // const SizedBox(width: 6),
                   if (!followSystem)
                     ToggleButtons(
                       isSelected: [forcedBrightness == Brightness.light, forcedBrightness == Brightness.dark],

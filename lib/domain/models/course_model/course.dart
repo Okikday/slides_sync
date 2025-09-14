@@ -48,26 +48,6 @@ class Course {
       ..courseMetadataJson = courseMetadataJson;
   }
 
-  Course copyWith({
-    String? courseId,
-    String? courseTitle,
-    String? description,
-    String? imageLocationJson,
-    DateTime? createdAt,
-    DateTime? lastUpdated,
-    String? courseMetadataJson,
-  }) {
-    return Course()
-      ..id = id
-      ..courseId = courseId ?? this.courseId
-      ..courseTitle = courseTitle ?? this.courseTitle
-      ..description = description ?? this.description
-      ..imageLocationJson = imageLocationJson ?? this.imageLocationJson
-      ..createdAt = createdAt ?? this.createdAt
-      ..lastUpdated = lastUpdated ?? this.lastUpdated
-      ..courseMetadataJson = courseMetadataJson ?? this.courseMetadataJson;
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -131,6 +111,24 @@ class Course {
 extension CourseExtension on Course {
   String get courseName => CourseFormatter.separateCodeFromTitle(courseTitle).courseName;
   String get courseCode => CourseFormatter.separateCodeFromTitle(courseTitle).courseCode;
+  Course copyWith({
+    String? courseId,
+    String? courseTitle,
+    String? description,
+    String? imageLocationJson,
+    DateTime? createdAt,
+    DateTime? lastUpdated,
+    String? courseMetadataJson,
+  }) {
+    return this
+      ..courseId = courseId ?? this.courseId
+      ..courseTitle = courseTitle ?? this.courseTitle
+      ..description = description ?? this.description
+      ..imageLocationJson = imageLocationJson ?? this.imageLocationJson
+      ..createdAt = createdAt ?? this.createdAt
+      ..lastUpdated = lastUpdated ?? this.lastUpdated
+      ..courseMetadataJson = courseMetadataJson ?? this.courseMetadataJson;
+  }
 }
 
 extension StringExtension on String {

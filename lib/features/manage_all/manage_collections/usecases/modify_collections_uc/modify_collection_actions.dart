@@ -7,6 +7,7 @@ import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 
@@ -24,7 +25,9 @@ class ModifyCollectionActions {
 
   Future<String?> onCreateNewCollection(BuildContext context, {required String text, required int courseDbId}) async {
     if (text.isNotEmpty && text.length > 1 && text.length < 256) {
-      final Result<String?> createOutcome = await Result.tryRunAsync<String?>(() async => await _addCollectionToCourse(courseDbId, text));
+      final Result<String?> createOutcome = await Result.tryRunAsync<String?>(
+        () async => await _addCollectionToCourse(courseDbId, text),
+      );
 
       if (createOutcome.isSuccess && createOutcome.data == null) {
         return null;
@@ -63,7 +66,11 @@ class ModifyCollectionActions {
       if (context.mounted) CustomDialog.hide(context);
       if (context.mounted) {
         if (outcome == null) {
-          await UiUtils.showFlushBar(context, msg: "Successfully renamed collection to $newText", vibe: FlushbarVibe.success);
+          await UiUtils.showFlushBar(
+            context,
+            msg: "Successfully renamed collection to $newText",
+            vibe: FlushbarVibe.success,
+          );
         } else {
           await UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.warning);
         }
@@ -93,24 +100,29 @@ class ModifyCollectionActions {
       );
 
       final Result<String?> deleteOutcome = await Result.tryRunAsync(() async {
-          await FileUtils.deleteFromAppDirectory(relativePath: collection.absolutePath);
-          final bool deleteOutcome = await CourseRepo.deleteCollection(collection);
-          if (!deleteOutcome) return "An error occured while deleting!";
-          return null;
+        await collection.contents.load();
+        collection.contents.toList().map((data) async {
+          await FileUtils.deleteFromAppDirectory(relativePath: data.absolutePath);
         });
-        rootNavigatorKey.currentContext?.pop();
-        if (deleteOutcome.isSuccess && deleteOutcome.data == null) {
-          if (newContext.mounted) {
-            await UiUtils.showFlushBar(
-              newContext,
-              msg: "Successfully removed ${collection.collectionTitle}",
-              vibe: FlushbarVibe.success,
-            );
-          }
-        } else {
-          log("${deleteOutcome.message}");
-          if (newContext.mounted) await UiUtils.showFlushBar(newContext, msg: "Error deleting collection", vibe: FlushbarVibe.error);
+        await CourseCollectionRepo.deleteMultipleContents(collection.contents.toList(), collection);
+        final bool deleteOutcome = await CourseRepo.deleteCollection(collection);
+        if (!deleteOutcome) return "An error occured while deleting!";
+        return null;
+      });
+      rootNavigatorKey.currentContext?.pop();
+      if (deleteOutcome.isSuccess && deleteOutcome.data == null) {
+        if (newContext.mounted) {
+          await UiUtils.showFlushBar(
+            newContext,
+            msg: "Successfully removed ${collection.collectionTitle}",
+            vibe: FlushbarVibe.success,
+          );
         }
+      } else {
+        log("${deleteOutcome.message}");
+        if (newContext.mounted)
+          await UiUtils.showFlushBar(newContext, msg: "Error deleting collection", vibe: FlushbarVibe.error);
+      }
     }
   }
 }

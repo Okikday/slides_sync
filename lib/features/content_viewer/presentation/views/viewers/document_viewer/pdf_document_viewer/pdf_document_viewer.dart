@@ -15,6 +15,7 @@ import 'package:slides_sync/features/content_viewer/presentation/actions/documen
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer/document_app_bar.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer/pdf_document_viewer/pdf_doc_search_app_bar.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer/pdf_document_viewer/pdf_tools_menu.dart';
+import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:pdfrx/pdfrx.dart';
 
@@ -52,6 +53,11 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
         setState(() {});
       },
     );
+    pdva = PdfDocumentViewerActions.of(
+      widget.content,
+      pdfViewerController: pdfViewerController,
+      progressTrackNotifier: progressTrackNotifier,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.microtask(() async {
         if (progressTrackNotifier.value != null) return;
@@ -66,11 +72,6 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
             ),
           );
         }
-        pdva = PdfDocumentViewerActions.of(
-          widget.content,
-          pdfViewerController: pdfViewerController,
-          progressTrackNotifier: progressTrackNotifier,
-        );
       });
     });
   }
@@ -127,106 +128,95 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
                 ],
               ),
 
-              body: GestureDetector(
-                onTap: () async {
-                  log("Tapped outside document");
-                  final bool isSearching = isSearchingNotifier.value;
-                  if (isSearching) return;
-                  final bool isAppBarVisible = isAppBarVisibleNotifier.value;
-                  // isSearchingNotifier.value = false;
-                  isAppBarVisibleNotifier.value = !isAppBarVisible;
-                  if (isAppBarVisible) {
-                    await Future.delayed(Durations.medium1, () {
-                      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-                    });
-                  } else {
-                    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-                  }
-                },
-                child: NestedScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  headerSliverBuilder: (context, innerBoxIsScrolled) {
-                    return [
-                      PinnedHeaderSliver(
-                        child: ValueListenableBuilder(
-                          valueListenable: isAppBarVisibleNotifier,
-                          builder: (context, value, child) {
-                            return Padding(
-                              // duration: Durations.medium4,
-                              // curve: CustomCurves.defaultIosSpring,
-                              padding: EdgeInsets.only(top: value ? context.topPadding : 0),
-                              child: AnimatedSize(
-                                duration: Durations.medium4,
-                                curve: CustomCurves.defaultIosSpring,
-                                child: SizedBox(
-                                  height: value ? kToolbarHeight + 12 : 0,
-                                  child: ColoredBox(
-                                    color: theme.background,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        DocumentAppBar(
-                                          title: widget.content.title,
-                                          isSearchingNotifier: isSearchingNotifier,
-                                        ),
+              body: NestedScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    PinnedHeaderSliver(
+                      child: ValueListenableBuilder(
+                        valueListenable: isAppBarVisibleNotifier,
+                        builder: (context, value, child) {
+                          return Padding(
+                            // duration: Durations.medium4,
+                            // curve: CustomCurves.defaultIosSpring,
+                            padding: EdgeInsets.only(top: value ? context.topPadding : 0),
+                            child: AnimatedSize(
+                              duration: Durations.medium4,
+                              curve: CustomCurves.defaultIosSpring,
+                              child: SizedBox(
+                                height: value ? kToolbarHeight + 12 : 0,
+                                child: ColoredBox(
+                                  color: theme.background,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      DocumentAppBar(
+                                        title: widget.content.title,
+                                        isSearchingNotifier: isSearchingNotifier,
+                                      ),
 
-                                        PdfDocSearchAppBar(pdfViewerController: pdfViewerController, pdsa: pdsa),
-                                      ],
-                                    ),
+                                      PdfDocSearchAppBar(pdfViewerController: pdfViewerController, pdsa: pdsa),
+                                    ],
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      ),
-                    ];
-                  },
-                  body:
-                      content.path.filePath.isNotEmpty
-                          ? PdfViewer.file(
-                            content.path.filePath,
-                            params: PdfViewerParams(
-                              backgroundColor: theme.background,
-                              activeMatchTextColor: theme.primary.withValues(alpha: 0.5),
-                              onGeneralTap: (context, controller, details) {
-                                if (details.type != PdfViewerGeneralTapType.tap) return false;
-                                final bool isSearching = isSearchingNotifier.value;
-                                if (isSearching) return false;
-                                final bool isAppBarVisible = isAppBarVisibleNotifier.value;
-                                // isSearchingNotifier.value = false;
-                                isAppBarVisibleNotifier.value = !isAppBarVisible;
-                                if (isAppBarVisible) {
-                                  Future.delayed(Durations.medium1, () {
-                                    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-                                  });
-                                } else {
-                                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-                                }
-                                return false;
-                              },
-                              pagePaintCallbacks: [
-                                (canvas, pageRect, page) {
-                                  // forward to the active searcher, if any
-                                  pdsa.textSearcher?.pageTextMatchPaintCallback(canvas, pageRect, page);
-                                },
-                                // other page paint callbacks...
-                              ],
-                              textSelectionParams: PdfTextSelectionParams(
-                                buildSelectionHandle: (context, anchor, state) {
-                                  TextSelectionHandleType type =
-                                      state.index < 1 ? TextSelectionHandleType.left : TextSelectionHandleType.right;
-
-                                  return CupertinoTextSelectionControls().buildHandle(context, type, 24.0, null);
-                                },
-                              ),
                             ),
-                            controller: pdfViewerController,
-                            // scrollDirection: PdfScrollDirection.vertical,
-                            // pageLayoutMode: PdfPageLayoutMode.single,
-                          )
-                          : PdfViewer.uri(Uri.parse(content.path.urlPath)),
-                ),
+                          );
+                        },
+                      ),
+                    ),
+                  ];
+                },
+                body:
+                    content.path.filePath.isNotEmpty
+                        ? PdfViewer.file(
+                          content.path.filePath,
+                          params: PdfViewerParams(
+                            backgroundColor: theme.background,
+                            activeMatchTextColor: theme.primary.withValues(alpha: 0.5),
+                            onGeneralTap: (context, controller, details) {
+                              if (details.type != PdfViewerGeneralTapType.tap) return false;
+
+                              final bool isSearching = isSearchingNotifier.value;
+                              if (isSearching) return false;
+                              final bool isAppBarVisible = isAppBarVisibleNotifier.value;
+                              // isSearchingNotifier.value = false;
+                              isAppBarVisibleNotifier.value = !isAppBarVisible;
+                              if (isAppBarVisible) {
+                                Future.delayed(Durations.medium1, () {
+                                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+                                });
+                              } else {
+                                final focusModeProvider = ref.read(MainProviders.isFocusModeProvider.notifier);
+                                if (!focusModeProvider.state) {
+                                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+                                } else {
+                                  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+                                }
+                              }
+                              return false;
+                            },
+                            pagePaintCallbacks: [
+                              (canvas, pageRect, page) {
+                                // forward to the active searcher, if any
+                                pdsa.textSearcher?.pageTextMatchPaintCallback(canvas, pageRect, page);
+                              },
+                              // other page paint callbacks...
+                            ],
+                            textSelectionParams: PdfTextSelectionParams(
+                              buildSelectionHandle: (context, anchor, state) {
+                                TextSelectionHandleType type =
+                                    state.index < 1 ? TextSelectionHandleType.left : TextSelectionHandleType.right;
+
+                                return CupertinoTextSelectionControls().buildHandle(context, type, 24.0, null);
+                              },
+                            ),
+                          ),
+                          controller: pdfViewerController,
+                          // scrollDirection: PdfScrollDirection.vertical,
+                          // pageLayoutMode: PdfPageLayoutMode.single,
+                        )
+                        : PdfViewer.uri(Uri.parse(content.path.urlPath)),
               ),
             ),
           ),

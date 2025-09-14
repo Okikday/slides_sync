@@ -66,7 +66,7 @@ class CourseRepo {
         await isar.courseCollections.put(collection);
         course.collections.add(collection);
         await course.collections.save();
-        await isar.courses.put(course);
+        await isar.courses.put(course.copyWith(lastUpdated: DateTime.now()));
       });
       return true;
     } catch (e) {
@@ -95,7 +95,7 @@ class CourseRepo {
         course.collections.remove(collection);
         
         await course.collections.save();
-        await isar.courses.put(course);
+        await isar.courses.put(course.copyWith(lastUpdated: DateTime.now()));
       });
       return true;
     } catch (e) {

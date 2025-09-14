@@ -18,7 +18,7 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceWidth = context.deviceWidth;
     final bool isDesktop = context.deviceType == DeviceType.desktop;
-    final recentsLast = ref.watch(HomeTabViewProviders.recentProgressTrackProvider).value?.first;
+    final asyncRecentsLast = ref.watch(HomeTabViewProviders.recentProgressTrackProvider);
 
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 160),
@@ -30,28 +30,49 @@ class BuildDashboardCarouselSection extends ConsumerWidget {
           backgroundColor: Colors.transparent,
           enableSplash: false,
           itemSnapping: true,
-          shrinkExtent: isDesktop ? deviceWidth * 0.6 : deviceWidth * 0.94,
-          itemExtent: isDesktop ? deviceWidth * 0.7 : deviceWidth * 0.94,
+          shrinkExtent: isDesktop ? 480 : deviceWidth * 0.94,
+          itemExtent: isDesktop ? 500 : deviceWidth * 0.96,
           shape: BeveledRectangleBorder(),
           children: [
-            if (recentsLast != null)
-              HomeDashboard(
-                courseName: recentsLast.title ?? "Unknown material",
-                detail: 'Unavailable',
-                progressValue: recentsLast.progress ?? 0.0,
-                completed: recentsLast.progress == 1.0,
-                isFirst: true,
-                onReadingBtnTapped: () async {
-                  final content = await CourseContentRepo.getByContentId(recentsLast.contentId);
-                  if (content == null) {
-                    if (context.mounted) {
-                      UiUtils.showFlushBar(context, msg: "Unable to open material");
-                    }
-                    return;
-                  }
-                  if (context.mounted) AppRouteNavigator.to(context).contentViewGateRoute(content);
-                },
-              ),
+            asyncRecentsLast.when(
+              data: (data) {
+                final recentsLast = data.isNotEmpty ? data.first : null;
+                if (recentsLast != null) {
+                  return HomeDashboard(
+                    courseName: recentsLast.title ?? "Unknown material",
+                    detail: '',
+                    progressValue: recentsLast.progress ?? 0.0,
+                    completed: recentsLast.progress == 1.0,
+                    isFirst: true,
+                    onReadingBtnTapped: () async {
+                      final content = await CourseContentRepo.getByContentId(recentsLast.contentId);
+                      if (content == null) {
+                        if (context.mounted) {
+                          UiUtils.showFlushBar(context, msg: "Unable to open material");
+                        }
+                        return;
+                      }
+                      if (context.mounted) AppRouteNavigator.to(context).contentViewGateRoute(content);
+                    },
+                  );
+                }
+                return HomeDashboard(
+                  courseName: "Add a course material",
+                  detail: '',
+                  progressValue: 0.0,
+                  isFirst: true,
+                  onReadingBtnTapped: () async {
+                    AppRouteNavigator.to(context).createCourseRoute();
+                  },
+                );
+              },
+              loading: () {
+                return const SizedBox();
+              },
+              error: (e, st) {
+                return const Center(child: Icon(Icons.error));
+              },
+            ),
           ],
         ),
       ),

@@ -7,12 +7,12 @@ import 'package:isar/isar.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 
-enum CourseSortOption { ascending, descending, dateCreated, dateModified, none }
+enum CourseSortOption { nameAsc, nameDesc, dateCreatedAsc, dateCreatedDesc, dateModifiedAsc, dateModifiedDesc, none }
+enum PlainCourseSortOption { name, dateCreated, dateModified, none }
 
 class CoursesViewActions {
   final CourseSortOption sortOption;
 
-  // Ultra-fast concurrency control with queue system
   bool _isFetching = false;
   final Queue<Completer<List<Course>>> _waitingQueue = Queue();
   dynamic lastItemSortId;
@@ -53,17 +53,23 @@ class CoursesViewActions {
     final List<Course> result;
 
     switch (sortOption) {
-      case CourseSortOption.ascending:
+      case CourseSortOption.nameAsc:
         result = await _fetchByTitle(pageKey, limit);
         break;
-      case CourseSortOption.descending:
+      case CourseSortOption.nameDesc:
         result = await _fetchByTitle(pageKey, limit, false);
         break;
-      case CourseSortOption.dateCreated:
+      case CourseSortOption.dateCreatedAsc:
         result = await _fetchByDateCreated(pageKey, limit);
         break;
-      case CourseSortOption.dateModified:
+      case CourseSortOption.dateCreatedDesc:
+        result = await _fetchByDateCreated(pageKey, limit, false);
+        break;
+      case CourseSortOption.dateModifiedAsc:
         result = await _fetchByDateModified(pageKey, limit);
+        break;
+      case CourseSortOption.dateModifiedDesc:
+        result = await _fetchByDateModified(pageKey, limit, false);
         break;
       default:
         result = await _fetchDefault(pageKey, limit);
@@ -92,31 +98,62 @@ class CoursesViewActions {
     final filter = (await CourseRepo.filter);
     return await (ascending
         ? filter.idGreaterThan(0).sortByCourseTitle().offset(offset).limit(limit).findAll()
-        : filter.idGreaterThan(0).sortByCourseTitle().offset(offset).limit(limit).findAll());
+        : filter.idGreaterThan(0).sortByCourseTitleDesc().offset(offset).limit(limit).findAll());
   }
 
-  Future<List<Course>> _fetchByDateCreated(int pageKey, int limit) async {
+  Future<List<Course>> _fetchByDateCreated(int pageKey, int limit, [bool ascending = true]) async {
     final offset = (pageKey - 1) * limit;
-    return await (await CourseRepo.filter).idGreaterThan(0).sortByCreatedAt().offset(offset).limit(limit).findAll();
+    final filter = (await CourseRepo.filter);
+    return await (ascending
+        ? filter.idGreaterThan(0).sortByCreatedAt().offset(offset).limit(limit).findAll()
+        : filter.idGreaterThan(0).sortByCreatedAtDesc().offset(offset).limit(limit).findAll());
   }
 
-  Future<List<Course>> _fetchByDateModified(int pageKey, int limit) async {
+  Future<List<Course>> _fetchByDateModified(int pageKey, int limit, [bool ascending = true]) async {
     final offset = (pageKey - 1) * limit;
-    return await (await CourseRepo.filter).idGreaterThan(0).sortByLastUpdated().offset(offset).limit(limit).findAll();
+    final filter = (await CourseRepo.filter);
+    return await (ascending
+        ? filter.idGreaterThan(0).sortByLastUpdated().offset(offset).limit(limit).findAll()
+        : filter.idGreaterThan(0).sortByLastUpdatedDesc().offset(offset).limit(limit).findAll());
   }
 
   static int? getNextPageKey(PagingState<int, Course> state) {
     return state.lastPageIsEmpty ? null : state.nextIntPageKey;
   }
-  
-  // Performance optimization: clear queue if needed
+
   void clearQueue() {
     while (_waitingQueue.isNotEmpty) {
       _waitingQueue.removeFirst().completeError(StateError('Queue cleared'));
     }
   }
-  
-  // Performance monitoring
+
+  void dispose() {
+    clearQueue();
+  }
+
   int get queueLength => _waitingQueue.length;
   bool get isBusy => _isFetching;
+}
+
+
+
+extension CourseSortX on CourseSortOption {
+  PlainCourseSortOption toPlain() {
+    final n = name;
+    final core = n.endsWith('Asc')
+        ? n.substring(0, n.length - 3)
+        : n.endsWith('Desc')
+            ? n.substring(0, n.length - 4)
+            : n;
+    switch (core) {
+      case 'name':
+        return PlainCourseSortOption.name;
+      case 'dateCreated':
+        return PlainCourseSortOption.dateCreated;
+      case 'dateModified':
+        return PlainCourseSortOption.dateModified;
+      default:
+        return PlainCourseSortOption.none;
+    }
+  }
 }

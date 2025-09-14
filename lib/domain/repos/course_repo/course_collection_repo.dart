@@ -93,7 +93,7 @@ class CourseCollectionRepo {
         await getCollection.contents.save();
         await isar.courseCollections.put(getCollection);
         course.collections.add(getCollection);
-        await isar.courses.put(course);
+        await isar.courses.put(course.copyWith(lastUpdated: DateTime.now()));
         await course.collections.save();
       });
 
@@ -211,80 +211,113 @@ class CourseCollectionRepo {
     }
   }
 
-  // ///TODO: Fix issues downwards
-  // static Future<bool> deleteMultipleContents(List<CourseContent> contents, [CourseCollection? collection]) async {
-  //   try {
-  //     final isar = await _isar;
+  static Future<bool> deleteMultipleContents(List<CourseContent> contents, [CourseCollection? collection]) async {
+    try {
+      final isar = await _isar;
 
-  //     // Get existing contents by IDs
-  //     final List<CourseContent?> existingContents = await isar.courseContents.getAll([for (final c in contents) c.id]);
-  //     final existingIds = existingContents.whereType<CourseContent>().map((e) => e.id).toSet();
+      // Get existing contents by IDs (using the auto-increment id)
+      final List<CourseContent?> existingContents = await isar.courseContents.getAll([
+        for (final content in contents) content.id,
+      ]);
+      final existingIds = existingContents.whereType<CourseContent>().map((e) => e.id).toSet();
 
-  //     // Filter only contents that actually exist in DB
-  //     final contentsToDelete = contents.where((c) => existingIds.contains(c.id)).toList();
-  //     if (contentsToDelete.isEmpty) return true;
+      // Filter only contents that actually exist in DB
+      final contentsToDelete = contents.where((c) => existingIds.contains(c.id)).toList();
+      if (contentsToDelete.isEmpty) return true;
 
-  //     // Group contents by parentId (collectionId)
-  //     final Map<String, List<CourseContent>> contentsByParent = {};
-  //     for (final content in contentsToDelete) {
-  //       contentsByParent.putIfAbsent(content.parentId, () => []).add(content);
-  //     }
+      // Group contents by parentId (collectionId)
+      final Map<String, List<CourseContent>> contentsByParent = {};
+      for (final content in contentsToDelete) {
+        contentsByParent.putIfAbsent(content.parentId, () => []).add(content);
+      }
 
-  //     if (contentsByParent.isEmpty) return false;
+      if (contentsByParent.isEmpty) return false;
 
-  //     // If only one collection involved and collection param is provided or can be fetched once
-  //     if (contentsByParent.length == 1) {
-  //       final parentId = contentsByParent.keys.first;
-  //       final getCollection =
-  //           collection != null
-  //               ? await isar.courseCollections.get(collection.id)
-  //               : await isar.courseCollections.filter().collectionIdEqualTo(parentId).findFirst();
-  //       if (getCollection == null) return false;
+      // If only one collection involved
+      if (contentsByParent.length == 1) {
+        final parentId = contentsByParent.keys.first;
+        CourseCollection? getCollection =
+            collection != null && collection.collectionId == parentId
+                ? collection
+                : await isar.courseCollections.filter().collectionIdEqualTo(parentId).findFirst();
 
-  //       await isar.writeTxn(() async {
-  //         // Delete all contents in batch
-  //         await isar.courseContents.deleteAll(contentsByParent[parentId]!.map((c) => c.id).toList());
+        if (getCollection == null) return false;
 
-  //         // Remove from collection's links
-  //         getCollection.contents.removeAll(contentsByParent[parentId]!);
+        // Load the course for relationship updates
+        final course = await CourseRepo.getCourseById(getCollection.parentId);
+        if (course == null) return false;
 
-  //         // Save updated collection
-  //         await isar.courseCollections.put(getCollection);
-  //       });
-  //       return true;
-  //     } else {
-  //       // Multiple collections involved
-  //       await isar.writeTxn(() async {
-  //         for (final entry in contentsByParent.entries) {
-  //           final parentId = entry.key;
-  //           final contentsList = entry.value;
+        await getCollection.contents.load();
+        await course.collections.load();
 
-  //           final getCollection =
-  //               collection != null && collection.parentId == parentId
-  //                   ? collection
-  //                   : await isar.courseCollections.filter().collectionIdEqualTo(parentId).findFirst();
+        await isar.writeTxn(() async {
+          // Delete all contents in batch
+          await isar.courseContents.deleteAll(contentsByParent[parentId]!.map((c) => c.id).toList());
 
-  //           if (getCollection == null) continue;
+          // Remove from collection's links
+          for (final content in contentsByParent[parentId]!) {
+            getCollection.contents.remove(content);
+          }
 
-  //           // Delete contents
-  //           await isar.courseContents.deleteAll(contentsList.map((c) => c.id).toList());
+          // Save updated collection
+          await isar.courseCollections.put(getCollection);
+          await getCollection.contents.save();
 
-  //           // Remove from collection links
-  //           getCollection.contents.removeAll(contentsList);
+          // Update course relationship
+          course.collections.add(getCollection);
+          await isar.courses.put(course);
+          await course.collections.save();
+        });
+        return true;
+      } else {
+        // Multiple collections involved
+        await isar.writeTxn(() async {
+          for (final entry in contentsByParent.entries) {
+            final parentId = entry.key;
+            final contentsList = entry.value;
 
-  //           // Save updated collection
-  //           await isar.courseCollections.put(getCollection);
+            CourseCollection? getCollection =
+                collection != null && collection.collectionId == parentId
+                    ? collection
+                    : await isar.courseCollections.filter().collectionIdEqualTo(parentId).findFirst();
 
-  //           await getCollection.contents.save();
-  //         }
-  //       });
-  //       return true;
-  //     }
-  //   } catch (e) {
-  //     log("deleteMultipleContents error: $e");
-  //     return false;
-  //   }
-  // }
+            if (getCollection == null) continue;
+
+            // Load relationships
+            await getCollection.contents.load();
+
+            final course = await CourseRepo.getCourseById(getCollection.parentId);
+            if (course != null) {
+              await course.collections.load();
+            }
+
+            // Delete contents
+            await isar.courseContents.deleteAll(contentsList.map((c) => c.id).toList());
+
+            // Remove from collection links
+            for (final content in contentsList) {
+              getCollection.contents.remove(content);
+            }
+
+            // Save updated collection
+            await isar.courseCollections.put(getCollection);
+            await getCollection.contents.save();
+
+            // Update course relationship if course exists
+            if (course != null) {
+              course.collections.add(getCollection);
+              await isar.courses.put(course);
+              await course.collections.save();
+            }
+          }
+        });
+        return true;
+      }
+    } catch (e) {
+      log("deleteMultipleContents error: $e");
+      return false;
+    }
+  }
 
   static Future<bool> deleteAllContents(CourseCollection collection) async {
     try {

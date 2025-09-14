@@ -34,12 +34,8 @@ class ListCourseCard extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         constraints: BoxConstraints(minHeight: 100, maxHeight: 140, maxWidth: 500),
         decoration: BoxDecoration(
-          color: theme.bgLightenColor(.91, .09),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            width: 2,
-            color: theme.bgLightenColor(),
-          ),
+          color: theme.surface,
+
           //   image: DecorationImage(
           //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
           //   opacity: 0.05,
@@ -91,13 +87,9 @@ class ListCourseCardIcon extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
     final dimension =
-        context.deviceWidth < context.deviceHeight
-            ? context.deviceWidth * 0.16
-            : context.deviceHeight * 0.16;
+        context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16;
     return InkWell(
-      customBorder: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onTap: onTapIcon,
       child: Badge(
         isLabelVisible: isStarred,
@@ -114,7 +106,7 @@ class ListCourseCardIcon extends ConsumerWidget {
           padding: EdgeInsets.all(2),
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color:  theme.bgLightenColor(.85, .15),
+            color: theme.adjustBgAndPrimaryWithLerpExtra,
             borderRadius: BorderRadius.circular(20),
           ),
           child: ClipRRect(
@@ -127,16 +119,10 @@ class ListCourseCardIcon extends ConsumerWidget {
                 padding: const EdgeInsets.all(8.0),
                 child:
                     courseCode.isEmpty
-                        ? Icon(
-                          Iconsax.document_1,
-                          color: context.theme.colorScheme.primary,
-                        )
+                        ? Icon(Iconsax.document_1, color: context.theme.colorScheme.primary)
                         : Center(
                           child: CustomText(
-                            courseCode.substring(
-                              0,
-                              courseCode.length.clamp(0, 8),
-                            ),
+                            courseCode.substring(0, courseCode.length.clamp(0, 8)),
                             fontSize:
                                 context.deviceWidth < context.deviceHeight
                                     ? context.deviceWidth * 0.025
@@ -184,12 +170,7 @@ class ListCourseCardTitleColumn extends ConsumerWidget {
               pixelHeight: 24,
               borderRadius: 8,
               contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
-              child: CustomText(
-                courseCode,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: theme.primaryColor,
-              ),
+              child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: theme.primaryColor),
             ),
           ),
 
@@ -198,12 +179,7 @@ class ListCourseCardTitleColumn extends ConsumerWidget {
         Flexible(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: CustomText(
-              courseName,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: theme.onBackground,
-            ),
+            child: CustomText(courseName, fontSize: 14, fontWeight: FontWeight.bold, color: theme.onBackground),
           ),
         ),
 
@@ -256,9 +232,7 @@ class ListCourseCardProgressIndicator extends ConsumerWidget {
                 value: progress?.clamp(0.01, 1.0),
                 strokeCap: StrokeCap.round,
                 color: theme.primaryColor,
-                backgroundColor: theme.altBackgroundPrimary.withValues(
-                  alpha: 0.4,
-                ),
+                backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.4),
               ),
             ),
           ),
