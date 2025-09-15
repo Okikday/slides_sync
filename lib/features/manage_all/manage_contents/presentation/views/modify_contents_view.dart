@@ -9,7 +9,7 @@ import 'package:slides_sync/features/manage_all/manage_contents/presentation/vie
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/modify_contents/empty_contents_view.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/modify_contents/modify_content_list_view.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/modify_contents/modify_contents_header.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/models/type_defs.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';

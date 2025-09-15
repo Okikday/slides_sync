@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
+import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 import 'package:slides_sync/shared/styles/theme/built_in_themes.dart';
 
@@ -22,7 +24,7 @@ class _AppState extends ConsumerState<App> {
     try {
       final String? hiveTheme = (await AppHiveData.instance.getData(key: "appTheme")) as String?;
       if (hiveTheme == null) {
-        ref.read(appThemeProvider.notifier).update(Brightness.dark, defaultUnifiedThemeModels[2]);
+        ref.read(appThemeProvider.notifier).update(Brightness.dark, defaultUnifiedThemeModels[0]);
         return;
       }
       final UnifiedThemeModel unifiedTheme = UnifiedThemeModel.fromJson(hiveTheme);
@@ -40,6 +42,9 @@ class _AppState extends ConsumerState<App> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    if (RootIsolateToken.instance != null) {
+      compute(FileUtils.deleteEmptyCoursesDirsInIsolate, {'rootIsolateToken': RootIsolateToken.instance});
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadThemeFromHive());
   }
 

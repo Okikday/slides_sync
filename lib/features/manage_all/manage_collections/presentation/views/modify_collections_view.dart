@@ -25,13 +25,18 @@ class ModifyCollectionsView extends ConsumerStatefulWidget {
 class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
   late final ScrollController scrollController;
   late final AutoDisposeStateProvider<double> scrollOffsetProvider;
+  late final TextEditingController searchCollectionController;
+  late final ValueNotifier<String> searchCollectionTextNotifier;
 
   @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
     scrollOffsetProvider = AutoDisposeStateProvider((ref) => 0.0);
+    searchCollectionController = TextEditingController();
+    searchCollectionTextNotifier = ValueNotifier("");
     scrollController.addListener(listenToscrollOffsetProvider);
+    searchCollectionController.addListener(searchCollectionTextListener);
   }
 
   void listenToscrollOffsetProvider() {
@@ -42,9 +47,16 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
     }
   }
 
+  void searchCollectionTextListener() {
+    if (searchCollectionTextNotifier.value == searchCollectionController.text) return;
+    searchCollectionTextNotifier.value = searchCollectionController.text;
+  }
 
   @override
   void dispose() {
+    searchCollectionController.removeListener(searchCollectionTextListener);
+    searchCollectionController.dispose();
+    searchCollectionTextNotifier.dispose();
     scrollController.removeListener(listenToscrollOffsetProvider);
     scrollController.dispose();
     super.dispose();
@@ -52,7 +64,8 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
 
   @override
   Widget build(BuildContext context) {
-    final Course course = ref.watch(CourseProviders.courseProvider).value ?? defaultCourse;
+    final asyncCourseValue = ref.watch(CourseProviders.courseProvider);
+    final Course course = asyncCourseValue.value ?? defaultCourse;
 
     return AnnotatedRegion(
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
@@ -78,27 +91,29 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
                 )
                 : null,
 
-        body: ModifyCollectionsOuterSection(scrollController: scrollController, course: course),
-      ),
-    );
-  }
-}
-
-class ModifyCollectionsOuterSection extends StatelessWidget {
-  const ModifyCollectionsOuterSection({super.key, required this.scrollController, required this.course});
-
-  final ScrollController scrollController;
-  final Course course;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
+        body: CustomScrollView(
       controller: scrollController,
       slivers: [
-        if (course.collections.isNotEmpty) PinnedHeaderSliver(child: CollectionsViewSearchBar()),
+            if (course.collections.isNotEmpty)
+              PinnedHeaderSliver(
+                child: CollectionsViewSearchBar(
+                  searchController: searchCollectionController,
+                  onTap: () {
+                    // scrollController.animateTo(
+                    //   appBarHeight + 8,
+                    //   duration: Durations.medium4,
+                    //   curve: CustomCurves.defaultIosSpring,
+                    // );
+                  },
+                ),
+              ),
 
         if (course.collections.isNotEmpty)
-          CollectionsListView(courseDbId: course.id, collections: course.collections.toList())
+              CollectionsListView(
+                courseDbId: course.id,
+                asyncCourseValue: asyncCourseValue,
+                searchCollectionTextNotifier: searchCollectionTextNotifier,
+              )
         else
           EmptyCollectionsView(
             onClickAddCollection: () {
@@ -114,6 +129,10 @@ class ModifyCollectionsOuterSection extends StatelessWidget {
 
         // ),
       ],
+        ),
+      ),
     );
   }
 }
+
+

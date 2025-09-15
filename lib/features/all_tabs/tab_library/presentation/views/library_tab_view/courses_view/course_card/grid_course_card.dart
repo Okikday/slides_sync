@@ -34,129 +34,132 @@ class GridCourseCard extends ConsumerWidget {
     final isDarkMode = theme.isDarkTheme;
     // final double dimension = (context.deviceWidth > context.deviceHeight ? context.deviceWidth * 0.12 : context.deviceWidth * 0.12);
     final dimension = 50;
-    return DecoratedBox(
-      decoration: BoxDecoration(color: theme.cardColor),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Badge(
-          backgroundColor: Colors.transparent,
-          label: CircleAvatar(radius: 5, backgroundColor: dotColor),
-          offset: Offset(-12, 12),
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            constraints: BoxConstraints(maxWidth: 200, maxHeight: 200),
-            decoration: BoxDecoration(
-              color: theme.surface
-              // border: Border.all(width: 2, color: theme.bgLightenColor(.88, .12)),
-              //   image: DecorationImage(
-              //     image: Assets.images.bookSparkleTransparentBg.asImageProvider,
-              //   opacity: 0.05,
-              //     colorFilter: ColorFilter.mode(
-              //       theme.primaryColor,
-              //       BlendMode.srcIn,
-              //     ),
-              // ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 8, bottom: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 6, 6),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          customBorder: const CircleBorder(),
-                          onTap: onTapIcon,
-                          child: CircleAvatar(
-                            radius: dimension / 2 - 3,
-                            backgroundColor: context.theme.cardColor.withAlpha(80),
-                            child: ClipOval(
-                              child: CircleAvatar(
-                                radius: dimension / 2 - 4,
-                                // backgroundColor: theme.bgLightenColor(.88, .12),
-                                backgroundColor: theme.altBackgroundPrimary,
-                                child: SizedBox.square(
-                                  dimension: dimension - 8,
-                                  child: BuildImagePathWidget(
-                                    fileDetails: course.imageLocationJson.fileDetails,
-                                    fallbackWidget: Icon(
-                                      Iconsax.document_1,
-                                      size: 16,
-                                      color: isDarkMode ? Colors.white : Colors.black,
+    return Align(
+      alignment: Alignment.center,
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: theme.cardColor),
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Badge(
+            backgroundColor: Colors.transparent,
+            label: CircleAvatar(radius: 5, backgroundColor: dotColor),
+            offset: Offset(-12, 12),
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              constraints: BoxConstraints(maxWidth: 200, maxHeight: 200),
+              decoration: BoxDecoration(
+                color: theme.surface,
+                // border: Border.all(width: 2, color: theme.bgLightenColor(.88, .12)),
+                //   image: DecorationImage(
+                //     image: Assets.images.bookSparkleTransparentBg.asImageProvider,
+                //   opacity: 0.05,
+                //     colorFilter: ColorFilter.mode(
+                //       theme.primaryColor,
+                //       BlendMode.srcIn,
+                //     ),
+                // ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 0, 6, 6),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: onTapIcon,
+                            child: CircleAvatar(
+                              radius: dimension / 2 - 3,
+                              backgroundColor: context.theme.cardColor.withAlpha(80),
+                              child: ClipOval(
+                                child: CircleAvatar(
+                                  radius: dimension / 2 - 4,
+                                  // backgroundColor: theme.bgLightenColor(.88, .12),
+                                  backgroundColor: theme.altBackgroundPrimary,
+                                  child: SizedBox.square(
+                                    dimension: dimension - 8,
+                                    child: BuildImagePathWidget(
+                                      fileDetails: course.imageLocationJson.fileDetails,
+                                      fallbackWidget: Icon(
+                                        Iconsax.document_1,
+                                        size: 16,
+                                        color: isDarkMode ? Colors.white : Colors.black,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        if (courseCode.isNotEmpty)
-                          Flexible(
-                            child: Align(
-                              alignment: Alignment.topRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: CustomTextButton(
-                                  backgroundColor: theme.altBackgroundPrimary,
-                                  pixelHeight: 24,
-                                  borderRadius: 14,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 6.0),
-                                  child: CustomText(
-                                    courseCode,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold,
-                                    color: theme.primaryColor.withAlpha(200),
+                          if (courseCode.isNotEmpty)
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: CustomTextButton(
+                                    backgroundColor: theme.altBackgroundPrimary,
+                                    pixelHeight: 24,
+                                    borderRadius: 14,
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 6.0),
+                                    child: CustomText(
+                                      courseCode,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                      color: theme.primaryColor.withAlpha(200),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomText(
-                          course.courseName,
-                          overflow: TextOverflow.fade,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13.5,
-                          color: theme.onBackground,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomText(
+                            course.courseName,
+                            overflow: TextOverflow.fade,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13.5,
+                            color: theme.onBackground,
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  ConstantSizing.columnSpacing(4.0),
+                    ConstantSizing.columnSpacing(4.0),
 
-                  // if (categoriesCount > 0)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: CustomText(
-                      "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
-                      fontSize: 11,
-                      color: theme.supportingText,
+                    // if (categoriesCount > 0)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: CustomText(
+                        "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
+                        fontSize: 11,
+                        color: theme.supportingText,
+                      ),
                     ),
-                  ),
 
-                  ConstantSizing.columnSpacing(8),
+                    ConstantSizing.columnSpacing(8),
 
-                  LinearProgressIndicator(
-                    minHeight: 4,
+                    LinearProgressIndicator(
+                      minHeight: 4,
 
-                    value: (progress).clamp(0.1, 1.0),
-                    backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.2),
-                    // color: theme.bgLightenColor(.88, .12), //.withAlpha(40)
-                    color: theme.altBackgroundPrimary,
-                  ),
-                ],
+                      value: (progress).clamp(0.1, 1.0),
+                      backgroundColor: theme.altBackgroundPrimary.withValues(alpha: 0.2),
+                      // color: theme.bgLightenColor(.88, .12), //.withAlpha(40)
+                      color: theme.altBackgroundPrimary,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

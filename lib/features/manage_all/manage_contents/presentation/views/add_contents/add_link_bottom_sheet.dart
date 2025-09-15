@@ -10,7 +10,7 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/add_contents_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/add_link_actions.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/repos/get_content_repo/get_content_repo.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/domain/repos/get_content_repo/get_content_repo.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';

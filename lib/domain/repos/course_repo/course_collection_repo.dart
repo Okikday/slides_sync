@@ -11,14 +11,6 @@ class CourseCollectionRepo {
 
   static IsarData<CourseCollection> get isarData => _isarData;
 
-  static Future<QueryBuilder<CourseCollection, CourseCollection, QAfterFilterCondition>> _queryById(
-    String collectionId,
-  ) async {
-    return (await _isarData.query<CourseCollection>(
-      (q) => q.idGreaterThan(0),
-    )).filter().collectionIdEqualTo(collectionId);
-  }
-
   static Future<QueryBuilder<CourseCollection, CourseCollection, QFilterCondition>> get filter async =>
       (await _isar).courseCollections.filter();
 
@@ -29,8 +21,6 @@ class CourseCollectionRepo {
   static Stream<CourseCollection?> watchByDbId(int dbId) => _isarData.watchById(dbId);
 
   static Future<int> add(CourseCollection collection) async => await _isarData.store(collection);
-
-  // static Future<List<int>> addMultiple(List<CourseCollection> courses) async => await _isarData.storeAll(courses);
 
   static Future<List<CourseCollection>> getAll() async => _isarData.getAll();
 
@@ -50,19 +40,19 @@ class CourseCollectionRepo {
         .map((list) => list.firstOrNull);
   }
 
-  static Future<CourseCollection?> deleteCourseById(String collectionId) async {
+  static Future<CourseCollection?> deleteCollectionById(String collectionId) async {
     final isar = await _isar;
     final CourseCollection? collection = await getById(collectionId);
     return await isar.writeTxn<CourseCollection?>(() async {
       if (collection != null) {
-        final idQuery = await _queryById(collectionId);
+        final idQuery = (await filter).collectionIdEqualTo(collectionId);
         await idQuery.deleteFirst();
       }
       return collection;
     });
   }
 
-  static Future<CourseContent?> findFirstDuplicateByHash(CourseCollection collection, String contentHash) async {
+  static Future<CourseContent?> findFirstDuplicateContentByHash(CourseCollection collection, String contentHash) async {
     await collection.contents.load();
     return (collection.contents.where((content) => content.contentHash == contentHash)).firstOrNull;
   }
@@ -107,15 +97,13 @@ class CourseCollectionRepo {
   static Future<bool> deleteContent(CourseContent content, [CourseCollection? collection]) async {
     try {
       final isar = (await _isar);
-      final CourseContent? getCurr = await isar.courseContents.get(content.id);
-      if (getCurr == null) return false;
       CourseCollection? getCollection =
           collection != null
               ? (await isar.courseCollections.get(collection.id))
               : (await isar.courseCollections.filter().collectionIdEqualTo(content.parentId).findFirst());
       if (getCollection == null) return false;
 
-      if (getCollection.parentId.isEmpty) return false;
+      if (getCollection.parentId.isEmpty) return false; // redundant
       final course = await CourseRepo.getCourseById(getCollection.parentId);
       if (course == null) return false;
 
@@ -211,6 +199,7 @@ class CourseCollectionRepo {
     }
   }
 
+  // check issue here
   static Future<bool> deleteMultipleContents(List<CourseContent> contents, [CourseCollection? collection]) async {
     try {
       final isar = await _isar;
@@ -319,6 +308,7 @@ class CourseCollectionRepo {
     }
   }
 
+  
   static Future<bool> deleteAllContents(CourseCollection collection) async {
     try {
       final isar = await _isar;

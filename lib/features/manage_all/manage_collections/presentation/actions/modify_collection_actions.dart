@@ -7,9 +7,14 @@ import 'package:slides_sync/core/utils/file_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
+import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/core/routes/routes.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_uc.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/usecases/modify_content_uc.dart';
 
 class ModifyCollectionActions {
   /// Add collection to course
@@ -100,14 +105,7 @@ class ModifyCollectionActions {
       );
 
       final Result<String?> deleteOutcome = await Result.tryRunAsync(() async {
-        await collection.contents.load();
-        collection.contents.toList().map((data) async {
-          await FileUtils.deleteFromAppDirectory(relativePath: data.absolutePath);
-        });
-        await CourseCollectionRepo.deleteMultipleContents(collection.contents.toList(), collection);
-        final bool deleteOutcome = await CourseRepo.deleteCollection(collection);
-        if (!deleteOutcome) return "An error occured while deleting!";
-        return null;
+        return ModifyCollectionUc().deleteCollection(collection);
       });
       rootNavigatorKey.currentContext?.pop();
       if (deleteOutcome.isSuccess && deleteOutcome.data == null) {
@@ -120,8 +118,9 @@ class ModifyCollectionActions {
         }
       } else {
         log("${deleteOutcome.message}");
-        if (newContext.mounted)
+        if (newContext.mounted) {
           await UiUtils.showFlushBar(newContext, msg: "Error deleting collection", vibe: FlushbarVibe.error);
+        }
       }
     }
   }

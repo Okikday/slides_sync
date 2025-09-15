@@ -112,7 +112,6 @@ class PopupMenuItemChild extends ConsumerWidget {
 List<ModContentCardTileAction> getActions(BuildContext context, {required CourseContent currContent}) {
   final mca = ModifyContentsAction();
   final actions = <ModContentCardTileAction>[
-    (title: "Select", iconData: Iconsax.tick_circle, onTap: () {}),
     (
       title: "Rename",
       iconData: Iconsax.edit,

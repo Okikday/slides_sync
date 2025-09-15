@@ -5,8 +5,10 @@ import 'package:heroine/heroine.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:path/path.dart' as p;
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -126,14 +128,29 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                               AppPopupMenuButton(
                                 iconSize: 16,
                                 actions: [
-                                  PopupMenuAction(
-                                    title: "Pin",
-                                    iconData: Icons.check_box_outline_blank_rounded,
-                                    onTap: () {},
-                                  ),
                                   PopupMenuAction(title: "Select", iconData: Iconsax.check, onTap: () {}),
                                   PopupMenuAction(title: "Add to Group", iconData: Iconsax.additem, onTap: () {}),
-                                  PopupMenuAction(title: "Remove", iconData: Icons.delete, onTap: () {}),
+                                  PopupMenuAction(title: "Share", iconData: Iconsax.share_copy, onTap: () {}),
+                                  PopupMenuAction(
+                                    title: "Delete",
+                                    iconData: Icons.delete,
+                                    onTap: () async {
+                                      final outcome = await ModifyContentsAction().onDeleteContent(content);
+                                      if (context.mounted) {
+                                        if (outcome == null) {
+                                          UiUtils.showFlushBar(
+                                            context,
+                                            msg: "Deleted content!",
+                                            vibe: FlushbarVibe.success,
+                                          );
+                                        } else if (outcome.toLowerCase().contains("error")) {
+                                          UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.error);
+                                        } else {
+                                          UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.warning);
+                                        }
+                                      }
+                                    },
+                                  ),
                                 ],
                               ),
                             ],

@@ -3,7 +3,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/presentation/actions/modify_collection_actions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CreateCollectionBottomSheet extends ConsumerStatefulWidget {

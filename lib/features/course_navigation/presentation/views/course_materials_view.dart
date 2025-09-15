@@ -8,8 +8,10 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';
 import 'package:slides_sync/features/course_navigation/presentation/providers/course_materials_providers.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/collections_view_search_bar.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/views/add_contents/add_content_fab.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials/materials_view.dart';
+import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -50,6 +52,7 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = ref.theme;
     // ref.watch(streamedCollection).value ??
     final CourseCollection collection = widget.collection;
     return AnnotatedRegion(
@@ -68,7 +71,14 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
                   isListLayoutProvider: CourseMaterialsProviders.isListLayout,
                   backgroundColor: Colors.transparent,
                 ),
-                IconButton(onPressed: () {}, icon: Icon(Iconsax.search_normal_copy)),
+                AppPopupMenuButton(
+                  actions: [
+                    PopupMenuAction(title: "Search", iconData: Iconsax.search_normal_copy, onTap: () {}),
+                    PopupMenuAction(title: "Clean up", iconData: Iconsax.trash_copy, onTap: () {}),
+                    PopupMenuAction(title: "Sort", iconData: Iconsax.arrange_circle, onTap: () {}),
+                  ],
+                ),
+                
               ],
             ),
           ),

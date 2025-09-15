@@ -12,8 +12,12 @@ import 'package:slides_sync/features/manage_all/manage_collections/presentation/
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class CourseDetailsCollectionSection extends ConsumerWidget {
-  const CourseDetailsCollectionSection({super.key, required this.courseAsyncValue});
-
+  const CourseDetailsCollectionSection({
+    super.key,
+    required this.courseAsyncValue,
+    required this.searchCollectionTextNotifier,
+  });
+  final ValueNotifier<String> searchCollectionTextNotifier;
   final AsyncValue<Course> courseAsyncValue;
 
   @override
@@ -39,38 +43,80 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
           );
         }
 
-        return SliverList.builder(
-          itemCount: collections.length,
-          itemBuilder: (context, index) {
-            final list = collections.toList();
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0),
-              child: CourseCategoriesCard(
-                isDarkMode: context.isDarkMode,
-                title: list[index].collectionTitle,
-                contentCount: list[index].contents.length,
+        return ValueListenableBuilder(
+          valueListenable: searchCollectionTextNotifier,
+          builder: (context, value, child) {
+            if (value.isNotEmpty) {
+              final filteredCollection =
+                  collections.where((c) => c.collectionTitle.toLowerCase().contains(value.toLowerCase())).toList();
+              return SliverList.builder(
+                itemCount: filteredCollection.length,
+                itemBuilder: (context, index) {
+                  final list = filteredCollection;
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0),
+                    child: CourseCategoriesCard(
+                      isDarkMode: context.isDarkMode,
+                      title: list[index].collectionTitle,
+                      contentCount: list[index].contents.length,
 
-                onTap: () {
-                  // Navigator.of(context).push(
-                  //     PageTransition(
-                  //       type: PageTransitionType.rightToLeftWithFade,
-                  //       duration: Durations.extralong3,
-                  //       reverseDuration: Durations.medium1,
-                  //       curve: CustomCurves.snappySpring,
-                  //       child: InteractiveCourseMaterialView(collection: list[index]),
-                  //     ),
-                  //   );
+                      onTap: () {
+                        // Navigator.of(context).push(
+                        //     PageTransition(
+                        //       type: PageTransitionType.rightToLeftWithFade,
+                        //       duration: Durations.extralong3,
+                        //       reverseDuration: Durations.medium1,
+                        //       curve: CustomCurves.snappySpring,
+                        //       child: InteractiveCourseMaterialView(collection: list[index]),
+                        //     ),
+                        //   );
 
-                  AppRouteNavigator.to(context).courseMaterialsRoute(list[index]);
+                        AppRouteNavigator.to(context).courseMaterialsRoute(list[index]);
+                      },
+                    ).animate().fadeIn().slideY(
+                      begin: (index / collections.length + 1) * 0.4,
+                      end: 0,
+                      curve: Curves.fastEaseInToSlowEaseOut,
+                      duration: Durations.extralong2,
+                    ),
+                  );
                 },
-              ).animate().fadeIn().slideY(
-                begin: (index / collections.length + 1) * 0.4,
-                end: 0,
-                curve: Curves.fastEaseInToSlowEaseOut,
-                duration: Durations.extralong2,
-              ),
+              );
+            }
+            return SliverList.builder(
+              itemCount: collections.length,
+              itemBuilder: (context, index) {
+                final list = collections.toList();
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0),
+                  child: CourseCategoriesCard(
+                    isDarkMode: context.isDarkMode,
+                    title: list[index].collectionTitle,
+                    contentCount: list[index].contents.length,
+
+                    onTap: () {
+                      // Navigator.of(context).push(
+                      //     PageTransition(
+                      //       type: PageTransitionType.rightToLeftWithFade,
+                      //       duration: Durations.extralong3,
+                      //       reverseDuration: Durations.medium1,
+                      //       curve: CustomCurves.snappySpring,
+                      //       child: InteractiveCourseMaterialView(collection: list[index]),
+                      //     ),
+                      //   );
+
+                      AppRouteNavigator.to(context).courseMaterialsRoute(list[index]);
+                    },
+                  ).animate().fadeIn().slideY(
+                    begin: (index / collections.length + 1) * 0.4,
+                    end: 0,
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                    duration: Durations.extralong2,
+                  ),
+                );
+              },
             );
-          },
+          }
         );
       },
       error:

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
-import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/presentation/actions/modify_collection_actions.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class EditCollectionTitleBottomSheet extends ConsumerStatefulWidget {

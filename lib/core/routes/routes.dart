@@ -26,7 +26,7 @@ dynamic defaultTransition(
       curve: CustomCurves.defaultIosSpring,
       reverseCurve: CustomCurves.defaultIosSpring,
     ),
-    duration: Durations.medium4,
+    duration: Durations.extralong1,
     reverseDuration: Durations.medium1,
 
     child: child,

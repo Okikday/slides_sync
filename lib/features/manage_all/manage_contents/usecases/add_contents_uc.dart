@@ -6,11 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
-import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/select_contents_uc.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/store_contents_uc.dart';
 import 'package:slides_sync/core/routes/routes.dart';
@@ -86,32 +84,5 @@ class AddContentsUc {
       log("${outcome.message}");
       return [];
     }
-  }
-
-  static Future<bool> createNote(
-    CourseCollection collection, {
-    String defaultNote = '',
-    String title = '',
-    List<String> tags = const [],
-  }) async {
-    return (await Result.tryRunAsync<bool>(() async {
-          final parentId = collection.collectionId;
-          final contentHash = sha256.convert(defaultNote.codeUnits).bytes.toString();
-          // final path = collection.absolutePath;
-
-          CourseContent newContent = CourseContent.create(
-            contentHash: contentHash,
-            parentId: parentId,
-            title: title,
-            description: defaultNote,
-            path: FileDetails(),
-            courseContentType: CourseContentType.note,
-            metadataJson: jsonEncode({'tags': tags.toString()}),
-          );
-
-          await CourseCollectionRepo.addContent(newContent);
-          return true;
-        })).data ??
-        false;
   }
 }

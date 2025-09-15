@@ -25,7 +25,7 @@ class ModifyCourseViewActions {
           if (context.mounted) {
             UiUtils.showLoadingDialog(context, message: "Deleting course...");
           }
-          await ModifyCourseActions().onDeleteCourse(id: course.id, courseId: course.courseId);
+          await ModifyCourseActions().onDeleteCourse(courseId: course.courseId);
           if (context.mounted) UiUtils.hideDialog(context);
           if (context.mounted) context.pop();
           if (context.mounted) UiUtils.showFlushBar(context, msg: "Successfully deleted course");

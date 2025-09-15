@@ -19,7 +19,7 @@ class CreateCourseUc {
     final Result<Course?> createCourseOutcome = await Result.tryRunAsync<Course>(() async {
       Course course = Course.create(courseTitle: CourseFormatter.joinCodeToTitle(courseCode, courseName));
 
-      final String? previewImgPath = await compressCourseImageAsFile(
+      final String? previewImgPath = await compressImageToPath(
         courseImagePath,
         folderPath: "courses/${course.courseId}",
       );
@@ -31,8 +31,8 @@ class CreateCourseUc {
         );
       }
 
-      await CourseRepo.addCourse(course);
-      final Course? getCourse = await CourseRepo.getCourseByDbId(course.id);
+      final createdId = await CourseRepo.addCourse(course);
+      final Course? getCourse = await CourseRepo.getCourseByDbId(createdId);
       if (getCourse == null) return null;
       return getCourse;
     });
@@ -43,10 +43,10 @@ class CreateCourseUc {
     return Result.error("Unable to create course");
   }
 
-  static Future<String?> compressCourseImageAsFile(String? courseImagePath, {required String folderPath}) async {
-    if (courseImagePath != null && courseImagePath.isNotEmpty) {
+  static Future<String?> compressImageToPath(String? imagePath, {required String folderPath}) async {
+    if (imagePath != null && imagePath.isNotEmpty) {
       final Result<File> result = await ImageUtils.compressImage(
-        inputFile: File(courseImagePath),
+        inputFile: File(imagePath),
         targetMB: 0.1,
         outputFormat: 'png',
       );

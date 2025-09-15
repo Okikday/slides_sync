@@ -13,7 +13,7 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_details_header/animated_shape.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/edit_collection_title_bottom_sheet.dart';
-import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/presentation/actions/modify_collection_actions.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';

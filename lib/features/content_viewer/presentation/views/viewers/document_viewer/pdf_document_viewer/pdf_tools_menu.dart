@@ -37,7 +37,7 @@ class PdfToolsMenu extends ConsumerWidget {
                         [
                           BuildButton(onTap: () {}, iconData: Iconsax.setting_copy),
                           BuildButton(onTap: () {}, iconData: Iconsax.edit_copy),
-                          BuildButton(onTap: () {}, iconData: Iconsax.search_normal_copy),
+                          BuildButton(onTap: () {}, iconData: Iconsax.magic_star_copy),
                         ].map((e) => Padding(padding: EdgeInsets.only(right: 16), child: e)).toList(),
                   ),
                 ),

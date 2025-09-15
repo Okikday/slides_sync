@@ -16,7 +16,8 @@ class CourseCard extends ConsumerStatefulWidget {
   final Course course;
   final bool isGrid;
   final AutoDisposeStateProvider<bool> scaleClickProvider;
-  const CourseCard(this.course, this.isGrid, {super.key, required this.scaleClickProvider});
+  final void Function(Course course)? onTap;
+  const CourseCard(this.course, this.isGrid, {super.key, required this.scaleClickProvider, this.onTap});
 
   @override
   ConsumerState<CourseCard> createState() => _CourseCardState();
@@ -75,26 +76,28 @@ class _CourseCardState extends ConsumerState<CourseCard> {
                     CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
                   },
                   onTap: () {
+                    if (widget.onTap != null) {
+                      widget.onTap!(widget.course);
+                      return;
+                    }
                     CourseCardActions.of(ref).onTapCourseCard(streamedCourse);
                   },
-                  child: Center(
-                    child:
-                        widget.isGrid
-                            ? GridCourseCard(
-                              streamedCourse,
-                              onTapIcon: () {
-                                CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
-                              },
-                              progress: 0.0,
-                            )
-                            : ListCourseCard(
-                              streamedCourse,
-                              onTapIcon: () {
-                                CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
-                              },
-                              progress: 0.0,
-                            ),
-                  ),
+                  child:
+                      widget.isGrid
+                          ? GridCourseCard(
+                            streamedCourse,
+                            onTapIcon: () {
+                              CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
+                            },
+                            progress: 0.0,
+                          )
+                          : ListCourseCard(
+                            streamedCourse,
+                            onTapIcon: () {
+                              CourseCardActions.of(ref).onHoldCourseCard(streamedCourse);
+                            },
+                            progress: 0.0,
+                          ),
                 ),
               ),
             ),

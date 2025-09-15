@@ -77,6 +77,10 @@ class SettingsView extends ConsumerWidget {
                 trailing: Switch(value: false, onChanged: (p) {}),
               ),
 
+
+              // Help: Note, Materials won't be uploaded except you explicitly share them. 
+              // Option: Always show download size before downloading from SlideSync Repo
+
               // ConstantSizing.columnSpacingMedium,
             ],
           ),

@@ -38,28 +38,24 @@ class CourseContentRepo {
     return await (await _isar).courseContents.filter().contentHashEqualTo(contentHash).findFirst();
   }
 
-  // static Stream<CourseContent?> watchCourseById(String contentHash) async* {
-  //   yield* (await _isar).courseContents
-  //       .filter()
-  //       .contentHashEqualTo(contentHash)
-  //       .watch(fireImmediately: true)
-  //       .map((list) => list.firstOrNull);
-  // }
-
-  static Future<CourseContent?> deleteByHash(String contentHash) async {
-    final isar = await _isar;
-    final CourseContent? collection = await getByHash(contentHash);
-    return await isar.writeTxn<CourseContent?>(() async {
-      if (collection != null) {
-        final idQuery = await _queryById(contentHash);
-        await idQuery.deleteFirst();
-      }
-      return collection;
-    });
+  static Future<bool> doesDuplicateHashExists(String contentHash) async {
+    return (await (await _isar).courseContents.filter().contentHashEqualTo(contentHash).limit(2).findAll()).length > 1;
   }
 
+  // static Future<CourseContent?> deleteByHash(String contentHash) async {
+  //   final isar = await _isar;
+  //   final CourseContent? collection = await getByHash(contentHash);
+  //   return await isar.writeTxn<CourseContent?>(() async {
+  //     if (collection != null) {
+  //       final idQuery = await _queryById(contentHash);
+  //       await idQuery.deleteFirst();
+  //     }
+  //     return collection;
+  //   });
+  // }
+
   /// Gets Duplicate Coursecontents, or contents with same hash
-  static Future<List<CourseContent>> getAllDuplicatesByHash(String contentHash) async {
+  static Future<List<CourseContent>> findAllDuplicatesByHash(String contentHash) async {
     return await (await _isar).courseContents.filter().contentHashEqualTo(contentHash).findAll();
   }
 }

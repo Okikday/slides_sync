@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -47,13 +48,18 @@ class CourseDetailsOuterSection extends ConsumerStatefulWidget {
 class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSection> {
   late final ScrollController viewScrollController;
   late final AutoDisposeStateProvider<double> scrollOffsetProvider;
+  late final TextEditingController searchCollectionController;
+  late final ValueNotifier<String> searchCollectionTextNotifier;
 
   @override
   void initState() {
     super.initState();
     viewScrollController = ScrollController();
     scrollOffsetProvider = AutoDisposeStateProvider((cb) => 0.0);
+    searchCollectionController = TextEditingController();
+    searchCollectionTextNotifier = ValueNotifier("");
     viewScrollController.addListener(updateScrollOffset);
+    searchCollectionController.addListener(searchCollectionTextListener);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(CourseProviders.courseProvider.notifier).updateByDate(widget.course);
     });
@@ -66,8 +72,16 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
     scrollNotifier.update((cb) => newOffset);
   }
 
+  void searchCollectionTextListener() {
+    if (searchCollectionTextNotifier.value == searchCollectionController.text) return;
+    searchCollectionTextNotifier.value = searchCollectionController.text;
+  }
+
   @override
   void dispose() {
+    searchCollectionController.removeListener(searchCollectionTextListener);
+    searchCollectionController.dispose();
+    searchCollectionTextNotifier.dispose();
     viewScrollController.removeListener(updateScrollOffset);
     viewScrollController.dispose();
     super.dispose();
@@ -111,8 +125,19 @@ class _CourseDetailsOuterSectionState extends ConsumerState<CourseDetailsOuterSe
           body: CustomScrollView(
             slivers: [
               PinnedHeaderSliver(child: AdjustingSpacing(scrollOffsetProvider: scrollOffsetProvider)),
-              PinnedHeaderSliver(child: CollectionsViewSearchBar()),
-              CourseDetailsCollectionSection(courseAsyncValue: courseAsyncValue),
+              PinnedHeaderSliver(
+                child: CollectionsViewSearchBar(
+                  searchController: searchCollectionController,
+                  onTap: () {
+                    viewScrollController.animateTo(
+                      appBarHeight + 8,
+                      duration: Durations.medium4,
+                      curve: CustomCurves.defaultIosSpring,
+                    );
+                  },
+                ),
+              ),
+              CourseDetailsCollectionSection(courseAsyncValue: courseAsyncValue, searchCollectionTextNotifier: searchCollectionTextNotifier),
 
               SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
             ],

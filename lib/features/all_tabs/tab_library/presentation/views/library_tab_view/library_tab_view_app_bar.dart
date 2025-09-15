@@ -9,6 +9,7 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/courses_view_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/courses_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_search_view/library_search_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/build_button.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_header_text.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_layout_button.dart';
@@ -70,7 +71,6 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                       children: [
                         const Expanded(child: SizedBox()),
 
-                        // ALL COURSES HEADER
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                           child: Row(
@@ -78,7 +78,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Expanded(child: SizedBox()),
-                              LibraryTabViewSearchButton(onTap: () {}),
+                              LibraryTabViewSearchButton(),
                               Container(
                                 decoration: BoxDecoration(
                                   color: theme.surface.withValues(alpha: 0.75),

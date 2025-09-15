@@ -5,6 +5,7 @@ import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 
 class CourseRepo {
+  
   static final IsarData<Course> _isarData = IsarData.instance<Course>();
   static Future<Isar> get _isar async => await IsarData.isarFuture;
   static Future<Isar> get isar async => await _isar;
@@ -12,9 +13,9 @@ class CourseRepo {
 
   static Future<QueryBuilder<Course, Course, QFilterCondition>> get filter async=> (await _isar).courses.filter();
 
-  static Future<QueryBuilder<Course, Course, QAfterFilterCondition>> _queryById(String courseId) async {
-    return (await _isarData.query<Course>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
-  }
+  // static Future<QueryBuilder<Course, Course, QAfterFilterCondition>> _queryById(String courseId) async {
+  //   return (await _isarData.query<Course>((q) => q.idGreaterThan(0))).filter().courseIdEqualTo(courseId);
+  // }
 
   static Future<void> deleteCourseByDbId(int dbId) async => await _isarData.deleteById(dbId);
 
@@ -45,7 +46,7 @@ class CourseRepo {
     final Course? course = await getCourseById(courseId);
     return await isar.writeTxn<Course?>(() async {
       if (course != null) {
-        final idQuery = await _queryById(courseId);
+        final idQuery = (await filter).courseIdEqualTo(courseId);
         await idQuery.deleteFirst();
       }
       return course;

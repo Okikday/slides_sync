@@ -10,11 +10,12 @@ import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_
 
 class ModifyContentUc {
   Future<String?> deleteContentAction(CourseContent content) async {
+    final bool dupHashExists = await CourseContentRepo.doesDuplicateHashExists(content.contentHash);
     await CourseCollectionRepo.deleteContent(content);
     await RecentDialogActions.removeIdFromRecents(content.contentId);
     await ProgressTrackRepo.deleteByContentId(content.contentId);
-    final CourseContent? sameHashedContent = await CourseContentRepo.getByHash(content.contentHash);
-    if (sameHashedContent == null) {
+
+    if (!dupHashExists) {
       await FileUtils.deleteFileAtPath(content.path.filePath);
       await FileUtils.deleteFileAtPath(CreateContentPreviewImage.genPreviewImagePath(filePath: content.path.filePath));
     }
@@ -22,9 +23,24 @@ class ModifyContentUc {
     return null;
   }
 
+  // Future<String?> deleteContentsAction(List<CourseContent> contents) async {
+  //   String? latestMsg;
+  //   for (var item in contents) {
+  //     latestMsg = await deleteContentAction(item);
+  //   }
+
+  //   return latestMsg;
+  // } // too intensive
+
   Future<String?> renameContentAction(CourseContent content, String newTitle) async {
     return (await Result.tryRunAsync(() async {
-      await CourseContentRepo.add(content.copyWith(contentHash: content.contentHash, title: newTitle));
+      CourseContent? stContent = await CourseContentRepo.getByDbId(content.id);
+      if (stContent == null) {
+        stContent = await CourseContentRepo.getByContentId(content.contentId);
+        if (stContent == null) return;
+      }
+
+      await CourseContentRepo.add(stContent.copyWith(contentHash: content.contentHash, title: newTitle));
       return null;
     })).data;
   }

@@ -8,7 +8,7 @@ import 'package:slides_sync/core/global_providers/course_providers.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/shared/components/dialogs/app_alert_dialog.dart';
 import 'package:slides_sync/shared/helpers/course_formatter.dart';
 

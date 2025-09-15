@@ -7,7 +7,7 @@ import 'package:slides_sync/domain/models/course_model/sub/course_collection.dar
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
-import 'package:slides_sync/features/manage_all/manage_contents/repos/get_content_repo/get_content_repo.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/domain/repos/get_content_repo/get_content_repo.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 
 
@@ -19,7 +19,7 @@ class AddLinkActions {
     required PreviewLinkDetails previewLinkDetails,
   }) async {
     final contentHash = BasicUtils.calculateStringHash(link);
-    final CourseContent? sameHashedContent = await CourseCollectionRepo.findFirstDuplicateByHash(
+    final CourseContent? sameHashedContent = await CourseCollectionRepo.findFirstDuplicateContentByHash(
       collection,
       contentHash,
     );

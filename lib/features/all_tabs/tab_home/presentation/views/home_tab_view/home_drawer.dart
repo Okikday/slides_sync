@@ -77,11 +77,7 @@ class HomeDrawer extends ConsumerWidget {
                   // Tools like Calculate gpa, etc
                 },
               ),
-              ListTile(
-                tileColor: Colors.transparent,
-                leading: Icon(Iconsax.information_copy, color: theme.supportingText.withValues(alpha: 0.5)),
-                title: CustomText("Help", color: theme.onBackground),
-              ),
+              
             ],
           ),
         ),

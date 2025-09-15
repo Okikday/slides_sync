@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -15,7 +16,11 @@ export 'dart:io';
 enum AppDirType { documents, appSupport, temporary, cache }
 
 class FileUtils {
-  static Future<String> _storeToApplicationsDocumentsDirectory(File file, String folderPath, String? newFileName) async {
+  static Future<String> _storeToApplicationsDocumentsDirectory(
+    File file,
+    String folderPath,
+    String? newFileName,
+  ) async {
     final Directory baseDir = await getApplicationDocumentsDirectory();
     final String fileName = p.basename(file.path);
     final String targetDirPath = p.join(baseDir.path, folderPath);
@@ -73,7 +78,10 @@ class FileUtils {
   /// Deletes [relativePath] under the selected [base] directory.
   /// e.g. if base==documents and relativePath=="foo/bar",
   /// this will delete `appDocDir`/foo/bar recursively.
-  static Future<bool> deleteFromAppDirectory({required String relativePath, AppDirType base = AppDirType.documents}) async {
+  static Future<bool> deleteFromAppDirectory({
+    required String relativePath,
+    AppDirType base = AppDirType.documents,
+  }) async {
     try {
       Directory baseDir;
       switch (base) {
@@ -157,6 +165,47 @@ class FileUtils {
     } catch (e) {
       log('Error searching for file: $e');
       return null;
+    }
+  }
+
+  /// Recursively collects all empty directories under [rootDirPath].
+  static Future<List<Directory>> findEmptyDirectories(String rootDirPath) async {
+    final root = Directory(rootDirPath);
+    if (!await root.exists()) return [];
+
+    List<Directory> emptyDirs = [];
+
+    Future<void> scan(Directory dir) async {
+      final entries = dir.listSync();
+      for (var entity in entries) {
+        if (entity is Directory) {
+          await scan(entity);
+        }
+      }
+      // Recheck after scanning children — some subdirs might have been empty
+      if (dir.listSync().isEmpty) {
+        emptyDirs.add(dir);
+      }
+    }
+
+    await scan(root);
+    return emptyDirs;
+  }
+
+  /// Deletes all empty directories under [rootDirPath].
+  static Future<void> deleteEmptyCoursesDirsInIsolate(Map<String, dynamic> data) async {
+    log("Deleting Empty directories");
+    final RootIsolateToken rootIsolateToken = data['rootIsolateToken'] as RootIsolateToken;
+    final String rootDirPath = data['rootDirPath'] ?? '';
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+    final Directory baseDir = await getApplicationDocumentsDirectory();
+    final empties = await findEmptyDirectories(
+      rootDirPath.isEmpty ? baseDir.path : "${rootDirPath}${Platform.pathSeparator}courses",
+    );
+    for (var dir in empties) {
+      try {
+        await dir.delete(recursive: false);
+      } catch (_) {}
     }
   }
 }

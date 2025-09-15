@@ -12,6 +12,7 @@ import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
+import 'package:slides_sync/features/manage_all/manage_collections/usecases/modify_collections_uc/modify_collection_uc.dart';
 import 'package:slides_sync/features/manage_all/manage_course/usecases/create_course_uc/create_course_uc.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/course_description_dialog.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/edit_course_bottom_sheet.dart';
@@ -21,9 +22,14 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyCourseActions {
   /// When the user clicks to delete the course, on the Dialog
-  Future<void> onDeleteCourse({required int id, required String courseId}) async {
-    await CourseRepo.deleteCourseByDbId(id);
-    await FileUtils.deleteFromAppDirectory(relativePath: "courses/$courseId");
+  Future<void> onDeleteCourse({required String courseId}) async {
+    final course = await CourseRepo.getCourseById(courseId);
+    if (course == null) return;
+    for (final item in course.collections) {
+      await ModifyCollectionUc().deleteCollection(item);
+    }
+
+    await CourseRepo.deleteCourseByDbId(course.id);
   }
 
   /// When the user Modifies image
@@ -34,7 +40,10 @@ class ModifyCourseActions {
       if (course.imageLocationJson.containsAnyFilePath) {
         await FileUtils.deleteFileAtPath(course.imageLocationJson.filePath);
       }
-      final String? newPath = await CreateCourseUc.compressCourseImageAsFile(newImageFile.path, folderPath: "courses/${course.courseId}");
+      final String? newPath = await CreateCourseUc.compressImageToPath(
+        newImageFile.path,
+        folderPath: "courses/${course.courseId}",
+      );
       if (newPath != null) {
         course = course.copyWith(imageLocationJson: FileDetails(filePath: newPath).toJson());
         await CourseRepo.addCourse(course);
@@ -107,12 +116,18 @@ class ModifyCourseActions {
 
   /// This picks image from device, shows a loading dialog
   Future<void> pickImageActionRoute(BuildContext context, {required int courseDbId}) async {
-    UiUtils.showLoadingDialog(context, message: "Selecting image", backgroundColor: Colors.white10, blurSigma: Offset(2, 2));
+    UiUtils.showLoadingDialog(
+      context,
+      message: "Selecting image",
+      backgroundColor: Colors.white10,
+      blurSigma: Offset(2, 2),
+    );
     ImagePicker imagePicker = ImagePicker();
     final XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     if (context.mounted) CustomDialog.hide(context);
     if (pickedImage == null) {
-      if (context.mounted) UiUtils.showFlushBar(context, msg: "Oops, You didn't select an image!", vibe: FlushbarVibe.warning);
+      if (context.mounted)
+        UiUtils.showFlushBar(context, msg: "Oops, You didn't select an image!", vibe: FlushbarVibe.warning);
       return;
     }
 

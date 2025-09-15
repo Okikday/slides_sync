@@ -17,7 +17,7 @@ class LibraryTabViewHeaderText extends ConsumerWidget {
     final scrollOffset = ref.watch(LibraryTabViewProviders.scrollPosition);
     final double percentScroll = 1.0 - (scrollOffset / (maxHeight - minHeight));
     final CustomText textWidget = CustomText(
-      "All Courses",
+      "Your Library",
       fontSize: (minHeight * percentScroll).clamp(20.0, 26),
       fontWeight: FontWeight.bold,
       textAlign: TextAlign.center,

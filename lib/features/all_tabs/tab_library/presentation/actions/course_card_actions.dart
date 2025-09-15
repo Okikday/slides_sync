@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
@@ -19,14 +18,14 @@ class CourseCardActions {
     final isCourseCardAnimating = ref.read(LibraryTabViewProviders.isCourseCardAnimating.notifier);
     if (isCourseCardAnimating.state) return;
     isCourseCardAnimating.update((cb) => true); // Tell that a course is currently opened
-
-    await Future.delayed(Durations.short4);
     ref.read(CourseProviders.courseProvider.notifier).updateCourse(course);
+    await Future.delayed(Durations.short4);
+
     if (context.mounted) AppRouteNavigator.to(context).courseDetailsRoute(course);
     if (context.mounted) isCourseCardAnimating.update((cb) => false);
   }
 
-  void onHoldCourseCard(Course course) async{
+  void onHoldCourseCard(Course course) async {
     final Offset? tapPosition = ref.read(LibraryTabViewProviders.cardTapPositionDetails.notifier).state;
     if (tapPosition == null) return;
     UiUtils.showCustomDialog(

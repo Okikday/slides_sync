@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/build_button.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/library_tab_view_search_button.dart';
 import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
@@ -24,7 +25,8 @@ class DocumentAppBar extends ConsumerWidget {
           padding: const EdgeInsets.only(left: 8.0),
           child: Row(
             children: [
-              LibraryTabViewSearchButton(
+              BuildButton(
+                iconData: Iconsax.search_normal_copy,
                 backgroundColor: Colors.transparent,
                 onTap: () {
                   isSearchingNotifier.value = true;

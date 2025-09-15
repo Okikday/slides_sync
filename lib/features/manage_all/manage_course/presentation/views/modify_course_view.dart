@@ -12,7 +12,7 @@ import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/actions/modify_course_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
-import 'package:slides_sync/features/manage_all/manage_course/presentation/viewmodels/modify_course_providers.dart';
+import 'package:slides_sync/features/manage_all/manage_course/presentation/providers/modify_course_providers.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/collections_section.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/edit_course_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_course/presentation/views/modify_course/modify_course_header.dart';
