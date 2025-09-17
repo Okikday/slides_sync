@@ -7,25 +7,25 @@ import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
+import 'package:slides_sync/features/course_navigation/presentation/actions/content_card_actions.dart';
+import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/modify_content_card_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/common_widgets/input_text_bottom_sheet.dart';
 import 'package:slides_sync/shared/common_widgets/modifying_list_tile.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/helpers/widget_helper.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
-typedef ModContentCardTileAction<Record> = ({String title, IconData iconData, void Function() onTap});
-
-
-
 class ModContentCardTile extends ConsumerStatefulWidget {
   final CourseContent content;
+  final bool? isSelected;
 
   /// This entails on click the icon or on long press
   final void Function()? onSelected;
   final void Function()? onTap;
-  const ModContentCardTile({super.key, required this.content, this.onSelected, this.onTap});
+  const ModContentCardTile({super.key, required this.content, this.isSelected, this.onSelected, this.onTap});
 
   @override
   ConsumerState<ModContentCardTile> createState() => _ModContentCardTileState();
@@ -43,115 +43,58 @@ class _ModContentCardTileState extends ConsumerState<ModContentCardTile> {
 
   @override
   Widget build(BuildContext context) {
-    final CourseContent? currContent = ref.watch(contentProvider).value;
-    final actions = getActions(context, currContent: currContent ?? widget.content);
-    final theme = ref.theme;
+    final CourseContent content = ref.watch(contentProvider).value ?? widget.content;
     return Padding(
       padding: EdgeInsets.only(bottom: context.hPadding7),
       child: ModifyingListTile(
-        leading: BuildImagePathWidget(
-          fileDetails: FileDetails(filePath: CreateContentPreviewImage.genPreviewImagePath(filePath: widget.content.path.filePath)),
-          fallbackWidget: Icon(
-            WidgetHelper.resolveIconData(widget.content.courseContentType),
-            size: 22,
-            color: theme.primaryColor,
-          ),
+        onTapTile: widget.onTap,
+        leading: FutureBuilder(
+          future: ContentCardActions.resolvePreviewPath(content),
+          builder: (context, asyncSnapshot) {
+            if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+              return BuildImagePathWidget(
+                fileDetails: asyncSnapshot.data!,
+                fit: BoxFit.cover,
+                fallbackWidget: Icon(WidgetHelper.resolveIconData(content.courseContentType, false), size: 36),
+              );
+            }
+            return BuildImagePathWidget(
+              fileDetails: FileDetails(),
+              fallbackWidget: Icon(WidgetHelper.resolveIconData(content.courseContentType, false), size: 36),
+            );
+          },
         ),
-        trailing: PopupMenuTheme(
-          data: PopupMenuThemeData(
-            color: theme.background.withValues(alpha: 0.95),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(16)),
-            shadowColor: Colors.white.withAlpha(10),
-          ),
-          child: CircleAvatar(
-            backgroundColor: theme.altBackgroundPrimary,
-            child: PopupMenuButton<int>(
-              tooltip: "Show options",
-              clipBehavior: Clip.hardEdge,
-              menuPadding: EdgeInsets.zero,
-              icon: Icon(Iconsax.more_copy, color: theme.supportingText),
-              onSelected: (value) => actions[value].onTap(),
-              itemBuilder: (context) {
-                return List<PopupMenuItem<int>>.generate(actions.length, (index) {
-                  final a = actions[index];
-                  return PopupMenuItem(value: index, child: PopupMenuItemChild(title: a.title, iconData: a.iconData));
-                });
-              },
-            ),
-          ),
-        ),
-        title: currContent?.title ?? widget.content.title,
-        subtitle: widget.content.courseContentType.name.substring(0, 1).toUpperCase() + widget.content.courseContentType.name.substring(1),
+        trailing:
+            widget.isSelected == null
+                ? AppPopupMenuButton(
+                  actions: [
+                    PopupMenuAction(
+                      title: "Select",
+                      iconData: Iconsax.check,
+                      onTap: () {
+                        if (widget.onSelected != null) widget.onSelected!();
+                      },
+                    ),
+                    PopupMenuAction(
+                      title: "Rename",
+                      iconData: Iconsax.edit,
+                      onTap: () => ModifyContentCardActions.onRenameContent(context, content),
+                    ),
+                    PopupMenuAction(
+                      title: "Delete",
+                      iconData: Iconsax.trash,
+                      onTap: () => ModifyContentCardActions.onDeleteContent(context, content),
+                    ),
+                  ],
+                )
+                : (widget.isSelected!
+                    ? Icon(Icons.check_circle_rounded, size: 32, color: ref.theme.primary)
+                    : Icon(Icons.circle, size: 32, color: ref.theme.onSurface.withAlpha(150))),
+        title: content.title,
+        subtitle:
+            widget.content.courseContentType.name.substring(0, 1).toUpperCase() +
+            widget.content.courseContentType.name.substring(1),
       ),
     );
   }
-}
-
-class PopupMenuItemChild extends ConsumerWidget {
-  final IconData iconData;
-  final String title;
-  const PopupMenuItemChild({super.key, required this.title, required this.iconData});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.theme;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 8,
-      children: [
-        Icon(iconData, color: theme.supportingText),
-        CustomText(title, color: theme.onBackground),
-        ConstantSizing.rowSpacingSmall,
-      ],
-    );
-  }
-}
-
-
-/// Available actions you can take to modify a content
-List<ModContentCardTileAction> getActions(BuildContext context, {required CourseContent currContent}) {
-  final mca = ModifyContentsAction();
-  final actions = <ModContentCardTileAction>[
-    (
-      title: "Rename",
-      iconData: Iconsax.edit,
-      onTap: () {
-        UiUtils.showCustomDialog(
-          context,
-          child: InputTextBottomSheet(
-            title: "Rename content",
-            hintText: "Input a title different from previous one",
-            defaultText: currContent.title,
-            onSubmitted: (String text) async {
-              await mca.onRenameContent(currContent, newTitle: text.trim());
-              if (context.mounted) UiUtils.hideDialog(context);
-            },
-          ).animate().fadeIn().scaleY(
-            begin: 0.1,
-            end: 1.0,
-            curve: CustomCurves.bouncySpring,
-            duration: Durations.extralong1,
-            alignment: Alignment.bottomCenter,
-          ),
-        );
-      },
-    ),
-    (
-      title: "Delete",
-      iconData: Iconsax.trash,
-      onTap: () async {
-        final outcome = await mca.onDeleteContent(currContent);
-        if (context.mounted) {
-          if (outcome == null) {
-            UiUtils.showFlushBar(context, msg: "Successfully removed content!", vibe: FlushbarVibe.success);
-          } else if (outcome.toLowerCase().contains("error")) {
-            UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.error);
-          } else {
-            UiUtils.showFlushBar(context, msg: outcome, vibe: FlushbarVibe.warning);
-          }
-        }
-      },
-    ),
-  ];
-  return actions;
 }

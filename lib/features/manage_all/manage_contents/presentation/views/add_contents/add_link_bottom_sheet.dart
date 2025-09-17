@@ -64,9 +64,9 @@ class _AddLinkBottomSheetState extends ConsumerState<AddLinkBottomSheet> {
             }
             rootNavigatorKey.currentContext?.pop();
 
-            final bool result = await AddLinkActions.onClickToAddLinkContent(
+            final bool result = await AddLinkActions.onAddLinkContent(
               text,
-              collection: widget.collection,
+              parentId: widget.collection.collectionId,
               previewLinkDetails: additionalDetails.value,
             );
             if (result) {

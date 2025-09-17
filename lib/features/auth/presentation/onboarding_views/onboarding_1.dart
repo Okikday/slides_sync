@@ -115,9 +115,12 @@ class Onboarding1 extends ConsumerWidget {
             right: 24,
             child: ScaleClickWrapper(
               borderRadius: 60,
-              onTap: () {
-                Navigator.push(context, PageAnimation.pageRouteBuilder(SignInView(), type: TransitionType.fade));
-                UiUtils.showFlushBar(context, msg: "Skipped Onboardings", vibe: FlushbarVibe.warning);
+              onTapUp: (det) async {
+                await Future.delayed(Durations.short2);
+                if (context.mounted) {
+                  Navigator.push(context, PageAnimation.pageRouteBuilder(SignInView(), type: TransitionType.fade));
+                  UiUtils.showFlushBar(context, msg: "Skipped Onboardings", vibe: FlushbarVibe.warning);
+                }
               },
               child: CustomElevatedButton(
                 shape: CircleBorder(),
@@ -126,7 +129,6 @@ class Onboarding1 extends ConsumerWidget {
                 pixelWidth: 60,
                 pixelHeight: 60,
                 child: Icon(Iconsax.arrow_right_1_copy, size: 32, color: theme.onPrimary),
-                
               ),
             ),
           ),

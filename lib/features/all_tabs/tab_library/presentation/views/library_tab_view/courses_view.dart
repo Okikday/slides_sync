@@ -98,11 +98,7 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
                 },
                 itemBuilder: (context, item, index) {
                   final course = item as Course;
-                  return CourseCard(
-                    course,
-                    isGrid,
-                    scaleClickProvider: LibraryTabViewProviders.isCourseCardTappedDownFamily(index),
-                  );
+                  return CourseCard(course, isGrid);
                 },
               ),
             );
@@ -127,11 +123,7 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
                 },
                 itemBuilder: (context, item, index) {
                   final course = item as Course;
-                  return CourseCard(
-                    course,
-                    isGrid,
-                    scaleClickProvider: LibraryTabViewProviders.isCourseCardTappedDownFamily(index),
-                  );
+                  return CourseCard(course, isGrid);
                 },
               ),
             );

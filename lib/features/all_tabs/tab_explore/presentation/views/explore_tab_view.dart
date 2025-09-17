@@ -1,15 +1,13 @@
-import 'dart:developer';
+
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/core/routes/app_route_navigator.dart';
-import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/link_viewer/drive_listing_view.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/test/file_manager_page.dart';
 
 class ExploreTabView extends ConsumerStatefulWidget {
@@ -48,7 +46,6 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
                 backgroundColor: theme.primary,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 onClick: () {
-                  Navigator.push(context, PageAnimation.pageRouteBuilder(FileManagerPage()));
                 },
                 child: CustomText(
                   'Welcome to Explore',
@@ -66,6 +63,24 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
                       Navigator.push(context, PageAnimation.pageRouteBuilder(FileManagerPage()));
                     },
                     child: CustomText('File Manager page', color: ref.theme.onBackground),
+                  ),
+                ),
+              if (kDebugMode)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomElevatedButton(
+                    backgroundColor: theme.primary,
+                    onClick: () {
+                      Navigator.push(
+                        context,
+                        PageAnimation.pageRouteBuilder(
+                          DriveListingView(
+                            initialFolderId: "https://drive.google.com/drive/folders/1_fUv-LR7IS1PTLEWK6GlLNjDWSbcQWWx",
+                          ),
+                        ),
+                      );
+                    },
+                    child: CustomText('Test drive', color: ref.theme.onBackground),
                   ),
                 ),
             ],

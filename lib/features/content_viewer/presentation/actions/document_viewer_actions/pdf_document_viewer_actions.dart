@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -15,41 +16,54 @@ import 'package:slides_sync/domain/models/progress_track_model.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
+const Duration readValidityDuration = Duration(seconds: 10);
+
 class PdfDocumentViewerActions {
   final CourseContent content;
   final PdfViewerController pdfViewerController;
-  late final Timer? progressTrackTimer;
-  int trackCount = 0;
+  final ValueNotifier<ProgressTrackModel?> progressTrackNotifier = ValueNotifier(null);
+  final Stopwatch pageStayStopWatch = Stopwatch();
   bool isUpdatingProgressTrack = false;
-  static const _trackInterval = Duration(seconds: 10);
-  int? currentPageOffset;
-  PdfDocumentViewerActions._(
-    this.content,
-    this.pdfViewerController,
-    ValueNotifier<ProgressTrackModel?> progressTrackNotifier,
-  ) {
-    progressTrackTimer = Timer.periodic(_trackInterval, (timer) => pageNumberTracker(timer, progressTrackNotifier));
-    // currentPageOffset = null;
+  int? currentPageNumber;
+  int? lastUpdatedPage;
+  PdfDocumentViewerActions._(this.content, this.pdfViewerController) {
+    _initLastProgress();
   }
-  static PdfDocumentViewerActions of(
-    CourseContent content, {
-    required PdfViewerController pdfViewerController,
-    required ValueNotifier<ProgressTrackModel?> progressTrackNotifier,
-  }) => PdfDocumentViewerActions._(content, pdfViewerController, progressTrackNotifier);
+
+  static PdfDocumentViewerActions of(CourseContent content, {required PdfViewerController pdfViewerController}) =>
+      PdfDocumentViewerActions._(content, pdfViewerController);
 
   static final Future<Isar> _isar = IsarData.isarFuture;
   static final IsarData<ProgressTrackModel> _isarData = IsarData.instance();
 
+  void _initLastProgress() async {
+    await Future.microtask(() async {
+      if (progressTrackNotifier.value != null) return;
+      final ProgressTrackModel? progressTrack = await getLastProgressTrack(content);
+      if (progressTrack != null) {
+        progressTrackNotifier.value = progressTrack;
+        pdfViewerController.addListener(monitorPageListener);
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => Result.tryRun(() => pdfViewerController.goToPage(pageNumber: progressTrack.lastPosition)),
+        );
+      }
+    });
+  }
+
+  /// Gets the progress of the current document from last session
   static Future<ProgressTrackModel?> getLastProgressTrack(CourseContent content) async {
     final ptm = (await (await _isar).progressTrackModels.where().contentIdEqualTo(content.contentId).findFirst());
     if (ptm == null) {
       final result = await _createProgressTrackModel(content);
       if (result == null) return null; // A critical error occured!
       return result;
+    } else {
+      final updatedPtm = await _updateProgressTrack(ptm.copyWith(lastRead: DateTime.now()));
+      return updatedPtm;
     }
-    return ptm;
   }
 
+  /// Creates a new progress track model if it didn't exist
   static Future<ProgressTrackModel?> _createProgressTrackModel(CourseContent content) async {
     final result = await Result.tryRunAsync(() async {
       final ProgressTrackModel newPtm = ProgressTrackModel.create(
@@ -59,84 +73,96 @@ class PdfDocumentViewerActions {
         contentHash: content.contentHash,
         progress: 0.0,
         metadataJson: jsonEncode({
-                'previewPath':
-                    CreateContentPreviewImage.genPreviewImagePathRecord(filePath: content.path.filePath).previewPath,
-              }),
+          'previewPath':
+              CreateContentPreviewImage.genPreviewImagePathRecord(filePath: content.path.filePath).previewPath,
+        }),
       );
       return (await _isarData.getById(await _isarData.store(newPtm)));
     });
     return result.data;
   }
 
+  /// Update progress track
   static Future<ProgressTrackModel> _updateProgressTrack(ProgressTrackModel ptm) async =>
       await _isarData.getById(await _isarData.store(ptm)) ?? ptm;
 
-  void pageNumberTracker(Timer? timer, ValueNotifier<ProgressTrackModel?> progressTrackNotifier) async {
-    log("This shows up every ${_trackInterval.inSeconds} seconds");
-
+  void monitorPageListener() async {
     if (isUpdatingProgressTrack) return;
-    if (currentPageOffset != null && pdfViewerController.pageNumber == currentPageOffset) {
-      // Improve in the future with listeners
-      log("Progress not updated, still on same page!");
-      return;
-    } else {
-      currentPageOffset = pdfViewerController.pageNumber;
-    }
-    final progressTrack = progressTrackNotifier.value;
-    if (progressTrack == null) return;
-    final pageNumber = pdfViewerController.pageNumber;
-    if (progressTrack.lastPosition == pageNumber) return;
-    if (pageNumber == null) return;
-    isUpdatingProgressTrack = true;
-    final oldPages = progressTrack.pages.toSet();
-    if (oldPages.contains(pageNumber.toString())) {
-      await PdfDocumentViewerActions._updateProgressTrack(
-        trackCount > 0
-            ? progressTrack.copyWith(lastPosition: pageNumber, lastRead: DateTime.now())
-            : progressTrack.copyWith(
-              title: content.title,
-              description: content.description,
-              lastPosition: pageNumber,
-              lastRead: DateTime.now(),
-              metadataJson: jsonEncode({
-                ...progressTrack.metadataJson.decodeJson,
-                'previewPath':
-                    CreateContentPreviewImage.genPreviewImagePathRecord(filePath: content.path.filePath).previewPath,
-              }),
-            ),
-      ).then(((onValue) => isUpdatingProgressTrack = false), onError: (onValue) => isUpdatingProgressTrack = false);
-    } else {
-      final progress = ((oldPages.length + 1) / pdfViewerController.pageCount).clamp(0.0, 1.0);
-      final newPages = {...progressTrack.pages.toSet(), pageNumber.toString()}.toList();
-      await PdfDocumentViewerActions._updateProgressTrack(
-        trackCount > 0
-            ? progressTrack.copyWith(
-              lastPosition: pageNumber,
-              pages: newPages,
-              progress: progress,
-              lastRead: DateTime.now(),
-            )
-            : progressTrack.copyWith(
-              title: content.title,
-              description: content.description,
-              lastPosition: pageNumber,
-              pages: newPages,
-              progress: progress,
-              lastRead: DateTime.now(),
-              metadataJson: jsonEncode({
-                ...progressTrack.metadataJson.decodeJson,
-                'previewPath':
-                    CreateContentPreviewImage.genPreviewImagePathRecord(filePath: content.path.filePath).previewPath,
-              }),
-            ),
-      ).then(((onValue) => isUpdatingProgressTrack = false), onError: (onValue) => isUpdatingProgressTrack = false);
-    }
+    final monitorResult = await Result.tryRunAsync(() async {
+      if (!_isPdfCtrllerSettled()) return;
+      final pageNumber = pdfViewerController.pageNumber;
+      final currPageNumber = currentPageNumber;
+      if (currPageNumber == null) {
+        pageStayStopWatch.stop();
+        currentPageNumber = pageNumber;
+        pageStayStopWatch.reset();
+        pageStayStopWatch.start();
+        log("This page doesn't count!");
+        return;
+      } else {
+        if (pageNumber == currPageNumber) {
+          if (pageStayStopWatch.elapsed.inSeconds < readValidityDuration.inSeconds) {
+            log("Page under-read!");
+            return;
+          } else {
+            if (lastUpdatedPage != null && lastUpdatedPage == currPageNumber) return;
+            log("Adding page to progress tracker!");
+            pageStayStopWatch.stop();
+            pageStayStopWatch.reset();
+            isUpdatingProgressTrack = true;
+            final progressTrack = progressTrackNotifier.value;
+            if (progressTrack == null) {
+              isUpdatingProgressTrack = false;
+              pageStayStopWatch.start();
+              return;
+            }
 
-    trackCount++;
+            final newPages = LinkedHashSet<String>.from(progressTrack.pages);
+            newPages.add(currPageNumber.toString());
+            final totalPageCount = pdfViewerController.pageCount;
+            await _updateProgressTrack(
+              progressTrack.copyWith(
+                pages: newPages.toList(),
+                progress: newPages.length / totalPageCount,
+                lastRead: DateTime.now(),
+              ),
+            );
+            lastUpdatedPage = currPageNumber;
+            isUpdatingProgressTrack = false;
+            pageStayStopWatch.start();
+            return;
+          }
+        } else {
+          pageStayStopWatch.stop();
+          pageStayStopWatch.reset();
+          currentPageNumber = pageNumber;
+          pageStayStopWatch.start();
+          log("Just got to the page, nothing to update!");
+          return;
+        }
+      }
+    });
+    monitorResult.onError((e, [st]) {
+      isUpdatingProgressTrack = false;
+      lastUpdatedPage = null;
+      pageStayStopWatch.reset();
+      pageStayStopWatch.start();
+    });
+  }
+
+  bool _isPdfCtrllerSettled() {
+    if (!pdfViewerController.isReady) return false;
+    if (pdfViewerController.pageNumber == null) return false;
+    return true;
   }
 
   void dispose() {
-    progressTrackTimer?.cancel();
+    pdfViewerController.removeListener(monitorPageListener);
+
+    progressTrackNotifier.dispose();
+    pageStayStopWatch
+      ..reset()
+      ..stop();
     Future.microtask(() => Result.tryRunAsync(() async => await _addToRecentContents(content.contentId)));
     log("Disposed pdf viewer actions ");
   }
@@ -148,12 +174,9 @@ Future<void> _addToRecentContents(String contentId) async {
   if (rawOldRecents == null) {
     await hiveInstance.setData(key: HiveDataPaths.recentContentsIds, value: [contentId]);
   } else {
-    List<String> recents = List.from(rawOldRecents);
-    if (recents.contains(contentId)) {
-      recents.remove(contentId);
-    }
+    final recents = LinkedHashSet<String>.from(rawOldRecents);
     recents.add(contentId);
-    await hiveInstance.setData(key: HiveDataPaths.recentContentsIds, value: recents);
+    await hiveInstance.setData(key: HiveDataPaths.recentContentsIds, value: recents.toList());
   }
   log("Adding pdf to recents");
   return;

@@ -14,7 +14,7 @@ class FirebaseGoogleAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final CollectionReference _collectionReference = FirebaseFirestore.instance.collection('users');
   final GoogleSignIn _googleAuth = GoogleSignIn(
-    scopes: ['email', 'profile', 'openid', drive.DriveApi.driveMetadataReadonlyScope],
+    scopes: ['email', 'profile', 'openid'],
   );
   final FirebaseAuthData _firebaseData = FirebaseAuthData();
   UserCredential? _userCredential;

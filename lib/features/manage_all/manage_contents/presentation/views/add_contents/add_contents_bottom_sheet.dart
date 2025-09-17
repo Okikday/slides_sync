@@ -3,10 +3,12 @@ import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/utils/result.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/providers/add_contents_bs_provider.dart';
@@ -26,17 +28,24 @@ class AddContentsBottomSheet extends ConsumerStatefulWidget {
 
 class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet> {
   late final FixedExtentScrollController fixedExtentScrollController;
+  bool isScanningClipboard = false;
 
   @override
   void initState() {
     super.initState();
     fixedExtentScrollController = FixedExtentScrollController(initialItem: 1);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      try {
+      if (isScanningClipboard) return;
+      isScanningClipboard = true;
+      await Result.tryRunAsync(() async {
         if (!mounted) return;
 
         final lastClipboardDataProvider = ref.read(AddContentsBsProvider.lastClipboardData.notifier);
-        final newClipboardData = await AddContentsActions.scanClipboardForData();
+        final RootIsolateToken? rootIsolateToken = RootIsolateToken.instance;
+        if (rootIsolateToken == null) return;
+        final newClipboardData = await compute(AddContentsActions.scanClipboardForData, <String, dynamic>{
+          'token': rootIsolateToken,
+        });
 
         if (!mounted) return;
 
@@ -72,11 +81,9 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
           final OverlayState overlay = Overlay.of(context);
           overlay.insert(addFromClipboardOverlayEntry);
         }
-      } catch (e) {
-        log('Error in initState callback: $e');
-      }
+      });
     });
-}
+  }
 
   @override
   void dispose() {
@@ -99,17 +106,15 @@ class _AddContentsBottomSheetState extends ConsumerState<AddContentsBottomSheet>
             child: Align(
               alignment: Alignment.bottomCenter,
               child: AddContentCardSection(
-                    fixedExtentScrollController: fixedExtentScrollController,
-                    collection: widget.collection,
-                  )
-                  .animate()
-                  .scale(
-                    alignment: Alignment.bottomRight,
-                    begin: Offset(0.9, 0.6),
-                    end: Offset(1, 1),
-                    duration: Durations.extralong1,
-                    curve: CustomCurves.bouncySpring,
-                  )
+                fixedExtentScrollController: fixedExtentScrollController,
+                collection: widget.collection,
+              ).animate().scale(
+                alignment: Alignment.bottomRight,
+                begin: Offset(0.9, 0.6),
+                end: Offset(1, 1),
+                duration: Durations.extralong1,
+                curve: CustomCurves.bouncySpring,
+              ),
               // .scaleY(begin: canPop ? 0.8 : 1, end: canPop ? 1 : 0.8),
             ),
           ),

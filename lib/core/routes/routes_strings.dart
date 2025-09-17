@@ -22,8 +22,7 @@ class RoutesStrings {
   // static const documentViewer = "/documentViewer";
   static const pdfDocumentViewer = "/pdfDocumentViewer";
   static const imageViewer = "/imageViewer";
-  // static const driveLinkViewer = "/driveLinkViewer";
-  // static const youtubeLinkViewer = "/youtubeLinkViewer";
+  static const driveLinkViewer = "/driveLinkViewer";
   // static const fileLinkViewer = "/fileLinkViewer";
 
   

@@ -83,4 +83,9 @@ class AppRouteNavigator {
     final route = RoutesStrings.imageViewer;
     _isPushedAsReplacement ? _pushAsReplacement(route, extra: content) : _push(route, extra: content);
   }
+
+  void driveLinkViewerRoute(String content) {
+    final route = RoutesStrings.driveLinkViewer;
+    _isPushedAsReplacement ? _pushAsReplacement(route, extra: content) : _push(route, extra: content);
+  }
 }

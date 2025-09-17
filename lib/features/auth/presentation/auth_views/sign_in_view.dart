@@ -44,7 +44,8 @@ class SignInView extends ConsumerWidget {
                   Container(
                     width: context.deviceWidth/2,
                     decoration: BoxDecoration(color: theme.background, shape: BoxShape.circle),
-                    child: Image.asset("assets/logo/tinted_white_transparent.png")),
+                    child: Image.asset("assets/logo/logo.png"),
+                  ),
                   ConstantSizing.columnSpacing(kToolbarHeight),
 
                   CustomText(

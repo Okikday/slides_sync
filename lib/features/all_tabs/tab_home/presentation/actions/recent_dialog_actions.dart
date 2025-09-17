@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
@@ -28,14 +30,14 @@ class RecentDialogActions {
   static Future<bool> removeIdFromRecents(String contentId) async {
     return (await Result.tryRunAsync(() async {
           final hiveInstance = AppHiveData.instance;
+          // Change to be Map instead
           final rawOldRecents = (await hiveInstance.getData(key: HiveDataPaths.recentContentsIds)) as List<String>?;
           if (rawOldRecents == null) {
             return false;
           } else {
-            List<String> recents = List.from(rawOldRecents);
-            if (recents.contains(contentId)) {
-              recents.remove(contentId);
-              await hiveInstance.setData(key: HiveDataPaths.recentContentsIds, value: recents);
+            final recents = LinkedHashSet<String>.from(rawOldRecents);
+            if (recents.remove(contentId)) {
+              await hiveInstance.setData(key: HiveDataPaths.recentContentsIds, value: recents.toList());
               return true;
             }
             return false;

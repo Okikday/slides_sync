@@ -13,56 +13,58 @@ class ListCourseCard extends ConsumerWidget {
     this.course, {
     super.key,
     this.progress = 0.0,
-    this.dotColor = Colors.transparent,
+    // this.dotColor = Colors.transparent,
     this.isStarred = false,
     required this.onTapIcon,
   });
   final Course course;
   final double progress;
-  final Color dotColor;
+  // final Color dotColor;
   final bool isStarred;
   final void Function() onTapIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    return Badge(
-      backgroundColor: Colors.transparent,
-      label: CircleAvatar(radius: 5, backgroundColor: dotColor),
-      offset: Offset(-12, 12),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-        constraints: BoxConstraints(minHeight: 100, maxHeight: 140, maxWidth: 500),
-        decoration: BoxDecoration(
-          color: theme.surface,
-
-          //   image: DecorationImage(
-          //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
-          //   opacity: 0.05,
-          //   fit: BoxFit.cover,
-          //   colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-          // ),
-        ),
-        child: Row(
-          children: [
-            ListCourseCardIcon(
-              onTapIcon: onTapIcon,
-              isStarred: isStarred,
-              fileDetails: course.imageLocationJson.fileDetails,
-              courseCode: course.courseCode,
-            ),
-
-            Expanded(
-              child: ListCourseCardTitleColumn(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(28),
+      child: ColoredBox(
+        color: theme.adjustBgAndPrimaryWithLerp,
+        child: Container(
+          margin: EdgeInsets.all(2.0),
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          constraints: BoxConstraints(minHeight: 100, maxHeight: 140, maxWidth: 500),
+          decoration: BoxDecoration(
+            color: theme.surface,
+            borderRadius: BorderRadius.circular(26),
+            //   image: DecorationImage(
+            //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
+            //   opacity: 0.05,
+            //   fit: BoxFit.cover,
+            //   colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
+            // ),
+          ),
+          child: Row(
+            children: [
+              ListCourseCardIcon(
+                onTapIcon: onTapIcon,
+                isStarred: isStarred,
+                fileDetails: course.imageLocationJson.fileDetails,
                 courseCode: course.courseCode,
-                courseName: course.courseName,
-                categoriesCount: course.collections.length,
-                hasImage: course.imageLocationJson.fileDetails.containsFilePath,
               ),
-            ),
 
-            ListCourseCardProgressIndicator(),
-          ],
+              Expanded(
+                child: ListCourseCardTitleColumn(
+                  courseCode: course.courseCode,
+                  courseName: course.courseName,
+                  categoriesCount: course.collections.length,
+                  hasImage: course.imageLocationJson.fileDetails.containsFilePath,
+                ),
+              ),
+
+              ListCourseCardProgressIndicator(),
+            ],
+          ),
         ),
       ),
     );

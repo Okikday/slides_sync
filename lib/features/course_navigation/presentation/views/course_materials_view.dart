@@ -74,7 +74,6 @@ class _CourseMaterialsViewState extends ConsumerState<CourseMaterialsView> {
                 AppPopupMenuButton(
                   actions: [
                     PopupMenuAction(title: "Search", iconData: Iconsax.search_normal_copy, onTap: () {}),
-                    PopupMenuAction(title: "Clean up", iconData: Iconsax.trash_copy, onTap: () {}),
                     PopupMenuAction(title: "Sort", iconData: Iconsax.arrange_circle, onTap: () {}),
                   ],
                 ),

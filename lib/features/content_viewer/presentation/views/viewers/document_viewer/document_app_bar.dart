@@ -36,6 +36,7 @@ class DocumentAppBar extends ConsumerWidget {
                 tooltip: "More options",
                 menuPadding: EdgeInsets.only(right: 16),
                 actions: [
+                  PopupMenuAction(title: "Go to page", iconData: Icons.share_rounded, onTap: () {}),
                   PopupMenuAction(title: "Share", iconData: Icons.share_rounded, onTap: () {}),
                   PopupMenuAction(title: "Print", iconData: Iconsax.printer_copy, onTap: () {}),
                   PopupMenuAction(title: "Save", iconData: Iconsax.book_saved_copy, onTap: () {}),

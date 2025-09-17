@@ -13,17 +13,20 @@ import 'package:super_clipboard/super_clipboard.dart';
 
 
 class AddLinkActions {
-  static Future<bool> onClickToAddLinkContent(
+  static Future<bool> onAddLinkContent(
     String link, {
-    required CourseCollection collection,
+    required String parentId,
     required PreviewLinkDetails previewLinkDetails,
   }) async {
+    log("previewLinkDetails: $previewLinkDetails");
+    if(parentId.isEmpty) return false;
+    final collection = await CourseCollectionRepo.getById(parentId);
+    if(collection == null) return false;
     final contentHash = BasicUtils.calculateStringHash(link);
     final CourseContent? sameHashedContent = await CourseCollectionRepo.findFirstDuplicateContentByHash(
       collection,
       contentHash,
     );
-
     final CourseContent newContent;
     if (sameHashedContent != null) {
       if (contentHash == sameHashedContent.contentHash && link == sameHashedContent.path.fileDetails.urlPath) {

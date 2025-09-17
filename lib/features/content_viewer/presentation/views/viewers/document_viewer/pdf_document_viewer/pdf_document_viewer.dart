@@ -35,7 +35,7 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
   late final ValueNotifier<bool> isAppBarVisibleNotifier;
   late final ValueNotifier<bool> isOptionsVisibleNotifier;
 
-  late final ValueNotifier<ProgressTrackModel?> progressTrackNotifier;
+  
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
     isSearchingNotifier = ValueNotifier(false);
     isAppBarVisibleNotifier = ValueNotifier(true);
     isOptionsVisibleNotifier = ValueNotifier(false);
-    progressTrackNotifier = ValueNotifier(null);
+    
     pdsa = PdfDocSearchActions(
       context: context,
       isSearchingNotifier: isSearchingNotifier,
@@ -56,24 +56,12 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
     pdva = PdfDocumentViewerActions.of(
       widget.content,
       pdfViewerController: pdfViewerController,
-      progressTrackNotifier: progressTrackNotifier,
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.microtask(() async {
-        if (progressTrackNotifier.value != null) return;
-        final ProgressTrackModel? progressTrack = await PdfDocumentViewerActions.getLastProgressTrack(widget.content);
-        progressTrackNotifier.value = progressTrack;
-
-        if (progressTrack != null) {
-          WidgetsBinding.instance.addPostFrameCallback(
-            (_) => Result.tryRun(
-              () => pdfViewerController.goToPage(pageNumber: progressTrack.lastPosition),
-              logError: false,
-            ),
-          );
-        }
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   await Future.microtask(() async {
+        
+    //   });
+    // });
   }
 
   @override
@@ -85,7 +73,7 @@ class _PdfDocumentViewerState extends ConsumerState<PdfDocumentViewer> {
     isSearchingNotifier.dispose();
     isAppBarVisibleNotifier.dispose();
     isOptionsVisibleNotifier.dispose();
-    progressTrackNotifier.dispose();
+    // progressTrackNotifier.dispose();
     super.dispose();
   }
 

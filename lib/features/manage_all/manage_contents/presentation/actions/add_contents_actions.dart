@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/basic_utils.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -23,7 +24,10 @@ enum AppClipboardContentType { empty, text, image, images, file, files, html, un
 typedef AppClipboardData = ({dynamic data, AppClipboardContentType contentType});
 
 class AddContentsActions {
-  static Future<AppClipboardData> scanClipboardForData() async {
+  /// Runs in Isolate
+  static Future<AppClipboardData> scanClipboardForData(Map<String, dynamic> args) async {
+    final token = args['token'] as RootIsolateToken;
+    BackgroundIsolateBinaryMessenger.ensureInitialized(token);
     AppClipboardData clipboardData = (data: null, contentType: AppClipboardContentType.empty);
 
     final Result<void> result = await Result.tryRunAsync(() async {

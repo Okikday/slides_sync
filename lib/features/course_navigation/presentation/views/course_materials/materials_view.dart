@@ -55,9 +55,15 @@ class _MaterialsViewState extends ConsumerState<MaterialsView> {
               delegate: SliverChildBuilderDelegate((context, index) {
                 final content = items[index];
                 return ContentCard(content: content.content, progress: content.progress?.progress)
-                    .animate()
-                    .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
-                    .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong4);
+                .animate().fadeIn().slideY(
+                  begin: (index / items.length + 1) * 0.4,
+                  end: 0,
+                  curve: Curves.fastEaseInToSlowEaseOut,
+                  duration: Durations.extralong2,
+                );
+                // .animate()
+                // .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
+                // .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong4);
               }, childCount: items.length),
             );
           } else {
@@ -67,9 +73,15 @@ class _MaterialsViewState extends ConsumerState<MaterialsView> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: ContentCard(content: content.content, progress: content.progress?.progress)
-                      .animate()
-                      .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
-                      .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong4),
+                  .animate().fadeIn().slideY(
+                    begin: (index / items.length + 1) * 0.4,
+                    end: 0,
+                    curve: Curves.fastEaseInToSlowEaseOut,
+                    duration: Durations.extralong2,
+                  ),
+                  // .animate()
+                  // .fadeIn(curve: CustomCurves.defaultIosSpring, duration: Durations.extralong1)
+                  // .slideY(begin: 0.1, end: 0, curve: CustomCurves.defaultIosSpring, duration: Durations.extralong4),
                 );
               }, childCount: items.length),
             );

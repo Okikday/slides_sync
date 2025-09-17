@@ -36,8 +36,8 @@ class UiUtils {
     Color? barrierColor,
     Offset? blurSigma,
   }) async {
-    final normalColor = context.theme.colorScheme.onSurface;
-    final bgColor = context.theme.colorScheme.surface;
+    final normalColor = context.theme.primaryColor;
+    final bgColor = context.theme.scaffoldBackgroundColor;
     await CustomDialog.showLoadingDialog(
       context,
       canPop: canPop,

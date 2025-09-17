@@ -150,7 +150,7 @@ class _ModCollectionDialogState extends ConsumerState<ModCollectionDialog> {
                 child: ConfirmDeletionDialog(
                   content:
                       "This will delete \"${collection.collectionTitle}\"."
-                      "\n\nAre you sure you want to delete this course?",
+                      "\n\nAre you sure you want to delete this collection?",
                   onPop: () {
                     log("Popping");
                     if (context.mounted) {

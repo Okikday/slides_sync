@@ -12,8 +12,7 @@
 //   final String accessToken;
 //   final http.Client _inner;
 
-//   GoogleAuthClient(this.accessToken, [http.Client? inner])
-//       : _inner = inner ?? IOClient();
+//   GoogleAuthClient(this.accessToken, [http.Client? inner]) : _inner = inner ?? IOClient();
 
 //   @override
 //   Future<http.StreamedResponse> send(http.BaseRequest request) {
@@ -137,7 +136,8 @@
 //     if (lower.contains('/file/d/') || lower.contains('/d/')) return DriveResourceType.file;
 //     if (lower.contains('docs.google.com/document')) return DriveResourceType.googleDoc;
 //     if (lower.contains('docs.google.com/spreadsheets')) return DriveResourceType.googleSheet;
-//     if (lower.contains('docs.google.com/presentation') || lower.contains('presentation/d')) return DriveResourceType.googleSlide;
+//     if (lower.contains('docs.google.com/presentation') || lower.contains('presentation/d'))
+//       return DriveResourceType.googleSlide;
 //     if (lower.contains('/open?id=')) return DriveResourceType.file;
 //     return DriveResourceType.unknown;
 //   }
@@ -150,19 +150,16 @@
 //   Future<drive.File> getFileMetadata(String fileId) async {
 //     final f = await driveApi.files.get(
 //       fileId,
-//       $fields:
-//           'id,name,mimeType,size,modifiedTime,webViewLink,webContentLink,owners,permissions,parents,driveId',
+//       $fields: 'id,name,mimeType,size,modifiedTime,webViewLink,webContentLink,owners,permissions,parents,driveId',
 //       supportsAllDrives: true,
+//       downloadOptions: drive.DownloadOptions.metadata,
 //     );
-//     metadata = f;
+//     metadata = f as drive.File;
 //     return f;
 //   }
 
 //   /// List folder contents (will page through all pages unless you override pageSize)
-//   Future<List<drive.File>> listFolderContents(
-//     String folderId, {
-//     int pageSize = 100,
-//   }) async {
+//   Future<List<drive.File>> listFolderContents(String folderId, {int pageSize = 100}) async {
 //     String? pageToken;
 //     final List<drive.File> files = [];
 //     do {
@@ -243,48 +240,45 @@
 //     metadata = f;
 //     return f;
 //   }
-/// Tries to download bytes for a Drive file id without auth (public),
-/// then falls back to using the signed-in Google account token when needed.
-///
-/// If you have an API key you can pass it to prefer the Google API (works for public files).
-// Future<http.Response> downloadDriveFileWithFallback({
-//   required String fileId,
-//   String? apiKey, // optional: use API key for public access if available
-//   GoogleSignIn? googleSignIn, // optional: fallback to auth if public fetch fails
-// }) async {
-//   // 1) Try public download via Drive REST alt=media using API key (fast & reliable)
-//   if (apiKey != null) {
-//     final publicUrl = Uri.parse('https://www.googleapis.com/drive/v3/files/$fileId?alt=media&key=$apiKey');
-//     final r = await http.get(publicUrl);
-//     if (r.statusCode == 200) return r;
-//     // if 403/404 -> not public or API key can't access -> fall through to unauthenticated direct url
-//   }
 
-//   // 2) Try direct "uc?export=download" approach (works for many public files)
-//   try {
-//     final direct = Uri.parse('https://drive.google.com/uc?export=download&id=$fileId');
-//     final r2 = await http.get(direct);
-//     if (r2.statusCode == 200) return r2;
-//     // Some large files or virus-check pages require a confirm token flow; in those cases
-//     // direct download may return a HTML page instead of file bytes. We'll fall back to OAuth.
-//   } catch (_) {
-//     // ignore and try OAuth fallback
-//   }
+//   Future<http.Response> downloadDriveFileWithFallback({
+//     required String fileId,
+//     String? apiKey, // optional: use API key for public access if available
+//     GoogleSignIn? googleSignIn, // optional: fallback to auth if public fetch fails
+//   }) async {
+//     // 1) Try public download via Drive REST alt=media using API key (fast & reliable)
+//     if (apiKey != null) {
+//       final publicUrl = Uri.parse('https://www.googleapis.com/drive/v3/files/$fileId?alt=media&key=$apiKey');
+//       final r = await http.get(publicUrl);
+//       if (r.statusCode == 200) return r;
+//       // if 403/404 -> not public or API key can't access -> fall through to unauthenticated direct url
+//     }
 
-//   // 3) Fallback to OAuth (requires signed in user with Drive scope)
-//   if (googleSignIn == null || googleSignIn.currentUser == null) {
-//     throw StateError('File not public and no authenticated GoogleSignIn available.');
+//     // 2) Try direct "uc?export=download" approach (works for many public files)
+//     try {
+//       final direct = Uri.parse('https://drive.google.com/uc?export=download&id=$fileId');
+//       final r2 = await http.get(direct);
+//       if (r2.statusCode == 200) return r2;
+//       // Some large files or virus-check pages require a confirm token flow; in those cases
+//       // direct download may return a HTML page instead of file bytes. We'll fall back to OAuth.
+//     } catch (_) {
+//       // ignore and try OAuth fallback
+//     }
+
+//     // 3) Fallback to OAuth (requires signed in user with Drive scope)
+//     if (googleSignIn == null || googleSignIn.currentUser == null) {
+//       throw StateError('File not public and no authenticated GoogleSignIn available.');
+//     }
+//     final account = googleSignIn.currentUser!;
+//     final auth = await account.authentication;
+//     final token = auth.accessToken;
+//     if (token == null) {
+//       throw StateError('Missing access token. Ensure Drive scopes (drive.readonly) requested.');
+//     }
+//     final authedClient = http.Client();
+//     final req = Uri.parse('https://www.googleapis.com/drive/v3/files/$fileId?alt=media');
+//     final r3 = await authedClient.get(req, headers: {'Authorization': 'Bearer $token'});
+//     authedClient.close();
+//     return r3; // r3.statusCode == 200 => bytes available; else error
 //   }
-//   final account = googleSignIn.currentUser!;
-//   final auth = await account.authentication;
-//   final token = auth.accessToken;
-//   if (token == null) {
-//     throw StateError('Missing access token. Ensure Drive scopes (drive.readonly) requested.');
-//   }
-//   final authedClient = http.Client();
-//   final req = Uri.parse('https://www.googleapis.com/drive/v3/files/$fileId?alt=media');
-//   final r3 = await authedClient.get(req, headers: {'Authorization': 'Bearer $token'});
-//   authedClient.close();
-//   return r3; // r3.statusCode == 200 => bytes available; else error
-// }
 // }

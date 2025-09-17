@@ -100,16 +100,19 @@ class WelcomeView extends ConsumerWidget {
                   ConstantSizing.columnSpacing(48),
                   ScaleClickWrapper(
                     borderRadius: 24,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageAnimation.pageRouteBuilder(
-                          const Onboarding1(),
-                          type: TransitionType.rightToLeft,
-                          duration: Durations.extralong1,
-                          curve: CustomCurves.defaultIosSpring,
-                        ),
-                      );
+                    onTapUp: (det) async {
+                      await Future.delayed(Durations.short2);
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          PageAnimation.pageRouteBuilder(
+                            const Onboarding1(),
+                            type: TransitionType.rightToLeft,
+                            duration: Durations.extralong1,
+                            curve: CustomCurves.defaultIosSpring,
+                          ),
+                        );
+                      }
                     },
                     child: CustomElevatedButton(
                       label: "Get started",
@@ -129,4 +132,3 @@ class WelcomeView extends ConsumerWidget {
     );
   }
 }
-

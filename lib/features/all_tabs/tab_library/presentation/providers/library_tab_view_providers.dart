@@ -7,9 +7,9 @@ class LibraryTabViewProviders {
   static final AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool> isListLayout =
       AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool>(() => IsListViewNotifier("library_tab/isListView"));
 
-  static final AutoDisposeStateProviderFamily<bool, int> isCourseCardTappedDownFamily = AutoDisposeStateProviderFamily(
-    (ref, index) => false,
-  );
+  // static final AutoDisposeStateProviderFamily<bool, int> isCourseCardTappedDownFamily = AutoDisposeStateProviderFamily(
+  //   (ref, index) => false,
+  // );
 
   static final StateProvider<bool> isCourseCardAnimating = StateProvider((ref) => false);
 

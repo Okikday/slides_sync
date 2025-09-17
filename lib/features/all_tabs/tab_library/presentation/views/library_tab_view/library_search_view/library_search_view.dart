@@ -7,7 +7,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:isar/isar.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/course_card.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
@@ -78,7 +77,7 @@ class _LibrarySearchViewState extends ConsumerState<LibrarySearchView> {
                 log("Search result: $searchResults");
                 return [
                   for(int i = 0; i < searchResults.length; i++)
-                  CourseCard(searchResults[i], false, scaleClickProvider: LibraryTabViewProviders.isCourseCardTappedDownFamily(i))
+                  CourseCard(searchResults[i], false)
                 ];
               })
               

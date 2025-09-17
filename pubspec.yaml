@@ -67,7 +67,7 @@ dependencies:
   permission_handler: ^12.0.0+1
   photo_view: ^0.15.0
   archive: ^4.0.7
-  flutter_pdfview: ^1.4.0+1
+  # flutter_pdfview: ^1.4.0+1
 #  pdfx: ^2.9.1
   share_plus: ^11.0.0
   image_picker: ^1.1.2
@@ -93,16 +93,17 @@ dependencies:
   firebase_auth: ^6.0.1
   firebase_core: ^4.1.0
   firebase_database: ^12.0.0
-  firebase_storage: ^13.0.0
+  # firebase_storage: ^13.0.0
   google_sign_in: ^6.3.0
   infinite_scroll_pagination: ^5.1.1
-  any_link_preview: ^3.0.3
+  # any_link_preview: ^3.0.3
   flutter_link_previewer: ^3.2.2
   super_clipboard: ^0.9.1
   firebase_ai: ^3.2.0
 #  syncfusion_flutter_pdf: ^31.1.17
 #  syncfusion_flutter_pdfviewer: ^31.1.17
   pdfrx: ^2.1.5
+  flutter_dotenv: ^6.0.0
 
   #docx_file_viewer: ^0.0.1
 
@@ -162,6 +163,7 @@ flutter:
     - assets/icons/animated_jsons/
     - assets/images/
     - assets/logo/
+    - .env
 
 #-FONTS
 fonts:

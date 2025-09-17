@@ -61,7 +61,7 @@ class _MainViewState extends ConsumerState<MainView> with AutomaticKeepAliveClie
           ),
 
           drawer: const HomeDrawer(),
-          floatingActionButton: const LibraryFloatingActionButton(),
+          floatingActionButton:  const LibraryFloatingActionButton(),
           
           body: PageView(
             controller: pageController,

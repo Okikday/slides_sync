@@ -57,35 +57,6 @@ class ProgressTrackModel {
       ..metadataJson = metadataJson ?? '{}';
   }
 
-  ProgressTrackModel copyWith({
-    Id? id,
-    String? contentId,
-    String? title,
-    String? description,
-    String? contentHash,
-    double? progress,
-    int? lastPosition,
-    String? additionalDetail,
-    List<String>? pages,
-    DateTime? firstRead,
-    DateTime? lastRead,
-    String? metadataJson,
-  }) {
-    return ProgressTrackModel()
-      ..id = id ?? this.id
-      ..contentId = contentId ?? this.contentId
-      ..title = title ?? this.title
-      ..description = description ?? this.description
-      ..contentHash = contentHash ?? this.contentHash
-      ..progress = progress ?? this.progress
-      ..lastPosition = lastPosition ?? this.lastPosition
-      ..additionalDetail = additionalDetail ?? this.additionalDetail
-      ..pages = pages ?? this.pages
-      ..firstRead = firstRead ?? this.firstRead
-      ..lastRead = lastRead ?? this.lastRead
-      ..metadataJson = metadataJson ?? this.metadataJson;
-  }
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -99,7 +70,7 @@ class ProgressTrackModel {
       'pages': pages,
       'firstRead': firstRead?.toIso8601String(),
       'lastRead': lastRead?.toIso8601String(),
-      'metadataJson': metadataJson
+      'metadataJson': metadataJson,
     };
   }
 
@@ -161,5 +132,35 @@ class ProgressTrackModel {
         firstRead.hashCode ^
         lastRead.hashCode ^
         metadataJson.hashCode;
+  }
+}
+
+extension ProgressTrackModelExtension on ProgressTrackModel {
+  ProgressTrackModel copyWith({
+    Id? id,
+    String? contentId,
+    String? title,
+    String? description,
+    String? contentHash,
+    double? progress,
+    int? lastPosition,
+    String? additionalDetail,
+    List<String>? pages,
+    DateTime? firstRead,
+    DateTime? lastRead,
+    String? metadataJson,
+  }) {
+    return this
+      ..contentId = contentId ?? this.contentId
+      ..title = title ?? this.title
+      ..description = description ?? this.description
+      ..contentHash = contentHash ?? this.contentHash
+      ..progress = progress ?? this.progress
+      ..lastPosition = lastPosition ?? this.lastPosition
+      ..additionalDetail = additionalDetail ?? this.additionalDetail
+      ..pages = pages ?? this.pages
+      ..firstRead = firstRead ?? this.firstRead
+      ..lastRead = lastRead ?? this.lastRead
+      ..metadataJson = metadataJson ?? this.metadataJson;
   }
 }

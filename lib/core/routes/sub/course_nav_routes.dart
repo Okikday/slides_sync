@@ -6,6 +6,7 @@ import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/content_view_gate.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer/pdf_document_viewer/pdf_document_viewer.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/image_viewer.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/link_viewer/drive_listing_view.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_materials_view.dart';
@@ -33,6 +34,7 @@ class CourseNavRoutes {
           pageBuilder:
               (context, state) => defaultTransition(
                 state.pageKey,
+                defaultIncoming: TransitionType.topLevel,
                 child: CourseMaterialsView(collection: state.extra as CourseCollection),
               ),
           routes: [
@@ -79,6 +81,19 @@ class CourseNavRoutes {
             reverseDuration: Durations.medium1,
             curve: CustomCurves.defaultIosSpring,
             child: ImageViewer(content: state.extra as CourseContent),
+          ),
+    ),
+
+    GoRoute(
+      path: RoutesStrings.driveLinkViewer,
+      pageBuilder:
+          (context, state) => PageAnimation.buildCustomTransitionPage(
+            state.pageKey,
+            type: TransitionType.rightToLeftWithFade,
+            duration: Durations.extralong1,
+            reverseDuration: Durations.medium1,
+            curve: CustomCurves.defaultIosSpring,
+            child: DriveListingView(initialFolderId: (state.extra as String),),
           ),
     ),
   ];

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +10,7 @@ import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
+import 'package:slides_sync/features/course_navigation/presentation/actions/content_card_actions.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
 import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
@@ -67,17 +70,27 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                               ),
                               child: ImageFiltered(
                                 imageFilter: ColorFilter.mode(Colors.black.withAlpha(10), BlendMode.color),
-                                child: BuildImagePathWidget(
-                                  fileDetails: FileDetails(
-                                    filePath: CreateContentPreviewImage.genPreviewImagePath(
-                                      filePath: content.path.filePath,
-                                    ),
-                                  ),
-                                  fit: BoxFit.cover,
-                                  fallbackWidget: Icon(
-                                    WidgetHelper.resolveIconData(content.courseContentType, false),
-                                    size: 36,
-                                  ),
+                                child: FutureBuilder(
+                                  future: ContentCardActions.resolvePreviewPath(content),
+                                  builder: (context, asyncSnapshot) {
+                                    if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+                                      return BuildImagePathWidget(
+                                        fileDetails: asyncSnapshot.data!,
+                                        fit: BoxFit.cover,
+                                        fallbackWidget: Icon(
+                                          WidgetHelper.resolveIconData(content.courseContentType, false),
+                                          size: 36,
+                                        ),
+                                      );
+                                    }
+                                    return BuildImagePathWidget(
+                                      fileDetails: FileDetails(),
+                                      fallbackWidget: Icon(
+                                        WidgetHelper.resolveIconData(content.courseContentType, false),
+                                        size: 36,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
@@ -128,8 +141,9 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                               AppPopupMenuButton(
                                 iconSize: 16,
                                 actions: [
-                                  PopupMenuAction(title: "Select", iconData: Iconsax.check, onTap: () {}),
+                                  
                                   PopupMenuAction(title: "Add to Group", iconData: Iconsax.additem, onTap: () {}),
+                                  PopupMenuAction(title: "Move", iconData: Icons.drive_file_move, onTap: () {}),
                                   PopupMenuAction(title: "Share", iconData: Iconsax.share_copy, onTap: () {}),
                                   PopupMenuAction(
                                     title: "Delete",
