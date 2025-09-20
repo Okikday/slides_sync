@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/content_view_gate.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/viewers/document_viewer/pdf_document_viewer/pdf_document_viewer.dart';
+import 'package:slides_sync/features/content_viewer/presentation/views/viewers/pdf_doc_viewer/pdf_doc_viewer.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/image_viewer.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/link_viewer/drive_listing_view.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details_view.dart';
@@ -24,6 +24,7 @@ class CourseNavRoutes {
           (context, state) => defaultTransition(
             state.pageKey,
             defaultIncoming: TransitionType.fade,
+        outgoing: TransitionType.scaleXY(),
             // defaultIncomingDuration: Durations.medium2,
             // defaultIncomingCurve: Curves.fastEaseInToSlowEaseOut,
             child: CourseDetailsView(course: state.extra as Course),
@@ -68,7 +69,7 @@ class CourseNavRoutes {
             duration: Durations.extralong1,
             reverseDuration: Durations.medium1,
             curve: CustomCurves.defaultIosSpring,
-            child: PdfDocumentViewer(content: state.extra as CourseContent),
+        child: PdfDocViewer(content: state.extra as CourseContent),
           ),
     ),
     GoRoute(

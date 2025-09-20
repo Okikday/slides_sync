@@ -25,6 +25,8 @@ class CourseContent {
 
   @Index()
   late String parentId;
+  
+  @Index(caseSensitive: false)
   late String title;
 
   /// appended with type before path/link e.g. "file:anonymous.jpg" or "link:https://image.jpg"

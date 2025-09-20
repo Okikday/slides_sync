@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -13,28 +15,32 @@ class LibraryFloatingActionButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final canShow =
-        ref.watch(MainProviders.mainTabViewIndexProvider) == 1 &&
-        ref.watch(LibraryTabViewProviders.scrollPosition) < 240;
-    if (!canShow) return const SizedBox();
+    final mainTabIndex = ref.watch(MainProviders.mainTabViewIndexProvider);
+    if (mainTabIndex != 1) return const SizedBox();
     final theme = ref.theme;
-    return FloatingActionButton(
-      onPressed: () {
-        AppRouteNavigator.to(context).createCourseRoute();
+    return ValueListenableBuilder(
+      valueListenable: LibraryTabViewProviders.scrollPositionNotifier,
+      builder: (context, value, child) {
+        // if(value > 240), Show an up arrow
+        return FloatingActionButton(
+          onPressed: () {
+            AppRouteNavigator.to(context).createCourseRoute();
+          },
+          tooltip: "Create course",
+          shape: const CircleBorder(),
+          backgroundColor: theme.primaryColor,
+          child: ClipOval(
+            child: ColoredBox(
+              color: context.theme.colorScheme.primary,
+              child: SizedBox.square(dimension: 51, child: Icon(Iconsax.add_copy, color: theme.onPrimary)),
+            ),
+          ),
+        ).animate().scale(
+          alignment: Alignment.bottomRight,
+          curve: CustomCurves.bouncySpring,
+          duration: Durations.extralong3,
+        );
       },
-      tooltip: "Create course",
-      shape: const CircleBorder(),
-      backgroundColor: theme.primaryColor,
-      child: ClipOval(
-        child: ColoredBox(
-          color: context.theme.colorScheme.primary,
-          child: SizedBox.square(dimension: 51, child: Icon(Iconsax.add_copy, color: theme.onPrimary)),
-        ),
-      ),
-    ).animate().scale(
-      alignment: Alignment.bottomRight,
-      curve: CustomCurves.bouncySpring,
-      duration: Durations.extralong3,
     );
   }
 }

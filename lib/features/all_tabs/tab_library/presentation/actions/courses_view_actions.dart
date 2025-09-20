@@ -156,4 +156,24 @@ extension CourseSortX on CourseSortOption {
         return PlainCourseSortOption.none;
     }
   }
+
+  String get label {
+    switch (this) {
+      case CourseSortOption.nameAsc:
+        return 'Name (Ascending)';
+      case CourseSortOption.nameDesc:
+        return 'Name (Descending)';
+      case CourseSortOption.dateCreatedAsc:
+        return 'Date Created (Ascending)';
+      case CourseSortOption.dateCreatedDesc:
+        return 'Date Created (Descending)';
+      case CourseSortOption.dateModifiedAsc:
+        return 'Date Modified (Ascending)';
+      case CourseSortOption.dateModifiedDesc:
+        return 'Date Modified (Descending)';
+      case CourseSortOption.none:
+        return 'None';
+    }
+  }
 }
+

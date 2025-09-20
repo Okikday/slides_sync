@@ -30,11 +30,12 @@ class HomeDashboard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
     return Container(
-      constraints: BoxConstraints(maxHeight: 100, maxWidth: 400),
+      constraints: BoxConstraints(maxHeight: 160, maxWidth: 400),
       width: context.deviceWidth,
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.only(left: 12, right: 12, top: 16, bottom: 12),
-      margin: EdgeInsets.only(left: isFirst  == null ? 8 : 12, right: isFirst == null ? 0 : (isFirst! ? 0 : 12)),
+      // margin: EdgeInsets.only(left: isFirst  == null ? 8 : 12, right: isFirst == null ? 0 : (isFirst! ? 0 : 12)),
+      margin: EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
         color: theme.adjustBgAndPrimaryWithLerp,
         borderRadius: BorderRadius.circular(18),

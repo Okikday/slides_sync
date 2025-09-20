@@ -11,17 +11,14 @@ class LibraryTabBody extends ConsumerWidget {
   
 @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return NotificationListener(
-      onNotification: (notification) => true,
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacingMedium),
 
-          CoursesView(),
+        CoursesView(),
 
-          SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kBottomNavigationBarHeight + context.topPadding + 24)),
-        ],
-      ),
+        SliverToBoxAdapter(child: ConstantSizing.columnSpacing(kBottomNavigationBarHeight + context.topPadding + 24)),
+      ],
     );
   }
 }

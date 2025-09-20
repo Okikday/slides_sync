@@ -3,6 +3,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:slides_sync/core/global_providers/global_providers.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/core/utils/result.dart';
@@ -89,7 +90,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                                   children: [
                                     LibraryTabViewFilterButton(),
                                     LibraryTabViewLayoutButton(
-                                      isListLayoutProvider: LibraryTabViewProviders.isListLayout,
+                                      isListLayoutProvider: LibraryTabViewProviders.cardViewType,
                                     ),
                                   ],
                                 ),

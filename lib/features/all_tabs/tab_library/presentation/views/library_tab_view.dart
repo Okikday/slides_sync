@@ -8,8 +8,6 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/sub/library_tab_body.dart';
-import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
-
 class LibraryTabView extends ConsumerStatefulWidget {
   const LibraryTabView({super.key});
 
@@ -18,14 +16,13 @@ class LibraryTabView extends ConsumerStatefulWidget {
 }
 
 class _LibraryTabViewState extends ConsumerState<LibraryTabView> with AutomaticKeepAliveClientMixin {
+  late final ScrollController scrollController;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ref.read(MainProviders.mainTabViewIndexProvider.notifier).state == 1) {
-        ref.read(MainProviders.isMainScrolledProvider.notifier).update((cb) => false);
-      }
-    });
+    scrollController = ScrollController();
+    scrollController.addListener(scrollListener);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Result.tryRunAsync(() async {
         final option =
@@ -36,35 +33,32 @@ class _LibraryTabViewState extends ConsumerState<LibraryTabView> with AutomaticK
     });
   }
 
+  void scrollListener() {
+    final notifier = LibraryTabViewProviders.scrollPositionNotifier;
+    if (notifier.value == scrollController.offset) return;
+    notifier.value = scrollController.offset;
+  }
+
+  @override
+  void dispose() {
+    scrollController.removeListener(scrollListener);
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return NotificationListener(
-      onNotification: (notification) {
-        if (notification is ScrollUpdateNotification) {
-          ref.read(LibraryTabViewProviders.scrollPosition.notifier).update((cb) => notification.metrics.pixels);
-        }
-        return true;
+    return NestedScrollView(
+      controller: scrollController,
+      physics: const NeverScrollableScrollPhysics(),
+      headerSliverBuilder: (context, isInnerBoxScrolled) {
+        return [LibraryTabViewAppBar()];
       },
-      child: NestedScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        headerSliverBuilder: (context, isInnerBoxScrolled) {
-          if (ref.read(MainProviders.mainTabViewIndexProvider.notifier).state == 1) {
-            final currValue = ref.read(MainProviders.isMainScrolledProvider.notifier).state;
-            if (currValue != isInnerBoxScrolled) {
-              WidgetsBinding.instance.addPostFrameCallback(
-                (_) => ref.read(MainProviders.isMainScrolledProvider.notifier).update((cb) => isInnerBoxScrolled),
-              );
-            }
-          }
 
-          return [LibraryTabViewAppBar()];
-        },
-
-        // Body section
-        body: LibraryTabBody(),
-      ),
+      // Body section
+      body: LibraryTabBody(),
     );
   }
 

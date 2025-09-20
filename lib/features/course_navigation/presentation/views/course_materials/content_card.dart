@@ -39,7 +39,7 @@ class _ContentCardState extends ConsumerState<ContentCard> {
       children: [
         Flexible(
           child: ConstrainedBox(
-            constraints: BoxConstraints.tightFor(width: 440, height: 200),
+            constraints: BoxConstraints.tightFor(width: 440, height: 160),
             child: Stack(
               clipBehavior: Clip.antiAlias,
               fit: StackFit.expand,

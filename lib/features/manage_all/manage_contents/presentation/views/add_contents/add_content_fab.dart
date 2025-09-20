@@ -8,7 +8,7 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class AddContentFAB extends ConsumerWidget {
   final CourseCollection collection;
-  final StateProvider<double>? scrollOffsetProvider;
+  final AutoDisposeStateProvider<double>? scrollOffsetProvider;
   const AddContentFAB({super.key, required this.collection, this.scrollOffsetProvider});
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.9.0
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -102,8 +102,8 @@ dependencies:
   firebase_ai: ^3.2.0
 #  syncfusion_flutter_pdf: ^31.1.17
 #  syncfusion_flutter_pdfviewer: ^31.1.17
-  pdfrx: ^2.1.5
   flutter_dotenv: ^6.0.0
+  pdfrx: ^2.1.15
 
   #docx_file_viewer: ^0.0.1
 

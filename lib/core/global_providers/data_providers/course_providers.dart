@@ -2,15 +2,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 
-final defaultCourse = Course.create(courseTitle: "_");
+final defaultCourse = Course.create(courseTitle: "_", courseId: '_');
 final StateProvider<int?> _activeCourseDbIdProvider = StateProvider<int?>((ref) => null);
-final AutoDisposeStreamProviderFamily<Course?, int> _syncCourseStreamProvider = AutoDisposeStreamProviderFamily<Course?, int>(
-  (ref, arg) {
-    // ref.onDispose(() => log("Disposed StreamProvider ${arg}"));
-    // can improve by putting ref.keepAlive()
-    return CourseRepo.watchCourseByDbId(arg);
-  },
-);
+final AutoDisposeStreamProviderFamily<Course?, int> _syncCourseStreamProvider =
+    AutoDisposeStreamProviderFamily<Course?, int>((ref, arg) {
+      // ref.onDispose(() => log("Disposed StreamProvider ${arg}"));
+      // can improve by putting ref.keepAlive()
+      return CourseRepo.watchCourseByDbId(arg);
+    });
 final AsyncNotifierProvider<CourseNotifier, Course> _courseProvider = AsyncNotifierProvider(CourseNotifier.new);
 
 class CourseProviders {

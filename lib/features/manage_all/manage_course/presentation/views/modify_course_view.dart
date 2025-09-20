@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:slides_sync/core/global_providers/course_providers.dart';
+import 'package:slides_sync/core/global_providers/data_providers/course_providers.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/domain/models/file_details.dart';

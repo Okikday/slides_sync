@@ -1,8 +1,8 @@
-
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slides_sync/core/global_providers/global_providers.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/course_card_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
@@ -17,7 +17,7 @@ class CourseCard extends ConsumerWidget {
   const CourseCard(this.course, this.isGrid, {super.key, this.onTap});
 
   void updateTapDownDetailsProvider(WidgetRef ref, Offset det) {
-    ref.read(LibraryTabViewProviders.cardTapPositionDetails.notifier).update((state) => det);
+    LibraryTabViewProviders.cardTapPositionDetails = det;
   }
 
   @override

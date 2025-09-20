@@ -1,7 +1,7 @@
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/features/content_viewer/presentation/actions/document_viewer_actions/pdf_doc_search_actions.dart';
+import 'package:slides_sync/features/content_viewer/presentation/controllers/doc_viewer_controllers/pdf_doc_search_controller.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
@@ -11,7 +11,7 @@ class PdfDocSearchAppBar extends ConsumerStatefulWidget {
   const PdfDocSearchAppBar({super.key, required this.pdfViewerController, required this.pdsa});
 
   final PdfViewerController pdfViewerController;
-  final PdfDocSearchActions pdsa;
+  final PdfDocSearchController pdsa;
 
   @override
   ConsumerState<PdfDocSearchAppBar> createState() => _PdfDocSearchAppBarState();
@@ -26,44 +26,31 @@ class _PdfDocSearchAppBarState extends ConsumerState<PdfDocSearchAppBar> {
     return ValueListenableBuilder(
       valueListenable: pdsa.isSearchingNotifier,
       builder: (context, isSearching, _) {
-        return AnimatedSize(
-          duration: Durations.extralong1,
-          curve: CustomCurves.defaultIosSpring,
-          child: ClipRRect(
-            child: SizedBox(
-              height: isSearching ? null : 0,
-              child: ColoredBox(
-                color: theme.background,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 12, right: 8),
-                  child: Row(
-                    children: [
-                      AppBackButton(
-                        onPressed: () {
-                          pdsa.focusNode.unfocus();
-                          pdsa.isSearchingNotifier.value = false;
-                        },
-                      ),
-                      ConstantSizing.rowSpacing(4),
-                      Expanded(child: _SearchField(pdsa: pdsa)),
-                      ConstantSizing.rowSpacing(8),
-                      ValueListenableBuilder(
-                        valueListenable: pdsa.isSearchInProgressNotifier,
-                        builder: (context, isInProgress, _) {
-                          if (!isInProgress) return const SizedBox.shrink();
-                          return SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: theme.primaryColor),
-                          );
-                        },
-                      ),
-                      
-                    ],
-                  ),
-                ),
+        return Padding(
+          padding: const EdgeInsets.only(left: 12, right: 8),
+          child: Row(
+            children: [
+              AppBackButton(
+                onPressed: () {
+                  pdsa.focusNode.unfocus();
+                  pdsa.isSearchingNotifier.value = false;
+                },
               ),
-            ),
+              ConstantSizing.rowSpacing(4),
+              Expanded(child: _SearchField(pdsa: pdsa)),
+              ConstantSizing.rowSpacing(8),
+              ValueListenableBuilder(
+                valueListenable: pdsa.isSearchInProgressNotifier,
+                builder: (context, isInProgress, _) {
+                  if (!isInProgress) return const SizedBox.shrink();
+                  return SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: theme.primaryColor),
+                  );
+                },
+              ),
+            ],
           ),
         );
       },
@@ -74,7 +61,7 @@ class _PdfDocSearchAppBarState extends ConsumerState<PdfDocSearchAppBar> {
 class _SearchField extends ConsumerWidget {
   const _SearchField({required this.pdsa});
 
-  final PdfDocSearchActions pdsa;
+  final PdfDocSearchController pdsa;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -118,4 +105,3 @@ class _SearchField extends ConsumerWidget {
     );
   }
 }
-

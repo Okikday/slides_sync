@@ -19,6 +19,8 @@ class Course {
 
   @Index()
   late String courseId;
+  
+  @Index(caseSensitive: false)
   late String courseTitle;
   String description = '';
   String imageLocationJson = '{}';
@@ -32,6 +34,7 @@ class Course {
   Course();
 
   factory Course.create({
+    String? courseId,
     required String courseTitle,
     String description = '',
     DateTime? createdAt,
@@ -39,7 +42,7 @@ class Course {
     String courseMetadataJson = '{}',
   }) {
     return Course()
-      ..courseId = const Uuid().v4()
+      ..courseId = courseId ?? const Uuid().v4()
       ..courseTitle = courseTitle
       ..description = description
       ..createdAt = createdAt ?? DateTime.now()

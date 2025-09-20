@@ -5,7 +5,7 @@ import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/expand_card_dialog.dart';
-import 'package:slides_sync/core/global_providers/course_providers.dart';
+import 'package:slides_sync/core/global_providers/data_providers/course_providers.dart';
 
 class CourseCardActions {
   final WidgetRef ref;
@@ -15,18 +15,18 @@ class CourseCardActions {
   BuildContext get context => ref.context;
 
   void onTapCourseCard(Course course) async {
-    final isCourseCardAnimating = ref.read(LibraryTabViewProviders.isCourseCardAnimating.notifier);
-    if (isCourseCardAnimating.state) return;
-    isCourseCardAnimating.update((cb) => true); // Tell that a course is currently opened
+    final isCourseCardAnimating = LibraryTabViewProviders.isCourseCardAnimating;
+    if (isCourseCardAnimating) return;
+    LibraryTabViewProviders.isCourseCardAnimating = true; // Tell that a course is currently opened
     ref.read(CourseProviders.courseProvider.notifier).updateCourse(course);
     await Future.delayed(Durations.short4);
 
     if (context.mounted) AppRouteNavigator.to(context).courseDetailsRoute(course);
-    if (context.mounted) isCourseCardAnimating.update((cb) => false);
+    LibraryTabViewProviders.isCourseCardAnimating = false;
   }
 
   void onHoldCourseCard(Course course) async {
-    final Offset? tapPosition = ref.read(LibraryTabViewProviders.cardTapPositionDetails.notifier).state;
+    final Offset? tapPosition = LibraryTabViewProviders.cardTapPositionDetails;
     if (tapPosition == null) return;
     UiUtils.showCustomDialog(
       context,

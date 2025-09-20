@@ -76,6 +76,19 @@ const CourseSchema = CollectionSchema(
           caseSensitive: true,
         )
       ],
+    ),
+    r'courseTitle': IndexSchema(
+      id: 1400096731337472664,
+      name: r'courseTitle',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'courseTitle',
+          type: IndexType.hash,
+          caseSensitive: false,
+        )
+      ],
     )
   },
   links: {
@@ -296,6 +309,51 @@ extension CourseQueryWhere on QueryBuilder<Course, Course, QWhereClause> {
               indexName: r'courseId',
               lower: [],
               upper: [courseId],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterWhereClause> courseTitleEqualTo(
+      String courseTitle) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'courseTitle',
+        value: [courseTitle],
+      ));
+    });
+  }
+
+  QueryBuilder<Course, Course, QAfterWhereClause> courseTitleNotEqualTo(
+      String courseTitle) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'courseTitle',
+              lower: [],
+              upper: [courseTitle],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'courseTitle',
+              lower: [courseTitle],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'courseTitle',
+              lower: [courseTitle],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'courseTitle',
+              lower: [],
+              upper: [courseTitle],
               includeUpper: false,
             ));
       }

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:slides_sync/core/global_providers/global_providers.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/courses_view_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/courses_view_providers.dart';
@@ -13,7 +14,7 @@ import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/lib
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/empty_library_view.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/course_card.dart';
 
-import 'package:slides_sync/core/global_providers/course_providers.dart';
+import 'package:slides_sync/core/global_providers/data_providers/course_providers.dart';
 import 'package:slides_sync/shared/widgets/loading_view.dart';
 import 'courses_view/course_card/grid_course_card.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -54,8 +55,8 @@ class _CoursesViewState extends ConsumerState<CoursesView> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isListView = ref.watch(LibraryTabViewProviders.isListLayout).value ?? false;
-    final isGrid = !isListView;
+    final int isListView = ref.watch(LibraryTabViewProviders.cardViewType).value ?? 0;
+    final isGrid = isListView == 0;
 
     ref.listen(CoursesViewProviders.coursesFilterOptions, (prev, next) {
       final oldCva = cva;

@@ -5,11 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:slides_sync/core/routes/app_route_navigator.dart';
+import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/features/course_navigation/presentation/views/course_details/course_categories_card.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/create_collection_bottom_sheet.dart';
 import 'package:slides_sync/features/manage_all/manage_collections/presentation/views/modify_collections/empty_collections_view.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/widgets/loading_view.dart';
 
 class CourseDetailsCollectionSection extends ConsumerWidget {
   const CourseDetailsCollectionSection({
@@ -107,12 +109,13 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
 
                       AppRouteNavigator.to(context).courseMaterialsRoute(list[index]);
                     },
-                  ).animate().fadeIn().slideY(
-                    begin: (index / collections.length + 1) * 0.4,
-                    end: 0,
-                    curve: Curves.fastEaseInToSlowEaseOut,
-                    duration: Durations.extralong2,
                   ),
+                  // .animate().fadeIn().slideY(
+                  //   begin: (index / collections.length + 1) * 0.4,
+                  //   end: 0,
+                  //   curve: Curves.fastEaseInToSlowEaseOut,
+                  //   duration: Durations.extralong2,
+                  // ),
                 );
               },
             );
@@ -130,10 +133,7 @@ class CourseDetailsCollectionSection extends ConsumerWidget {
             ),
           ),
       loading:
-          () => SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            sliver: SliverToBoxAdapter(child: LoadingShimmerListView()),
-          ),
+          () => SliverToBoxAdapter(child: LoadingView(msg: "Getting Collections")),
     );
   }
 }

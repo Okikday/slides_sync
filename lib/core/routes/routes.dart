@@ -15,12 +15,13 @@ dynamic defaultTransition(
   pageKey, {
   required Widget child,
   TransitionType defaultIncoming = TransitionType.rightToLeft,
+  TransitionType? outgoing,
 }) {
   return PageAnimation.buildCustomTransitionPage(
     pageKey,
     type: TransitionType.paired(
       incoming: defaultIncoming,
-      outgoing: TransitionType.slide(begin: const Offset(-0.4, 0), end: const Offset(0, 0)),
+      outgoing: outgoing ?? TransitionType.slide(begin: const Offset(-0.4, 0), end: const Offset(0, 0)),
       outgoingDuration: Durations.short4,
       reverseDuration: Durations.short4,
       curve: CustomCurves.defaultIosSpring,
@@ -70,5 +71,3 @@ class Routes {
     ],
   );
 }
-
-

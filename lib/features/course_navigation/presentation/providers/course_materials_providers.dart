@@ -4,15 +4,54 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:isar/isar.dart';
+import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
+import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/models/progress_track_model.dart';
-import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
+import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/courses_view_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/custom_notifiers/is_list_view_notifier.dart';
 
-final AutoDisposeStreamProviderFamily<List<ContentWithProgress>, String> watchContentsFamily =
+final defaultContent = CourseContent.create(
+  contentHash: '_',
+  parentId: '_',
+  title: '_',
+  path: const FileDetails(),
+  courseContentType: CourseContentType.unknown,
+);
+
+Future<QueryBuilder<CourseContent, CourseContent, QAfterSortBy>> _resolveQueryBuilder(
+  String collectionId,
+  CourseSortOption sortOption,
+) async {
+  final base = (await CourseContentRepo.filter).parentIdEqualTo(collectionId);
+
+  switch (sortOption) {
+    case CourseSortOption.nameAsc:
+      return base.sortByTitle();
+    case CourseSortOption.nameDesc:
+      return base.sortByTitleDesc();
+    case CourseSortOption.dateCreatedAsc:
+      return base.sortByCreatedAt();
+    case CourseSortOption.dateCreatedDesc:
+      return base.sortByCreatedAtDesc();
+    case CourseSortOption.dateModifiedAsc:
+      return base.sortByLastModified();
+    case CourseSortOption.dateModifiedDesc:
+      return base.sortByLastModifiedDesc();
+    case CourseSortOption.none:
+      return base.sortByLastModifiedDesc();
+  }
+}
+
+final _contentsFilterOptionsFamily = AutoDisposeStateProvider.family<CourseSortOption, String>(
+  (ref, collectionId) => CourseSortOption.none,
+);
+
+final AutoDisposeStreamProviderFamily<List<ContentWithProgress>, String> _watchContentsFamily =
     AutoDisposeStreamProviderFamily((ref, collectionId) {
+      final sortOption = ref.watch(_contentsFilterOptionsFamily(collectionId));
       final controller = StreamController<List<ContentWithProgress>>();
 
       StreamSubscription<List<CourseContent>>? contentsSub;
@@ -21,7 +60,6 @@ final AutoDisposeStreamProviderFamily<List<ContentWithProgress>, String> watchCo
       List<CourseContent> latestContents = [];
       Map<String, ProgressTrackModel> latestProgressMap = {};
 
-      // Helper to emit combined list
       void emitCombined() {
         if (controller.isClosed) return;
         final combined =
@@ -34,11 +72,8 @@ final AutoDisposeStreamProviderFamily<List<ContentWithProgress>, String> watchCo
       () async {
         try {
           final isar = await IsarData.isarFuture;
-
-          final contentsStream = (await CourseContentRepo.filter)
-              .parentIdEqualTo(collectionId)
-              .sortByLastModifiedDesc()
-              .watch(fireImmediately: true);
+          final query = await _resolveQueryBuilder(collectionId, sortOption);
+          final contentsStream = query.watch(fireImmediately: true);
 
           contentsSub = contentsStream.listen(
             (contents) {
@@ -89,19 +124,20 @@ final AutoDisposeStreamProviderFamily<List<ContentWithProgress>, String> watchCo
     });
 
 class CourseMaterialsProviders {
-  final String collectionId;
-  CourseMaterialsProviders(this.collectionId);
-  static CourseMaterialsProviders of(String collectionId) => CourseMaterialsProviders(collectionId);
-
-  static final AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool> isListLayout =
-      AutoDisposeAsyncNotifierProvider<IsListViewNotifier, bool>(
-        () => IsListViewNotifier("course_material/isListView"),
+  /// 0 for Grid, 1 for List, 2 for otherwise
+  static final AutoDisposeAsyncNotifierProvider<CardViewTypeNotifier, int> cardViewType =
+      AutoDisposeAsyncNotifierProvider<CardViewTypeNotifier, int>(
+        () => CardViewTypeNotifier(HiveDataPaths.courseMaterialscardViewType, 2),
       );
 
-  late final AutoDisposeStreamProvider<List<ContentWithProgress>> watchContents = watchContentsFamily(collectionId);
+  static AutoDisposeStateProvider<CourseSortOption> contentsFilterOption(String collectionId) =>
+      _contentsFilterOptionsFamily(collectionId);
+
+  static AutoDisposeStreamProvider<List<ContentWithProgress>> watchContents(String collectionId) =>
+      _watchContentsFamily(collectionId);
 
   static final PagingState<int, CourseContent> pagingState = PagingState();
-  static final StateProvider<double> scrollOffsetProvider = StateProvider((cb) => 0.0);
+  static final AutoDisposeStateProvider<double> scrollOffsetProvider = AutoDisposeStateProvider((cb) => 0.0);
 }
 
 class ContentWithProgress {

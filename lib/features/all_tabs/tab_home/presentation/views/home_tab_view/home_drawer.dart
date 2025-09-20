@@ -74,7 +74,7 @@ class HomeDrawer extends ConsumerWidget {
                 leading: Icon(Iconsax.pen_tool, color: theme.supportingText.withValues(alpha: 0.5)),
                 title: CustomText("Tools", color: theme.onBackground),
                 onTap: () {
-                  // Tools like Calculate gpa, etc
+                  // Tools like Calculate gpa, Reading Metrics etc
                 },
               ),
               

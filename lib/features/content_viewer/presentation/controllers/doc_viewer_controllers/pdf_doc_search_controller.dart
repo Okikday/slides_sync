@@ -4,13 +4,14 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:slides_sync/core/utils/leak_prevention.dart';
 
-class PdfDocSearchActions {
+class PdfDocSearchController extends LeakPrevention {
   late final FocusNode focusNode;
   late final TextEditingController searchController;
   late final ValueNotifier<bool> isSearchInProgressNotifier;
 
-  final ValueNotifier<bool> isSearchingNotifier;
+  final ValueNotifier<bool> isSearchingNotifier = ValueNotifier(false);
   final PdfViewerController pdfViewerController;
 
   final void Function() onStateChanged;
@@ -18,9 +19,8 @@ class PdfDocSearchActions {
   PdfTextSearcher? textSearcher;
   BuildContext? _context;
 
-  PdfDocSearchActions({
+  PdfDocSearchController({
     required BuildContext context,
-    required this.isSearchingNotifier,
     required this.pdfViewerController,
     required this.onStateChanged,
   }) {
@@ -31,7 +31,6 @@ class PdfDocSearchActions {
 
     isSearchingNotifier.addListener(_onSearchModeChanged);
   }
-
 
   void updateTextSearcher(PdfTextSearcher? searcher) {
     textSearcher = searcher;
@@ -142,28 +141,28 @@ class PdfDocSearchActions {
     if (_context == null) return;
     showDialog(
       context: _context!,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Search Result'),
-            content: const Text('No more occurrences found. Would you like to continue searching from the beginning?'),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  final s = textSearcher;
-                  if (s == null) return;
-                  await s.goToMatchOfIndex(0);
-                  onStateChanged();
-                },
-                child: const Text('YES'),
-              ),
-              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('NO')),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Search Result'),
+        content: const Text('No more occurrences found. Would you like to continue searching from the beginning?'),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              final s = textSearcher;
+              if (s == null) return;
+              await s.goToMatchOfIndex(0);
+              onStateChanged();
+            },
+            child: const Text('YES'),
           ),
+          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('NO')),
+        ],
+      ),
     );
   }
 
-  void dispose() {
+  @override
+  void onDispose() {
     focusNode.dispose();
     searchController.dispose();
     final s = textSearcher;
@@ -172,6 +171,7 @@ class PdfDocSearchActions {
       s.dispose();
     }
     isSearchInProgressNotifier.dispose();
+    isSearchingNotifier.dispose();
     isSearchingNotifier.removeListener(_onSearchModeChanged);
     log("Disposed pdf search actions ");
   }
