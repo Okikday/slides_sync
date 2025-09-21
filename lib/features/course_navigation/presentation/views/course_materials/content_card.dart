@@ -41,8 +41,7 @@ class _ContentCardState extends ConsumerState<ContentCard> {
   Widget build(BuildContext context) {
     final theme = ref.theme;
     final content = widget.content;
-    final previewDataProvider = ref.watch(ContentCardProviders.fetchLinkPreviewDataProvider(content));
-    log("Buiild content card");
+    // final previewDataProvider = ref.watch(ContentCardProviders.fetchLinkPreviewDataProvider(content));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -79,7 +78,9 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                               ),
                               child: ImageFiltered(
                                 imageFilter: ColorFilter.mode(Colors.black.withAlpha(10), BlendMode.color),
-                                child: previewDataProvider.when(
+                                child: ref
+                                    .watch(ContentCardProviders.fetchLinkPreviewDataProvider(content))
+                                    .when(
                                   data: (data) => BuildImagePathWidget(
                                     fileDetails: data,
                                     fit: BoxFit.cover,

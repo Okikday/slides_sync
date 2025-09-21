@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'firebase_options.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,5 +21,5 @@ void main() async {
   if (!kIsWeb) await IsarData.initialize(collectionSchemas: isarSchemas);
   pdfrxFlutterInitialize();
 
-  runApp(ProviderScope(child: const App()));
+  runApp(const ProviderScope(child: App()));
 }

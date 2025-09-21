@@ -1,11 +1,9 @@
-
 import 'dart:ui';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:slides_sync/features/content_viewer/presentation/views/viewers/link_viewer/drive_listing_view.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/test/file_manager_page.dart';
@@ -45,8 +43,7 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
               CustomElevatedButton(
                 backgroundColor: theme.primary,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                onClick: () {
-                },
+                onClick: () {},
                 child: CustomText(
                   'Welcome to Explore',
                   color: ref.theme.onPrimary,
@@ -65,7 +62,6 @@ class _ExploreTabViewState extends ConsumerState<ExploreTabView> {
                     child: CustomText('File Manager page', color: ref.theme.onBackground),
                   ),
                 ),
-              
             ],
           ),
         ),

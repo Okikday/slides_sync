@@ -26,29 +26,34 @@ class _PdfDocSearchAppBarState extends ConsumerState<PdfDocSearchAppBar> {
     return ValueListenableBuilder(
       valueListenable: pdsa.isSearchingNotifier,
       builder: (context, isSearching, _) {
-        return Row(
-          children: [
-            AppBackButton(
-              onPressed: () {
-                pdsa.focusNode.unfocus();
-                pdsa.isSearchingNotifier.value = false;
-              },
-            ),
-            ConstantSizing.rowSpacing(4),
-            Expanded(child: _SearchField(pdsa: pdsa)),
-            ConstantSizing.rowSpacing(8),
-            ValueListenableBuilder(
-              valueListenable: pdsa.isSearchInProgressNotifier,
-              builder: (context, isInProgress, _) {
-                if (!isInProgress) return const SizedBox.shrink();
-                return SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: theme.primaryColor),
-                );
-              },
-            ),
-          ],
+        return Visibility(
+          maintainState: true,
+          maintainAnimation: true,
+          visible: isSearching,
+          child: Row(
+            children: [
+              AppBackButton(
+                onPressed: () {
+                  pdsa.focusNode.unfocus();
+                  pdsa.isSearchingNotifier.value = false;
+                },
+              ),
+              ConstantSizing.rowSpacing(4),
+              Expanded(child: _SearchField(pdsa: pdsa)),
+              ConstantSizing.rowSpacing(8),
+              ValueListenableBuilder(
+                valueListenable: pdsa.isSearchInProgressNotifier,
+                builder: (context, isInProgress, _) {
+                  if (!isInProgress) return const SizedBox.shrink();
+                  return SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: theme.primaryColor),
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
     );

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:isar/isar.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
 import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/core/storage/isar_data/isar_data.dart';
@@ -21,6 +22,7 @@ import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_
 const Duration readValidityDuration = Duration(seconds: 5);
 
 class PdfDocViewerController extends LeakPrevention {
+  static final ScreenshotController screenshotController = ScreenshotController();
   final CourseContent content;
   final PdfViewerController pdfViewerController;
   final ValueNotifier<ProgressTrackModel?> progressTrackNotifier = ValueNotifier(null);

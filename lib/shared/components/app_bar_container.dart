@@ -2,6 +2,7 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
+import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
 export 'app_bar_container_child.dart';
 
@@ -87,7 +88,11 @@ class _AppBarContainerWidget extends ConsumerWidget {
       height: (appBarHeight ?? (kToolbarHeight + 8 + topPadding)),
       decoration: BoxDecoration(
         color: scaffoldBgColor ?? context.scaffoldBackgroundColor,
-        border: Border(bottom: BorderSide(color: ref.theme.bgLightenColor(.89, .11))),
+        border: Border(
+          bottom: BorderSide(
+            color: (scaffoldBgColor ?? context.scaffoldBackgroundColor).blendColor(ref.isDarkMode ? 0.15 : 0.85),
+          ),
+        ),
       ),
       padding: _resolvePadding(topPadding),
       child: child,

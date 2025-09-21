@@ -16,14 +16,30 @@ export 'dart:io';
 enum AppDirType { documents, appSupport, temporary, cache }
 
 class FileUtils {
-  static Future<String> _storeToApplicationsDocumentsDirectory(
+  static Future<String> _storeToAppDirectory(
     File file,
     String folderPath,
-    String? newFileName,
-  ) async {
-    final Directory baseDir = await getApplicationDocumentsDirectory();
+    String? newFileName, [
+    AppDirType base = AppDirType.documents,
+  ]) async {
+    final Directory baseDir;
+    switch (base) {
+      case AppDirType.appSupport:
+        baseDir = await getApplicationSupportDirectory();
+        break;
+      case AppDirType.temporary:
+        baseDir = await getTemporaryDirectory();
+        break;
+      case AppDirType.cache:
+        baseDir = await getTemporaryDirectory();
+        break;
+      case AppDirType.documents:
+        baseDir = await getApplicationDocumentsDirectory();
+        break;
+    }
+
     final String fileName = p.basename(file.path);
-    final String targetDirPath = p.join(baseDir.path, folderPath);
+    final String targetDirPath = folderPath.isEmpty ? baseDir.path : p.join(baseDir.path, folderPath);
 
     final Directory targetDir = Directory(targetDirPath);
     if (!(await targetDir.exists())) {
@@ -35,10 +51,15 @@ class FileUtils {
     return newPath;
   }
 
-  /// This stores File to App's Document Directory.
+  /// This stores File to the selected App directory (documents/appSupport/temporary/cache).
   /// Returns the path it's stored to.
-  static Future<String> storeFile({required File file, String folderPath = '', String? newFileName}) async {
-    return await _storeToApplicationsDocumentsDirectory(file, folderPath, newFileName);
+  static Future<String> storeFile({
+    required File file,
+    String folderPath = '',
+    String? newFileName,
+    AppDirType base = AppDirType.documents,
+  }) async {
+    return await _storeToAppDirectory(file, folderPath, newFileName, base);
   }
 
   static String getUniqueFilePath(String dirPath, String fileName) {

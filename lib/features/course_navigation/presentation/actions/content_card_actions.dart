@@ -13,13 +13,11 @@ import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_
 
 class ContentCardActions {
   static Future<FileDetails> resolvePreviewPath(CourseContent content) async {
-    log("Checking for link");
     switch (content.courseContentType) {
       case CourseContentType.link:
         final String? previewUrl = jsonDecode(content.metadataJson)['previewUrl'] as String?;
         if (previewUrl == null || previewUrl.isEmpty) {
           final args = <String, dynamic>{'url': content.path.urlPath, 'driveApiKey': dotenv.env['DRIVE_API_KEY']};
-          log("args: $args");
           final Map<String, String?>? previewMap = await compute(_fetchPreviewWorker, args);
           log("After checking internet: $previewMap");
           if (previewMap == null) return FileDetails();

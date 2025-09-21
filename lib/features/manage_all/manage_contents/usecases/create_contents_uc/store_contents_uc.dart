@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/services.dart';
@@ -43,7 +44,34 @@ class StoreContentsUc {
         final CourseContentType contentType = checkContentType(fileName);
 
         final Result<String?> addContentResult = await Result.tryRunAsync(() async {
-          if (sameHashedContent != null) {
+          //
+          if (sameHashedContent == null) {
+            final String contentId = const Uuid().v4();
+            final File storedAt = File(
+              await FileUtils.storeFile(
+                file: file,
+                folderPath: dirToStoreAt,
+                newFileName: p.setExtension(contentId, p.extension(file.path)),
+              ),
+            );
+
+            final CourseContent content = CourseContent.create(
+              contentHash: hash,
+              contentId: contentId,
+              title: fileNameWithoutExt,
+              parentId: collection.collectionId,
+              path: FileDetails(filePath: storedAt.path),
+              courseContentType: contentType,
+              metadataJson: jsonEncode(<String, dynamic>{'filename': p.basenameWithoutExtension(fileName)}),
+            );
+            await CreateContentPreviewImage.createPreviewImageForContent(
+              storedAt.path,
+              courseContentType: contentType,
+              genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt.path),
+            );
+            await CourseCollectionRepo.addContent(content);
+            return content.contentId;
+          } else {
             final CourseContent? sameHashedContentInColl = await CourseCollectionRepo.findFirstDuplicateContentByHash(
               collection,
               hash,
@@ -62,32 +90,8 @@ class StoreContentsUc {
               log("A duplicate exists!");
               return '';
             }
-          } else {
-            final String contentId = const Uuid().v4();
-            final File storedAt = File(
-              await FileUtils.storeFile(
-                file: file,
-                folderPath: dirToStoreAt,
-                newFileName: p.setExtension(contentId, p.extension(file.path)),
-              ),
-            );
-
-            final CourseContent content = CourseContent.create(
-              contentHash: hash,
-              contentId: contentId,
-              title: fileNameWithoutExt,
-              parentId: collection.collectionId,
-              path: FileDetails(filePath: storedAt.path),
-              courseContentType: contentType,
-            );
-            await CreateContentPreviewImage.createPreviewImageForContent(
-              storedAt.path,
-              courseContentType: contentType,
-              genPreviewPathRecord: CreateContentPreviewImage.genPreviewImagePathRecord(filePath: storedAt.path),
-            );
-            await CourseCollectionRepo.addContent(content);
-            return content.contentId;
           }
+          //
         });
         final String? contentId = addContentResult.data;
 
