@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 enum DriveResourceType { unknown, file, folder, googleDoc, googleSheet, googleSlide, shortcut }
@@ -169,44 +170,22 @@ class DriveResource {
 }
 
 /// Streamlined DriveBrowser focusing on resource fetching and downloading.
+/// All methods are now static and isolate-friendly.
 class DriveBrowser {
-  static DriveBrowser? _instance;
-  static Completer<DriveBrowser>? _initCompleter;
+  // Private constructor to prevent instantiation
+  DriveBrowser._();
 
-  final String apiKey;
-  final http.Client _http;
+  // /// Get API key from environment or parameter
+  // static String _getApiKey([String? apiKey]) {
+  //   return apiKey ?? dotenv.env['DRIVE_API_KEY'] ?? '';
+  // }
 
-  DriveBrowser._(this.apiKey) : _http = http.Client();
-
-  /// Initialize with API key. Call once at app startup.
-  static Future<DriveBrowser> initialize({required String apiKey}) async {
-    if (_instance != null) return _instance!;
-    if (_initCompleter != null) return _initCompleter!.future;
-    _initCompleter = Completer();
-    try {
-      final browser = DriveBrowser._(apiKey);
-      _instance = browser;
-      _initCompleter!.complete(browser);
-    } catch (e, st) {
-      _initCompleter!.completeError(e, st);
-      rethrow;
-    }
-    return _instance!;
+  /// Create a new HTTP client for each request (isolate-friendly)
+  static http.Client _createHttpClient() {
+    return http.Client();
   }
 
-  /// Quick getter for the already-initialized instance.
-  static DriveBrowser get instance {
-    if (_instance == null) {
-      throw StateError('DriveBrowser not initialized. Call DriveBrowser.initialize(apiKey: "...") first.');
-    }
-    return _instance!;
-  }
-
-  void dispose() {
-    _http.close();
-  }
-
-  // === ID extraction helper ===
+  /// ID extraction helper
   static String? _extractDriveIdFromLink(String url) {
     final regexes = [
       RegExp(r'/d/([a-zA-Z0-9_-]+)'),
@@ -229,57 +208,75 @@ class DriveBrowser {
       'lastModifyingUser,version,hasAugmentedPermissions,isAppAuthorized';
 
   /// Fetch enhanced metadata for a file by id using API key.
-  Future<DriveFile> getFileMetadata(String fileId) async {
-    final url = Uri.parse(
-      'https://www.googleapis.com/drive/v3/files/$fileId?fields=$_fileFields&key=${Uri.encodeComponent(apiKey)}',
-    );
-    final r = await _http.get(url);
-    if (r.statusCode == 200) {
-      final jsonMap = json.decode(r.body) as Map<String, dynamic>;
-      return DriveFile.fromJson(jsonMap);
-    } else {
-      throw HttpException('Failed to fetch metadata (status ${r.statusCode}): ${r.body}', uri: url);
+  static Future<DriveFile> getFileMetadata(String fileId, {required String apiKey}) async {
+    final client = _createHttpClient();
+    try {
+      if (apiKey.isEmpty) throw ArgumentError('API key is required');
+
+      final url = Uri.parse(
+        'https://www.googleapis.com/drive/v3/files/$fileId?fields=$_fileFields&key=${Uri.encodeComponent(apiKey)}',
+      );
+      final r = await client.get(url);
+      if (r.statusCode == 200) {
+        final jsonMap = json.decode(r.body) as Map<String, dynamic>;
+        return DriveFile.fromJson(jsonMap);
+      } else {
+        throw HttpException('Failed to fetch metadata (status ${r.statusCode}): ${r.body}', uri: url);
+      }
+    } finally {
+      client.close();
     }
   }
 
   /// List folder contents with enhanced metadata
-  Future<List<DriveFile>> listFolderContents(String folderId, {int pageSize = 100}) async {
-    final List<DriveFile> files = [];
-    String? pageToken;
-    do {
-      final q = Uri.encodeQueryComponent("'$folderId' in parents and trashed=false");
-      final url = Uri.parse(
-        'https://www.googleapis.com/drive/v3/files?q=$q&fields=nextPageToken,files($_fileFields)&pageSize=$pageSize&key=${Uri.encodeComponent(apiKey)}${pageToken != null ? '&pageToken=${Uri.encodeQueryComponent(pageToken)}' : ''}',
-      );
-      final r = await _http.get(url);
-      if (r.statusCode != 200) {
-        throw HttpException('Failed to list folder (status ${r.statusCode}): ${r.body}', uri: url);
-      }
-      final map = json.decode(r.body) as Map<String, dynamic>;
-      final rawFiles = (map['files'] as List<dynamic>?);
-      if (rawFiles != null) {
-        for (final f in rawFiles) {
-          files.add(DriveFile.fromJson(f as Map<String, dynamic>));
+  static Future<List<DriveFile>> listFolderContents(
+    String folderId, {
+    required String apiKey,
+    int pageSize = 100,
+  }) async {
+    final client = _createHttpClient();
+    try {
+      if (apiKey.isEmpty) throw ArgumentError('API key is required');
+
+      final List<DriveFile> files = [];
+      String? pageToken;
+      do {
+        final q = Uri.encodeQueryComponent("'$folderId' in parents and trashed=false");
+        final url = Uri.parse(
+          'https://www.googleapis.com/drive/v3/files?q=$q&fields=nextPageToken,files($_fileFields)&pageSize=$pageSize&key=${Uri.encodeComponent(apiKey)}${pageToken != null ? '&pageToken=${Uri.encodeQueryComponent(pageToken)}' : ''}',
+        );
+        final r = await client.get(url);
+        if (r.statusCode != 200) {
+          throw HttpException('Failed to list folder (status ${r.statusCode}): ${r.body}', uri: url);
         }
-      }
-      pageToken = map['nextPageToken'] as String?;
-    } while (pageToken != null);
-    return files;
+        final map = json.decode(r.body) as Map<String, dynamic>;
+        final rawFiles = (map['files'] as List<dynamic>?);
+        if (rawFiles != null) {
+          for (final f in rawFiles) {
+            files.add(DriveFile.fromJson(f as Map<String, dynamic>));
+          }
+        }
+        pageToken = map['nextPageToken'] as String?;
+      } while (pageToken != null);
+      return files;
+    } finally {
+      client.close();
+    }
   }
 
   /// Given a Drive link (or id), return a single DriveResource describing the item.
   ///
   /// - If the resource is a file (including Google-native docs) -> type=file, `file` populated.
   /// - If the resource is a folder -> type=folder, `children` populated (one-level listing).
-  Future<DriveResource> fetchResourceFromLink(String link) async {
+  static Future<DriveResource> fetchResourceFromLink(String link, {required String apiKey}) async {
     final id = _extractDriveIdFromLink(link);
     if (id == null) throw ArgumentError('Could not extract Drive ID from link.');
 
-    final meta = await getFileMetadata(id);
+    final meta = await getFileMetadata(id, apiKey: apiKey);
     final mt = (meta.mimeType ?? '').toLowerCase();
 
     if (mt == 'application/vnd.google-apps.folder') {
-      final children = await listFolderContents(id);
+      final children = await listFolderContents(id, apiKey: apiKey);
       return DriveResource(type: DriveResourceType.folder, file: meta, children: children);
     }
 
@@ -301,35 +298,42 @@ class DriveBrowser {
 
   /// Download a Drive file with multiple fallback strategies.
   /// Returns the HTTP response - caller should check statusCode == 200 and use resp.bodyBytes.
-  Future<http.Response> downloadDriveFile({required String fileId}) async {
-    // 1) Try REST alt=media using the API key (best for publicly accessible files)
+  static Future<http.Response> downloadDriveFile({required String fileId, required String apiKey}) async {
+    final client = _createHttpClient();
     try {
-      final url = Uri.parse(
-        'https://www.googleapis.com/drive/v3/files/$fileId?alt=media&key=${Uri.encodeComponent(apiKey)}',
-      );
-      final r = await _http.get(url);
-      if (r.statusCode == 200) return r;
-    } catch (_) {
-      // Continue to fallback
-    }
+      if (apiKey.isEmpty) throw ArgumentError('API key is required');
 
-    // 2) Try direct uc?export=download (works for many publicly-shared items)
-    try {
-      final direct = Uri.parse('https://drive.google.com/uc?export=download&id=$fileId');
-      final r2 = await _http.get(direct);
-      if (r2.statusCode == 200) {
-        final contentType = r2.headers['content-type'] ?? '';
-        // Crude heuristic: if not HTML, return as file bytes
-        if (!contentType.toLowerCase().contains('text/html')) {
-          return r2;
-        }
+      // 1) Try REST alt=media using the API key (best for publicly accessible files)
+      try {
+        final url = Uri.parse(
+          'https://www.googleapis.com/drive/v3/files/$fileId?alt=media&key=${Uri.encodeComponent(apiKey)}',
+        );
+        final r = await client.get(url);
+        if (r.statusCode == 200) return r;
+      } catch (_) {
+        // Continue to fallback
       }
-    } catch (_) {
-      // Continue to error
-    }
 
-    // 3) No success with available methods
-    throw StateError('Unable to download file with API key; file might be private or not publicly accessible.');
+      // 2) Try direct uc?export=download (works for many publicly-shared items)
+      try {
+        final direct = Uri.parse('https://drive.google.com/uc?export=download&id=$fileId');
+        final r2 = await client.get(direct);
+        if (r2.statusCode == 200) {
+          final contentType = r2.headers['content-type'] ?? '';
+          // Crude heuristic: if not HTML, return as file bytes
+          if (!contentType.toLowerCase().contains('text/html')) {
+            return r2;
+          }
+        }
+      } catch (_) {
+        // Continue to error
+      }
+
+      // 3) No success with available methods
+      throw StateError('Unable to download file with API key; file might be private or not publicly accessible.');
+    } finally {
+      client.close();
+    }
   }
 
   /// Export Google native files (Docs, Sheets, Slides) to a specified format.
@@ -337,29 +341,45 @@ class DriveBrowser {
   /// - Google Docs: 'application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   /// - Google Sheets: 'application/pdf', 'text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   /// - Google Slides: 'application/pdf', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-  Future<http.Response> exportGoogleFile({required String fileId, required String mimeType}) async {
-    final url = Uri.parse(
-      'https://www.googleapis.com/drive/v3/files/$fileId/export?mimeType=${Uri.encodeComponent(mimeType)}&key=${Uri.encodeComponent(apiKey)}',
-    );
+  static Future<http.Response> exportGoogleFile({
+    required String fileId,
+    required String mimeType,
+    required String apiKey,
+  }) async {
+    final client = _createHttpClient();
+    try {
+      if (apiKey.isEmpty) throw ArgumentError('API key is required');
 
-    final r = await _http.get(url);
-    if (r.statusCode == 200) {
-      return r;
-    } else {
-      throw HttpException('Failed to export file (status ${r.statusCode}): ${r.body}', uri: url);
+      final url = Uri.parse(
+        'https://www.googleapis.com/drive/v3/files/$fileId/export?mimeType=${Uri.encodeComponent(mimeType)}&key=${Uri.encodeComponent(apiKey)}',
+      );
+
+      final r = await client.get(url);
+      if (r.statusCode == 200) {
+        return r;
+      } else {
+        throw HttpException('Failed to export file (status ${r.statusCode}): ${r.body}', uri: url);
+      }
+    } finally {
+      client.close();
     }
   }
 
   /// Check if a file is publicly accessible with the current API key.
-  Future<bool> isFileAccessible(String fileId) async {
+  static Future<bool> isFileAccessible(String fileId, {required String apiKey}) async {
+    final client = _createHttpClient();
     try {
+      if (apiKey.isEmpty) return false;
+
       final url = Uri.parse(
         'https://www.googleapis.com/drive/v3/files/$fileId?fields=id&key=${Uri.encodeComponent(apiKey)}',
       );
-      final r = await _http.get(url);
+      final r = await client.get(url);
       return r.statusCode == 200;
     } catch (_) {
       return false;
+    } finally {
+      client.close();
     }
   }
 
@@ -375,7 +395,7 @@ class DriveBrowser {
   /// - And other common Drive URL formats
   ///
   /// Returns `true` if the URL matches Google Drive patterns, `false` otherwise.
-  bool isGoogleDriveLink(String url) {
+  static bool isGoogleDriveLink(String url) {
     if (url.isEmpty) return false;
 
     // Normalize the URL - handle cases without protocol
@@ -445,7 +465,7 @@ class DriveBrowser {
 
   /// Alternative simpler version that just checks for common patterns
   /// without full URI parsing (more permissive but faster)
-  bool isGoogleDriveLinkSimple(String url) {
+  static bool isGoogleDriveLinkSimple(String url) {
     if (url.isEmpty) return false;
 
     final normalizedUrl = url.toLowerCase().trim();

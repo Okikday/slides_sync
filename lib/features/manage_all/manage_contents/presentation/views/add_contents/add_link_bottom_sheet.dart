@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -104,6 +106,7 @@ class _AddLinkBottomSheetState extends ConsumerState<AddLinkBottomSheet> {
                         description: previewData?.description ?? prevDetails.description,
                         previewUrl: previewData?.previewUrl ?? prevDetails.previewUrl,
                       );
+                      
                       return BuildImagePathWidget(
                         fileDetails: FileDetails(urlPath: snapshot.data!.previewUrl!),
                         fit: BoxFit.cover,

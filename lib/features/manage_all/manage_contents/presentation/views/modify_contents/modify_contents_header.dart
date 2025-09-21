@@ -8,9 +8,16 @@ import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class ModifyContentsHeader extends ConsumerWidget {
   final void Function() onDelete;
+  final void Function() onCancel;
   final ModifyContentsViewProviders mcvp;
   final int? collectionLength;
-  const ModifyContentsHeader({super.key, required this.onDelete, required this.mcvp, this.collectionLength});
+  const ModifyContentsHeader({
+    super.key,
+    required this.onDelete,
+    required this.onCancel,
+    required this.mcvp,
+    this.collectionLength,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,41 +28,53 @@ class ModifyContentsHeader extends ConsumerWidget {
     // final padding6 = hPadding * .6;
 
     final btnDimension = context.defaultBtnDimension * .8;
-    // final theme = ref.theme;
+    final theme = ref.theme;
     return ValueListenableBuilder(
       valueListenable: mcvp.selectedContentsNotifier,
       builder: (context, value, child) {
-        if (value.isEmpty) return SliverToBoxAdapter();
         return PinnedHeaderSliver(
-          child: ClipRRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-              child: ColoredBox(
-                color: context.scaffoldBackgroundColor.withAlpha(225),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16).copyWith(top: 4),
+          child: AnimatedContainer(
+            duration: Durations.extralong1,
+            curve: CustomCurves.defaultIosSpring,
+            height: value.isNotEmpty ? 50 : 0,
+            color: context.scaffoldBackgroundColor.withAlpha(225),
+            clipBehavior: Clip.hardEdge,
+            padding: EdgeInsets.symmetric(horizontal: 16).copyWith(top: 4),
+            child: Row(
+              spacing: 12.0,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomElevatedButton(
+                  pixelHeight: btnDimension,
+                  backgroundColor: Colors.red.withAlpha(100),
+                  contentPadding: EdgeInsets.symmetric(horizontal: padding7),
+                  borderRadius: ConstantSizing.borderRadiusCircle,
+                  onClick: onDelete,
                   child: Row(
-                    spacing: 12.0,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    spacing: 8,
                     children: [
-                      CustomElevatedButton(
-                        pixelHeight: btnDimension,
-                        backgroundColor: Colors.red.withAlpha(100),
-                        contentPadding: EdgeInsets.symmetric(horizontal: padding7),
-                        borderRadius: ConstantSizing.borderRadiusCircle,
-                        onClick: onDelete,
-                        child: Row(
-                          spacing: 8,
-                          children: [
-                                Icon(Iconsax.trash, color: Colors.red), CustomText("Delete", color: Colors.red)],
-                        ),
-                      ),
-        
-                      CustomText("${value.length} selected"),
+                      Icon(Iconsax.trash, color: Colors.red),
+                      CustomText("Delete", color: Colors.red),
                     ],
                   ),
                 ),
-              ),
+                CustomElevatedButton(
+                  pixelHeight: btnDimension,
+                  backgroundColor: theme.surface.withAlpha(200),
+                  contentPadding: EdgeInsets.symmetric(horizontal: padding7),
+                  borderRadius: ConstantSizing.borderRadiusCircle,
+                  onClick: onCancel,
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      Icon(Icons.cancel_rounded, color: theme.onSurface),
+                      CustomText("Cancel", color: theme.onSurface),
+                    ],
+                  ),
+                ),
+                
+                Expanded(child: CustomText("${value.length} selected", textAlign: TextAlign.right)),
+              ],
             ),
           ),
         );

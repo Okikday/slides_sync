@@ -23,8 +23,7 @@ class HomeTabViewProviders {
         await isarSub?.cancel();
         final isar = await IsarData.isarFuture;
 
-        final Stream<List<ProgressTrackModel>> stream = ids.isNotEmpty
-            ? isar.progressTrackModels
+        final Stream<List<ProgressTrackModel>> stream = isar.progressTrackModels
                 .filter()
                 .anyOf(ids, (q, id) => q.contentIdEqualTo(id))
                 .sortByLastReadDesc()
@@ -37,12 +36,7 @@ class HomeTabViewProviders {
                       .whereType<ProgressTrackModel>()
                       .toList();
                   return ordered.length > 10 ? ordered.sublist(0, 10).reversed.toList() : ordered.reversed.toList();
-                })
-            : isar.progressTrackModels
-                .where()
-                .sortByLastReadDesc()
-                .limit(5)
-                .watch(fireImmediately: true);
+            });
 
         isarSub = stream.listen(
           (data) {

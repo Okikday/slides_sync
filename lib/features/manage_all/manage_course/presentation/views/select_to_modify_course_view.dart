@@ -48,8 +48,6 @@ class _SelectToModifyCourseViewState extends ConsumerState<SelectToModifyCourseV
         value: UiUtils.getSystemUiOverlayStyle(Colors.transparent, context.isDarkMode).copyWith(statusBarIconBrightness: Brightness.light),
         child: Scaffold(
           appBar: AppBarContainer(
-            appBarHeight: kToolbarHeight + 12,
-            padding: EdgeInsets.zero,
             child: AppBarContainerChild(context.isDarkMode, title: 'Select course to modify'),
           ),
           body: SelectToModifyCourseOuterSection(

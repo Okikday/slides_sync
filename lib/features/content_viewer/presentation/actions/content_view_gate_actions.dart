@@ -31,7 +31,7 @@ class ContentViewGateActions {
 
       case CourseContentType.link:
         final urlPath = content.path.urlPath;
-        if (DriveBrowser.instance.isGoogleDriveLink(urlPath)) {
+        if (DriveBrowser.isGoogleDriveLink(urlPath)) {
           AppRouteNavigator.to(context, isPushedAsReplacement: true).driveLinkViewerRoute(urlPath);
           return;
         }
@@ -47,8 +47,9 @@ class ContentViewGateActions {
         return;
 
       default:
-        UiUtils.showFlushBar(context, msg: "This content is not supported right now!");
         context.pop();
+        UiUtils.showFlushBar(context, msg: "This content is not supported right now!");
+
         return;
     }
   }

@@ -35,7 +35,6 @@ class CourseNavRoutes {
           pageBuilder:
               (context, state) => defaultTransition(
                 state.pageKey,
-                defaultIncoming: TransitionType.topLevel,
                 child: CourseMaterialsView(collection: state.extra as CourseCollection),
               ),
           routes: [

@@ -33,60 +33,48 @@ class AppBarContainerChild extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    return Material(
-      type: MaterialType.transparency,
-      shape: LinearBorder(
-        bottom: LinearBorderEdge(),
-        side: BorderSide(color: theme.bgLightenColor(.89, .11)),
-      ),
-      child: Padding(
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 12),
-        child: Tooltip(
-          triggerMode: TooltipTriggerMode.tap,
-          message: tooltipMessage ?? title,
-          child: Row(
-            children: [
-              AppBackButton(onPressed: onBackButtonClicked),
-              ConstantSizing.rowSpacing(8),
-              Expanded(
-                child:
-                    (subtitle != null ||
-                            (subtitle != null && subtitle!.isNotEmpty))
-                        ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 2.5,
-                          children: [
-                            CustomText(
-                              title,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                              color: theme.onBackground,
-                            ),
-                            CustomText(
-                              subtitle!,
-                              fontSize: 12,
-                              color: theme.bgLightenColor(.6, .4),
-                              overflow: TextOverflow.ellipsis,
-                              style: subtitleStyle,
-                            ),
-                          ],
-                        )
-                        : CustomText(
-                          title,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                          style: titleStyle,
-                          color: theme.onBackground,
-                        ),
-              ),
-              if (trailing == null) ConstantSizing.rowSpacingMedium,
-              if (trailing != null) trailing!,
-            ],
+    return Tooltip(
+      triggerMode: TooltipTriggerMode.tap,
+      message: tooltipMessage ?? title,
+      child: Row(
+        children: [
+          AppBackButton(onPressed: onBackButtonClicked),
+          ConstantSizing.rowSpacing(8),
+          Expanded(
+            child: (subtitle != null || (subtitle != null && subtitle!.isNotEmpty))
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 2.5,
+                    children: [
+                      CustomText(
+                        title,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                        color: theme.onBackground,
+                      ),
+                      CustomText(
+                        subtitle!,
+                        fontSize: 12,
+                        color: theme.bgLightenColor(.6, .4),
+                        overflow: TextOverflow.ellipsis,
+                        style: subtitleStyle,
+                      ),
+                    ],
+                  )
+                : CustomText(
+                    title,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
+                    style: titleStyle,
+                    color: theme.onBackground,
+                  ),
           ),
-        ),
+          if (trailing == null) ConstantSizing.rowSpacingMedium,
+          if (trailing != null) trailing!,
+        ],
       ),
     );
   }

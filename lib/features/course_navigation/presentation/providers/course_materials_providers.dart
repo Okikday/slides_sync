@@ -11,7 +11,7 @@ import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/models/progress_track_model.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/courses_view_actions.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/custom_notifiers/is_list_view_notifier.dart';
+import 'package:slides_sync/core/global_notifiers/card_view_type_notifier.dart';
 
 final defaultContent = CourseContent.create(
   contentHash: '_',

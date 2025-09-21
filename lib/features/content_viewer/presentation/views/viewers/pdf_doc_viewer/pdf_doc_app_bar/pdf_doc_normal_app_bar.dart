@@ -1,17 +1,22 @@
+import 'dart:developer';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/build_button.dart';
+import 'package:slides_sync/features/content_viewer/presentation/controllers/doc_viewer_controllers/pdf_doc_viewer_controller.dart';
+import 'package:slides_sync/features/content_viewer/presentation/providers/pdf_doc_viewer_providers.dart';
 import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class PdfDocNormalAppBar extends ConsumerWidget {
-  const PdfDocNormalAppBar({super.key, required this.title, required this.isSearchingNotifier});
+  const PdfDocNormalAppBar({super.key, required this.title, required this.pdva, required this.isSearchingNotifier});
 
   final String title;
+  final PdfDocViewerController pdva;
   final ValueNotifier<bool> isSearchingNotifier;
 
   @override
@@ -25,7 +30,6 @@ class PdfDocNormalAppBar extends ConsumerWidget {
               child: AppBarContainerChild(
                 theme.isDarkTheme,
                 title: title,
-                padding: EdgeInsets.only(left: 12, right: 8),
                 trailing: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
@@ -39,12 +43,29 @@ class PdfDocNormalAppBar extends ConsumerWidget {
                       ),
                       AppPopupMenuButton(
                         tooltip: "More options",
-                        menuPadding: EdgeInsets.only(right: 16),
                         actions: [
-                          PopupMenuAction(title: "Go to page", iconData: Icons.share_rounded, onTap: () {}),
+                          PopupMenuAction(
+                            title: "Go to last page",
+                            iconData: Iconsax.play,
+                            onTap: () {
+                              pdva.pdfViewerController.goToPage(pageNumber: pdva.initialPage);
+                            },
+                          ),
                           PopupMenuAction(title: "Share", iconData: Icons.share_rounded, onTap: () {}),
                           PopupMenuAction(title: "Print", iconData: Iconsax.printer_copy, onTap: () {}),
-                          PopupMenuAction(title: "Save", iconData: Iconsax.book_saved_copy, onTap: () {}),
+                          PopupMenuAction(title: "Save", iconData: Iconsax.save_2, onTap: () {}),
+                          PopupMenuAction(title: "Horizontal layout", iconData: Iconsax.book_1, onTap: () {}),
+                          () {
+                            final isDarkMode =
+                                (ref.watch(PdfDocViewerProviders.ispdfViewerInDarkModeNotifier).value ?? false);
+                            return PopupMenuAction(
+                              title: isDarkMode ? "Normal mode(Light)" : "Inverted mode(Dark)",
+                              iconData: isDarkMode ? Iconsax.sun_1 : Iconsax.moon,
+                              onTap: () {
+                                ref.read(PdfDocViewerProviders.ispdfViewerInDarkModeNotifier.notifier).toggle();
+                              },
+                            );
+                          }()
                         ],
                       ),
 

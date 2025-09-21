@@ -1,26 +1,19 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:lottie/lottie.dart';
-import 'package:slides_sync/core/routes/app_route_navigator.dart';
-import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
-import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
-import 'package:slides_sync/domain/repos/course_repo/course_content_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/actions/recent_dialog_actions.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/providers/home_tab_view_providers.dart';
 import 'package:slides_sync/domain/models/progress_track_model.dart';
 import 'package:slides_sync/features/all_tabs/tab_home/presentation/views/home_tab_view/home_body/recents_section/recent_dialog.dart';
-import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
+import 'package:slides_sync/shared/components/loading_logo.dart';
 
 import 'recent_list_tile.dart';
 
@@ -148,10 +141,7 @@ class LoadingRecentsSection extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: 12,
         children: [
-          SizedBox.square(
-            dimension: context.deviceWidth * 0.5,
-            child: LottieBuilder.asset(IconStrings.instance.roundedPlayingFace, reverse: true),
-          ),
+          LoadingLogo(color: ref.theme.primary, rotate: false, size: context.deviceWidth * 0.4),
           CustomText(
             "Looking around for your recents...Where could they be?",
             color: ref.theme.onBackground,

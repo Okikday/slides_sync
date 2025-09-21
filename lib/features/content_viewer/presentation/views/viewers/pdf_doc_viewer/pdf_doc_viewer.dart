@@ -1,21 +1,25 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' as math;
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pdfrx/pdfrx.dart';
+import 'package:slides_sync/core/global_notifiers/toggle_notifier.dart';
+import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/features/content_viewer/presentation/controllers/doc_viewer_controllers/pdf_doc_search_controller.dart';
 import 'package:slides_sync/features/content_viewer/presentation/controllers/doc_viewer_controllers/pdf_doc_viewer_controller.dart';
+import 'package:slides_sync/features/content_viewer/presentation/providers/pdf_doc_viewer_providers.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/pdf_doc_viewer/pdf_doc_app_bar/pdf_doc_viewer_app_bar.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/pdf_doc_viewer/pdf_overlay_widgets/pdf_scrollbar_overlay.dart';
 import 'package:slides_sync/features/content_viewer/presentation/views/viewers/pdf_doc_viewer/pdf_overlay_widgets/pdf_tools_menu.dart';
-import 'package:slides_sync/features/main/presentation/providers/main_providers.dart';
+import 'package:slides_sync/shared/components/app_bar_container.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:pdfrx/pdfrx.dart';
 
 class PdfDocViewer extends ConsumerStatefulWidget {
   final CourseContent content;
@@ -29,7 +33,6 @@ class _PdfDocViewerState extends ConsumerState<PdfDocViewer> {
   late final PdfDocViewerController pdva;
   late final PdfDocSearchController pdsa;
   late final PdfViewerController pdfViewerController;
-
 
   @override
   void initState() {
@@ -102,76 +105,109 @@ class _PdfDocViewerState extends ConsumerState<PdfDocViewer> {
               ),
 
               body: NestedScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    PinnedHeaderSliver(
-                      child: PdfDocViewerAppBar(pdva: pdva, pdsa: pdsa, title: content.title),
+                physics: const NeverScrollableScrollPhysics(),
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverFloatingHeader(
+                    child: ValueListenableBuilder(
+                      valueListenable: pdva.isAppBarVisibleNotifier,
+                      builder: (context, value, child) {
+                        return AppBarContainer(
+                          appBarHeight: value ? null : 0,
+                          child: PdfDocViewerAppBar(pdva: pdva, pdsa: pdsa, title: content.title),
+                        );
+                      },
                     ),
-                  ];
-                },
-                body: content.path.filePath.isNotEmpty
-                    ? PdfViewer.file(
-                        content.path.filePath,
-                        initialPageNumber: pdva.initialPage,
-                        params: PdfViewerParams(
-                          backgroundColor: theme.background,
-                          activeMatchTextColor: theme.primary.withValues(alpha: 0.5),
-                          viewerOverlayBuilder: (context, size, handleLinkTap) {
-                            return [
-                              PdfScrollbarOverlay(
-                                controller: pdfViewerController,
-                                animationDuration: Duration(milliseconds: 200),
+                  ),
+                ],
+                body: PageView(
+                  children: [
+                    ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                        Colors.white,
+                        ref.watch(PdfDocViewerProviders.ispdfViewerInDarkModeNotifier).value ?? false
+                            ? BlendMode.difference
+                            : BlendMode.dst,
+                      ),
+                      child: content.path.filePath.isNotEmpty
+                          ? PdfViewer.file(
+                              content.path.filePath,
+                              initialPageNumber: pdva.initialPage,
+                              params: PdfViewerParams(
+                                // layoutPages: (pages, params) {
+                                //   final height =
+                                //       pages.fold(0.0, (prev, page) => math.max(prev, page.height)) + params.margin * 2;
+                                //   final pageLayouts = <Rect>[];
+                                //   double x = params.margin;
+                                //   for (final page in pages) {
+                                //     pageLayouts.add(
+                                //       Rect.fromLTWH(
+                                //         x,
+                                //         (height - page.height) / 2,
+                                //         page.width,
+                                //         page.height,
+                                //       ),
+                                //     );
+                                //     x += page.width + params.margin;
+                                //   }
+                                //   return PdfPageLayout(pageLayouts: pageLayouts, documentSize: Size(x, height));
+                                // },
+                                backgroundColor: theme.background,
+                                activeMatchTextColor: theme.primary.withValues(alpha: 0.5),
+                                viewerOverlayBuilder: (context, size, handleLinkTap) => [
+                                  PdfViewerScrollThumb(
+                                    controller: pdfViewerController,
+                                    thumbSize: Size(160, 52),
+                                    thumbBuilder: (context, thumbSize, pageNumber, controller) {
+                                      return PdfScrollbarOverlay(
+                                        pageProgress: "${pageNumber ?? 0}/${controller.pageCount}",
+                                      );
+                                    },
+                                  ),
+                                ],
+                                onGeneralTap: (context, controller, details) {
+                                  // Handle this part
+                                  // final currentRect = controller.visibleRect;
+                                  // final currentPageNum = controller.pageNumber;
+                                  if (details.type != PdfViewerGeneralTapType.tap) return false;
+                                  controller.textSelectionDelegate.clearTextSelection();
+                                  // final currentZoom = controller.currentZoom;
+                                  // final currentPosition = controller.centerPosition;
+
+                                  final bool isSearching = pdsa.isSearchingNotifier.value;
+                                  if (isSearching) return false;
+                                  final bool isAppBarVisible = pdva.isAppBarVisibleNotifier.value;
+                                  // isSearchingNotifier.value = false;
+                                  pdva.isAppBarVisibleNotifier.value = !isAppBarVisible;
+                  
+                                  return true;
+                                },
+                                pagePaintCallbacks: [
+                                  (canvas, pageRect, page) {
+                                    // forward to the active searcher, if any
+                                    pdsa.textSearcher?.pageTextMatchPaintCallback(canvas, pageRect, page);
+                                  },
+                                  // other page paint callbacks...
+                                ],
+                                textSelectionParams: PdfTextSelectionParams(
+                                  buildSelectionHandle: (context, anchor, state) {
+                                    final isStart = anchor.type == PdfTextSelectionAnchorType.a;
+                                    return Transform.translate(
+                                      offset: Offset(isStart ? 0 : 0, isStart ? 36 : 0),
+                                      child: MaterialTextSelectionControls().buildHandle(
+                                        context,
+                                        isStart ? TextSelectionHandleType.left : TextSelectionHandleType.right,
+                                        anchor.rect.height,
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            ];
-                          },
-                          onGeneralTap: (context, controller, details) {
-                            log("Details: ${details.type}"); return true;
-                            
-                            // // Handle this part
-                            // final currentRect = controller.visibleRect;
-                            // final currentPageNum = controller.pageNumber;
-                            // if (details.type != PdfViewerGeneralTapType.tap) return false;
-
-                            // final bool isSearching = pdsa.isSearchingNotifier.value;
-                            // if (isSearching) return false;
-                            // final bool isAppBarVisible = pdva.isAppBarVisibleNotifier.value;
-                            // // isSearchingNotifier.value = false;
-                            // pdva.isAppBarVisibleNotifier.value = !isAppBarVisible;
-                            // if (isAppBarVisible) {
-                            //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-                            // } else {
-                            //   final focusModeProvider = ref.read(MainProviders.isFocusModeProvider.notifier);
-                            //   if (!focusModeProvider.state) {
-                            //     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-                            //   } else {
-                            //     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-                            //   }
-                            // }
-                            // return true;
-                          },
-                          pagePaintCallbacks: [
-                            (canvas, pageRect, page) {
-                              // forward to the active searcher, if any
-                              pdsa.textSearcher?.pageTextMatchPaintCallback(canvas, pageRect, page);
-                            },
-                            // other page paint callbacks...
-                          ],
-                          textSelectionParams: PdfTextSelectionParams(
-                            buildSelectionHandle: (context, anchor, state) {
-                              TextSelectionHandleType type = state.index < 1
-                                  ? TextSelectionHandleType.left
-                                  : TextSelectionHandleType.right;
-
-                              return CupertinoTextSelectionControls().buildHandle(context, type, 24.0, null);
-                            },
-                          ),
-                        ),
-                        controller: pdfViewerController,
-                        // scrollDirection: PdfScrollDirection.vertical,
-                        // pageLayoutMode: PdfPageLayoutMode.single,
-                      )
-                    : PdfViewer.uri(Uri.parse(content.path.urlPath), initialPageNumber: pdva.initialPage),
+                              controller: pdfViewerController,
+                            )
+                          : PdfViewer.uri(Uri.parse(content.path.urlPath), initialPageNumber: pdva.initialPage),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

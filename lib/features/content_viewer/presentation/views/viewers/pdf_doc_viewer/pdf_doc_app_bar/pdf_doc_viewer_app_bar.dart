@@ -16,23 +16,12 @@ class PdfDocViewerAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ValueListenableBuilder(
-      valueListenable: pdva.isAppBarVisibleNotifier,
-      builder: (context, value, child) {
-        return AnimatedContainer(
-          curve: CustomCurves.defaultIosSpring,
-          duration: Durations.extralong1,
-          margin: EdgeInsets.only(top: value ? context.topPadding : 0),
-          height: value ? kToolbarHeight + 12 : 0,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              PdfDocSearchAppBar(pdfViewerController: pdva.pdfViewerController, pdsa: pdsa),
-              PdfDocNormalAppBar(title: title, isSearchingNotifier: pdsa.isSearchingNotifier),
-            ],
-          ),
-        );
-      },
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        PdfDocSearchAppBar(pdfViewerController: pdva.pdfViewerController, pdsa: pdsa),
+        PdfDocNormalAppBar(title: title, isSearchingNotifier: pdsa.isSearchingNotifier, pdva: pdva),
+      ],
     );
   }
 }

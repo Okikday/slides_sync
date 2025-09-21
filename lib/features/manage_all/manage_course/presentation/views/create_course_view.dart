@@ -24,8 +24,7 @@ class _CreateCourseViewState extends ConsumerState<CreateCourseView> with Single
       value: UiUtils.getSystemUiOverlayStyle(Colors.transparent, context.isDarkMode),
       child: Scaffold(
         appBar: AppBarContainer(
-          appBarHeight: kToolbarHeight + 12,
-          padding: EdgeInsets.zero,
+          
           child: AppBarContainerChild(context.isDarkMode, title: "Create Course"),
         ),
 

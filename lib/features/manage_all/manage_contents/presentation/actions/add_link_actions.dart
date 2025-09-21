@@ -3,14 +3,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:slides_sync/core/utils/basic_utils.dart';
-import 'package:slides_sync/domain/models/course_model/sub/course_collection.dart';
 import 'package:slides_sync/domain/models/course_model/sub/course_content.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_collection_repo.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/domain/repos/get_content_repo/get_content_repo.dart';
 import 'package:super_clipboard/super_clipboard.dart';
-
-
 
 class AddLinkActions {
   static Future<bool> onAddLinkContent(
@@ -19,9 +16,9 @@ class AddLinkActions {
     required PreviewLinkDetails previewLinkDetails,
   }) async {
     log("previewLinkDetails: $previewLinkDetails");
-    if(parentId.isEmpty) return false;
+    if (parentId.isEmpty) return false;
     final collection = await CourseCollectionRepo.getById(parentId);
-    if(collection == null) return false;
+    if (collection == null) return false;
     final contentHash = BasicUtils.calculateStringHash(link);
     final CourseContent? sameHashedContent = await CourseCollectionRepo.findFirstDuplicateContentByHash(
       collection,
@@ -30,7 +27,16 @@ class AddLinkActions {
     final CourseContent newContent;
     if (sameHashedContent != null) {
       if (contentHash == sameHashedContent.contentHash && link == sameHashedContent.path.fileDetails.urlPath) {
-        log("They are the same, modify");
+        // log("They are the same, modify");
+        if (previewLinkDetails.isEmpty ||
+            ((previewLinkDetails.title != null && previewLinkDetails.title == sameHashedContent.title) &&
+                (previewLinkDetails.description != null &&
+                    previewLinkDetails.description == sameHashedContent.description) &&
+                (previewLinkDetails.previewUrl != null &&
+                    previewLinkDetails.previewUrl == jsonDecode(sameHashedContent.metadataJson)['previewUrl']))) {
+          log("Nothing to update on storage");
+          return false;
+        }
         newContent = sameHashedContent.copyWith(
           contentHash: contentHash,
           title: previewLinkDetails.title != "Unknown link" ? previewLinkDetails.title : "Unknown link",

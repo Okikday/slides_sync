@@ -15,7 +15,7 @@ class PdfToolsMenu extends ConsumerWidget {
     return AnimatedContainer(
       duration: Durations.extralong1,
       curve: CustomCurves.defaultIosSpring,
-      height: 72,
+      height: 60,
       padding: EdgeInsets.symmetric(horizontal: 16),
       // constraints: BoxConstraints(maxWidth: context.deviceWidth - 40),
       decoration: BoxDecoration(color: ref.theme.background, borderRadius: BorderRadius.circular(100)),

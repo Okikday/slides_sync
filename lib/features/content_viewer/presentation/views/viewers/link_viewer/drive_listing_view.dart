@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/content_viewer/domain/services/drive_browser.dart';
@@ -21,8 +22,7 @@ final driveResourceProvider = FutureProvider.autoDispose.family<DriveResource, S
     throw ArgumentError('Folder ID cannot be null');
   }
   
-  final browser = DriveBrowser.instance;
-  
+  final apiKey = dotenv.env['DRIVE_API_KEY'] ?? '';
   // Handle both URLs and file IDs
   String linkToFetch;
   if (folderId.startsWith('http')) {
@@ -30,7 +30,7 @@ final driveResourceProvider = FutureProvider.autoDispose.family<DriveResource, S
   } else {
     // Check if it looks like a file ID or folder ID by trying to get metadata first
     try {
-      final metadata = await browser.getFileMetadata(folderId);
+      final metadata = await DriveBrowser.getFileMetadata(folderId, apiKey: apiKey);
       final mimeType = metadata.mimeType ?? '';
       
       if (mimeType == 'application/vnd.google-apps.folder') {
@@ -45,7 +45,7 @@ final driveResourceProvider = FutureProvider.autoDispose.family<DriveResource, S
     }
   }
   
-  return browser.fetchResourceFromLink(linkToFetch);
+  return DriveBrowser.fetchResourceFromLink(linkToFetch, apiKey: apiKey);
 });
 
 DriveResourceType _getResourceTypeFromMimeType(String mimeType) {
@@ -123,7 +123,7 @@ class DriveListingView extends ConsumerWidget {
               actions: [
                 if (resourceAsync?.hasValue == true && resourceAsync!.value!.type == DriveResourceType.folder)
                   _ImportButton(
-                    resource: resourceAsync!.value!,
+                    resource: resourceAsync.value!,
                     onImport: onImport,
                   ),
                 const SizedBox(width: 8),

@@ -73,8 +73,6 @@ class _ModifyContentsViewState extends ConsumerState<ModifyContentsView> {
             value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
             child: Scaffold(
               appBar: AppBarContainer(
-                appBarHeight: kToolbarHeight + 12,
-                padding: EdgeInsets.zero,
                 child: AppBarContainerChild(
                   context.isDarkMode,
                   title: widget.record.collection.collectionTitle,
@@ -117,6 +115,9 @@ class ModifyContentsOuterSection extends ConsumerWidget {
       slivers: [
         //collectionLength: record.collection.contents.length
         ModifyContentsHeader(
+          onCancel: () {
+            mcvp.clearContents();
+          },
           onDelete: () {
             UiUtils.showCustomDialog(
               context,

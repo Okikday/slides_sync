@@ -71,8 +71,7 @@ class _ModifyCollectionsViewState extends ConsumerState<ModifyCollectionsView> {
       value: UiUtils.getSystemUiOverlayStyle(context.scaffoldBackgroundColor, context.isDarkMode),
       child: Scaffold(
         appBar: AppBarContainer(
-          appBarHeight: kToolbarHeight + 12,
-          padding: EdgeInsets.zero,
+          
           child: AppBarContainerChild(
             context.isDarkMode,
             title: course.courseName,

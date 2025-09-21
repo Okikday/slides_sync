@@ -3,13 +3,12 @@ import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 import 'package:slides_sync/core/routes/routes.dart';
 import 'package:slides_sync/core/routes/routes_strings.dart';
 import 'package:slides_sync/core/utils/ui_utils.dart';
 import 'package:slides_sync/features/auth/domain/services/user_auth/firebase_google_auth.dart';
 import 'package:slides_sync/shared/assets/assets.dart';
-import 'package:slides_sync/shared/assets/strings/icon_strings.dart';
+import 'package:slides_sync/shared/components/loading_logo.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
 
 class SignInView extends ConsumerWidget {
@@ -78,19 +77,7 @@ class SignInView extends ConsumerWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 spacing: 12,
                                 children: [
-                                  SizedBox.square(
-                                    dimension: 120,
-                                    child: Lottie.asset(
-                                      IconStrings.instance.loadingSpinner,
-                                      delegates: LottieDelegates(
-                                        values: [
-                                          ValueDelegate.colorFilter([
-                                            "**",
-                                          ], value: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  LoadingLogo(color: theme.primary, size: 120, rotate: false),
                                   CustomText(
                                     "Signing you in...Just a moment",
                                     color: theme.onPrimary,

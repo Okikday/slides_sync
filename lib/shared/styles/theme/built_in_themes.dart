@@ -2,6 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 
 List<UnifiedThemeModel> defaultUnifiedThemeModels = [
+
+  const UnifiedThemeModel(
+    title: 'Personal made(In progress)',
+    fontFamily: 'Inter',
+    // Improved light theme colors
+    primary: Color(0xFF5000B8),
+    secondary: Color(0xFF5000B8),
+    surface: Color(0xFFFFFFFF),
+    onSurface: Color(0xFF1A1A1A),
+    background: Color(0xFFF1F1F1),
+    onBackground: Color(0xFF1A1A1A),
+    altBackgroundPrimary: Color(0xFFF0EDFF),
+    altBackgroundSecondary: Color(0xFFE0F2F1),
+    onPrimary: Color(0xFFFFFFFF),
+    onSecondary: Color(0xFFFFFFFF),
+    // Dark theme unchanged
+    primaryDark: Color(0xFF7C5CFF),
+    secondaryDark: Color(0xFF26D0CE),
+    surfaceDark: Color(0xFF1E1A2B),
+    onSurfaceDark: Color(0xFFF0F0F0),
+    backgroundDark: Color(0xFF0F0F0F),
+    onBackgroundDark: Color(0xFFF0F0F0),
+    altBackgroundPrimaryDark: Color(0xFF2A1F47),
+    altBackgroundSecondaryDark: Color(0xFF1A3D39),
+    onPrimaryDark: Color(0xFFFFFFFF),
+    onSecondaryDark: Color(0xFF000000),
+  ),
   
   const UnifiedThemeModel(
     title: 'Default Theme',
@@ -34,7 +61,7 @@ List<UnifiedThemeModel> defaultUnifiedThemeModels = [
     title: 'Twilight Academia',
     fontFamily: 'Nunito',
     // Improved light theme colors
-    primary: Color(0xFF6A4BD6),
+    primary: Color(0xFF5000B8),
     secondary: Color(0xFFD4762B),
     surface: Color(0xFFFFFFFF),
     onSurface: Color(0xFF2D2D2D),
