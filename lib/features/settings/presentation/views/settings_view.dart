@@ -76,6 +76,14 @@ class SettingsView extends ConsumerWidget {
                 trailing: Switch(value: false, onChanged: (p) {}),
               ),
 
+              SettingsCard(
+                title: "Summarized suggestions",
+                iconData: Iconsax.sun,
+                content:
+                    "Use your materials to suggest what to read",
+                trailing: Switch(value: false, onChanged: (p) {}),
+              ),
+
 
               // Help: Note, Materials won't be uploaded except you explicitly share them. 
               // Option: Always show download size before downloading from SlideSync Repo

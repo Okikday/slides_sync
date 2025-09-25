@@ -3,14 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:slides_sync/core/storage/hive_data/app_hive_data.dart';
-import 'package:slides_sync/core/storage/hive_data/hive_data_paths.dart';
-import 'package:slides_sync/core/utils/ui_utils.dart';
-import 'package:slides_sync/domain/models/file_details.dart';
 
 import 'package:slides_sync/shared/components/dialogs/app_action_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class RecentDialog extends ConsumerStatefulWidget {
   final RecentDialogModel recentDialogModel;
@@ -25,7 +20,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = ref.theme;
-    var divider = Divider(color: theme.primaryColor.withAlpha(40), height: 0);
+    var divider = Divider(color: theme.onSurface.withAlpha(20), height: 0);
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),
       child: ColoredBox(
@@ -48,7 +43,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
               decoration: BoxDecoration(
                 color: theme.surface.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: theme.altBackgroundPrimary),
+                    border: Border.all(color: theme.surface.withValues(alpha: 0.9)),
               ),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
@@ -66,7 +61,7 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                             clipBehavior: Clip.hardEdge,
                             margin: EdgeInsets.only(left: 12),
                             decoration: BoxDecoration(
-                              color: context.theme.colorScheme.onSecondary.withAlpha(40),
+                                  color: theme.primary.withAlpha(40),
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: widget.recentDialogModel.imagePreview,
@@ -76,13 +71,13 @@ class _RecentDialogState extends ConsumerState<RecentDialog> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 CustomElevatedButton(
-                                  backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
+                                      backgroundColor: theme.adjustBgAndSecondaryWithLerp,
                                   shape: CircleBorder(),
                                   contentPadding: EdgeInsets.all(12),
                                   child: Icon(Iconsax.star_copy, size: 26, color: theme.supportingText),
                                 ),
                                 CustomElevatedButton(
-                                  backgroundColor: context.theme.colorScheme.onSecondary.withAlpha(40),
+                                      backgroundColor: theme.adjustBgAndSecondaryWithLerp,
                                   shape: CircleBorder(),
                                   contentPadding: EdgeInsets.all(12),
                                   child: Icon(Iconsax.note_add_copy, size: 26, color: theme.supportingText),

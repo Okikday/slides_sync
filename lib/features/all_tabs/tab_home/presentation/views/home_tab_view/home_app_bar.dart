@@ -55,7 +55,7 @@ class HomeAppBar extends ConsumerWidget {
             child: AnimatedContainer(
               duration: Durations.medium3,
               clipBehavior: Clip.hardEdge,
-              color: isScrolled ? theme.altBackgroundPrimary.withValues(alpha: 0.75) : theme.background,
+              color: isScrolled ? theme.surface.withValues(alpha: 0.75) : theme.background,
               child:
                   isScrolled
                       ? BackdropFilter(filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), child: const SizedBox.expand())
@@ -110,7 +110,7 @@ class HomeAppBar extends ConsumerWidget {
                       onClick: onClickNotification,
                       overlayColor: context.theme.colorScheme.secondary.withAlpha(40),
                       shape: CircleBorder(side: BorderSide(color: theme.altBackgroundSecondary.withValues(alpha: 0.4))),
-                      backgroundColor: theme.altBackgroundPrimary,
+                      backgroundColor: theme.adjustBgAndSecondaryWithLerp,
                       child: Badge(
                         backgroundColor: Colors.transparent,
                         offset: Offset(-1, -1),

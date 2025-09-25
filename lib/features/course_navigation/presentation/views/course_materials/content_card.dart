@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:slides_sync/features/course_navigation/presentation/actions/cont
 import 'package:slides_sync/features/course_navigation/presentation/providers/content_card_providers.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/presentation/actions/modify_contents_action.dart';
 import 'package:slides_sync/features/manage_all/manage_contents/usecases/create_contents_uc/create_content_preview_image.dart';
+import 'package:slides_sync/features/share_contents/domain/usecases/share_content_uc.dart';
 import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
 import 'package:slides_sync/shared/components/dialogs/confirm_deletion_dialog.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
@@ -81,23 +83,23 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                                 child: ref
                                     .watch(ContentCardProviders.fetchLinkPreviewDataProvider(content))
                                     .when(
-                                  data: (data) => BuildImagePathWidget(
-                                    fileDetails: data,
-                                    fit: BoxFit.cover,
-                                    fallbackWidget: Icon(
-                                      WidgetHelper.resolveIconData(content.courseContentType, false),
-                                      size: 36,
+                                      data: (data) => BuildImagePathWidget(
+                                        fileDetails: data,
+                                        fit: BoxFit.cover,
+                                        fallbackWidget: Icon(
+                                          WidgetHelper.resolveIconData(content.courseContentType, false),
+                                          size: 36,
+                                        ),
+                                      ),
+                                      error: (e, st) => BuildImagePathWidget(
+                                        fileDetails: FileDetails(),
+                                        fallbackWidget: Icon(
+                                          WidgetHelper.resolveIconData(content.courseContentType, false),
+                                          size: 36,
+                                        ),
+                                      ),
+                                      loading: () => LoadingView(msg: ''),
                                     ),
-                                  ),
-                                  error: (e, st) => BuildImagePathWidget(
-                                    fileDetails: FileDetails(),
-                                    fallbackWidget: Icon(
-                                      WidgetHelper.resolveIconData(content.courseContentType, false),
-                                      size: 36,
-                                    ),
-                                  ),
-                                  loading: () => LoadingView(msg: ''),
-                                ),
                               ),
                             ),
                           ),
@@ -156,7 +158,17 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                                         Clipboard.setData(ClipboardData(text: content.path.fileDetails.urlPath));
                                       },
                                     ),
-                                  PopupMenuAction(title: "Share", iconData: Iconsax.share_copy, onTap: () {}),
+                                  PopupMenuAction(
+                                    title: "Share",
+                                    iconData: Iconsax.share_copy,
+                                    onTap: () {
+                                      ShareContentUc().shareFile(
+                                        context,
+                                        File(content.path.filePath),
+                                        filename: content.title,
+                                      );
+                                    },
+                                  ),
                                   PopupMenuAction(
                                     title: "Delete",
                                     iconData: Icons.delete,
@@ -179,16 +191,14 @@ class _ContentCardState extends ConsumerState<ContentCard> {
                                             UiUtils.hideDialog(context);
 
                                             if (context.mounted) {
-                                              UiUtils.showLoadingDialog(context, message: "Removing content");
+                                              UiUtils.showLoadingDialog(
+                                                rootNavigatorKey.currentContext!,
+                                                message: "Removing content",
+                                              );
                                             }
                                             final outcome = await ModifyContentsAction().onDeleteContent(content);
 
-                                            if (context.mounted) {
-                                              UiUtils.hideDialog(context);
-                                            } else {
-                                              rootNavigatorKey.currentContext?.pop();
-                                            }
-                                            await Future.delayed(Durations.short2);
+                                            rootNavigatorKey.currentContext?.pop();
 
                                             if (context.mounted) {
                                               if (outcome == null) {

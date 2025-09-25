@@ -60,7 +60,6 @@ class _ImageViewerState extends ConsumerState<ImageViewer> {
       value: UiUtils.getSystemUiOverlayStyle(theme.background, theme.isDarkTheme),
       child: Scaffold(
         appBar: AppBarContainer(
-          padding: EdgeInsets.zero,
           child: AppBarContainerChild(theme.isDarkTheme, title: widget.content.title),
         ),
         body: PhotoView(

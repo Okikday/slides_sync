@@ -104,7 +104,6 @@ dependencies:
 #  syncfusion_flutter_pdfviewer: ^31.1.17
   flutter_dotenv: ^6.0.0
   pdfrx: ^2.1.15
-  printing: ^5.14.2
   dotted_border: ^3.1.0
   screenshot: ^3.0.0
 

@@ -80,7 +80,7 @@ class LibraryTabViewAppBar extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Expanded(child: SizedBox()),
-                              LibraryTabViewSearchButton(),
+                              LibraryTabViewSearchButton(backgroundColor: theme.adjustBgAndSecondaryWithLerp),
                               Container(
                                 decoration: BoxDecoration(
                                   color: theme.surface.withValues(alpha: 0.75),

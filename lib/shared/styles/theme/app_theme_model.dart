@@ -334,9 +334,20 @@ class AppThemeModel {
   static Color lightenColor(Color color, double value) => HSLColor.fromColor(color).withLightness(value).toColor();
 
   Color get adjustBgAndPrimaryWithLerp =>
-      isDarkTheme ? Color.lerp(primary, background, 0.85)!.withValues(alpha: primary.a) : background.blendColor(0.9);
+      isDarkTheme
+      ? Color.lerp(primary.withAlpha(100), background, 0.85)!.withValues(alpha: primary.a)
+      : background.blendColor(0.9);
   Color get adjustBgAndPrimaryWithLerpExtra =>
-      isDarkTheme ? Color.lerp(primary, background, 0.82)!.withValues(alpha: primary.a) : background.blendColor(0.85);
+      isDarkTheme
+      ? Color.lerp(primary.withAlpha(100), background, 0.82)!.withValues(alpha: primary.a)
+      : background.blendColor(0.85);
+
+  Color get adjustBgAndSecondaryWithLerp => isDarkTheme
+      ? Color.lerp(secondary.withAlpha(100), background, 0.85)!.withValues(alpha: secondary.a)
+      : background.blendColor(0.9);
+  Color get adjustBgAndSecondaryWithLerpExtra => isDarkTheme
+      ? Color.lerp(secondary.withAlpha(100), background, 0.82)!.withValues(alpha: secondary.a)
+      : background.blendColor(0.85);
 
   List<Color> get backgroundGradientColors {
     if (brightness == Brightness.dark) {

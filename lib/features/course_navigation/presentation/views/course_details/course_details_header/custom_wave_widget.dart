@@ -42,16 +42,16 @@ class CustomShapeWaveFilledWidget extends ConsumerWidget {
         if (backgroundWidget != null) Positioned.fill(child: backgroundWidget!),
         if (showProgress)
           Positioned.fill(
-          child: Align(
-            alignment: Alignment.center,
-            child: CustomText(
-              "${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%",
-              fontWeight: FontWeight.bold,
-              textAlign: TextAlign.center,
-              style: textStyle,
+            child: Align(
+              alignment: Alignment.center,
+              child: CustomText(
+                "${(progress >= 0.0 && progress <= 1.0) ? (progress * 100.0).truncate() : 0}%",
+                fontWeight: FontWeight.bold,
+                textAlign: TextAlign.center,
+                style: textStyle,
+              ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -73,11 +73,7 @@ class CustomWaveWidget extends ConsumerWidget {
     }
     return WaveWidget(
       config: CustomConfig(
-        colors: [
-          theme.primaryColor.withAlpha(50),
-          theme.primaryColor.withAlpha(80),
-          theme.primaryColor.withAlpha(30),
-        ],
+        colors: [theme.primaryColor.withAlpha(50), theme.primaryColor.withAlpha(80), theme.primaryColor.withAlpha(30)],
         durations: [5000, 4000, 3000],
         heightPercentages: [fill - 0.01, fill + 0.01, fill + 0.05],
       ),
@@ -87,7 +83,6 @@ class CustomWaveWidget extends ConsumerWidget {
     );
   }
 }
-
 
 class Wave extends StatefulWidget {
   final double? value;
@@ -121,11 +116,14 @@ class _WaveState extends State<Wave> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-      builder:
-          (context, child) => ClipPath(
-            clipper: _WaveClipper(animationValue: _animationController.value, value: widget.value, direction: widget.direction),
-            child: Container(color: widget.color),
-          ),
+      child: Container(color: widget.color),
+      builder: (context, child) => ClipPath(
+        clipper: _WaveClipper(
+          animationValue: _animationController.value,
+          value: widget.value,
+          direction: widget.direction,
+        ),
+      ),
     );
   }
 }
@@ -140,21 +138,19 @@ class _WaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     if (direction == Axis.horizontal) {
-      Path path =
-          Path()
-            ..addPolygon(_generateHorizontalWavePath(size), false)
-            ..lineTo(0.0, size.height)
-            ..lineTo(0.0, 0.0)
-            ..close();
+      Path path = Path()
+        ..addPolygon(_generateHorizontalWavePath(size), false)
+        ..lineTo(0.0, size.height)
+        ..lineTo(0.0, 0.0)
+        ..close();
       return path;
     }
 
-    Path path =
-        Path()
-          ..addPolygon(_generateVerticalWavePath(size), false)
-          ..lineTo(size.width, size.height)
-          ..lineTo(0.0, size.height)
-          ..close();
+    Path path = Path()
+      ..addPolygon(_generateVerticalWavePath(size), false)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0.0, size.height)
+      ..close();
     return path;
   }
 
@@ -172,7 +168,9 @@ class _WaveClipper extends CustomClipper<Path> {
     final waveList = <Offset>[];
     for (int i = -2; i <= size.width.toInt() + 2; i++) {
       final waveHeight = (size.height / 20);
-      final dy = math.sin((animationValue * 360 - i) % 360 * (math.pi / 180)) * waveHeight + (size.height - (size.height * value!));
+      final dy =
+          math.sin((animationValue * 360 - i) % 360 * (math.pi / 180)) * waveHeight +
+          (size.height - (size.height * value!));
       waveList.add(Offset(i.toDouble(), dy));
     }
     return waveList;

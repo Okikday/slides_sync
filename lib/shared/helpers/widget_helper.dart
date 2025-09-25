@@ -19,6 +19,8 @@ class WidgetHelper {
         return isOutlined ? Iconsax.video_copy : Iconsax.video;
       case CourseContentType.note:
         return isOutlined ? Iconsax.note_copy : Iconsax.note;
+      case CourseContentType.reference:
+        return isOutlined ? Iconsax.aave_aave : Iconsax.aave_aave_copy;
     }
   }
 }

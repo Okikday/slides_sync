@@ -5,7 +5,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
 
 class ListCourseCard extends ConsumerWidget {
@@ -29,7 +28,7 @@ class ListCourseCard extends ConsumerWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(28),
       child: ColoredBox(
-        color: theme.adjustBgAndPrimaryWithLerp,
+        color: theme.onSurface.withAlpha(25),
         child: Container(
           margin: EdgeInsets.all(2.0),
           padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
@@ -37,12 +36,36 @@ class ListCourseCard extends ConsumerWidget {
           decoration: BoxDecoration(
             color: theme.surface,
             borderRadius: BorderRadius.circular(26),
-            //   image: DecorationImage(
-            //   image: AssetImage(Assets.images.instance.bookSparkleTransparentBg),
-            //   opacity: 0.05,
-            //   fit: BoxFit.cover,
-            //   colorFilter: ColorFilter.mode(theme.primaryColor, BlendMode.srcIn),
-            // ),
+            boxShadow: context.isDarkMode
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      offset: Offset(0, 1),
+                      blurRadius: 3,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      offset: Offset(0, 4),
+                      blurRadius: 6,
+                      spreadRadius: 0,
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.05),
+                      offset: Offset(0, 1),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.04),
+                      offset: Offset(0, 6),
+                      blurRadius: 12,
+                      spreadRadius: -2,
+                    ),
+                  ],
+          
           ),
           child: Row(
             children: [
@@ -88,8 +111,6 @@ class ListCourseCardIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.theme;
-    final dimension =
-        context.deviceWidth < context.deviceHeight ? context.deviceWidth * 0.16 : context.deviceHeight * 0.16;
     return InkWell(
       customBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onTap: onTapIcon,
@@ -103,37 +124,62 @@ class ListCourseCardIcon extends ConsumerWidget {
         ),
         offset: Offset(0, -2),
         child: Container(
-          height: dimension,
-          width: dimension,
+          height: 64,
+          width: 64,
           padding: EdgeInsets.all(2),
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
-            color: theme.adjustBgAndPrimaryWithLerpExtra,
+            color: theme.altBackgroundPrimary.withValues(alpha: 0.8),
             borderRadius: BorderRadius.circular(20),
+            boxShadow: context.isDarkMode
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      offset: Offset(0, 1),
+                      blurRadius: 3,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      offset: Offset(0, 4),
+                      blurRadius: 6,
+                      spreadRadius: 0,
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.05),
+                      offset: Offset(0, 1),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.04),
+                      offset: Offset(0, 6),
+                      blurRadius: 12,
+                      spreadRadius: -2,
+                    ),
+                  ],
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(18),
             child: BuildImagePathWidget(
-              height: dimension,
-              width: dimension,
+              height: 64,
+              width: 64,
               fileDetails: fileDetails,
               fallbackWidget: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child:
-                    courseCode.isEmpty
-                        ? Icon(Iconsax.document_1, color: context.theme.colorScheme.primary)
-                        : Center(
-                          child: CustomText(
-                            courseCode.substring(0, courseCode.length.clamp(0, 8)),
-                            fontSize:
-                                context.deviceWidth < context.deviceHeight
-                                    ? context.deviceWidth * 0.025
-                                    : context.deviceHeight * 0.025,
-                            fontWeight: FontWeight.bold,
-                            textAlign: TextAlign.center,
-                            color: context.theme.colorScheme.primary,
-                          ),
+                child: courseCode.isEmpty
+                    ? Icon(Iconsax.document_1, color: theme.primary)
+                    : Center(
+                        child: CustomText(
+                          courseCode.substring(0, courseCode.length.clamp(0, 8)),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          textAlign: TextAlign.center,
+                          color: theme.primary,
                         ),
+                      ),
               ),
             ),
           ),
@@ -168,11 +214,11 @@ class ListCourseCardTitleColumn extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(left: 12.0),
             child: CustomTextButton(
-              backgroundColor: theme.altBackgroundPrimary,
+              backgroundColor: theme.altBackgroundSecondary,
               pixelHeight: 24,
               borderRadius: 8,
               contentPadding: EdgeInsets.symmetric(horizontal: 5.0),
-              child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: theme.primaryColor),
+              child: CustomText(courseCode, fontSize: 12, fontWeight: FontWeight.bold, color: theme.secondary),
             ),
           ),
 
@@ -191,8 +237,9 @@ class ListCourseCardTitleColumn extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: CustomText(
             "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "category" : "categories"}",
-            fontSize: 11,
-            color: theme.supportingText.withValues(alpha: 0.8),
+            fontSize: 10,
+            fontWeight: FontWeight.w600,
+            color: theme.supportingText.withValues(alpha: 0.6),
           ),
         ),
       ],

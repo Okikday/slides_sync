@@ -209,6 +209,6 @@ Future<void> _addToRecentContents(String contentId) async {
     recents.add(contentId);
     await hiveInstance.setData(key: HiveDataPaths.recentContentsIds, value: recents.toList());
   }
-  // log("Adding pdf to recents");
+  log("Adding pdf to recents");
   return;
 }

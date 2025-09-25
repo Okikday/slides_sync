@@ -63,13 +63,6 @@ class PdfDocNormalAppBar extends ConsumerWidget {
                             );
                           },
                         ),
-                        PopupMenuAction(
-                          title: "Print",
-                          iconData: Iconsax.printer_copy,
-                          onTap: () {
-                            ShareContentUc().printPdfFile(pdva.content.path.filePath);
-                          },
-                        ),
                         PopupMenuAction(title: "Horizontal layout", iconData: Iconsax.book_1, onTap: () {}),
                         () {
                           final isDarkMode =

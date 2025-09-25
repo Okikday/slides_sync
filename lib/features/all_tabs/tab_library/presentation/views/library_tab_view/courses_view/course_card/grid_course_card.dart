@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,9 +7,8 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/models/file_details.dart';
 import 'package:slides_sync/shared/helpers/extension_helper.dart';
-import 'package:slides_sync/shared/styles/colors.dart';
+import 'package:slides_sync/shared/styles/theme/app_theme_model.dart';
 import 'package:slides_sync/shared/widgets/build_image_path_widget.dart';
-import 'package:stacked_card_carousel/stacked_card_carousel.dart';
 
 class GridCourseCard extends ConsumerWidget {
   const GridCourseCard(
@@ -35,14 +36,14 @@ class GridCourseCard extends ConsumerWidget {
     final isDarkMode = theme.isDarkTheme;
     final dimension = 50;
     return Container(
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.all(1.5),
 
       constraints: BoxConstraints(maxWidth: 200, maxHeight: 200),
       decoration: BoxDecoration(
         color: theme.surface,
         borderRadius: BorderRadius.circular(22),
-        // border: Border.all(width: 2, color: theme.bgLightenColor(.88, .12)),
+        // border: Border.all(width: 1, color: Colors.white),
         //   image: DecorationImage(
         //     image: Assets.images.bookSparkleTransparentBg.asImageProvider,
         //   opacity: 0.05,
@@ -51,49 +52,170 @@ class GridCourseCard extends ConsumerWidget {
         //       BlendMode.srcIn,
         //     ),
         // ),
+        boxShadow: [
+          BoxShadow(
+            color: AppThemeModel.lightenColor(theme.surface, 0.5).withAlpha(200),
+            offset: Offset(-2.5, 2.2),
+            spreadRadius: -2,
+            blurRadius: 10,
+            blurStyle: BlurStyle.inner,
+          ),
+          BoxShadow(
+            color: AppThemeModel.lightenColor(theme.surface, 0.5).withAlpha(200),
+            offset: Offset(2.1, -2.2),
+            spreadRadius: -2,
+            blurRadius: 10,
+            blurStyle: BlurStyle.inner,
+          ),
+          ...(context.isDarkMode
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    offset: Offset(0, 1),
+                    blurRadius: 3,
+                    spreadRadius: 0,
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    offset: Offset(0, 4),
+                    blurRadius: 6,
+                    spreadRadius: 0,
+                  ),
+                ]
+              : [
+                  BoxShadow(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    offset: Offset(0, 1),
+                    blurRadius: 2,
+                    spreadRadius: 0,
+                  ),
+                  BoxShadow(
+                    color: Colors.white.withValues(alpha: 0.04),
+                    offset: Offset(0, 6),
+                    blurRadius: 12,
+                    spreadRadius: -2,
+                  ),
+                ]),
+        ],
       ),
       child: Stack(
         fit: StackFit.expand,
         children: [
           for (int i = 0; i < 3; i++)
             Container(
-              width: 100,
-              height: 100,
+              width: 120,
+              height: 120,
               decoration: BoxDecoration(
-                color: theme.onSurface.withValues(alpha: 0.4 + (i * 0.3)),
+                color: AppThemeModel.lightenColor(
+                  theme.surface.withValues(alpha: 0.4 + (i * 0.3)),
+                  context.isDarkMode ? 0.3 : 0.75,
+                ),
                 borderRadius: BorderRadius.circular(20),
+                // border: i == 2
+                //     ? Border.all(color: AppThemeModel.lightenColor(theme.surface, 0.5).withAlpha(200))
+                //     : null
               ),
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(12).copyWith(bottom: 40),
               margin: EdgeInsets.only(
-                top: (12.0 * i) + 12,
-                left: (12.0 * (3 - (i + 1))) + 12,
-                right: (12.0 * (3 - (i + 1))) + 12,
-                bottom: 12,
+                top: (10.0 * i) + 12,
+                left: (10.0 * (3 - (i + 1))) + 12,
+                right: (10.0 * (3 - (i + 1))) + 12,
+                bottom: 24,
               ),
               child: Row(
-                spacing: 20,
+                spacing: 8,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.red.withAlpha(120)),
-                  ),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (int i = 0; i < 3; i++)
-                          Container(
-                            margin: EdgeInsets.only(bottom: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.red.withAlpha(180),
-                              borderRadius: BorderRadius.circular(4),
+                  Flexible(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          // color: theme.surface.withAlpha(100),
+                          color: context.isDarkMode
+                              ? theme.surface.withAlpha(100)
+                              : theme.adjustBgAndPrimaryWithLerpExtra.withValues(alpha: 0.5),
+                          boxShadow: (context.isDarkMode
+                              ? [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.08),
+                                    offset: Offset(0, 1),
+                                    blurRadius: 3,
+                                    spreadRadius: 0,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.06),
+                                    offset: Offset(0, 4),
+                                    blurRadius: 6,
+                                    spreadRadius: 0,
+                                  ),
+                                ]
+                              : [
+                                  BoxShadow(
+                                    color: Colors.white.withValues(alpha: 0.05),
+                                    offset: Offset(0, 1),
+                                    blurRadius: 2,
+                                    spreadRadius: 0,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.white.withValues(alpha: 0.04),
+                                    offset: Offset(0, 6),
+                                    blurRadius: 12,
+                                    spreadRadius: -2,
+                                  ),
+                                ]),
+                        ),
+                        // child: SizedBox(width: 40, height: 40),
+                        child: SizedBox.square(
+                          dimension: 40,
+                          child: BuildImagePathWidget(
+                            width: 40,
+                            height: 40,
+                            fileDetails: course.imageLocationJson.fileDetails,
+                            fallbackWidget: Icon(
+                              Iconsax.star,
+                              size: 16,
+                              color: isDarkMode ? Colors.white : Colors.black,
                             ),
-                            height: 8,
-                            width: 100,
                           ),
-                      ],
+                        ),
+                      ),
                     ),
+                  ),
+                  if (courseCode.isNotEmpty)
+                    Flexible(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: theme.altBackgroundSecondary.withAlpha(100),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          child: FittedBox(
+                            child: CustomText(
+                              course.courseCode,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: theme.secondary,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // child: Column(
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   spacing: 2.5,
+                      //   children: [
+                      //     for (int i = 0; i < 3; i++)
+                      //       DecoratedBox(
+                      //         decoration: BoxDecoration(
+                      //           color: theme.altBackgroundSecondary,
+                      //           borderRadius: BorderRadius.circular(4),
+                      //         ),
+                      //         child: SizedBox(height: 8, width: double.infinity),
+                      //       ),
+                      //   ],
+                      // ),
                   ),
                 ],
               ),
@@ -106,27 +228,46 @@ class GridCourseCard extends ConsumerWidget {
             child: Container(
               height: 60,
               width: 200,
+              clipBehavior: Clip.antiAlias,
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: theme.adjustBgAndPrimaryWithLerp,
-                border: Border(top: BorderSide(color: theme.onPrimary.withAlpha(40))),
+                color: theme.adjustBgAndPrimaryWithLerpExtra.withValues(alpha: 0.9),
+                border: Border(top: BorderSide(color: AppThemeModel.lightenColor(theme.surface, 0.5).withAlpha(200))),
               ),
-              child: Column(
-                spacing: 2,
-                children: [
-                  CustomText(course.courseName, color: theme.onBackground, fontWeight: FontWeight.bold),
-                  CustomText(
-                    "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
-                    fontSize: 10,
-                    color: theme.supportingText.withAlpha(200),
-                  ),
-                ],
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: CustomText(
+                        course.courseName,
+                        color: theme.onBackground,
+                        fontWeight: FontWeight.bold,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.fade,
+                        fontSize: 13,
+                      ),
+                    ),
+                    CustomText(
+                      "${categoriesCount < 1 ? "No" : categoriesCount} ${categoriesCount == 1 ? "collection" : "collections"}",
+                      fontSize: 10,
+                      color: theme.supportingText.withAlpha(200),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
       ),
-      // child: Padding(
+    );
+  }
+}
+
+
+
+
+    // child: Padding(
       //   padding: const EdgeInsets.only(top: 8, bottom: 0),
       //   child: Column(
       //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,6 +369,3 @@ class GridCourseCard extends ConsumerWidget {
       //     ],
       //   ),
       // ),
-    );
-  }
-}

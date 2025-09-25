@@ -23,8 +23,7 @@ class CourseNavRoutes {
       pageBuilder:
           (context, state) => defaultTransition(
             state.pageKey,
-            defaultIncoming: TransitionType.fade,
-        outgoing: TransitionType.scaleXY(),
+        defaultIncoming: TransitionType.fade,
             // defaultIncomingDuration: Durations.medium2,
             // defaultIncomingCurve: Curves.fastEaseInToSlowEaseOut,
             child: CourseDetailsView(course: state.extra as Course),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:custom_widgets_toolkit/custom_widgets_toolkit.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:isar/isar.dart';
 import 'package:slides_sync/domain/models/course_model/course.dart';
 import 'package:slides_sync/domain/repos/course_repo/course_repo.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/actions/course_card_actions.dart';
-import 'package:slides_sync/features/all_tabs/tab_library/presentation/providers/library_tab_view_providers.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/courses_view/course_card.dart';
 import 'package:slides_sync/features/all_tabs/tab_library/presentation/views/library_tab_view/library_tab_view_app_bar/build_button.dart';
 import 'package:slides_sync/shared/common_widgets/app_popup_menu_button.dart';
@@ -70,6 +68,7 @@ class LibraryTabViewSearchButton extends ConsumerWidget {
         final List<Course> searchResults =
             await (await CourseRepo.filter).courseTitleContains(controller.text, caseSensitive: false).findAll();
         return [
+          const SizedBox(height: 12),
           for (int i = 0; i < searchResults.length; i++)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

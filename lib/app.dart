@@ -42,15 +42,16 @@ class _AppState extends ConsumerState<App> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    if (RootIsolateToken.instance != null) {
-      compute(FileUtils.deleteEmptyCoursesDirsInIsolate, {'rootIsolateToken': RootIsolateToken.instance});
-    }
+    // if (RootIsolateToken.instance != null) {
+    //   compute(FileUtils.deleteEmptyCoursesDirsInIsolate, {'rootIsolateToken': RootIsolateToken.instance});
+    // }
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadThemeFromHive());
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = ref.watch(appThemeProvider);
+    
 
     return MaterialApp.router(
       title: "SlideSync",

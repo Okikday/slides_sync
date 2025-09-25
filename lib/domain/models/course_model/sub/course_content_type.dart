@@ -6,4 +6,5 @@ enum CourseContentType{
   audio,
   video,
   note,
+  reference
 }
